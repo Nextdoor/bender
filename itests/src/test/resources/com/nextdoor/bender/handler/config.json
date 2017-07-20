@@ -1,0 +1,47 @@
+{
+  "handler": {
+    "config_name": "DummyHandlerHelper$DummyHandler"
+  },
+  "sources": [
+    {
+      "name": "Test Events",
+      "source_regex": ".*",
+      "deserializer": {
+        "config_name": "TimeSeriesJson",
+        "partition_specs": [],
+        "time_field": "$.EPOCH",
+        "time_field_type": "SECONDS",
+        "nested_field_configs": [
+          {
+            "field": "MESSAGE",
+            "prefix_field": "MESSAGE_PREFIX"
+          }
+        ]
+      },
+      "mutators": [
+        {
+          "config_name": "DropArraysMutator"
+        },
+        {
+          "config_name": "KeyNameMutator"
+        }
+      ]
+    }
+  ],
+  "wrapper": {
+    "config_name": "KinesisWrapper"
+  },
+  "serializer": {
+    "config_name": "Json"
+  },
+  "transport": {
+    "config_name": "File",
+    "threads": 1,
+    "filename": "/tmp/bender.out"
+  },
+  "reporters": [
+    {
+      "config_name": "DataDog"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "Reads from Kinesis and writes to Firehose",
+  "runtime": "java",
+  "handler": "com.nextdoor.bender.handler.kinesis.KinesisHandler::handler",
+  "memory": 1024,
+  "timeout": 300
+}

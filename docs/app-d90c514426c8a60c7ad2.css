@@ -1,0 +1,263 @@
+/*!
+ * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+ body {
+  overflow-x: hidden;
+ }
+
+/* Toggle Styles */
+
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 250px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 0;
+  height: 100%;
+  margin-left: -250px;
+  overflow-y: auto;
+  background: #000;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 250px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  text-indent: 25px;
+  line-height: 25px;
+}
+
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: #999999;
+}
+
+.sidebar-nav li a:hover {
+  text-decoration: none;
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav > .active a {
+  color: #fff;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-category {
+  margin-top: 25px;
+  font-size: 18px;
+  line-height: 50px;
+  color: #555;
+}
+
+.sidebar-nav > .sidebar-category a {
+  color: #999999;
+}
+
+.sidebar-nav > .sidebar-category a:hover {
+  color: #fff;
+  background: none;
+}
+
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 250px;
+  }
+
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+
+  #sidebar-wrapper {
+    width: 250px;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
+  }
+
+  #page-content-wrapper {
+    position: relative;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+
+h1 {
+  font-size: 42px;
+  line-height: 50px;
+  margin: 75px 0px 0px 0px;
+}
+
+h2 {
+  font-size: 22px;
+  line-height: 25px;
+  margin: 0px;
+  padding: 12.5px 25px 12.5px 25px;
+}
+
+h3 {
+  font-size: 22px;
+  line-height: 25px;
+  margin: 40px 0px 10px 0px;
+}
+
+h4 {
+  font-size: 18px;
+  line-height: 25px;
+  margin: 0px;
+  margin: 20px 0px 5px 0px;
+}
+
+h5 {
+  font-size: 16px;
+  line-height: 25px;
+  margin: 0px;
+  padding: 6px 0px 3px 0px;
+}
+
+.panel-primary, .panel, .list-group-item {
+  border: none;
+}
+
+.panel {
+  margin-bottom: 25px;
+  margin-top: 25px;
+}
+
+.panel-body, .list-group-item {
+  padding: 0px;
+}
+.panel-primary > .panel-heading {
+  background-color: #80ADA0;
+  border: none;
+}
+
+.panel-heading {
+  border-radius: 3.3px;
+  padding: 0px;
+  margin: 75px 0px 0px 0px;
+}
+
+.btn {
+  line-height: 25px;
+  padding: 0px 10px 0px 10px;
+}
+
+.btn-info {
+  background-color: #9E8DAA;
+  border: none;
+}
+
+.btn-info:hover {
+  background-color: #524A59;
+  border: none;
+}
+
+.label-success {
+  float: left;
+  margin: 2px 9px 0px 0px;
+  font-size: 60%;
+  padding: .3em .5em .3em;
+  background-color: #8AEA92;
+  border: none;
+}
+
+p {
+  margin: 0px;
+  line-height: 25px;
+}
+
+pre {
+  padding: 12.5px;
+  margin: 0px;
+}
+
+.table {
+  padding: 0px;
+  margin: 0px;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+  padding: 12.5px 25px 12.5px 0px;
+}
+
+.constraints {
+  list-style: none;
+  padding-left: 0px;
+  line-height: 25px
+}
+
+.search {
+  text-align: center;
+  margin: 25px;
+}
+
+.search > input {
+  background: #000;
+  border-width: 0 0 1px 0;
+  border-color: #666;
+  padding: 6px 0px 6px 0px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 25px;
+  outline: none;
+  color: #fff;
+  border-radius: 0;
+}
+

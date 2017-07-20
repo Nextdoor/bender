@@ -1,0 +1,5 @@
+{
+  "name": "bender-example",
+  "retainedVersions": 5,
+  "role": "arn:aws:iam::123456:role/example_role"
+}

@@ -1,0 +1,314 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * Copyright 2017 Nextdoor.com, Inc
+ *
+ */
+
+package com.nextdoor.bender.config;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.main.JsonSchema;
+import com.github.fge.jsonschema.main.JsonSchemaFactory;
+import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.deserializer.DeserializerConfig;
+import com.nextdoor.bender.handler.HandlerConfig;
+import com.nextdoor.bender.ipc.TransportConfig;
+import com.nextdoor.bender.monitoring.ReporterConfig;
+import com.nextdoor.bender.mutator.MutatorConfig;
+import com.nextdoor.bender.serializer.SerializerConfig;
+import com.nextdoor.bender.wrapper.WrapperConfig;
+
+public class BenderConfig {
+  private static final Logger logger = Logger.getLogger(BenderConfig.class);
+  public static final ConfiguredObjectMapper CMAPPER = new ConfiguredObjectMapper();
+  public static final BenderSchema SCHEMA = new BenderSchema("/schema/schema.json");
+
+  @JsonSchemaDescription("Transport configuration")
+  private TransportConfig transportConfig;
+
+  @JsonSchemaDescription("Wrapper configuration")
+  private WrapperConfig wrapperConfig;
+
+  @JsonSchemaDescription("Serializer configuration")
+  private SerializerConfig serializerConfig;
+
+  @JsonSchemaDescription("List of reporter configurations")
+  private List<ReporterConfig> reporters = Collections.emptyList();
+
+  @JsonSchemaDescription("Source configurations. This includes deserializer and mutator.")
+  private List<SourceConfig> sources = Collections.emptyList();
+
+  @JsonSchemaDescription("Handler configuration")
+  @JsonProperty(required=false)
+  private HandlerConfig handlerConfig;
+
+  // Inherited from creation
+  private String configFile;
+
+  protected BenderConfig() {
+
+  }
+
+  /**
+   * Wrap ObjectMapper in order to provide a configured mapper that can be reused across calls. This
+   * is used to speedup unit tests where configurations are frequently being loaded.
+   */
+  private static class ConfiguredObjectMapper {
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    public ConfiguredObjectMapper() {
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(TransportConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(ReporterConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(WrapperConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(SerializerConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(DeserializerConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(MutatorConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(HandlerConfig.class));
+    }
+
+    public ObjectMapper getObjectMapper() {
+      return this.objectMapper.copy();
+    }
+  }
+
+  /**
+   * Wrap JsonNode containing JSON schema for Bender in order to provide a schema object. This is
+   * used to speedup unit tests where configurations are frequently being loaded.
+   */
+  public static class BenderSchema {
+    private JsonNode schema;
+    private String schemaFile;
+
+    public BenderSchema() {
+      this.schema = genSchema();
+      return;
+    }
+
+    public BenderSchema(String schemaFile) {
+      this.schemaFile = schemaFile;
+    }
+
+    public BenderSchema(File schemaFile) {
+      try {
+        this.schema = CMAPPER.getObjectMapper().readTree(schemaFile);
+      } catch (IOException e) {
+        throw new ConfigurationException("unable to load schema file", e);
+      }
+    }
+
+    
+    private JsonNode genSchema() {
+      ObjectMapper objectMapper = CMAPPER.getObjectMapper();
+      objectMapper.setPropertyNamingStrategy(
+          PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+      JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(objectMapper);
+      return jsonSchemaGenerator.generateJsonSchema(BenderConfig.class);
+    }
+
+    public JsonNode getSchema() {
+      /*
+       * Lazy load
+       */
+      if (this.schema == null && this.schemaFile != null) {
+        String json;
+        try {
+          json = IOUtils
+              .toString(new InputStreamReader(getClass().getResourceAsStream(schemaFile), "UTF-8"));
+        } catch (NullPointerException | IOException e) {
+          logger.warn("Unable to find schema file. Auto generating schema.");
+          this.schema = genSchema();
+          return this.schema;
+        }
+
+        try {
+          this.schema = CMAPPER.getObjectMapper().readTree(json);
+          return this.schema;
+        } catch (Exception e) {
+          throw new ConfigurationException("unable generate schema");
+        }
+      }
+
+      return this.schema;
+    }
+  }
+
+  public static boolean validate(Class clazz, String resource) throws ConfigurationException {
+    String json;
+    try {
+      json = IOUtils.toString(new InputStreamReader(clazz.getResourceAsStream(resource), "UTF-8"));
+    } catch (NullPointerException | IOException e) {
+      throw new ConfigurationException("unable to find " + resource);
+    }
+
+    return validate(json);
+  }
+
+  public static boolean validate(String json, String schemaFilename) throws ConfigurationException {
+    BenderSchema schema = new BenderSchema(new File(schemaFilename));
+    return validate(json, schema);
+  }
+
+  public static boolean validate(String json) throws ConfigurationException {
+    return validate(json, SCHEMA);
+  }
+
+  public static boolean validate(String json, BenderSchema benderSchema)
+      throws ConfigurationException {
+    ProcessingReport report;
+    try {
+      /*
+       * Create object
+       */
+      ObjectMapper objectMapper = CMAPPER.getObjectMapper();
+      JsonNode node = objectMapper.readTree(json);
+
+      /*
+       * Create JSON schema
+       */
+      JsonNode jsonSchema = benderSchema.getSchema();
+
+      /*
+       * Validate
+       */
+      final JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
+      final JsonSchema schema = factory.getJsonSchema(jsonSchema);
+      report = schema.validate(node);
+    } catch (IOException | ProcessingException ioe) {
+      throw new ConfigurationException("unable to validate config", ioe);
+    }
+
+    if (report.isSuccess()) {
+      return true;
+    } else {
+      throw new ConfigurationException("invalid config file",
+          report.iterator().next().asException());
+    }
+  }
+
+  public static BenderConfig load(Class clazz, String resource) {
+    /*
+     * Read config file
+     */
+    String json;
+    try {
+      json = IOUtils.toString(new InputStreamReader(clazz.getResourceAsStream(resource), "UTF-8"));
+    } catch (NullPointerException | IOException e) {
+      throw new ConfigurationException("unable to find " + resource);
+    }
+
+    validate(json);
+
+    /*
+     * Configure Mapper and register polymorphic types
+     */
+    ObjectMapper mapper = CMAPPER.getObjectMapper();
+    mapper.setPropertyNamingStrategy(
+        PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+
+    BenderConfig config = null;
+    try {
+      config = mapper.readValue(json, BenderConfig.class);
+    } catch (IOException e) {
+      throw new ConfigurationException("invalid config file", e);
+    }
+
+    config.setConfigFile(resource);
+
+    return config;
+  }
+
+  @JsonProperty("handler")
+  public HandlerConfig getHandlerConfig() {
+    return this.handlerConfig;
+  }
+
+  @JsonProperty("handler")
+  public void setHandlerConfig(HandlerConfig handlerConfig) {
+    this.handlerConfig = handlerConfig;
+  }
+
+  @JsonProperty("transport")
+  public TransportConfig getTransportConfig() {
+    return this.transportConfig;
+  }
+
+  @JsonProperty("transport")
+  public void setTransportConfig(TransportConfig transport) {
+    this.transportConfig = transport;
+  }
+
+  @JsonProperty("wrapper")
+  public WrapperConfig getWrapperConfig() {
+    return this.wrapperConfig;
+  }
+
+  @JsonProperty("wrapper")
+  public void setWrapperConfig(WrapperConfig wrapperConfig) {
+    this.wrapperConfig = wrapperConfig;
+  }
+
+  @JsonProperty("serializer")
+  public SerializerConfig getSerializerConfig() {
+    return this.serializerConfig;
+  }
+
+  @JsonProperty("serializer")
+  public void setSerializerConfig(SerializerConfig serializerConfig) {
+    this.serializerConfig = serializerConfig;
+  }
+
+  @JsonProperty("reporters")
+  public List<ReporterConfig> getReporters() {
+    return reporters;
+  }
+
+  @JsonProperty("reporters")
+  public void setReporters(List<ReporterConfig> reporters) {
+    this.reporters = reporters;
+  }
+
+  @JsonProperty("sources")
+  public List<SourceConfig> getSources() {
+    return sources;
+  }
+
+  @JsonProperty("sources")
+  public void setSources(List<SourceConfig> sources) {
+    this.sources = sources;
+  }
+
+  @JsonIgnore
+  public String getConfigFile() {
+    return configFile;
+  }
+
+  @JsonIgnore
+  public void setConfigFile(String configFile) {
+    this.configFile = configFile;
+  }
+}

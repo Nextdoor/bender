@@ -1,0 +1,35 @@
+{
+    "a": 123,
+    "b": "foo",
+    "c" : [
+        {
+            "first" : "John",
+            "last" :  "Smith"
+        },
+        {
+            "first" : "Alice",
+            "last" :  "White"
+        }
+    ],
+    "d": false,
+    "e": [
+        1,
+        2,
+        3
+    ],
+    "g": {
+        "ga": "foo"
+    },
+    "h": {
+        "ha": [
+            1,
+            2,
+            3
+        ]
+    },
+    "i": {
+        "ia": {
+            "iaa": "bar"
+        }
+    }
+}

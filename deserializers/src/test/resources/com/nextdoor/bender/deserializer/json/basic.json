@@ -1,0 +1,8 @@
+{
+    "a_string": "foo",
+    "a_bool": true,
+    "a_number": 1,
+    "an_obj": {
+        "foo": "bar"
+    }
+}
