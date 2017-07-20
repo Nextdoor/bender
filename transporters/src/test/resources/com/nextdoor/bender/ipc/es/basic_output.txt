@@ -1,0 +1,2 @@
+{"index": {"_type":"event","_index":"log"}}
+foo

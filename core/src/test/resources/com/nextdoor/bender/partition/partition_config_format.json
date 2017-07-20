@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "name": "Test Events",
+      "source_regex": ".*",
+      "deserializer": {
+        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig",
+        "partition_specs": [
+          {
+            "name": "type",
+            "sources": ["one"],
+            "interpreter": "STRING",
+            "string_format": "TOUPPER"
+          }
+        ]
+      },
+      "mutators": [
+        {
+          "config_name": "DummyMutatorHelper$DummyMutatorConfig"
+        }
+      ]
+    }
+  ],
+  "wrapper": {
+    "config_name": "DummyWrapperHelper$DummyWrapperConfig"
+  },
+  "serializer": {
+    "config_name": "DummySerializerHelper$DummySerializerConfig"
+  },
+  "transport": {
+    "config_name": "DummyTransportHelper$DummyTransporterConfig",
+    "threads": 1
+  },
+  "reporters": [
+  ]
+}
