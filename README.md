@@ -55,13 +55,13 @@ Monitor the ETL process at each phase within your function and output those metr
 
 ## Configuration
 
-Bender uses JSON configuration files. See the [docs](https://pages.git.corp.nextdoor.com/Nextdoor/bender/) for more details on config file specifics.
+Bender uses JSON configuration files. See the [docs](https://pages.github.com/Nextdoor/bender/) for more details on config file specifics.
 
 Different configurations per lambda function alias are supported. The filename of the configuration must match the function alias.
 
 ## Deployment
 
-The easiest way to deploy your function is to use [Apex](https://github.com/apex/apex). A sample project is included under [example_project/](https://git.corp.nextdoor.com/Nextdoor/bender/blob/master/example_project/). The project provides an example of a function that is triggered by Kinesis, drops data matching a regex, and forwards the rest to Firehose.
+The easiest way to deploy your function is to use [Apex](https://github.com/apex/apex). A sample project is included under [example_project/](https://github.com/Nextdoor/bender/tree/master/example_project). The project provides an example of a function that is triggered by Kinesis, drops data matching a regex, and forwards the rest to Firehose.
 
 Note to deploy the example you will need to create an IAM role to allow your lambda function to read from kinesis and write to firehose. Your role will need the following two policies:
 
