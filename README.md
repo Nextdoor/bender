@@ -8,7 +8,7 @@ This project provides an extendable Java framework for creating serverless ETL f
 
 ### Initial Support
 
-While developers are able to write their own Input Handlers, Deserializers, Mutators, Wrappers, Serializers, Transporters, or Reporters, out of the Bender contains basic functionality to read, filter, manipulate, and write JSON from [Amazon Kinesis Streams](https://aws.amazon.com/kinesis/streams/) or [Amazon S3](https://aws.amazon.com/s3/) files. Specially the following is supported:
+While developers are able to write their own Input Handlers, Deserializers, Mutators, Wrappers, Serializers, Transporters, or Reporters, out of box the Bender contains basic functionality to read, filter, manipulate, and write JSON from [Amazon Kinesis Streams](https://aws.amazon.com/kinesis/streams/) or [Amazon S3](https://aws.amazon.com/s3/) files. Specially the following is supported:
 
 ##### Handlers
 Handlers interface between Amazon Lambda [triggers](http://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html) and data sources provided to your ETL function. Events or lines are able to read from:
@@ -68,7 +68,7 @@ Note to deploy the example you will need to create an IAM role to allow your lam
 `arn:aws:iam::aws:policy/service-role/AWSLambdaKinesisExecutionRole`
 `arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess`
 
-After creating your role edit `example_project/project.json` with the role arn. You will also need create the source Kinesis and destination Firehose streams.
+After creating your role edit `example_project/project.json` with the role ARN. You will also need to create the source Kinesis and destination Firehose streams.
 
 To deploy:
 
