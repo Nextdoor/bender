@@ -26,7 +26,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.amazonaws.services.lambda.runtime.events.SNSEvent;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.event.S3EventNotification;
 import com.amazonaws.services.s3.event.S3EventNotification.S3BucketEntity;
@@ -35,10 +34,8 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRe
 import com.amazonaws.services.s3.event.S3EventNotification.S3ObjectEntity;
 import com.nextdoor.bender.handler.BaseHandler;
 import com.nextdoor.bender.handler.Handler;
-import com.nextdoor.bender.handler.HandlerException;
 import com.nextdoor.bender.handler.HandlerTest;
 import com.nextdoor.bender.testutils.DummyTransportHelper;
-import com.nextdoor.bender.utils.SourceUtils.SourceNotFoundException;
 import com.nextdoor.bender.utils.TestContext;
 
 public class S3HandlerTest extends HandlerTest<S3EventNotification> {

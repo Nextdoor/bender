@@ -110,7 +110,8 @@
     <reflections.version>0.9.10</reflections.version>
     <rest.version>5.0.0-rc1</rest.version>
     <retry4j.version>0.6.2</retry4j.version>
-    <s3proxy.version>1.5.2</s3proxy.version>
+    <s3proxy.version>1.5.3</s3proxy.version>
+    <system-rules.version>1.16.0</system-rules.version>
   </properties>
 
   <build>
