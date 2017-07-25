@@ -33,8 +33,7 @@ public class ConfigurableFactoryFactory<T extends ConfigurableFactory> {
         (ConfigurableFactory) ReflectionUtils.newInstance(factoryConfig.getFactoryClass());
     factory.setConf(factoryConfig);
 
-    logger.info(String.format("Factory %s Instantiated", factory.getClass().getName()));
-
+    logger.trace(factory.getClass().getName() + " initialized");
     return (T) factory;
   }
 }

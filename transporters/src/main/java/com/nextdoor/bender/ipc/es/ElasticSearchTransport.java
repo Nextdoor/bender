@@ -134,7 +134,7 @@ public class ElasticSearchTransport implements UnpartitionedTransport {
     try {
       new CallExecutor(config).execute(callable);
     } catch (RetriesExhaustedException ree) {
-      logger.debug("transport failed after " + ree.getCallResults().getTotalTries() + " tries.");
+      logger.warn("transport failed after " + ree.getCallResults().getTotalTries() + " tries.");
       throw new TransportException(ree.getCallResults().getLastExceptionThatCausedRetry());
     } catch (UnexpectedException ue) {
       throw new TransportException(ue);
