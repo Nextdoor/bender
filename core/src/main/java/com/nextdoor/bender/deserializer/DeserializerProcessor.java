@@ -18,6 +18,7 @@ package com.nextdoor.bender.deserializer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import com.nextdoor.bender.monitoring.MonitoredProcess;
 import com.nextdoor.bender.partition.PartitionSpec;
@@ -113,5 +114,13 @@ public class DeserializerProcessor extends MonitoredProcess {
 
   public void setDeserializer(Deserializer deserializer) {
     this.deser = deserializer;
+  }
+
+  public String toString() {
+    String specStr = this.partitionSpecs.stream().map(c -> {
+      return c.toString();
+    }).collect(Collectors.joining(", "));
+
+    return this.deser.getClass().getSimpleName() + "[" + "partitionSpecs=[" + specStr + "]]";
   }
 }

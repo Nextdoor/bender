@@ -18,8 +18,9 @@ package com.nextdoor.bender.config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.StringUtils;
 
 import com.nextdoor.bender.deserializer.DeserializerFactory;
 import com.nextdoor.bender.deserializer.DeserializerFactoryFactory;
@@ -37,8 +38,6 @@ public class Source {
   private List<String> containsStrings = new ArrayList<String>(0);
 
   private final DeserializerFactoryFactory dff = new DeserializerFactoryFactory();
-
-  private static final Logger logger = Logger.getLogger(Source.class);
 
   public Source(SourceConfig config) throws ClassNotFoundException {
     this.sourceRegex = Pattern.compile(config.getSourceRegex());
@@ -60,9 +59,6 @@ public class Source {
     for (String strRegex : config.getRegexPatterns()) {
       this.regexPatterns.add(Pattern.compile(strRegex));
     }
-
-    logger.info(String.format("Source %s (regex: %s, mutator: %s)", this.sourceName,
-        this.sourceRegex, config));
   }
 
   public DeserializerProcessor getDeserProcessor() {
@@ -95,5 +91,21 @@ public class Source {
 
   public List<Pattern> getRegexPatterns() {
     return this.regexPatterns;
+  }
+
+  public String toString() {
+    String patterns = this.regexPatterns.stream().map(c -> {
+      return c.toString();
+    }).collect(Collectors.joining(", "));
+
+    String mutators = this.mutatorProcessors.stream().map(c -> {
+      return c.getMutator().getClass().getSimpleName();
+    }).collect(Collectors.joining(", "));
+
+    return this.sourceName + "[" + "sourceRegex=" + this.sourceRegex
+        + ", containsStrings=["+ StringUtils.join(this.containsStrings, ',')
+        + "], regexPatterns=[" + patterns + "]"
+        + "], deserializers=[" + this.deserProcessor + "]"
+        + "], mutators=[" +mutators + "]]";
   }
 }

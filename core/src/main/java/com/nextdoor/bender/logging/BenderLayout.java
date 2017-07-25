@@ -39,8 +39,9 @@ import org.joda.time.format.ISODateTimeFormat;
  * function.
  */
 public class BenderLayout extends Layout {
-  private static final Gson GSON = new GsonBuilder()
-      .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+  private static final Gson GSON =
+      new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+          .disableHtmlEscaping().create();
   private static final DateTimeFormatter FORMATTER = ISODateTimeFormat.dateTime().withZoneUTC();
   public static String ALIAS;
   public static String VERSION;
