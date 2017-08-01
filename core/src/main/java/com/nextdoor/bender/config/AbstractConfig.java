@@ -16,9 +16,10 @@
 package com.nextdoor.bender.config;
 
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
 import java.util.Set;
 
-import org.reflections.Reflections;
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -39,8 +40,14 @@ public abstract class AbstractConfig<T> {
   }
 
   public static Class<?>[] getSubtypes(Class clazz) {
-    Reflections reflections = new Reflections("");
-    Set<Class<? extends AbstractConfig>> classSet = reflections.getSubTypesOf(clazz);
+    Set<Class<? extends AbstractConfig>> classSet = new HashSet();
+    FastClasspathScanner s = new FastClasspathScanner();
+    s.scan().getNamesOfSubclassesOf(clazz).forEach(c -> {
+      try {
+        classSet.add((Class<? extends AbstractConfig>) Class.forName(c));
+      } catch (ClassNotFoundException e) {
+      }
+    });
 
     /*
      * Remove abstract classes as they are not allowed in the mapper
