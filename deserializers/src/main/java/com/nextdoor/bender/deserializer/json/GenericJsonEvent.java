@@ -40,7 +40,7 @@ public class GenericJsonEvent implements DeserializedEvent {
 
   /**
    * Should only ever be called by deserializer.
-   * 
+   *
    * @param payload payload object as deserialized by Gson.
    */
   protected void setPayload(JsonObject payload) {

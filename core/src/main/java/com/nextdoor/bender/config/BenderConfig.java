@@ -121,7 +121,7 @@ public class BenderConfig {
       }
     }
 
-    
+
     private JsonNode genSchema() {
       ObjectMapper objectMapper = CMAPPER.getObjectMapper();
       objectMapper.setPropertyNamingStrategy(

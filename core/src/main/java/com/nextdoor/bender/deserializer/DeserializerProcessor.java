@@ -41,7 +41,7 @@ public class DeserializerProcessor extends MonitoredProcess {
   /**
    * Calls {@link com.nextdoor.bender.deserializer.Deserializer#deserialize(String)} and returns a
    * DeserializedEvent.
-   * 
+   *
    * @param eventString A plain text string which needs to be converted into a
    *        {@link DeserializedEvent}.
    * @return A DeserializedEvent if deserialization succeeded or null if it failed.
@@ -66,7 +66,7 @@ public class DeserializerProcessor extends MonitoredProcess {
   /**
    * Called by the {@link com.nextdoor.bender.handler.BaseHandler} after an event has been
    * deserialized.
-   * 
+   *
    * @param dEvent event to find partitions from.
    * @return ordered map of partition key values.
    */
