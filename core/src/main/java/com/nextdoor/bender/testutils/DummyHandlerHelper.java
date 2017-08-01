@@ -21,6 +21,6 @@ import com.nextdoor.bender.handler.HandlerConfig;
 public class DummyHandlerHelper {
   @JsonTypeName("DummyHandlerHelper$DummyHandler")
   public static class DummyHandlerConfig extends HandlerConfig {
-    
+
   }
 }
