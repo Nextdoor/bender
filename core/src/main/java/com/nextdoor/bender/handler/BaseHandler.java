@@ -64,7 +64,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
   /**
    * Loads @{link com.nextdoor.bender.config.Configuration} from a resource file and initializes
    * classes.
-   * 
+   *
    * @param ctx function context as specified when function is invoked by lambda.
    * @throws HandlerException error while loading the @{link
    *         com.nextdoor.bender.config.Configuration}.
@@ -131,7 +131,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
   /**
    * Wraps entire function in a catch all. This allows for @{link Handler} implementations to do any
    * cleanup before the error is raised and function fails.
-   * 
+   *
    * @param context function context as specified when function is invoked by lambda.
    */
   public void process(Context context) {
@@ -159,7 +159,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
   /**
    * Method called by Handler implementations to process records.
-   * 
+   *
    * @param context Lambda invocation context.
    * @throws HandlerException
    */
