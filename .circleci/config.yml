@@ -50,10 +50,18 @@ jobs:
           path: /tmp/test-results
 
       - deploy:
-          name: Deploy Master to Central Raven Repository
+          name: Deploy to Maven Central Repository
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              mvn clean deploy -DaltDeploymentRepository=ossrh::default::${SNAPSHOT_LOC} -Dgpg.skip -DskipTests
+            if [ "${CIRCLE_BRANCH}" == "matt/fix_circle" ]; then
+              if [git describe --tags]; then
+                echo $GPG_KEY | base64 --decode > build.gpg
+                gpg --import build.gpg
+                mvn clean verify gpg:sign install:install deploy:deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -Dgpg.keyname=${GPG_KEYNAME} -DskipTests
+              else
+                mvn clean deploy -DaltDeploymentRepository=ossrh::default::${SNAPSHOT_LOC} -Dgpg.skip -DskipTests
+              fi
+            else
+              echo "Not a release, skipping build"
             fi
 
 
