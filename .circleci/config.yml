@@ -1,0 +1,68 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    steps:
+      # Set up NPM/NodeJS for doc building
+      - run:
+          command: |
+            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+            sudo apt-get install -y nodejs npm
+            sudo npm install doca -g
+
+      - checkout
+
+      # Restore/Build the Cache. Note, the compile step is used to populate the
+      # .m2 directory for each of the individual Bender modules.
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
+      - run: mvn dependency:resolve-plugins
+      - run: mvn compile -Dmaven.main.skip
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+
+      - run: cp .circleci/m2.settings.xml ~/.m2/settings.xml
+
+      # Run our tests
+      - run: mvn install -DskipTests
+      - run: mvn test
+
+      # Build our docs!
+      - run: mvn compile javadoc:aggregate
+      
+      # Copy our test results to a single directory for CircleCI's
+      # store_test_results configuration.
+      - run:
+          command: |
+            mkdir -p /tmp/test-results && \
+            find . -type f -name 'TEST*.xml' -exec cp {} /tmp/test-results \;
+            ls -la /tmp/test-results
+      - store_test_results:
+          path: /tmp/test-results
+
+      - deploy:
+          name: Deploy Master to Central Raven Repository
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              mvn clean deploy -DaltDeploymentRepository=ossrh::default::${SNAPSHOT_LOC} -Dgpg.skip -DskipTests
+            fi
+
+
+# TODO: Implement this later
+#   release:
+#     tag: /[0-9]+(\.[0-9]+)*/
+#     owner: Nextdoor
+#     commands:
+#       - sudo apt-get install gnupg2
+#       - echo $GPG_KEY | base64 --decode > build.gpg
+#       - gpg --import build.gpg
+#       - mvn clean verify gpg:sign install:install deploy:deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -Dgpg.keyname=${GPG_KEYNAME} -DskipTests
