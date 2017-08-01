@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Nextdoor/bender.svg?style=svg)](https://circleci.com/gh/Nextdoor/bender)
+
 # Bender - Serverless ETL Framework
 
 
