@@ -79,13 +79,13 @@ public class ElasticSearchTransportFactory implements TransportFactory {
   /**
    * There isn't an easy way in java to trust non-self signed certs. Just allow all until java
    * KeyStore functionality is added to Bender.
-   * 
+   *
    * @return a context that trusts all SSL certs
    */
   private SSLContext getSSLContext() {
     /*
      * Create SSLContext and TrustManager that will trust all SSL certs.
-     * 
+     *
      * Copy pasta from http://stackoverflow.com/a/4837230
      */
     TrustManager tm = new X509TrustManager() {

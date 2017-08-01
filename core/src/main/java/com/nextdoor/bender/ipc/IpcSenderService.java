@@ -58,7 +58,7 @@ public class IpcSenderService extends MonitoredProcess {
   /**
    * Adds single event to internal buffer. If buffer fills up then it is drained and sent
    * asynchronously. Then the event is then added to an empty buffer.
-   * 
+   *
    * @param ievent event to add to buffer.
    * @throws TransportException error while adding to the buffer.
    */
@@ -113,7 +113,7 @@ public class IpcSenderService extends MonitoredProcess {
 
   /**
    * Drains buffer and sends batch asynchronously via {@link Transport}.
-   * 
+   *
    * @param buffer the buffer to send.
    * @param partitions the partitions associated with the buffer.
    */
@@ -139,7 +139,7 @@ public class IpcSenderService extends MonitoredProcess {
 
   /**
    * Sends remaining contents of all buffers and waits for all calls to finish.
-   * 
+   *
    * @throws InterruptedException interrupted while waiting for calls to complete.
    * @throws TransportException not all transports succeeded.
    */

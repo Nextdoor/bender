@@ -1,4 +1,4 @@
-.PHONY: clean test package 
+.PHONY: clean test package
 
 package: clean
 	mvn package -DskipTests -Dmaven.javadoc.skip=true

@@ -18,7 +18,7 @@ package com.nextdoor.bender.serializer;
 public interface Serializer {
   /**
    * Serializes Object to a String
-   * 
+   *
    * @param obj object to serialize.
    * @return String containing serialized object.
    * @throws SerializationException error while serializing.

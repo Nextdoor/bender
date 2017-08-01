@@ -156,7 +156,7 @@ public class S3Transport implements PartitionedTransport {
 
     /*
      * Add or strip out compression format extension
-     * 
+     *
      * TODO: get this based on the compression codec
      */
     if (this.compress || buf.isCompressed()) {
