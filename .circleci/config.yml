@@ -53,21 +53,19 @@ jobs:
           name: Deploy to Maven Central Repository
           command: |
             if [ "${CIRCLE_BRANCH}" == "matt/fix_circle" ]; then
-              if git describe --tags; then
-                echo "Building Release"
-                echo $GPG_KEY | base64 --decode > build.gpg
-                gpg --import build.gpg
-                mvn clean verify gpg:sign install:install deploy:deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -Dgpg.keyname=${GPG_KEYNAME} -DskipTests
-              else
-                echo "Building Snapshot"
-                mvn clean deploy -DaltDeploymentRepository=ossrh::default::${SNAPSHOT_LOC} -Dgpg.skip -DskipTests
-              fi
+              echo "Deploying Snapshot"
+              mvn clean deploy -DaltDeploymentRepository=ossrh::default::${SNAPSHOT_LOC} -Dgpg.skip -DskipTests
             else
-              echo "Not a release, skipping build"
+              echo "Skipping Snapshot Deploy"
             fi
-deployment:
-  trigger_tag:
-    tag: /.*/
+            if echo ${CIRCLE_BRANCH} | grep "^release\/[0-9]\+\.[0-9]\+\.[0-9]\+$"; then
+              echo "Deploying Release"
+              echo $GPG_KEY | base64 --decode > build.gpg
+              gpg --import build.gpg
+              mvn clean verify gpg:sign install:install deploy:deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -Dgpg.keyname=${GPG_KEYNAME} -DskipTests
+            else
+              echo "Skipping Release Deploy"
+            fi
 
 # TODO: Implement this later
 #   release:
