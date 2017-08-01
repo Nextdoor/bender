@@ -65,7 +65,9 @@ jobs:
             else
               echo "Not a release, skipping build"
             fi
-
+deployment:
+  trigger_tag:
+    tag: /.*/
 
 # TODO: Implement this later
 #   release:
