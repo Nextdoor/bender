@@ -50,7 +50,7 @@ import com.nextdoor.bender.aws.AmazonS3ClientFactory;
  * Creates a contiguous iterator backed by files in S3. Each file is opened and streamed to an
  * internal iterator which outputs individual lines (records) from the file. When a file has no more
  * lines the next file is automatically opened on the following next() or hasNext() call.
- * 
+ *
  * It is important for the user to always call the close() method as otherwise connection leaking
  * may occur.
  */

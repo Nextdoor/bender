@@ -50,9 +50,9 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
     /*
      * Create a JSON line that describes the record for ElasticSearch. This is a bit ugly but
      * preformant.
-     * 
+     *
      * For example: {"index": {"_id": "foo", "_type": "bar", "_index": "baz" }} \n
-     * 
+     *
      */
     StringBuilder payload = new StringBuilder();
     payload.append("{\"index\": {");

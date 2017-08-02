@@ -20,21 +20,21 @@ import java.util.NoSuchElementException;
 public interface DeserializedEvent {
   /**
    * Retrieves deserialized object. Could be "this" object itself.
-   * 
+   *
    * @return the deserialized event object as created by the deserializer.
    */
   public Object getPayload();
 
   /**
    * Changes the payload object.
-   * 
+   *
    * @param object new Object to set payload to. This is typically done by the mutator.
    */
   public void setPayload(Object object);
 
   /**
    * Retrieves a field from the deserialized object.
-   * 
+   *
    * @param fieldName field to lookup.
    * @return String value of the field.
    * @throws NoSuchElementException when the field does not exist.

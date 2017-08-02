@@ -34,9 +34,9 @@ public class Passwords {
 
   /**
    * Method to determine if function is running part of a unit test.
-   * 
+   *
    * From http://stackoverflow.com/a/12717377
-   * 
+   *
    * @return True if in unittest and False if standalone.
    */
   private static boolean isJUnitTest() {

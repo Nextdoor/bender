@@ -30,10 +30,10 @@ public class JsonRootNodeMutator implements Mutator {
   public JsonRootNodeMutator(String path) {
     this.path = path;
   }
-  
+
   /**
    * The {@link DeserializedEvent} payload must be a {@link JsonObject}.
-   * 
+   *
    * @param event Event with payload to mutate.
    */
   public void mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {

@@ -4,6 +4,7 @@ target
 .target
 .classpath
 .project
+*.swp
 bin
 tmp
 dependency-reduced-pom.xml

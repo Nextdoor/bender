@@ -26,7 +26,9 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.s3.AmazonS3URI;
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 import com.nextdoor.bender.config.BenderConfig;
 import com.nextdoor.bender.config.ConfigurationException;
 import com.nextdoor.bender.config.HandlerResources;
@@ -60,11 +62,12 @@ public abstract class BaseHandler<T> implements Handler<T> {
   protected List<Source> sources;
   protected BenderConfig config = null;
   protected Monitor monitor;
+  protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
 
   /**
    * Loads @{link com.nextdoor.bender.config.Configuration} from a resource file and initializes
    * classes.
-   * 
+   *
    * @param ctx function context as specified when function is invoked by lambda.
    * @throws HandlerException error while loading the @{link
    *         com.nextdoor.bender.config.Configuration}.
@@ -92,7 +95,9 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
     String configFile;
 
-    if (CONFIG_FILE == null) {
+    if (System.getenv("BENDER_CONFIG") != null) {
+      configFile = System.getenv("BENDER_CONFIG");
+    } else if (CONFIG_FILE == null) {
       configFile = "/config/" + alias + ".json";
     } else {
       configFile = CONFIG_FILE;
@@ -101,7 +106,11 @@ public abstract class BaseHandler<T> implements Handler<T> {
     logger.info(String.format("Bender Initializing (config: %s)", configFile));
 
     try {
-      config = BenderConfig.load(getClass().getSuperclass(), configFile);
+      if (configFile.startsWith("s3://")) {
+        config = BenderConfig.load(s3ClientFactory, new AmazonS3URI(configFile));
+      } else {
+        config = BenderConfig.load(getClass().getSuperclass(), configFile);
+      }
     } catch (ConfigurationException e) {
       throw new HandlerException("Error loading configuration: " + e.getMessage(), e);
     }
@@ -131,7 +140,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
   /**
    * Wraps entire function in a catch all. This allows for @{link Handler} implementations to do any
    * cleanup before the error is raised and function fails.
-   * 
+   *
    * @param context function context as specified when function is invoked by lambda.
    */
   public void process(Context context) {
@@ -159,7 +168,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
   /**
    * Method called by Handler implementations to process records.
-   * 
+   *
    * @param context Lambda invocation context.
    * @throws HandlerException
    */
@@ -248,9 +257,9 @@ public abstract class BaseHandler<T> implements Handler<T> {
        * Mutate
        */
       if (mutators.size() > 0 && ievent.getEventObj() != null) {
-        try {	
+        try {
           for (MutatorProcessor mutator : mutators) {
-        	  mutator.mutate(ievent.getEventObj());
+            mutator.mutate(ievent.getEventObj());
           }
         } catch (UnsupportedMutationException e) {
           logger.error("Mutation Failed: " + e.toString());

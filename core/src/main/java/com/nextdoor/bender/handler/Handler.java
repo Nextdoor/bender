@@ -23,7 +23,7 @@ import com.nextdoor.bender.config.Source;
 public interface Handler<T> {
   /**
    * Main entry point to lambda function.
-   * 
+   *
    * @param event Lambda event that triggered the function.
    * @param context Lambda context that triggered the function.
    * @throws HandlerException thrown when function initialization fails.

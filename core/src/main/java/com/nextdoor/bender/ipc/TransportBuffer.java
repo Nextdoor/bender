@@ -23,7 +23,7 @@ import com.nextdoor.bender.InternalEvent;
 public interface TransportBuffer {
   /**
    * Adds event to the internal buffer.
-   * 
+   *
    * @param ievent event to add to {@link TransportBuffer}.
    * @return True on success and throws IllegalStateException when {@link TransportBuffer} is full.
    * @throws IllegalStateException when buffer is full.
@@ -33,14 +33,14 @@ public interface TransportBuffer {
 
   /**
    * Retrieves the internal buffer object.
-   * 
+   *
    * @return Internal buffer object
    */
   public Object getInternalBuffer();
 
   /**
    * State of buffer.
-   * 
+   *
    * @return True when buffer is empty and false if buffer contains data.
    */
   public boolean isEmpty();
