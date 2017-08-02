@@ -33,7 +33,7 @@ public interface TransportFactory extends ConfigurableFactory {
 
   /**
    * Number of threads the {@link IpcSenderService} will use in a thread pool to throttle sends.
-   * 
+   *
    * @return number of threads to use.
    */
   int getMaxThreads();

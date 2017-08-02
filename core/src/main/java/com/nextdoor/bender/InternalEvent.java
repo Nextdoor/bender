@@ -123,7 +123,7 @@ public class InternalEvent {
   /**
    * Provided a PartitionSpec this method attempts to retrieve each field from the deserialized
    * event object.
-   * 
+   *
    * @param partitionSpecs list of PartitionSpec.
    */
   public void setPartitions(List<PartitionSpec> partitionSpecs) {

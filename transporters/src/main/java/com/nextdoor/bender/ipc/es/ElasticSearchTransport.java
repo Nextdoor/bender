@@ -149,7 +149,7 @@ public class ElasticSearchTransport implements UnpartitionedTransport {
 
   /**
    * Reads a HttpEntity containing gzip content and outputs a String.
-   * 
+   *
    * @param ent entity to read.
    * @return payload contained by the entity.
    * @throws UnsupportedOperationException if getContent failed.
@@ -172,7 +172,7 @@ public class ElasticSearchTransport implements UnpartitionedTransport {
   /**
    * Deserializes the response from ES and checks for per index request errors. Currently only
    * tested with ES 2.4.x responses.
-   * 
+   *
    * @param resp response from ES.
    * @throws TransportException unable to parse response or response has index failures.
    */

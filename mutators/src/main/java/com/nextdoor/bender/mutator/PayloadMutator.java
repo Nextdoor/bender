@@ -23,7 +23,7 @@ public abstract class PayloadMutator implements Mutator {
 
   /**
    * The {@link DeserializedEvent} payload must be a {@link JsonObject}.
-   * 
+   *
    * @param event Event with payload to mutate.
    */
   public void mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {

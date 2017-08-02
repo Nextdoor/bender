@@ -15,15 +15,21 @@
 
 package com.nextdoor.bender.config;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3URI;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,6 +41,7 @@ import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.handler.HandlerConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
@@ -64,7 +71,7 @@ public class BenderConfig {
   private List<SourceConfig> sources = Collections.emptyList();
 
   @JsonSchemaDescription("Handler configuration")
-  @JsonProperty(required=false)
+  @JsonProperty(required = false)
   private HandlerConfig handlerConfig;
 
   // Inherited from creation
@@ -121,7 +128,7 @@ public class BenderConfig {
       }
     }
 
-    
+
     private JsonNode genSchema() {
       ObjectMapper objectMapper = CMAPPER.getObjectMapper();
       objectMapper.setPropertyNamingStrategy(
@@ -210,17 +217,7 @@ public class BenderConfig {
     }
   }
 
-  public static BenderConfig load(Class clazz, String resource) {
-    /*
-     * Read config file
-     */
-    String json;
-    try {
-      json = IOUtils.toString(new InputStreamReader(clazz.getResourceAsStream(resource), "UTF-8"));
-    } catch (NullPointerException | IOException e) {
-      throw new ConfigurationException("unable to find " + resource);
-    }
-
+  public static BenderConfig load(String json) {
     validate(json);
 
     /*
@@ -237,6 +234,39 @@ public class BenderConfig {
       throw new ConfigurationException("invalid config file", e);
     }
 
+    return config;
+  }
+
+  public static BenderConfig load(AmazonS3ClientFactory s3ClientFactory, AmazonS3URI s3Uri) {
+    AmazonS3Client s3 = s3ClientFactory.newInstance();
+    S3Object s3object = s3.getObject(s3Uri.getBucket(), s3Uri.getKey());
+
+    StringWriter writer = new StringWriter();
+
+    try {
+      IOUtils.copy(s3object.getObjectContent(), writer, "UTF-8");
+    } catch (IOException e) {
+      throw new ConfigurationException("Unable to read file from s3", e);
+    }
+
+    BenderConfig config = load(writer.toString());
+    config.setConfigFile(s3Uri.getURI().toString());
+
+    return config;
+  }
+
+  public static BenderConfig load(Class clazz, String resource) {
+    /*
+     * Read config file
+     */
+    String json;
+    try {
+      json = IOUtils.toString(new InputStreamReader(clazz.getResourceAsStream(resource), "UTF-8"));
+    } catch (NullPointerException | IOException e) {
+      throw new ConfigurationException("unable to find " + resource);
+    }
+
+    BenderConfig config = load(json);
     config.setConfigFile(resource);
 
     return config;

@@ -32,9 +32,9 @@ import org.joda.time.format.ISODateTimeFormat;
 /**
  * BenderLayout formats log messages in JSON format. This allows for faster and easier filtering of
  * CW logs using the JSON filters. See:
- * 
+ *
  * http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html
- * 
+ *
  * Notably this layout contains version and alias information of the running instance of the lambda
  * function.
  */

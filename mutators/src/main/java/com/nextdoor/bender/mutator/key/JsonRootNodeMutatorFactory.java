@@ -33,7 +33,7 @@ import com.nextdoor.bender.mutator.MutatorFactory;
 public class JsonRootNodeMutatorFactory implements MutatorFactory {
 
   private JsonRootNodeMutatorConfig config;
-  
+
   public JsonRootNodeMutatorFactory() {
     /*
      * Set static configuration for JsonPath
@@ -41,17 +41,17 @@ public class JsonRootNodeMutatorFactory implements MutatorFactory {
     com.jayway.jsonpath.Configuration.setDefaults(new com.jayway.jsonpath.Configuration.Defaults() {
       private final JsonProvider jsonProvider = new GsonJsonProvider();
       private final MappingProvider mappingProvider = new GsonMappingProvider();
-  
+
       @Override
       public JsonProvider jsonProvider() {
           return jsonProvider;
       }
-  
+
       @Override
       public MappingProvider mappingProvider() {
           return mappingProvider;
       }
-  
+
       @Override
       public Set<Option> options() {
           return EnumSet.of(Option.SUPPRESS_EXCEPTIONS);

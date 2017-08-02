@@ -53,7 +53,7 @@ public class Source {
       for (MutatorConfig mutatorConfig : mutatorConfigs) {
     	  this.mutatorProcessors.add(new MutatorProcessor(mff.getFactory(mutatorConfig)));
       }
-    } 
+    }
 
     this.containsStrings.addAll(config.getContainsStrings());
     for (String strRegex : config.getRegexPatterns()) {

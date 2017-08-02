@@ -27,7 +27,7 @@ public abstract class Filter extends MonitoredProcess {
   }
 
   /**
-   * 
+   *
    * @param ievent Internal event with deserialized payload
    * @return True if event matches filter. False if event does not match
    */
