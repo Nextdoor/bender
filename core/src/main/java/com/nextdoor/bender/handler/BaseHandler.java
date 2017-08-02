@@ -255,10 +255,12 @@ public abstract class BaseHandler<T> implements Handler<T> {
       /*
        * Mutate
        */
+      List<InternalEvent> ievents = new ArrayList<>(1);
+      ievents.add(ievent);
       if (mutators.size() > 0 && ievent.getEventObj() != null) {
         try {
           for (MutatorProcessor mutator : mutators) {
-            mutator.mutate(ievent.getEventObj());
+            ievents = mutator.mutate(ievents);
           }
         } catch (UnsupportedMutationException e) {
           logger.error("Mutation Failed: " + e.toString());
@@ -270,14 +272,18 @@ public abstract class BaseHandler<T> implements Handler<T> {
        */
       String serialized = null;
       try {
-        serialized = this.ser.serialize(this.wrapper.getWrapped(ievent));
-        ievent.setSerialized(serialized);
+        for (InternalEvent e : ievents) {
+          serialized = this.ser.serialize(this.wrapper.getWrapped(e));
+          e.setSerialized(serialized);
+        }
       } catch (SerializationException e) {
         continue;
       }
 
       try {
-        this.getIpcService().add(ievent);
+        for (InternalEvent e : ievents) {
+          this.getIpcService().add(e);
+        }
       } catch (TransportException e) {
         logger.warn("error adding event", e);
       }

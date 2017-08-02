@@ -15,7 +15,9 @@
 
 package com.nextdoor.bender.mutator;
 
-import com.nextdoor.bender.deserializer.DeserializedEvent;
+import java.util.List;
+
+import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.monitoring.MonitoredProcess;
 
 /**
@@ -30,11 +32,11 @@ public class MutatorProcessor extends MonitoredProcess {
     this.mutator = mutatorFactory.newInstance();
   }
 
-  public void mutate(DeserializedEvent event) throws UnsupportedMutationException {
+  public List<InternalEvent> mutate(List<InternalEvent> events) throws UnsupportedMutationException {
     this.getRuntimeStat().start();
 
     try {
-      this.mutator.mutateEvent(event);
+      events = this.mutator.mutateInternalEvent(events);
     } catch (UnsupportedMutationException e) {
       this.getErrorCountStat().increment();
       throw e;
@@ -43,6 +45,8 @@ public class MutatorProcessor extends MonitoredProcess {
     }
 
     this.getSuccessCountStat().increment();
+
+    return events;
   }
 
   public Mutator getMutator() {

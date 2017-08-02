@@ -18,7 +18,7 @@ package com.nextdoor.bender.mutator;
 import com.google.gson.JsonObject;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 
-public abstract class PayloadMutator implements Mutator {
+public abstract class PayloadMutator extends BaseMutator {
   protected abstract void mutatePayload(JsonObject obj);
 
   /**
@@ -26,11 +26,11 @@ public abstract class PayloadMutator implements Mutator {
    *
    * @param event Event with payload to mutate.
    */
-  public void mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {
+  public DeserializedEvent mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {
     Object payload = event.getPayload();
 
     if (payload == null) {
-      return;
+      return event;
     }
 
     if (!(payload instanceof JsonObject)) {
@@ -38,5 +38,7 @@ public abstract class PayloadMutator implements Mutator {
     }
 
     mutatePayload((JsonObject) payload);
+
+    return event;
   }
 }

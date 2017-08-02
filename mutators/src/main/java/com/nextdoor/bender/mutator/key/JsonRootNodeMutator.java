@@ -18,13 +18,13 @@ package com.nextdoor.bender.mutator.key;
 import com.google.gson.JsonObject;
 import com.jayway.jsonpath.JsonPath;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
-import com.nextdoor.bender.mutator.Mutator;
+import com.nextdoor.bender.mutator.BaseMutator;
 import com.nextdoor.bender.mutator.UnsupportedMutationException;
 
 /**
  * Changes the root node of JSON object.
  */
-public class JsonRootNodeMutator implements Mutator {
+public class JsonRootNodeMutator extends BaseMutator {
   private String path;
 
   public JsonRootNodeMutator(String path) {
@@ -36,11 +36,11 @@ public class JsonRootNodeMutator implements Mutator {
    *
    * @param event Event with payload to mutate.
    */
-  public void mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {
+  public DeserializedEvent mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {
     Object payload = event.getPayload();
 
     if (payload == null) {
-      return;
+      return event;
     }
 
     if (!(payload instanceof JsonObject)) {
@@ -49,5 +49,7 @@ public class JsonRootNodeMutator implements Mutator {
 
     JsonObject jsonPayload = (JsonObject) payload;
     event.setPayload(JsonPath.read(jsonPayload, path));
+
+    return event;
   }
 }

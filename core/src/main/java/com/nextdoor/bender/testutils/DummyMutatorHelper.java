@@ -18,16 +18,17 @@ package com.nextdoor.bender.testutils;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.mutator.BaseMutator;
 import com.nextdoor.bender.mutator.Mutator;
 import com.nextdoor.bender.mutator.MutatorConfig;
 import com.nextdoor.bender.mutator.MutatorFactory;
 import com.nextdoor.bender.mutator.UnsupportedMutationException;
 
 public class DummyMutatorHelper {
-  public static class DummyMutator implements Mutator {
+  public static class DummyMutator extends BaseMutator {
     @Override
-    public void mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {
-
+    public DeserializedEvent mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {
+      return event;
     }
   }
 
