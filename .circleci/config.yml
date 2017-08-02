@@ -58,18 +58,12 @@ jobs:
             else
               echo "Skipping Snapshot Deploy"
             fi
-            echo "Deploying Release"
-            sudo apt-get install gnupg1
-            echo $GPG_KEY | base64 --decode > build.gpg
-            gpg1 --import build.gpg
-            mvn clean verify gpg:sign install:install deploy:deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -DskipTests
-
-# TODO: Implement this later
-#   release:
-#     tag: /[0-9]+(\.[0-9]+)*/
-#     owner: Nextdoor
-#     commands:
-#       - sudo apt-get install gnupg2
-#       - echo $GPG_KEY | base64 --decode > build.gpg
-#       - gpg --import build.gpg
-#       - mvn clean verify gpg:sign install:install deploy:deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -Dgpg.keyname=${GPG_KEYNAME} -DskipTests
+            if echo ${CIRCLE_BRANCH} | grep "^release\/[0-9]\+\.[0-9]\+\.[0-9]\+$"; then
+              echo "Deploying Release"
+              sudo apt-get install gnupg1
+              echo $GPG_KEY | base64 --decode > build.gpg
+              gpg1 --import build.gpg
+              mvn clean verify gpg:sign install:install deploy:deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -DskipTests
+            else
+              echo "Skipping Release Deploy"
+            fi
