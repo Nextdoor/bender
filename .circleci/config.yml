@@ -52,7 +52,7 @@ jobs:
       - deploy:
           name: Deploy to Maven Central Repository
           command: |
-            if [ "${CIRCLE_BRANCH}" == "matt/fix_circle" ]; then
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo "Deploying Snapshot"
               mvn clean deploy -DaltDeploymentRepository=ossrh::default::${SNAPSHOT_LOC} -Dgpg.skip -DskipTests
             else
