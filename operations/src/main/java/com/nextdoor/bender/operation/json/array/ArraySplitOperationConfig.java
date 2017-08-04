@@ -9,14 +9,20 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2016 Nextdoor.com, Inc
+ * Copyright 2017 Nextdoor.com, Inc
  *
  */
 
-package com.nextdoor.bender.operation;
+package com.nextdoor.bender.operation.json.array;
 
-import com.nextdoor.bender.config.ConfigurableFactory;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.nextdoor.bender.operation.OperationConfig;
 
-public interface OperationFactory extends ConfigurableFactory {
-  public BaseOperation newInstance();
+@JsonTypeName("JsonArraySplitOperation")
+public class ArraySplitOperationConfig extends OperationConfig {
+
+  @Override
+  public Class<ArraySplitOperationFactory> getFactoryClass() {
+    return ArraySplitOperationFactory.class;
+  }
 }
