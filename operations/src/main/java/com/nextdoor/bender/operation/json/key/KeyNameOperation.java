@@ -18,12 +18,10 @@ package com.nextdoor.bender.operation.json.key;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.operation.json.PayloadOperation;
 
 /**

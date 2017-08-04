@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.nextdoor.bender.monitoring.Tag;
-
 public interface Reporter {
   /**
    * @param stats the stats to write.

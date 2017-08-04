@@ -45,8 +45,7 @@ public class GenericJsonDeserializerTest {
     GenericJsonDeserializerConfig.FieldConfig fconfig =
         new GenericJsonDeserializerConfig.FieldConfig();
     fconfig.setField("MESSAGE");
-    GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Arrays.asList(fconfig), path);
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Arrays.asList(fconfig), path);
     deser.init();
     return deser.deserialize(input);
   }
@@ -182,8 +181,7 @@ public class GenericJsonDeserializerTest {
         new GenericJsonDeserializerConfig.FieldConfig();
     fconfig.setField("MESSAGE");
     fconfig.setPrefixField("MESSAGE_PREFIX");
-    GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Arrays.asList(fconfig));
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Arrays.asList(fconfig));
     deser.init();
 
     DeserializedEvent devent = deser.deserialize(input);
@@ -205,8 +203,7 @@ public class GenericJsonDeserializerTest {
   public void testGetField() throws UnsupportedEncodingException, IOException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
-    GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList());
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
@@ -217,8 +214,7 @@ public class GenericJsonDeserializerTest {
   public void testGetNestedField() throws UnsupportedEncodingException, IOException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
-    GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList());
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
@@ -229,8 +225,7 @@ public class GenericJsonDeserializerTest {
   public void testGetMissingField() throws UnsupportedEncodingException, IOException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
-    GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList());
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
@@ -241,8 +236,7 @@ public class GenericJsonDeserializerTest {
   public void testGetMissingNestedField() throws UnsupportedEncodingException, IOException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
-    GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList());
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
@@ -253,8 +247,7 @@ public class GenericJsonDeserializerTest {
   public void testGetNestedObjField() throws UnsupportedEncodingException, IOException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
-    GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList());
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 

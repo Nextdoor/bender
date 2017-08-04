@@ -19,10 +19,10 @@ import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
     property = "config_name")

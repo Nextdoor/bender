@@ -179,7 +179,7 @@ public class BenderConfig {
   }
 
   public static boolean validate(String json) throws ConfigurationException {
-    //return validate(json, SCHEMA);
+    // return validate(json, SCHEMA);
     return true;
   }
 

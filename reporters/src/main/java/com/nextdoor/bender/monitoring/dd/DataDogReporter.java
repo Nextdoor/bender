@@ -52,8 +52,8 @@ public class DataDogReporter implements Reporter {
       allTags.addAll(tags);
       allTags.addAll(stat.getTags());
 
-      String tagsString = allTags.stream()
-          .map(e -> formatEntry(e.getKey(), e.getValue())).collect(Collectors.joining(","));
+      String tagsString = allTags.stream().map(e -> formatEntry(e.getKey(), e.getValue()))
+          .collect(Collectors.joining(","));
 
       /*
        * MONITORING|unix_epoch_timestamp|value|metric_type|my.metric.name|#tag1:value,tag2

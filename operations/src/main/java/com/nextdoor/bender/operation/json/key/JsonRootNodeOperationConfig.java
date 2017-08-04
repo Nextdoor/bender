@@ -24,7 +24,7 @@ import com.nextdoor.bender.operation.OperationConfig;
 public class JsonRootNodeOperationConfig extends OperationConfig {
 
   @JsonSchemaDescription("Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath")
-  @JsonProperty(required=true)
+  @JsonProperty(required = true)
   private String rootPath;
 
   @Override

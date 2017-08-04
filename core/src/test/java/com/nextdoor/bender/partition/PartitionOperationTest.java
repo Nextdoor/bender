@@ -16,10 +16,8 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
-import com.nextdoor.bender.deserializer.DeserializerProcessor;
 import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyDeserializedEvent;
-import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyDeserializer;
 import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperationFactory;
 
 public class PartitionOperationTest {
@@ -133,7 +131,7 @@ public class PartitionOperationTest {
 
     assertEquals(expected, actual);
   }
-  
+
   @Test
   public void testOperationThroughProcessor() {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);

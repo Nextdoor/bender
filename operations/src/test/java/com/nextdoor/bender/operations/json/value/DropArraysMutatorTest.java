@@ -25,15 +25,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.nextdoor.bender.InternalEvent;
-import com.nextdoor.bender.mutator.UnsupportedMutationException;
+import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.json.value.DropArraysOperation;
 import com.nextdoor.bender.operations.json.OperationTest;
 
 public class DropArraysMutatorTest extends OperationTest {
 
   @Test
-  public void testMutatePayload() throws JsonSyntaxException, IOException,
-      UnsupportedMutationException {
+  public void testMutatePayload() throws JsonSyntaxException, IOException, OperationException {
     JsonParser parser = new JsonParser();
     JsonElement input = parser.parse(getResourceString("basic_input.json"));
     String expectedOutput = getResourceString("basic_output_drop_arrays.json");
@@ -46,7 +45,7 @@ public class DropArraysMutatorTest extends OperationTest {
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
     operation.perform(ievent);
-    
+
     assertEquals(expectedOutput, input.toString());
   }
 }

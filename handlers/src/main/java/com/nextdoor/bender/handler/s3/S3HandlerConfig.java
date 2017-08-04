@@ -23,7 +23,7 @@ import com.nextdoor.bender.handler.HandlerConfig;
 @JsonTypeName("S3Handler")
 public class S3HandlerConfig extends HandlerConfig {
   @JsonSchemaDescription("SNS Topic to publish function falures to")
-  @JsonProperty(required=false)
+  @JsonProperty(required = false)
   private String snsNotificationArn = null;
 
   public String getSnsNotificationArn() {

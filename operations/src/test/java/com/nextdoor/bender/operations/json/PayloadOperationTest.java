@@ -15,15 +15,14 @@
 
 package com.nextdoor.bender.operations.json;
 
-import com.google.gson.JsonPrimitive;
-import com.nextdoor.bender.InternalEvent;
-import com.nextdoor.bender.mutator.UnsupportedMutationException;
-import com.nextdoor.bender.operation.OperationException;
-import com.nextdoor.bender.operation.json.key.KeyNameOperation;
-
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.google.gson.JsonPrimitive;
+import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.operation.OperationException;
+import com.nextdoor.bender.operation.json.key.KeyNameOperation;
 
 public class PayloadOperationTest extends OperationTest {
 
@@ -46,7 +45,7 @@ public class PayloadOperationTest extends OperationTest {
 
     DummpyEvent devent = new DummpyEvent();
     devent.payload = null;
-    
+
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
 

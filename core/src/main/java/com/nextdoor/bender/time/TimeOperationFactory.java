@@ -5,7 +5,7 @@ import com.nextdoor.bender.operation.OperationFactory;
 
 public class TimeOperationFactory implements OperationFactory {
   private TimeOperationConfig config;
-  
+
   @Override
   public void setConf(AbstractConfig config) {
     this.config = (TimeOperationConfig) config;

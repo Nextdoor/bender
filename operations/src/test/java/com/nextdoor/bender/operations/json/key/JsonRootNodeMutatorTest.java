@@ -26,15 +26,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.nextdoor.bender.InternalEvent;
-import com.nextdoor.bender.mutator.UnsupportedMutationException;
 import com.nextdoor.bender.operation.json.key.JsonRootNodeOperation;
 import com.nextdoor.bender.operation.json.key.JsonRootNodeOperationFactory;
 import com.nextdoor.bender.operations.json.OperationTest;
 
 public class JsonRootNodeMutatorTest extends OperationTest {
   @Test
-  public void testMutateRootNode() throws JsonSyntaxException, UnsupportedEncodingException, IOException,
-      UnsupportedMutationException {
+  public void testMutateRootNode()
+      throws JsonSyntaxException, UnsupportedEncodingException, IOException {
     JsonParser parser = new JsonParser();
     JsonElement input = parser.parse(getResourceString("basic_input.json"));
 
@@ -47,7 +46,7 @@ public class JsonRootNodeMutatorTest extends OperationTest {
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
     operation.perform(ievent);
-    
+
     assertEquals("{\"iaa\":\"bar\"}", devent.payload.toString());
   }
 }

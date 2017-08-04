@@ -24,7 +24,6 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,15 +33,14 @@ import org.junit.Test;
 import com.google.gson.JsonSyntaxException;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.monitoring.Stat;
-import com.nextdoor.bender.mutator.UnsupportedMutationException;
 import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperation;
 import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperationFactory;
 
 public class OperationProcessorTest {
 
   @Test
-  public void testStatsLogging() throws JsonSyntaxException, UnsupportedEncodingException,
-      IOException, UnsupportedMutationException {
+  public void testStatsLogging()
+      throws JsonSyntaxException, UnsupportedEncodingException, IOException, OperationException {
     DummyOperationFactory mutatorFactory = new DummyOperationFactory();
     OperationProcessor processor = new OperationProcessor(mutatorFactory);
 
@@ -56,7 +54,7 @@ public class OperationProcessorTest {
     processor.setRuntimeStat(runtimeStat);
     processor.setSuccessCountStat(successStat);
     processor.setErrorCountStat(errorStat);
-    
+
     Stream<InternalEvent> stream = processor.perform(Stream.of(new InternalEvent("foo", null, 1)));
     List<InternalEvent> output = stream.collect(Collectors.toList());
 
@@ -67,7 +65,7 @@ public class OperationProcessorTest {
     verify(runtimeStat, times(1)).stop();
     verify(successStat, times(1)).increment();
     verify(errorStat, never()).increment();
-    
+
     /*
      * Verify contents of output stream
      */

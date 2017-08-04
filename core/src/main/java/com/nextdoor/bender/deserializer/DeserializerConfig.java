@@ -15,13 +15,7 @@
 
 package com.nextdoor.bender.deserializer;
 
-import java.util.Collections;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.config.ConfigurableFactoryConfig;
-import com.nextdoor.bender.partition.PartitionSpec;
 
 public abstract class DeserializerConfig extends ConfigurableFactoryConfig {
 

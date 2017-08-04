@@ -22,9 +22,9 @@ import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -372,8 +372,7 @@ public class BaseHandlerTest {
   }
 
   @Test
-  public void testOperationException()
-      throws HandlerException {
+  public void testOperationException() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
@@ -385,7 +384,7 @@ public class BaseHandlerTest {
     handler.init(context);
 
     List<OperationProcessor> operationProcessors = handler.sources.get(0).getOperationProcessors();
-    for (OperationProcessor operationProcessor: operationProcessors) {
+    for (OperationProcessor operationProcessor : operationProcessors) {
       BaseOperation operation = spy(operationProcessor.getOperation());
       doThrow(new OperationException("expected")).when(operation).perform(any());
       operationProcessor.setOperation(operation);
@@ -396,8 +395,7 @@ public class BaseHandlerTest {
   }
 
   @Test
-  public void testMultipleOperationsConfig()
-      throws HandlerException {
+  public void testMultipleOperationsConfig() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_two_operations.json";
 
     List<DummyEvent> events = new ArrayList<DummyEvent>(1);
@@ -409,7 +407,7 @@ public class BaseHandlerTest {
 
     List<OperationProcessor> operationProcessores = handler.sources.get(0).getOperationProcessors();
 
-    for(int i = 0; i < operationProcessores.size(); i++) {
+    for (int i = 0; i < operationProcessores.size(); i++) {
       OperationProcessor operationProcessor = spy(operationProcessores.get(i));
       operationProcessores.set(i, operationProcessor);
     }

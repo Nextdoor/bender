@@ -15,28 +15,15 @@
 
 package com.nextdoor.bender.deserializer;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import org.junit.Test;
 
 import com.nextdoor.bender.monitoring.Stat;
-import com.nextdoor.bender.partition.PartitionSpec;
-import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyDeserializedEvent;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyDeserializer;;
 
 public class DeserializerProcessorTest {

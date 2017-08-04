@@ -44,17 +44,17 @@ public class JsonRootNodeOperationFactory implements OperationFactory {
 
       @Override
       public JsonProvider jsonProvider() {
-          return jsonProvider;
+        return jsonProvider;
       }
 
       @Override
       public MappingProvider mappingProvider() {
-          return mappingProvider;
+        return mappingProvider;
       }
 
       @Override
       public Set<Option> options() {
-          return EnumSet.of(Option.SUPPRESS_EXCEPTIONS);
+        return EnumSet.of(Option.SUPPRESS_EXCEPTIONS);
       }
     });
   }

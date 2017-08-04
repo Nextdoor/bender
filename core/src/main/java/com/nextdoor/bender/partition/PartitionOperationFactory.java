@@ -5,7 +5,7 @@ import com.nextdoor.bender.operation.OperationFactory;
 
 public class PartitionOperationFactory implements OperationFactory {
   private PartitionOperationConfig config;
-  
+
   @Override
   public void setConf(AbstractConfig config) {
     config = (PartitionOperationConfig) config;
