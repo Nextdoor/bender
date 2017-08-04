@@ -13,31 +13,31 @@
  *
  */
 
-package com.nextdoor.bender.mutator.value;
+package com.nextdoor.bender.operation.json.value;
 
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.mutator.Mutator;
-import com.nextdoor.bender.mutator.MutatorFactory;
+import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationFactory;
 
 /**
  * Create a {@link DropArraysMutator}.
  */
-public class DropArraysMutatorFactory implements MutatorFactory {
+public class DropArraysOperationFactory implements OperationFactory {
 
-  private DropArraysMutatorConfig config;
+  private DropArraysOperationConfig config;
 
   @Override
-  public Mutator newInstance() {
-    return new DropArraysMutator();
+  public Operation newInstance() {
+    return new DropArraysOperation();
   }
 
   @Override
-  public Class<DropArraysMutator> getChildClass() {
-    return DropArraysMutator.class;
+  public Class<DropArraysOperation> getChildClass() {
+    return DropArraysOperation.class;
   }
 
   @Override
   public void setConf(AbstractConfig config) {
-    this.config = (DropArraysMutatorConfig) config;
+    this.config = (DropArraysOperationConfig) config;
   }
 }

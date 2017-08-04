@@ -13,34 +13,41 @@
  *
  */
 
-package com.nextdoor.bender.mutator.value;
+package com.nextdoor.bender.operations.json.key;
 
 import static org.junit.Assert.assertEquals;
 
-import com.nextdoor.bender.mutator.MutatorTest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.mutator.UnsupportedMutationException;
+import com.nextdoor.bender.operation.json.key.JsonRootNodeOperation;
+import com.nextdoor.bender.operation.json.key.JsonRootNodeOperationFactory;
+import com.nextdoor.bender.operations.json.OperationTest;
 
-public class DropArraysMutatorTest extends MutatorTest {
-
+public class JsonRootNodeMutatorTest extends OperationTest {
   @Test
-  public void testMutatePayload() throws JsonSyntaxException, IOException,
+  public void testMutateRootNode() throws JsonSyntaxException, UnsupportedEncodingException, IOException,
       UnsupportedMutationException {
     JsonParser parser = new JsonParser();
     JsonElement input = parser.parse(getResourceString("basic_input.json"));
-    String expectedOutput = getResourceString("basic_output_drop_arrays.json");
 
     DummpyEvent devent = new DummpyEvent();
     devent.payload = input.getAsJsonObject();
 
-    DropArraysMutator mutator = new DropArraysMutator();
-    mutator.mutateEvent(devent);
-    assertEquals(expectedOutput, input.toString());
+    JsonRootNodeOperationFactory f = new JsonRootNodeOperationFactory();
+    JsonRootNodeOperation operation = new JsonRootNodeOperation("$.i.ia");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+    operation.perform(ievent);
+    
+    assertEquals("{\"iaa\":\"bar\"}", devent.payload.toString());
   }
 }

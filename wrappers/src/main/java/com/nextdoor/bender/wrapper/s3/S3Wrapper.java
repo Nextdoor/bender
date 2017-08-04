@@ -46,7 +46,7 @@ public class S3Wrapper implements Wrapper {
     this.functionName = internal.getCtx().getFunctionName();
     this.functionVersion = internal.getCtx().getFunctionVersion();
     this.processingTime = System.currentTimeMillis();
-    this.timestamp = internal.getEventTimeMs();
+    this.timestamp = internal.getEventTime();
     this.processingDelay = processingTime - timestamp;
     this.sha1Hash = internal.getEventSha1Hash();
 

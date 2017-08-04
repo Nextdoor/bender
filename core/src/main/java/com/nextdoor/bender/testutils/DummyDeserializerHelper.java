@@ -78,11 +78,6 @@ public class DummyDeserializerHelper {
 
   public static class DummyDeserializer extends Deserializer {
     public DummyDeserializer() {
-      super(Collections.emptyList());
-    }
-
-    public DummyDeserializer(List<PartitionSpec> partitionSpecs) {
-      super(partitionSpecs);
     }
 
     @Override

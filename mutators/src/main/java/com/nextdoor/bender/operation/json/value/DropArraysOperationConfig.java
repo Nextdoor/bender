@@ -13,16 +13,16 @@
  *
  */
 
-package com.nextdoor.bender.mutator.key;
+package com.nextdoor.bender.operation.json.value;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.mutator.MutatorConfig;
 
-@JsonTypeName("KeyNameMutator")
-public class KeyNameMutatorConfig extends MutatorConfig {
+@JsonTypeName("JsonDropArraysOperation")
+public class DropArraysOperationConfig extends MutatorConfig {
 
   @Override
-  public Class<KeyNameMutatorFactory> getFactoryClass() {
-    return KeyNameMutatorFactory.class;
+  public Class<DropArraysOperationFactory> getFactoryClass() {
+    return DropArraysOperationFactory.class;
   }
 }

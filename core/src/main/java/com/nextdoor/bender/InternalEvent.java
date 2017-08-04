@@ -16,14 +16,11 @@
 package com.nextdoor.bender;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
-import com.nextdoor.bender.deserializer.DeserializedTimeSeriesEvent;
-import com.nextdoor.bender.partition.PartitionSpec;
 
 /**
  * An object that abstracts away the events the function was triggered with and their origin.
@@ -36,6 +33,7 @@ public class InternalEvent {
   protected DeserializedEvent eventObj;
   private String serialized;
   private LinkedHashMap<String, String> partitions;
+  private long eventTime;
 
   /**
    * @param eventString the raw string data of the event.
@@ -47,6 +45,7 @@ public class InternalEvent {
     this.context = context;
     this.eventSha1Hash = DigestUtils.sha1Hex(this.eventString);
     this.arrivalTime = arrivalTime;
+    this.eventTime = arrivalTime;
   }
 
   /**
@@ -108,56 +107,7 @@ public class InternalEvent {
     this.serialized = serialized;
   }
 
-  /**
-   * @return epoch time in MS of when the event occurred. If not a time series event then arrival
-   *         time is used.
-   */
-  public long getEventTimeMs() {
-    if (this.eventObj != null && this.eventObj instanceof DeserializedTimeSeriesEvent) {
-      return ((DeserializedTimeSeriesEvent) this.eventObj).getEpochTimeMs();
-    }
-
-    return this.arrivalTime;
-  }
-
-  /**
-   * Provided a PartitionSpec this method attempts to retrieve each field from the deserialized
-   * event object.
-   *
-   * @param partitionSpecs list of PartitionSpec.
-   */
-  public void setPartitions(List<PartitionSpec> partitionSpecs) {
-    int numPartSpecs = partitionSpecs.size();
-
-    /*
-     * Loop through each partition spec fetching the associated field from the event. Set to null if
-     * field does not exist.
-     */
-    if (this.eventObj != null) {
-      LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>(numPartSpecs);
-      for (PartitionSpec spec : partitionSpecs) {
-        String key = null;
-        for (String source : spec.getSources()) {
-          key = this.eventObj.getField(source);
-          if (key != null) {
-            break;
-          }
-        }
-
-        partitions.put(spec.getName(), spec.interpret(key));
-      }
-      this.partitions = partitions;
-      return;
-    }
-
-    /*
-     * If deserialized event is null set all partitions to also null
-     */
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>(numPartSpecs);
-    for (PartitionSpec spec : partitionSpecs) {
-      partitions.put(spec.getName(), null);
-    }
-
+  public void setPartitions(LinkedHashMap<String, String> partitions) {
     this.partitions = partitions;
   }
 
@@ -167,5 +117,13 @@ public class InternalEvent {
    */
   public LinkedHashMap<String, String> getPartitions() {
     return partitions;
+  }
+
+  public long getEventTime() {
+    return eventTime;
+  }
+
+  public void setEventTime(long eventTime) {
+    this.eventTime = eventTime;
   }
 }

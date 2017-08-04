@@ -13,8 +13,9 @@
  *
  */
 
-package com.nextdoor.bender.mutator;
+package com.nextdoor.bender.operation;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -23,22 +24,27 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
 import com.google.gson.JsonSyntaxException;
+import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.monitoring.Stat;
-import com.nextdoor.bender.testutils.DummyMutatorHelper.DummyMutator;
-import com.nextdoor.bender.testutils.DummyMutatorHelper.DummyMutatorFactory;
+import com.nextdoor.bender.mutator.UnsupportedMutationException;
+import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperation;
+import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperationFactory;
 
-public class MutatorProcessorTest {
+public class OperationProcessorTest {
 
   @Test
   public void testStatsLogging() throws JsonSyntaxException, UnsupportedEncodingException,
       IOException, UnsupportedMutationException {
-    DummyMutatorFactory mutatorFactory = new DummyMutatorFactory();
-
-    MutatorProcessor processor = new MutatorProcessor(mutatorFactory);
+    DummyOperationFactory mutatorFactory = new DummyOperationFactory();
+    OperationProcessor processor = new OperationProcessor(mutatorFactory);
 
     /*
      * Mock the Stat object
@@ -50,12 +56,9 @@ public class MutatorProcessorTest {
     processor.setRuntimeStat(runtimeStat);
     processor.setSuccessCountStat(successStat);
     processor.setErrorCountStat(errorStat);
-
-    try {
-      processor.mutate(null);
-    } catch (UnsupportedMutationException e) {
-
-    }
+    
+    Stream<InternalEvent> stream = processor.perform(Stream.of(new InternalEvent("foo", null, 1)));
+    List<InternalEvent> output = stream.collect(Collectors.toList());
 
     /*
      * Verify start, stop, increment success count, and never increment error count.
@@ -64,15 +67,21 @@ public class MutatorProcessorTest {
     verify(runtimeStat, times(1)).stop();
     verify(successStat, times(1)).increment();
     verify(errorStat, never()).increment();
+    
+    /*
+     * Verify contents of output stream
+     */
+    assertEquals(1, output.size());
   }
 
   @Test
-  public void testStatsLoggingOnError() throws UnsupportedMutationException {
-    DummyMutator mutator = mock(DummyMutator.class);
-    DummyMutatorFactory mutatorFactory = new DummyMutatorFactory(mutator);
-    MutatorProcessor processor = new MutatorProcessor(mutatorFactory);
+  public void testStatsLoggingOnError() {
+    DummyOperation operation = mock(DummyOperation.class);
+    DummyOperationFactory mutatorFactory = new DummyOperationFactory(operation);
+    OperationProcessor processor = new OperationProcessor(mutatorFactory);
 
-    doThrow(new UnsupportedMutationException("test")).when(mutator).mutateEvent(null);
+    InternalEvent ievent = new InternalEvent("a", null, 1);
+    doThrow(new OperationException("Expceted")).when(operation).perform(ievent);
 
     /*
      * Mock the Stat object
@@ -85,11 +94,8 @@ public class MutatorProcessorTest {
     processor.setSuccessCountStat(successStat);
     processor.setErrorCountStat(errorStat);
 
-    try {
-      processor.mutate(null);
-    } catch (UnsupportedMutationException e) {
-      // expected
-    }
+    Stream<InternalEvent> stream = processor.perform(Stream.of(ievent));
+    List<InternalEvent> output = stream.collect(Collectors.toList());
 
     /*
      * Verify start, stop are called, increment error count and never increment success count.
@@ -98,5 +104,10 @@ public class MutatorProcessorTest {
     verify(runtimeStat, times(1)).stop();
     verify(successStat, never()).increment();
     verify(errorStat, times(1)).increment();
+
+    /*
+     * Verify contents of output stream
+     */
+    assertEquals(0, output.size());
   }
 }

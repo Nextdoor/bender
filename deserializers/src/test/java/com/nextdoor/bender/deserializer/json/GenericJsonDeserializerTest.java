@@ -46,7 +46,7 @@ public class GenericJsonDeserializerTest {
         new GenericJsonDeserializerConfig.FieldConfig();
     fconfig.setField("MESSAGE");
     GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList(), Arrays.asList(fconfig), path);
+        new GenericJsonDeserializer(Arrays.asList(fconfig), path);
     deser.init();
     return deser.deserialize(input);
   }
@@ -183,7 +183,7 @@ public class GenericJsonDeserializerTest {
     fconfig.setField("MESSAGE");
     fconfig.setPrefixField("MESSAGE_PREFIX");
     GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList(), Arrays.asList(fconfig));
+        new GenericJsonDeserializer(Arrays.asList(fconfig));
     deser.init();
 
     DeserializedEvent devent = deser.deserialize(input);
@@ -206,7 +206,7 @@ public class GenericJsonDeserializerTest {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
     GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList(), Collections.emptyList());
+        new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
@@ -218,7 +218,7 @@ public class GenericJsonDeserializerTest {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
     GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList(), Collections.emptyList());
+        new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
@@ -230,7 +230,7 @@ public class GenericJsonDeserializerTest {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
     GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList(), Collections.emptyList());
+        new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
@@ -242,7 +242,7 @@ public class GenericJsonDeserializerTest {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
     GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList(), Collections.emptyList());
+        new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
@@ -254,7 +254,7 @@ public class GenericJsonDeserializerTest {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
     GenericJsonDeserializer deser =
-        new GenericJsonDeserializer(Collections.emptyList(), Collections.emptyList());
+        new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 

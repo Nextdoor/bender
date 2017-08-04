@@ -15,8 +15,8 @@
 
 package com.nextdoor.bender.mutator;
 
-import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.InternalEvent;
 
-public interface Mutator {
-  public void mutateEvent(DeserializedEvent event) throws UnsupportedMutationException;
+public interface Mutator extends BaseMutator {
+  public InternalEvent mutateEvent(InternalEvent event) throws UnsupportedMutationException;
 }

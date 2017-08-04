@@ -90,7 +90,7 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
       return this.index;
     }
 
-    String index = this.index + this.dtFormat.print(ievent.getEventTimeMs());
+    String index = this.index + this.dtFormat.print(ievent.getEventTime());
 
     return index;
   }

@@ -24,16 +24,5 @@ import com.nextdoor.bender.config.ConfigurableFactoryConfig;
 import com.nextdoor.bender.partition.PartitionSpec;
 
 public abstract class DeserializerConfig extends ConfigurableFactoryConfig {
-  @JsonSchemaDescription("Configuration to specify object fields that are treated as partitions")
-  private List<PartitionSpec> partitionSpecs = Collections.emptyList();
 
-  @JsonProperty("partition_specs")
-  public List<PartitionSpec> getPartitionSpecs() {
-    return partitionSpecs;
-  }
-
-  @JsonProperty("partition_specs")
-  public void setPartitionSpecs(List<PartitionSpec> partitionSpecs) {
-    this.partitionSpecs = partitionSpecs;
-  }
 }

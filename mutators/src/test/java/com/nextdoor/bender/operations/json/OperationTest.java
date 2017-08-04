@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.mutator;
+package com.nextdoor.bender.operations.json;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +23,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 
-public class MutatorTest {
+public class OperationTest {
   public class DummpyEvent implements DeserializedEvent {
     public Object payload;
 

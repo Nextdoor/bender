@@ -37,7 +37,7 @@ public class Re2jRegexDeserializerTest {
     fields.add(new ReFieldConfig("foo", ReFieldType.STRING));
 
     Pattern p = Pattern.compile("(.*)");
-    Re2jRegexDeserializer deser = new Re2jRegexDeserializer(Collections.emptyList(), p, fields);
+    Re2jRegexDeserializer deser = new Re2jRegexDeserializer(p, fields);
     DeserializedEvent event = deser.deserialize("test i am");
 
     assertEquals("test i am", event.getField("foo"));
@@ -49,7 +49,7 @@ public class Re2jRegexDeserializerTest {
     fields.add(new ReFieldConfig("foo", ReFieldType.STRING));
 
     Pattern p = Pattern.compile("(test i am)");
-    Re2jRegexDeserializer deser = new Re2jRegexDeserializer(Collections.emptyList(), p, fields);
+    Re2jRegexDeserializer deser = new Re2jRegexDeserializer(p, fields);
     DeserializedEvent event = deser.deserialize("i am a test");
   }
 
@@ -82,7 +82,7 @@ public class Re2jRegexDeserializerTest {
     Pattern p = Pattern.compile(
         "([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*):([0-9]*) ([^ ]*):([0-9]*) ([.0-9]*) ([.0-9]*) ([.0-9]*) (-|[0-9]*) (-|[0-9]*) ([-0-9]*) ([-0-9]*) \\\"([^ ]*) ([^ ]*) (- |[^ ]*)\\\" (\\\"[^\\\"]*\\\") ([A-Z0-9-]+) ([A-Za-z0-9.-]*) ([^ ]*) ([^ ]*)$",
         Pattern.DOTALL);
-    Re2jRegexDeserializer deser = new Re2jRegexDeserializer(Collections.emptyList(), p, fields);
+    Re2jRegexDeserializer deser = new Re2jRegexDeserializer(p, fields);
     DeserializedEvent event = deser.deserialize(
         "https 2017-06-15T04:55:00.142369Z app/foo/1234 127.12.12.12:1337 127.13.13.13:7331 1.001 2.002 3.003 201 200 687 461 \"GET https://foo.com:443/bar/123?baz=1 HTTP/1.1\" \"123-123-123-123-123\" ECDHE-RSA-AES128-GCM-SHA256 TLSv1.2 arn:aws:elasticloadbalancing:us-west-1:123:targetgroup/foo-bar-https/123 \"Root=1-123-123\"");
 

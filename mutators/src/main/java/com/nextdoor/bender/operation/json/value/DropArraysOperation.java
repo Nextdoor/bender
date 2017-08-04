@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.mutator.value;
+package com.nextdoor.bender.operation.json.value;
 
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -21,14 +21,14 @@ import java.util.Set;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.nextdoor.bender.mutator.PayloadMutator;
+import com.nextdoor.bender.operation.json.PayloadOperation;
 
 /**
  * In place recursively mutates a {@link JsonObject} values to drop arrays. This mutator can be used
  * when loading into Elasticsearch as it does not fully support an array of maps.
  */
-public class DropArraysMutator extends PayloadMutator {
-  protected void mutatePayload(JsonObject obj) {
+public class DropArraysOperation extends PayloadOperation {
+  protected void perform(JsonObject obj) {
     Set<Entry<String, JsonElement>> entries = obj.entrySet();
     Set<Entry<String, JsonElement>> orgEntries = new HashSet<Entry<String, JsonElement>>(entries);
 
@@ -38,7 +38,7 @@ public class DropArraysMutator extends PayloadMutator {
       if (val.isJsonArray()) {
         obj.remove(entry.getKey());
       } else if (val.isJsonObject()) {
-        mutatePayload(val.getAsJsonObject());
+        perform(val.getAsJsonObject());
       }
     }
   }

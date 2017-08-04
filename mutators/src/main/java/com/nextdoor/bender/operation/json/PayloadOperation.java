@@ -13,30 +13,40 @@
  *
  */
 
-package com.nextdoor.bender.mutator;
+package com.nextdoor.bender.operation.json;
 
 import com.google.gson.JsonObject;
+import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationException;
 
-public abstract class PayloadMutator implements Mutator {
-  protected abstract void mutatePayload(JsonObject obj);
+public abstract class PayloadOperation implements Operation {
+  protected abstract void perform(JsonObject obj);
 
   /**
    * The {@link DeserializedEvent} payload must be a {@link JsonObject}.
    *
    * @param event Event with payload to mutate.
+   * @return
    */
-  public void mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {
-    Object payload = event.getPayload();
+  public InternalEvent perform(InternalEvent ievent) {
+    DeserializedEvent devent;
+    if ((devent = ievent.getEventObj()) == null) {
+      return null;
+    }
+    Object payload = devent.getPayload();
 
     if (payload == null) {
-      return;
+      return null;
     }
 
     if (!(payload instanceof JsonObject)) {
-      throw new UnsupportedMutationException("Payload data is not a JsonObject");
+      throw new OperationException("Payload data is not a JsonObject");
     }
 
-    mutatePayload((JsonObject) payload);
+    perform((JsonObject) payload);
+
+    return ievent;
   }
 }

@@ -13,11 +13,10 @@
  *
  */
 
-package com.nextdoor.bender.mutator.key;
+package com.nextdoor.bender.operations.json.value;
 
 import static org.junit.Assert.assertEquals;
 
-import com.nextdoor.bender.mutator.MutatorTest;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -25,22 +24,29 @@ import org.junit.Test;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.mutator.UnsupportedMutationException;
+import com.nextdoor.bender.operation.json.value.DropArraysOperation;
+import com.nextdoor.bender.operations.json.OperationTest;
 
-public class KeyNameMutatorTest extends MutatorTest {
+public class DropArraysMutatorTest extends OperationTest {
 
   @Test
   public void testMutatePayload() throws JsonSyntaxException, IOException,
       UnsupportedMutationException {
     JsonParser parser = new JsonParser();
     JsonElement input = parser.parse(getResourceString("basic_input.json"));
-    String expectedOutput = getResourceString("basic_output_key_name.json");
+    String expectedOutput = getResourceString("basic_output_drop_arrays.json");
 
     DummpyEvent devent = new DummpyEvent();
     devent.payload = input.getAsJsonObject();
 
-    KeyNameMutator mutator = new KeyNameMutator();
-    mutator.mutateEvent(devent);
+    DropArraysOperation operation = new DropArraysOperation();
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+    operation.perform(ievent);
+    
     assertEquals(expectedOutput, input.toString());
   }
 }

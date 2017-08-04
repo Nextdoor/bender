@@ -7,9 +7,16 @@
       "name": "Test Events",
       "source_regex": ".*",
       "deserializer": {
-        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig",
-        "partition_specs": []
-      }
+        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig"
+      },
+      "operations": [
+        {
+          "config_name": "DummyOperationHelper$DummyOperationConfig"
+        },
+        {
+          "config_name": "DummyOperationHelper$DummyOperationConfig"
+        }
+      ]
     }
   ],
   "wrapper": {

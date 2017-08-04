@@ -53,7 +53,7 @@ public class KinesisWrapper implements Wrapper {
     this.functionVersion = internal.getCtx().getFunctionVersion();
     this.processingTime = System.currentTimeMillis();
     this.arrivalTime = record.getApproximateArrivalTimestamp().getTime();
-    this.timestamp = internal.getEventTimeMs();
+    this.timestamp = internal.getEventTime();
     this.processingDelay = processingTime - timestamp;
 
     if (internal.getEventObj() != null) {

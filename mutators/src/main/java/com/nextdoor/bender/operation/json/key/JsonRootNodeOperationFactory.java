@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.mutator.key;
+package com.nextdoor.bender.operation.json.key;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -24,17 +24,17 @@ import com.jayway.jsonpath.spi.json.JsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.mutator.Mutator;
-import com.nextdoor.bender.mutator.MutatorFactory;
+import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationFactory;
 
 /**
- * Create a {@link JsonRootNodeMutator}.
+ * Create a {@link JsonRootNodeOperation}.
  */
-public class JsonRootNodeMutatorFactory implements MutatorFactory {
+public class JsonRootNodeOperationFactory implements OperationFactory {
 
-  private JsonRootNodeMutatorConfig config;
+  private JsonRootNodeOperationConfig config;
 
-  public JsonRootNodeMutatorFactory() {
+  public JsonRootNodeOperationFactory() {
     /*
      * Set static configuration for JsonPath
      */
@@ -60,17 +60,17 @@ public class JsonRootNodeMutatorFactory implements MutatorFactory {
   }
 
   @Override
-  public Mutator newInstance() {
-    return new JsonRootNodeMutator(this.config.getRootPath());
+  public Operation newInstance() {
+    return new JsonRootNodeOperation(this.config.getRootPath());
   }
 
   @Override
   public Class getChildClass() {
-    return JsonRootNodeMutator.class;
+    return JsonRootNodeOperation.class;
   }
 
   @Override
   public void setConf(AbstractConfig config) {
-    this.config = (JsonRootNodeMutatorConfig) config;
+    this.config = (JsonRootNodeOperationConfig) config;
   }
 }

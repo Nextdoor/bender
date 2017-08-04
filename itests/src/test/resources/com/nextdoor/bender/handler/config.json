@@ -18,12 +18,12 @@
           }
         ]
       },
-      "mutators": [
+      "operations": [
         {
-          "config_name": "DropArraysMutator"
+          "config_name": "JsonDropArraysOperation"
         },
         {
-          "config_name": "KeyNameMutator"
+          "config_name": "JsonDropArraysOperation"
         }
       ]
     }
