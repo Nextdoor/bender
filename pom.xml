@@ -68,7 +68,7 @@
     <module>handlers</module>
     <module>deserializers</module>
     <module>transporters</module>
-    <module>mutators</module>
+    <module>operations</module>
     <module>reporters</module>
     <module>wrappers</module>
     <module>serializers</module>
