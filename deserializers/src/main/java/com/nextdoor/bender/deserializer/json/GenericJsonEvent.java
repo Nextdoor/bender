@@ -29,7 +29,7 @@ import com.nextdoor.bender.deserializer.DeserializedEvent;
 public class GenericJsonEvent implements DeserializedEvent {
   private JsonElement payload;
 
-  protected GenericJsonEvent(JsonObject payload) {
+  public GenericJsonEvent(JsonObject payload) {
     this.payload = payload;
   }
 
