@@ -192,6 +192,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
     int eventCount = 0;
     long oldestArrivalTime = System.currentTimeMillis();
     long oldestOccurrenceTime = System.currentTimeMillis();
+
     /*
      * Process each record
      */
@@ -300,7 +301,10 @@ public abstract class BaseHandler<T> implements Handler<T> {
       if (!this.skipWriteStats) {
         writeStats(eventCount, oldestArrivalTime, oldestOccurrenceTime, evtSource, runtime);
       }
-      getGCStats();
+
+      if (logger.isTraceEnabled()) {
+        getGCStats();
+      }
     }
   }
 
@@ -352,7 +356,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
       }
     }
 
-    logger.info("number of GCs: " + (currentGcCount - lastGcCount) + " and time spent in GCs: "
+    logger.trace("number of GCs: " + (currentGcCount - lastGcCount) + " and time spent in GCs: "
         + (currentGcDuration - lastGcDuration) + "ms");
 
     lastGcCount = currentGcCount;

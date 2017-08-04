@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.nextdoor.bender.ipc.TransportConfig;
 import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryFactory;
@@ -39,12 +41,12 @@ import com.nextdoor.bender.wrapper.WrapperFactory;
  * HandlerConfig contains all the resources a handler needs to function.
  */
 public class HandlerResources {
+  private static final Logger logger = Logger.getLogger(HandlerResources.class);
   private Map<String, Source> sources = new HashMap<String, Source>();
   private SerializerProcessor serializerProcessor;
   private WrapperFactory wrapperFactory;
   private TransportFactory transportFactory;
   private List<Reporter> reporters = new ArrayList<Reporter>(0);
-
   private final TransportFactoryFactory tff = new TransportFactoryFactory();
   private final ReporterFactoryFactory rff = new ReporterFactoryFactory();
   private final SerializerFactoryFactory sff = new SerializerFactoryFactory();
@@ -60,6 +62,7 @@ public class HandlerResources {
   public void setSources(List<SourceConfig> sourceConfigs) throws ClassNotFoundException {
     for (SourceConfig sourceConfig : sourceConfigs) {
       Source source = new Source(sourceConfig);
+      logger.info("Using source: " + source.toString());
       sources.put(source.getSourceName(), source);
     }
   }

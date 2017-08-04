@@ -182,10 +182,10 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
        * Stream object back from S3 into a reader
        */
       String bucketName = this.currentS3Entity.getBucket().getName();
-      logger.debug("opening " + key + " from " + bucketName);
+      logger.debug("opening s3://" + bucketName + "/" + key);
       GetObjectRequest req = new GetObjectRequest(bucketName, key);
       S3Object obj = client.getObject(req);
-      logger.debug("s3 get request id: " + client.getCachedResponseMetadata(req).getRequestId()
+      logger.trace("s3 get request id: " + client.getCachedResponseMetadata(req).getRequestId()
           + " host: " + client.getCachedResponseMetadata(req).getHostId() + " cloudfrontid: "
           + client.getCachedResponseMetadata(req).getCloudFrontId());
 
@@ -219,7 +219,7 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
     if (this.reader != null) {
       try {
         this.reader.close();
-        logger.debug("closed reader");
+        logger.trace("closed reader");
         this.reader = null;
       } catch (IOException e) {
         logger.warn("Unable to close S3 reader", e);

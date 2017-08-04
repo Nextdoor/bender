@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -37,23 +38,23 @@ public class PartitionSpec {
   }
 
   @JsonSchemaDescription("Value to use as the key for the partition")
-  @JsonProperty(required=true)
+  @JsonProperty(required = true)
   private String name;
 
   @JsonSchemaDescription("Fields to use for the value of the partition")
   private List<String> sources = Collections.emptyList();
 
   @JsonSchemaDescription("Interpreter to use on the partition value")
-  @JsonProperty(required=true)
+  @JsonProperty(required = true)
   @JsonSchemaDefault("STRING")
   private Interpreter interpreter = Interpreter.STRING;
 
   @JsonSchemaDescription("Java date format to use when using a time based interpreter")
-  @JsonProperty(required=false)
+  @JsonProperty(required = false)
   private String format = null;
 
   @JsonSchemaDescription("Basic string formatting")
-  @JsonProperty(required=false)
+  @JsonProperty(required = false)
   @JsonSchemaDefault("NONE")
   private StringFormat stringFormat = StringFormat.NONE;
 
@@ -141,7 +142,7 @@ public class PartitionSpec {
       return input;
     }
 
-    switch(this.stringFormat) {
+    switch (this.stringFormat) {
       case NONE:
         return input;
       case TOUPPER:
@@ -176,5 +177,13 @@ public class PartitionSpec {
     ts = Time.toMilliseconds(ts);
 
     return this.dateTimeFormatter.print(ts);
+  }
+
+  public String toString() {
+    return name + "["
+        + "sources=" + StringUtils.join(',', sources)
+        + ", interpreter=" + interpreter
+        + ", format=" + (format != null ? format : "none")
+        + "]";
   }
 }
