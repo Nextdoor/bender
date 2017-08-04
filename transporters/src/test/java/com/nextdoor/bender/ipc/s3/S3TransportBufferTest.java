@@ -21,9 +21,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;

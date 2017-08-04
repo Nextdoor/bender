@@ -51,7 +51,7 @@ public class Source {
     if (operationConfigs.size() > 0) {
       OperationFactoryFactory off = new OperationFactoryFactory();
       for (OperationConfig operationConfig : operationConfigs) {
-    	  this.operationProcessors.add(new OperationProcessor(off.getFactory(operationConfig)));
+        this.operationProcessors.add(new OperationProcessor(off.getFactory(operationConfig)));
       }
     }
 
@@ -102,10 +102,8 @@ public class Source {
       return c.getOperation().getClass().getSimpleName();
     }).collect(Collectors.joining(", "));
 
-    return this.sourceName + "[" + "sourceRegex=" + this.sourceRegex
-        + ", containsStrings=["+ StringUtils.join(this.containsStrings, ',')
-        + "], regexPatterns=[" + patterns + "]"
-        + "], deserializers=[" + this.deserProcessor + "]"
-        + "], operations=[" + operations + "]]";
+    return this.sourceName + "[" + "sourceRegex=" + this.sourceRegex + ", containsStrings=["
+        + StringUtils.join(this.containsStrings, ',') + "], regexPatterns=[" + patterns + "]"
+        + "], deserializers=[" + this.deserProcessor + "]" + "], operations=[" + operations + "]]";
   }
 }

@@ -39,7 +39,8 @@ public class SourceUtils {
     }
   }
 
-  public static Source getSource(String sourceLocation, Collection<Source> sources, boolean useCache) {
+  public static Source getSource(String sourceLocation, Collection<Source> sources,
+      boolean useCache) {
     Source source;
 
     if (useCache && (source = sourceMap.get(sourceLocation)) != null) {

@@ -49,7 +49,8 @@ public class S3Handler extends BaseHandler<S3EventNotification>
     /*
      * Validate the S3 file matches the regex
      */
-    List<S3EventNotificationRecord> toProcess = new ArrayList<S3EventNotificationRecord>(event.getRecords());
+    List<S3EventNotificationRecord> toProcess =
+        new ArrayList<S3EventNotificationRecord>(event.getRecords());
     for (S3EventNotificationRecord record : event.getRecords()) {
       String s3Path = String.format("s3://%s/%s", record.getS3().getBucket().getName(),
           record.getS3().getObject().getKey());

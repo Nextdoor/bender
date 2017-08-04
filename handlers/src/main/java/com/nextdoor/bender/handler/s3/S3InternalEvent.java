@@ -45,8 +45,8 @@ public class S3InternalEvent extends InternalEvent {
   public LinkedHashMap<String, String> getPartitions() {
     LinkedHashMap<String, String> partitions = super.getPartitions();
     if (partitions == null) {
-       partitions = new LinkedHashMap<String, String>(1);
-       super.setPartitions(partitions);
+      partitions = new LinkedHashMap<String, String>(1);
+      super.setPartitions(partitions);
     }
 
     partitions.put(FILENAME_PARTITION, DigestUtils.sha1Hex(this.s3Key));

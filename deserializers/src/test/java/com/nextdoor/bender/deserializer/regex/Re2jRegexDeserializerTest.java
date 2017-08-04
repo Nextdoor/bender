@@ -18,13 +18,11 @@ package com.nextdoor.bender.deserializer.regex;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import com.google.re2j.Pattern;
 
 import org.junit.Test;
 
+import com.google.re2j.Pattern;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.regex.ReFieldConfig.ReFieldType;

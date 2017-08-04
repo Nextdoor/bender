@@ -208,16 +208,16 @@ public abstract class BaseHandler<T> implements Handler<T> {
      */
     this.monitor.invokeTimeNow();
 
-    //int eventCount = 0;
-    int eventCount = 0;
-    long oldestArrivalTime = System.currentTimeMillis();
-    long oldestOccurrenceTime = System.currentTimeMillis();
+    AtomicLong eventCount = new AtomicLong(0);
+    AtomicLong oldestArrivalTime = new AtomicLong(System.currentTimeMillis());
+    AtomicLong oldestOccurrenceTime = new AtomicLong(System.currentTimeMillis());
 
     /*
      * Process each record
      */
     int characteristics = Spliterator.IMMUTABLE;
-    Spliterator<InternalEvent> spliterator = Spliterators.spliteratorUnknownSize(events, characteristics);
+    Spliterator<InternalEvent> spliterator =
+        Spliterators.spliteratorUnknownSize(events, characteristics);
     Stream<InternalEvent> input = StreamSupport.stream(spliterator, false);
 
     /*
@@ -228,8 +228,9 @@ public abstract class BaseHandler<T> implements Handler<T> {
          * Perform regex filter
          */
         ievent -> {
+          eventCount.incrementAndGet();
           String eventStr = ievent.getEventString();
-    
+
           /*
            * Apply String contains filters before deserialization
            */
@@ -238,39 +239,32 @@ public abstract class BaseHandler<T> implements Handler<T> {
               return false;
             }
           }
-    
+
           /*
            * Apply regex patterns before deserialization
            */
           for (Pattern regexPattern : regexPatterns) {
             Matcher m = regexPattern.matcher(eventStr);
-    
+
             if (m.find()) {
               return false;
             }
           }
-    
+
           return true;
-    });
-    
+        });
+
+
     /*
      * Deserialize
      */
-    Stream<InternalEvent> deserialized = filtered.map(
-        ievent -> {
-          DeserializedEvent data = deser.deserialize(ievent.getEventString());
-          ievent.setEventObj(data);
-//    
-//          /*
-//           * Update oldest event time we've seen
-//           */
-//          long curOldestArrival = oldestArrivalTime.get();
-//          updateMax(oldestArrivalTime, ievent.getArrivalTime());
-//          updateMax(oldestOccurrenceTime, ievent.getEventTimeMs());
-    
-          return ievent;
-      });
-    
+    Stream<InternalEvent> deserialized = filtered.map(ievent -> {
+      DeserializedEvent data = deser.deserialize(ievent.getEventString());
+      ievent.setEventObj(data);
+
+      return ievent;
+    });
+
     /*
      * Perform Operations
      */
@@ -282,29 +276,34 @@ public abstract class BaseHandler<T> implements Handler<T> {
     /*
      * Serialize
      */
-    Stream<InternalEvent> serialized = operated.map(
-        ievent -> {
-          try {
-            String raw = null;
-            raw = this.ser.serialize(this.wrapper.getWrapped(ievent));
-            ievent.setSerialized(raw);
-            return ievent;
-          } catch (SerializationException e) {
-            return null;
-          }
-        }).filter(Objects::nonNull);
+    Stream<InternalEvent> serialized = operated.map(ievent -> {
+      try {
+        String raw = null;
+        raw = this.ser.serialize(this.wrapper.getWrapped(ievent));
+        ievent.setSerialized(raw);
+        return ievent;
+      } catch (SerializationException e) {
+        return null;
+      }
+    }).filter(Objects::nonNull);
 
     /*
      * Transport
      */
     serialized.forEach(ievent -> {
+      /*
+       * Update times
+       */
+      updateMax(oldestArrivalTime, ievent.getArrivalTime());
+      updateMax(oldestOccurrenceTime, ievent.getEventTime());
+
       try {
         this.getIpcService().add(ievent);
       } catch (TransportException e) {
         logger.warn("error adding event", e);
       }
     });
-    
+
     /*
      * Wait for transporters to finish
      */
@@ -320,7 +319,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
       runtime.stop();
 
       if (!this.skipWriteStats) {
-        writeStats(eventCount, oldestArrivalTime, oldestOccurrenceTime, evtSource, runtime);
+        writeStats(eventCount.get(), oldestArrivalTime.get(), oldestOccurrenceTime.get(), evtSource,
+            runtime);
       }
 
       if (logger.isTraceEnabled()) {
@@ -328,9 +328,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
       }
     }
   }
-  
-  
-  private void writeStats(int evtCount, long oldestArrivalTime, long oldestOccurrenceTime,
+
+  private void writeStats(long evtCount, long oldestArrivalTime, long oldestOccurrenceTime,
       String source, Stat runtime) {
     /*
      * Add some stats about this invocation

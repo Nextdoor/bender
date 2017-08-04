@@ -19,7 +19,6 @@ import com.google.gson.JsonObject;
 import com.jayway.jsonpath.JsonPath;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
-import com.nextdoor.bender.mutator.UnsupportedMutationException;
 import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationException;
 

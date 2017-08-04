@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
-import com.nextdoor.bender.deserializer.regex.ReFieldConfig;
 
 @JsonTypeName("Regex")
 public class RegexDeserializerConfig extends DeserializerConfig {

@@ -15,8 +15,6 @@
 
 package com.nextdoor.bender.testutils;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -25,7 +23,6 @@ import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.deserializer.DeserializerFactory;
-import com.nextdoor.bender.partition.PartitionSpec;
 
 public class DummyDeserializerHelper {
   public static class DummyDeserializedEvent implements DeserializedEvent {
@@ -77,8 +74,7 @@ public class DummyDeserializerHelper {
   }
 
   public static class DummyDeserializer extends Deserializer {
-    public DummyDeserializer() {
-    }
+    public DummyDeserializer() {}
 
     @Override
     public DeserializedEvent deserialize(String raw) {

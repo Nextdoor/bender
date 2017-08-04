@@ -11,7 +11,7 @@ import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("PartitionOperation")
 public class PartitionOperationConfig extends OperationConfig {
-  
+
   @JsonSchemaDescription("Configuration to specify object fields that are treated as partitions")
   @JsonSchemaDefault("[]")
   @JsonProperty(required = false)
