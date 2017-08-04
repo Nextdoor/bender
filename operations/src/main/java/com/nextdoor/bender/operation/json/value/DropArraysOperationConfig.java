@@ -16,10 +16,10 @@
 package com.nextdoor.bender.operation.json.value;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.nextdoor.bender.mutator.MutatorConfig;
+import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("JsonDropArraysOperation")
-public class DropArraysOperationConfig extends MutatorConfig {
+public class DropArraysOperationConfig extends OperationConfig {
 
   @Override
   public Class<DropArraysOperationFactory> getFactoryClass() {

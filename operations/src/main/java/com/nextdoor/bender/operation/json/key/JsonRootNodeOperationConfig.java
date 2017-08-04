@@ -18,10 +18,10 @@ package com.nextdoor.bender.operation.json.key;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.mutator.MutatorConfig;
+import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("JsonRootNodeOperation")
-public class JsonRootNodeOperationConfig extends MutatorConfig {
+public class JsonRootNodeOperationConfig extends OperationConfig {
 
   @JsonSchemaDescription("Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath")
   @JsonProperty(required=true)

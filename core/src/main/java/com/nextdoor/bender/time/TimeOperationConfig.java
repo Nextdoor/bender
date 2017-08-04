@@ -21,8 +21,8 @@ public class TimeOperationConfig extends OperationConfig {
   private TimeFieldType timeFieldType;
 
   @Override
-  public Class<TimeOperationConfig> getFactoryClass() {
-    return TimeOperationConfig.class;
+  public Class<TimeOperationFactory> getFactoryClass() {
+    return TimeOperationFactory.class;
   }
 
   public String getTimeField() {
