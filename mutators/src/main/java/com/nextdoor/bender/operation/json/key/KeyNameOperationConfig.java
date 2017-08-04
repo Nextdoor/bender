@@ -13,30 +13,16 @@
  *
  */
 
-package com.nextdoor.bender.mutator.key;
+package com.nextdoor.bender.operation.json.key;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.mutator.MutatorConfig;
 
-@JsonTypeName("JsonRootNodeMutator")
-public class JsonRootNodeMutatorConfig extends MutatorConfig {
-
-  @JsonSchemaDescription("Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath")
-  @JsonProperty(required=true)
-  private String rootPath;
+@JsonTypeName("JsonKeyNameMutator")
+public class KeyNameOperationConfig extends MutatorConfig {
 
   @Override
-  public Class<JsonRootNodeMutatorFactory> getFactoryClass() {
-    return JsonRootNodeMutatorFactory.class;
-  }
-
-  public String getRootPath() {
-    return rootPath;
-  }
-
-  public void setRootPath(String rootPath) {
-    this.rootPath = rootPath;
+  public Class<KeyNameOperationFactory> getFactoryClass() {
+    return KeyNameOperationFactory.class;
   }
 }

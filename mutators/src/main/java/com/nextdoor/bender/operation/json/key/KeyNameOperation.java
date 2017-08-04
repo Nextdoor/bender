@@ -13,23 +13,25 @@
  *
  */
 
-package com.nextdoor.bender.mutator.key;
+package com.nextdoor.bender.operation.json.key;
 
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.nextdoor.bender.mutator.PayloadMutator;
+import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.operation.json.PayloadOperation;
 
 /**
  * In place recursively mutates a {@link JsonObject} keys to contain a suffix of the data type of
  * the associated field value. Also replaces "." with "_" in keys.
  */
-public class KeyNameMutator extends PayloadMutator {
-  protected void mutatePayload(JsonObject obj) {
+public class KeyNameOperation extends PayloadOperation {
+  protected void perform(JsonObject obj) {
     Set<Entry<String, JsonElement>> entries = obj.entrySet();
     Set<Entry<String, JsonElement>> orgEntries = new HashSet<Entry<String, JsonElement>>(entries);
 
@@ -55,7 +57,7 @@ public class KeyNameMutator extends PayloadMutator {
         }
       } else if (val.isJsonObject()) {
         obj.add(key, val);
-        mutatePayload(val.getAsJsonObject());
+        perform(val.getAsJsonObject());
       } else if (val.isJsonArray()) {
         obj.add(key + "__arr", val);
       }

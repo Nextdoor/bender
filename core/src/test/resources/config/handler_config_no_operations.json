@@ -7,17 +7,8 @@
       "name": "Test Events",
       "source_regex": ".*",
       "deserializer": {
-        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig",
-        "partition_specs": []
-      },
-      "mutators": [
-        {
-          "config_name": "DummyMutatorHelper$DummyMutatorConfig"
-        },
-        {
-          "config_name": "DummyMutatorHelper$DummyMutatorConfig"
-        }
-      ]
+        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig"
+      }
     }
   ],
   "wrapper": {

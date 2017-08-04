@@ -45,14 +45,11 @@ public class GenericJsonDeserializer extends Deserializer {
   private final List<FieldConfig> nestedFieldConfigs;
   private String rootNodeOverridePath;
 
-  public GenericJsonDeserializer(List<PartitionSpec> partitionSpecs,
-      List<FieldConfig> nestedFieldConfigs) {
-    this(partitionSpecs, nestedFieldConfigs, null);
+  public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs) {
+    this(nestedFieldConfigs, null);
   }
 
-  public GenericJsonDeserializer(List<PartitionSpec> partitionSpecs,
-      List<FieldConfig> nestedFieldConfigs, String rootNodeOverridePath) {
-    super(partitionSpecs);
+  public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs, String rootNodeOverridePath) {
     this.nestedFieldConfigs = nestedFieldConfigs;
     this.rootNodeOverridePath = rootNodeOverridePath;
   }

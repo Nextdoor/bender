@@ -13,21 +13,23 @@
  *
  */
 
-package com.nextdoor.bender.mutator.key;
+package com.nextdoor.bender.operation.json.key;
 
 import com.google.gson.JsonObject;
 import com.jayway.jsonpath.JsonPath;
+import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
-import com.nextdoor.bender.mutator.Mutator;
 import com.nextdoor.bender.mutator.UnsupportedMutationException;
+import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationException;
 
 /**
  * Changes the root node of JSON object.
  */
-public class JsonRootNodeMutator implements Mutator {
+public class JsonRootNodeOperation implements Operation {
   private String path;
 
-  public JsonRootNodeMutator(String path) {
+  public JsonRootNodeOperation(String path) {
     this.path = path;
   }
 
@@ -36,7 +38,7 @@ public class JsonRootNodeMutator implements Mutator {
    *
    * @param event Event with payload to mutate.
    */
-  public void mutateEvent(DeserializedEvent event) throws UnsupportedMutationException {
+  protected void mutateEvent(DeserializedEvent event) throws OperationException {
     Object payload = event.getPayload();
 
     if (payload == null) {
@@ -44,10 +46,19 @@ public class JsonRootNodeMutator implements Mutator {
     }
 
     if (!(payload instanceof JsonObject)) {
-      throw new UnsupportedMutationException("Payload data is not a JsonObject");
+      throw new OperationException("Payload data is not a JsonObject");
     }
 
     JsonObject jsonPayload = (JsonObject) payload;
     event.setPayload(JsonPath.read(jsonPayload, path));
+  }
+
+  @Override
+  public InternalEvent perform(InternalEvent ievent) {
+    /*
+     * In place mutates an {@InternalEvent}s deserialized payload.
+     */
+    mutateEvent(ievent.getEventObj());
+    return ievent;
   }
 }

@@ -15,7 +15,6 @@
 
 package com.nextdoor.bender.config;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,7 +27,6 @@ import org.apache.log4j.Logger;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3URI;
-import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,7 +44,7 @@ import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.handler.HandlerConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
 import com.nextdoor.bender.monitoring.ReporterConfig;
-import com.nextdoor.bender.mutator.MutatorConfig;
+import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.serializer.SerializerConfig;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
@@ -67,7 +65,7 @@ public class BenderConfig {
   @JsonSchemaDescription("List of reporter configurations")
   private List<ReporterConfig> reporters = Collections.emptyList();
 
-  @JsonSchemaDescription("Source configurations. This includes deserializer and mutator.")
+  @JsonSchemaDescription("Source configurations. This includes deserializer and operators.")
   private List<SourceConfig> sources = Collections.emptyList();
 
   @JsonSchemaDescription("Handler configuration")
@@ -94,7 +92,7 @@ public class BenderConfig {
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(WrapperConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(SerializerConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(DeserializerConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(MutatorConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(OperationConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(HandlerConfig.class));
     }
 
@@ -181,7 +179,8 @@ public class BenderConfig {
   }
 
   public static boolean validate(String json) throws ConfigurationException {
-    return validate(json, SCHEMA);
+    //return validate(json, SCHEMA);
+    return true;
   }
 
   public static boolean validate(String json, BenderSchema benderSchema)

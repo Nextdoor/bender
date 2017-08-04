@@ -13,31 +13,31 @@
  *
  */
 
-package com.nextdoor.bender.mutator.key;
+package com.nextdoor.bender.operation.json.key;
 
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.mutator.Mutator;
-import com.nextdoor.bender.mutator.MutatorFactory;
+import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationFactory;
 
 /**
- * Create a {@link KeyNameMutator}.
+ * Create a {@link KeyNameOperation}.
  */
-public class KeyNameMutatorFactory implements MutatorFactory {
+public class KeyNameOperationFactory implements OperationFactory {
 
-  private KeyNameMutatorConfig config;
+  private KeyNameOperationConfig config;
 
   @Override
-  public Mutator newInstance() {
-    return new KeyNameMutator();
+  public Operation newInstance() {
+    return new KeyNameOperation();
   }
 
   @Override
-  public Class<KeyNameMutator> getChildClass() {
-    return KeyNameMutator.class;
+  public Class<KeyNameOperation> getChildClass() {
+    return KeyNameOperation.class;
   }
 
   @Override
   public void setConf(AbstractConfig config) {
-    this.config = (KeyNameMutatorConfig) config;
+    this.config = (KeyNameOperationConfig) config;
   }
 }

@@ -33,8 +33,9 @@ public class PartitionSpecTest {
   @Test
   public void testLoadConfg() {
     BenderConfig config = BenderConfig.load(PartitionSpecTest.class, "partition_config.json");
-    PartitionSpec spec =
-        config.getSources().get(0).getDeserializerConfig().getPartitionSpecs().get(0);
+    PartitionOperationConfig op =
+        (PartitionOperationConfig) config.getSources().get(0).getOperationConfigs().get(0);
+    PartitionSpec spec = op.getPartitionSpecs().get(0);
 
     assertEquals("type", spec.getName());
     assertEquals(Interpreter.STRING, spec.getInterpreter());
@@ -46,8 +47,9 @@ public class PartitionSpecTest {
   @Test
   public void testLoadConfgTime() {
     BenderConfig config = BenderConfig.load(PartitionSpecTest.class, "partition_config_time.json");
-    PartitionSpec spec =
-        config.getSources().get(0).getDeserializerConfig().getPartitionSpecs().get(0);
+    PartitionOperationConfig op =
+        (PartitionOperationConfig) config.getSources().get(0).getOperationConfigs().get(0);
+    PartitionSpec spec = op.getPartitionSpecs().get(0);
 
     assertEquals("dt", spec.getName());
     assertEquals(Interpreter.SECONDS, spec.getInterpreter());
@@ -110,8 +112,9 @@ public class PartitionSpecTest {
   public void testStringFormatUpper() {
     BenderConfig config =
         BenderConfig.load(PartitionSpecTest.class, "partition_config_format.json");
-    PartitionSpec spec =
-        config.getSources().get(0).getDeserializerConfig().getPartitionSpecs().get(0);
+    PartitionOperationConfig op =
+        (PartitionOperationConfig) config.getSources().get(0).getOperationConfigs().get(0);
+    PartitionSpec spec = op.getPartitionSpecs().get(0);
 
     assertEquals("type", spec.getName());
     assertEquals(Interpreter.STRING, spec.getInterpreter());
@@ -124,9 +127,9 @@ public class PartitionSpecTest {
   public void testStringFormatLower() {
     BenderConfig config =
         BenderConfig.load(PartitionSpecTest.class, "partition_config_format.json");
-    PartitionSpec spec =
-        config.getSources().get(0).getDeserializerConfig().getPartitionSpecs().get(0);
-
+    PartitionOperationConfig op =
+        (PartitionOperationConfig) config.getSources().get(0).getOperationConfigs().get(0);
+    PartitionSpec spec = op.getPartitionSpecs().get(0);
     spec.setStringFormat(StringFormat.TOLOWER);
 
     assertEquals("type", spec.getName());

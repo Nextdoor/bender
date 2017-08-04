@@ -44,10 +44,10 @@ public class S3Main {
     /*
      * Create a bare bones S3EventNotification event with two S3 files.
      */
-    S3ObjectEntity objEntity = new S3ObjectEntity("ELB-Logs/us1-chat/AWSLogs/329239342014/elasticloadbalancing/us-west-2/2017/06/16/329239342014_elasticloadbalancing_us-west-2_app.us1-chat.5210577eefc1108e_20170616T0000Z_10.32.67.71_3j93ue7d.log.gz", 1L, null, null);
+    S3ObjectEntity objEntity = new S3ObjectEntity("syslog/2017/08/03/00/log-pipeline-staging-syslog-delivery-1-2017-08-03-00-02-20-12c5b93b-b5cd-4a26-99de-8ea378bd8e3c.gz", 1L, null, null);
     // S3ObjectEntity objEntity2 = new S3ObjectEntity("bender.out2", 1L, null, null);
 
-    S3BucketEntity bucketEntity = new S3BucketEntity("logs.us-west-2.nextdoor.com", null, null);
+    S3BucketEntity bucketEntity = new S3BucketEntity("log-pipeline-staging-processing.analytics.nextdoor.com", null, null);
     S3Entity entity = new S3Entity(null, bucketEntity, objEntity, null);
     // S3Entity entity2 = new S3Entity(null, bucketEntity, objEntity2, null);
 

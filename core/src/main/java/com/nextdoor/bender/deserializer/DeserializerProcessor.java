@@ -15,14 +15,7 @@
 
 package com.nextdoor.bender.deserializer;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-
 import com.nextdoor.bender.monitoring.MonitoredProcess;
-import com.nextdoor.bender.partition.PartitionSpec;
-import com.nextdoor.bender.partition.PartitionSpec.Interpreter;
 
 /**
  * Wrapper around {@link Deserializer} that keeps timing information on how long it takes to
@@ -30,12 +23,10 @@ import com.nextdoor.bender.partition.PartitionSpec.Interpreter;
  */
 public class DeserializerProcessor extends MonitoredProcess {
   private Deserializer deser;
-  private final List<PartitionSpec> partitionSpecs;
 
   public DeserializerProcessor(Deserializer deserializer) {
     super(deserializer.getClass());
     this.deser = deserializer;
-    this.partitionSpecs = this.deser.partitionSpecs;
     this.deser.init();
   }
 
@@ -64,50 +55,6 @@ public class DeserializerProcessor extends MonitoredProcess {
     return dEvent;
   }
 
-  /**
-   * Called by the {@link com.nextdoor.bender.handler.BaseHandler} after an event has been
-   * deserialized.
-   *
-   * @param dEvent event to find partitions from.
-   * @return ordered map of partition key values.
-   */
-  protected LinkedHashMap<String, String> getEvaluatedPartitions(DeserializedEvent dEvent) {
-    LinkedHashMap<String, String> partitions =
-        new LinkedHashMap<String, String>(partitionSpecs.size());
-
-    /*
-     * A partition spec may contain an array of fields to look at. Find the first non-null one.
-     */
-    for (PartitionSpec partSpec : partitionSpecs) {
-      if (partSpec.getInterpreter() != Interpreter.STATIC) {
-        try {
-          String value = null;
-          for (String source : partSpec.getSources()) {
-            value = dEvent.getField(source);
-            if (value != null) {
-              break;
-            }
-          }
-
-          /*
-           * Either a field was found or the partition value will be null
-           */
-          partitions.put(partSpec.getName(), partSpec.interpret(value));
-        } catch (NoSuchElementException e) {
-          partitions.put(partSpec.getName(), null);
-        }
-      } else {
-        partitions.put(partSpec.getName(), partSpec.getFormat());
-      }
-    }
-
-    return partitions;
-  }
-
-  public List<PartitionSpec> getPartitionSpecs() {
-    return this.partitionSpecs;
-  }
-
   public Deserializer getDeserializer() {
     return this.deser;
   }
@@ -117,10 +64,6 @@ public class DeserializerProcessor extends MonitoredProcess {
   }
 
   public String toString() {
-    String specStr = this.partitionSpecs.stream().map(c -> {
-      return c.toString();
-    }).collect(Collectors.joining(", "));
-
-    return this.deser.getClass().getSimpleName() + "[" + "partitionSpecs=[" + specStr + "]]";
+    return this.deser.getClass().getSimpleName();
   }
 }

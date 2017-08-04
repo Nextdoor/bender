@@ -25,15 +25,15 @@ import org.apache.commons.lang3.StringUtils;
 import com.nextdoor.bender.deserializer.DeserializerFactory;
 import com.nextdoor.bender.deserializer.DeserializerFactoryFactory;
 import com.nextdoor.bender.deserializer.DeserializerProcessor;
-import com.nextdoor.bender.mutator.MutatorConfig;
-import com.nextdoor.bender.mutator.MutatorFactoryFactory;
-import com.nextdoor.bender.mutator.MutatorProcessor;
+import com.nextdoor.bender.operation.OperationConfig;
+import com.nextdoor.bender.operation.OperationFactoryFactory;
+import com.nextdoor.bender.operation.OperationProcessor;
 
 public class Source {
   private final String sourceName;
   private final Pattern sourceRegex;
   private DeserializerProcessor deserProcessor;
-  private List<MutatorProcessor> mutatorProcessors = new ArrayList<MutatorProcessor>(0);
+  private List<OperationProcessor> operationProcessors = new ArrayList<OperationProcessor>(0);
   private List<Pattern> regexPatterns = new ArrayList<Pattern>(0);
   private List<String> containsStrings = new ArrayList<String>(0);
 
@@ -47,11 +47,11 @@ public class Source {
 
     this.deserProcessor = new DeserializerProcessor(dFactory.newInstance());
 
-    List<MutatorConfig> mutatorConfigs = config.getMutatorConfigs();
-    if (mutatorConfigs.size() > 0) {
-      MutatorFactoryFactory mff = new MutatorFactoryFactory();
-      for (MutatorConfig mutatorConfig : mutatorConfigs) {
-    	  this.mutatorProcessors.add(new MutatorProcessor(mff.getFactory(mutatorConfig)));
+    List<OperationConfig> operationConfigs = config.getOperationConfigs();
+    if (operationConfigs.size() > 0) {
+      OperationFactoryFactory off = new OperationFactoryFactory();
+      for (OperationConfig operationConfig : operationConfigs) {
+    	  this.operationProcessors.add(new OperationProcessor(off.getFactory(operationConfig)));
       }
     }
 
@@ -77,12 +77,12 @@ public class Source {
     return this.sourceRegex;
   }
 
-  public List<MutatorProcessor> getMutatorProcessors() {
-    return this.mutatorProcessors;
+  public List<OperationProcessor> getOperationProcessors() {
+    return this.operationProcessors;
   }
 
-  public void setMutatorProcessors(List<MutatorProcessor> mutatorProcessors) {
-    this.mutatorProcessors = mutatorProcessors;
+  public void setOperationProcessors(List<OperationProcessor> operationProcessors) {
+    this.operationProcessors = operationProcessors;
   }
 
   public List<String> getContainsStrings() {
@@ -98,14 +98,14 @@ public class Source {
       return c.toString();
     }).collect(Collectors.joining(", "));
 
-    String mutators = this.mutatorProcessors.stream().map(c -> {
-      return c.getMutator().getClass().getSimpleName();
+    String operations = this.operationProcessors.stream().map(c -> {
+      return c.getOperation().getClass().getSimpleName();
     }).collect(Collectors.joining(", "));
 
     return this.sourceName + "[" + "sourceRegex=" + this.sourceRegex
         + ", containsStrings=["+ StringUtils.join(this.containsStrings, ',')
         + "], regexPatterns=[" + patterns + "]"
         + "], deserializers=[" + this.deserProcessor + "]"
-        + "], mutators=[" +mutators + "]]";
+        + "], operations=[" + operations + "]]";
   }
 }

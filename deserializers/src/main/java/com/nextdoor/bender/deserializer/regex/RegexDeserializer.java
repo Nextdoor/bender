@@ -27,15 +27,12 @@ import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
 import com.nextdoor.bender.deserializer.regex.ReFieldConfig.ReFieldType;
-import com.nextdoor.bender.partition.PartitionSpec;
 
 public class RegexDeserializer extends Deserializer {
   private final Pattern pattern;
   private final List<ReFieldConfig> fields;
 
-  public RegexDeserializer(List<PartitionSpec> partitionSpecs, final Pattern pattern,
-      final List<ReFieldConfig> fields) {
-    super(partitionSpecs);
+  public RegexDeserializer(final Pattern pattern, final List<ReFieldConfig> fields) {
     this.pattern = pattern;
     this.fields = fields;
   }

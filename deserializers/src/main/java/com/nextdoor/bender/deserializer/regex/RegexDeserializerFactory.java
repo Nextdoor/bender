@@ -38,11 +38,11 @@ public class RegexDeserializerFactory implements DeserializerFactory {
     if (this.config.isUseRe2j()) {
       com.google.re2j.Pattern p =
           com.google.re2j.Pattern.compile(this.config.getRegex(), com.google.re2j.Pattern.DOTALL);
-      return new Re2jRegexDeserializer(config.getPartitionSpecs(), p, this.config.getFields());
+      return new Re2jRegexDeserializer(p, this.config.getFields());
     } else {
       java.util.regex.Pattern p =
           java.util.regex.Pattern.compile(this.config.getRegex(), java.util.regex.Pattern.DOTALL);
-      return new RegexDeserializer(config.getPartitionSpecs(), p, this.config.getFields());
+      return new RegexDeserializer(p, this.config.getFields());
     }
   }
 }

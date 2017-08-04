@@ -13,16 +13,30 @@
  *
  */
 
-package com.nextdoor.bender.mutator.value;
+package com.nextdoor.bender.operation.json.key;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.mutator.MutatorConfig;
 
-@JsonTypeName("DropArraysMutator")
-public class DropArraysMutatorConfig extends MutatorConfig {
+@JsonTypeName("JsonRootNodeOperation")
+public class JsonRootNodeOperationConfig extends MutatorConfig {
+
+  @JsonSchemaDescription("Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath")
+  @JsonProperty(required=true)
+  private String rootPath;
 
   @Override
-  public Class<DropArraysMutatorFactory> getFactoryClass() {
-    return DropArraysMutatorFactory.class;
+  public Class<JsonRootNodeOperationFactory> getFactoryClass() {
+    return JsonRootNodeOperationFactory.class;
+  }
+
+  public String getRootPath() {
+    return rootPath;
+  }
+
+  public void setRootPath(String rootPath) {
+    this.rootPath = rootPath;
   }
 }

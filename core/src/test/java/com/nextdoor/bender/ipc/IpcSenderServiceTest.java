@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.junit.Test;
@@ -172,7 +173,7 @@ public class IpcSenderServiceTest {
     ArrayList<InternalEvent> sent = new ArrayList<InternalEvent>();
     for (int i = 0; i < 12; i++) {
       InternalEvent ie = new DummyEvent("" + i, 0);
-      ie.setPartitions(Collections.emptyList());
+      ie.setPartitions(new LinkedHashMap(0));
       sent.add(ie);
       ipc.add(ie);
     }

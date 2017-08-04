@@ -15,7 +15,13 @@
 
 package com.nextdoor.bender.mutator;
 
-import com.nextdoor.bender.deserializer.DeserializedEvent;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import com.google.common.collect.Sets;
+import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.monitoring.MonitoredProcess;
 
 /**
@@ -23,29 +29,59 @@ import com.nextdoor.bender.monitoring.MonitoredProcess;
  * during a function run.
  */
 public class MutatorProcessor extends MonitoredProcess {
-  private Mutator mutator;
+  private BaseMutator mutator;
 
   public MutatorProcessor(MutatorFactory mutatorFactory) {
     super(mutatorFactory.getChildClass());
     this.mutator = mutatorFactory.newInstance();
   }
 
-  public void mutate(DeserializedEvent event) throws UnsupportedMutationException {
-    this.getRuntimeStat().start();
+  protected InternalEvent mutate(InternalEvent ievent) {
+    if (ievent.getEventObj() == null) {
+      return ievent;
+    }
 
     try {
-      this.mutator.mutateEvent(event);
+      return ((Mutator) this.mutator).mutateEvent(ievent);
     } catch (UnsupportedMutationException e) {
+      throw new RuntimeException(e);
+    }
+  }
+  
+  protected List<InternalEvent> multiplexMutate(InternalEvent ievent) {
+    if (ievent.getEventObj() == null) {
+      return Collections.emptyList();
+    }
+
+    try {
+      return ((MultiplexMutator) this.mutator).mutateEvent(ievent);
+    } catch (UnsupportedMutationException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public Stream<InternalEvent> mutate(Stream<InternalEvent> stream) {
+    this.getRuntimeStat().start();
+
+    Stream<InternalEvent> output = null;
+    try {
+      if (this.mutator instanceof Mutator) {
+        output = stream.map(ievent -> { return mutate(ievent);});
+      } else if (this.mutator instanceof MultiplexMutator) {
+        output = stream.flatMap(ievent -> { return multiplexMutate(ievent).stream();});
+      }
+      this.getSuccessCountStat().increment();
+      return output;
+    } catch (RuntimeException e) {
       this.getErrorCountStat().increment();
       throw e;
     } finally {
       this.getRuntimeStat().stop();
+      this.getSuccessCountStat().increment();
     }
-
-    this.getSuccessCountStat().increment();
   }
 
-  public Mutator getMutator() {
+  public BaseMutator getMutator() {
     return this.mutator;
   }
 

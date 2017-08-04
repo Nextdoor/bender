@@ -26,8 +26,8 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>Bender Mutators</name>
-  <artifactId>bender-mutators</artifactId>
+  <name>Bender Operations</name>
+  <artifactId>bender-operations</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
