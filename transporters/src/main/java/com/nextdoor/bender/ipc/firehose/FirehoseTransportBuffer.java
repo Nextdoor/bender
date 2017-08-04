@@ -56,7 +56,7 @@ public class FirehoseTransportBuffer implements TransportBuffer {
      * Write record if there's room in buffer
      */
     if (dataRecords.size() == MAX_RECORDS) {
-      logger.debug("hit record index max");
+      logger.trace("hit record index max");
       throw new IllegalStateException("reached max payload size");
     } else {
       if (cos.getByteCount() + record.length < MAX_RECORD_SIZE) {
@@ -67,7 +67,7 @@ public class FirehoseTransportBuffer implements TransportBuffer {
       /*
        * If current record is full then flush buffer to a Firehose Record and create a new buffer
        */
-      logger.debug("creating new datarecord");
+      logger.trace("creating new datarecord");
       ByteBuffer data = ByteBuffer.wrap(baos.toByteArray());
       this.dataRecords.add(new Record().withData(data));
       baos.reset();
@@ -79,7 +79,7 @@ public class FirehoseTransportBuffer implements TransportBuffer {
        * needs to be sent.
        */
       if (dataRecords.size() == MAX_RECORDS) {
-        logger.debug("hit record index max");
+        logger.trace("hit record index max");
         throw new IllegalStateException("reached max payload size");
       }
 
@@ -105,7 +105,7 @@ public class FirehoseTransportBuffer implements TransportBuffer {
   @Override
   public void close() {
     if (this.cos.getByteCount() != 0 && this.dataRecords.size() < MAX_RECORDS) {
-      logger.debug("flushing remainder of buffer");
+      logger.trace("flushing remainder of buffer");
       ByteBuffer data = ByteBuffer.wrap(baos.toByteArray());
       this.dataRecords.add(new Record().withData(data));
     }
