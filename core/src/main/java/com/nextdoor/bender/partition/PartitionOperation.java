@@ -20,7 +20,7 @@ public class PartitionOperation implements Operation {
    * Provided a PartitionSpec this method attempts to retrieve each field from the deserialized
    * event object.
    *
-   * @param partitionSpecs list of PartitionSpec.
+   * @param devent deserialized event to extract partitions from
    */
   protected LinkedHashMap<String, String> getPartitions(DeserializedEvent devent) {
     int numPartSpecs = partitionSpecs.size();

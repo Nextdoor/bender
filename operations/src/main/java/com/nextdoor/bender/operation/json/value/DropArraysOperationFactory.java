@@ -20,7 +20,7 @@ import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationFactory;
 
 /**
- * Create a {@link DropArraysMutator}.
+ * Create a {@link DropArraysOperation}.
  */
 public class DropArraysOperationFactory implements OperationFactory {
 

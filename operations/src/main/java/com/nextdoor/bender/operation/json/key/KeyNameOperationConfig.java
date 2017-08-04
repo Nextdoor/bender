@@ -16,10 +16,10 @@
 package com.nextdoor.bender.operation.json.key;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.nextdoor.bender.mutator.MutatorConfig;
+import com.nextdoor.bender.operation.OperationConfig;
 
-@JsonTypeName("JsonKeyNameMutator")
-public class KeyNameOperationConfig extends MutatorConfig {
+@JsonTypeName("JsonKeyNameOperation")
+public class KeyNameOperationConfig extends OperationConfig {
 
   @Override
   public Class<KeyNameOperationFactory> getFactoryClass() {

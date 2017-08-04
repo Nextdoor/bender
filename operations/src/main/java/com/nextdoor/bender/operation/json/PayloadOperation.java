@@ -27,7 +27,7 @@ public abstract class PayloadOperation implements Operation {
   /**
    * The {@link DeserializedEvent} payload must be a {@link JsonObject}.
    *
-   * @param event Event with payload to mutate.
+   * @param ievent Event that contains a JSON object deserialized payload.
    * @return
    */
   public InternalEvent perform(InternalEvent ievent) {

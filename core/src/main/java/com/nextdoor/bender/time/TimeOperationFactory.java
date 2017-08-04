@@ -8,7 +8,7 @@ public class TimeOperationFactory implements OperationFactory {
   
   @Override
   public void setConf(AbstractConfig config) {
-    config = (TimeOperationConfig) config;
+    this.config = (TimeOperationConfig) config;
   }
 
   @Override
@@ -18,6 +18,6 @@ public class TimeOperationFactory implements OperationFactory {
 
   @Override
   public TimeOperation newInstance() {
-    return new TimeOperation(config.getTimeField(), config.getTimeFieldType());
+    return new TimeOperation(this.config.getTimeField(), this.config.getTimeFieldType());
   }
 }
