@@ -16,7 +16,6 @@
 package com.nextdoor.bender.operation.json.array;
 
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationFactory;
 
 /**
