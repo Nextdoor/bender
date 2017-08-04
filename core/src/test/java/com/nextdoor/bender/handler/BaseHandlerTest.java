@@ -18,13 +18,7 @@ package com.nextdoor.bender.handler;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -377,17 +371,19 @@ public class BaseHandlerTest {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
+    TestContext context = new TestContext();
+
     List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    InternalEvent ievent = new InternalEvent("bah", context, 0);
     events.add(new DummyEvent("foo", 0));
 
-    TestContext context = new TestContext();
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
     handler.init(context);
 
     List<MutatorProcessor> mutatorProcessors = handler.sources.get(0).getMutatorProcessors();
     for (MutatorProcessor mutatorProcessor: mutatorProcessors) {
       Mutator mutatorSpy = spy(mutatorProcessor.getMutator());
-      doThrow(new UnsupportedMutationException("expected")).when(mutatorSpy).mutateEvent(any());
+      doThrow(new UnsupportedMutationException("expected")).when(mutatorSpy).mutateInternalEvent(ievent);
       mutatorProcessor.setMutator(mutatorSpy);
     }
 

@@ -15,21 +15,24 @@
 
 package com.nextdoor.bender.mutator;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.JsonSyntaxException;
+import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.monitoring.Stat;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper;
 import com.nextdoor.bender.testutils.DummyMutatorHelper.DummyMutator;
 import com.nextdoor.bender.testutils.DummyMutatorHelper.DummyMutatorFactory;
+import com.nextdoor.bender.utils.TestContext;
 
 public class MutatorProcessorTest {
 
@@ -47,12 +50,17 @@ public class MutatorProcessorTest {
     Stat successStat = mock(Stat.class);
     Stat errorStat = mock(Stat.class);
 
+    Context context = new TestContext();
+    InternalEvent event = new InternalEvent("asdf", context, 0);
+    List<InternalEvent> events = new ArrayList<>(1);
+    events.add(event);
+
     processor.setRuntimeStat(runtimeStat);
     processor.setSuccessCountStat(successStat);
     processor.setErrorCountStat(errorStat);
 
     try {
-      processor.mutate(null);
+      processor.mutate(events);
     } catch (UnsupportedMutationException e) {
 
     }
@@ -71,8 +79,16 @@ public class MutatorProcessorTest {
     DummyMutator mutator = mock(DummyMutator.class);
     DummyMutatorFactory mutatorFactory = new DummyMutatorFactory(mutator);
     MutatorProcessor processor = new MutatorProcessor(mutatorFactory);
+    Context context = new TestContext();
 
-    doThrow(new UnsupportedMutationException("test")).when(mutator).mutateEvent(null);
+    DeserializedEvent event = new DummyDeserializerHelper.DummyDeserializedEvent("bah");
+
+    InternalEvent ievent = new InternalEvent("asdf", context, 0);
+    ievent.setEventObj(event);
+    List<InternalEvent> events = new ArrayList<>(1);
+    events.add(ievent);
+
+    doThrow(new UnsupportedMutationException("test")).when(mutator).mutateInternalEvent(events);
 
     /*
      * Mock the Stat object
@@ -86,7 +102,7 @@ public class MutatorProcessorTest {
     processor.setErrorCountStat(errorStat);
 
     try {
-      processor.mutate(null);
+      processor.mutate(events);
     } catch (UnsupportedMutationException e) {
       // expected
     }
