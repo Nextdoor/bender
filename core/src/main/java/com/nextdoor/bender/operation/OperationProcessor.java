@@ -28,6 +28,15 @@ public class OperationProcessor extends MonitoredProcess {
     this.op = operationFactory.newInstance();
   }
 
+  /**
+   * This method sets up an operation to be performed on a stream. It is important to note that
+   * counting, time keeping, and exception handling must be done within the map/flatmap action as
+   * this method itself does not evaluate records and is only called once per function invocation to
+   * setup the stream pipeline.
+   * 
+   * @param stream
+   * @return new stream with operation map/flatmap added
+   */
   public Stream<InternalEvent> perform(Stream<InternalEvent> stream) {
     Stream<InternalEvent> output = null;
 
@@ -45,7 +54,11 @@ public class OperationProcessor extends MonitoredProcess {
           this.getRuntimeStat().stop();
         }
       });
-    } else {
+    } else if (this.op instanceof MultiplexOperation) {
+      /*
+       * MultiplexOperations require the use of flatmap which allows a single stream item to produce
+       * multiple results.
+       */
       output = stream.flatMap(ievent -> {
         this.getRuntimeStat().start();
         try {
@@ -59,6 +72,8 @@ public class OperationProcessor extends MonitoredProcess {
           this.getRuntimeStat().stop();
         }
       });
+    } else {
+      throw new OperationException("Invalid type of operation");
     }
 
     return output.filter(ievent -> {
