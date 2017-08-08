@@ -51,7 +51,7 @@ public class ArraySplitOperation implements MultiplexOperation {
       for (JsonElement elm : arr) {
         try {
           InternalEvent newEvent =
-              new InternalEvent(output.toString(), ievent.getCtx(), ievent.getArrivalTime());
+              new InternalEvent(elm.toString(), ievent.getCtx(), ievent.getArrivalTime());
           DeserializedEvent newDeserEvent = new GenericJsonEvent(elm.getAsJsonObject());
           newEvent.setEventObj(newDeserEvent);
           output.add(newEvent);
