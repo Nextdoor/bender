@@ -155,5 +155,12 @@
       <version>${mockito-all.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.antlr/stringtemplate -->
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>ST4</artifactId>
+      <version>${stringtemplate.version}</version>
+    </dependency>
   </dependencies>
 </project>
