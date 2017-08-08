@@ -21,9 +21,13 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.misc.ErrorBuffer;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3URI;
@@ -215,7 +219,39 @@ public class BenderConfig {
     }
   }
 
+  /**
+   * Parses an input String and replaces instances of {@literal <XXX>}" with the value
+   * of the XXX OS Environment Variable. This is used as a pre-parser for
+   * the Config files, allowing environment variables to be swapped at
+   * run-time.
+   *
+   * @param raw A raw string (not necessarily valid configuration data)
+   * @return    A parsed string with OS variables swapped in
+   * @throws ConfigurationException If any discovered {@literal <WRAPPED_VALUES>} are not
+   *                                found in System.getenv().
+   */
+  public static String swapEnvironmentVariables(String raw) throws ConfigurationException {
+    ErrorBuffer errors = new ErrorBuffer();
+    ST template = new ST(raw);
+    STGroup g = template.groupThatCreatedThisInstance;
+    g.setListener(errors);
+
+    Map<String, String> env = System.getenv();
+    for (String envName : env.keySet()) {
+      template.add(envName, env.get(envName));
+    }
+
+    String parsed = template.render();
+
+    if (errors.errors.size() > 0) {
+      throw new ConfigurationException(errors.toString());
+    }
+
+    return parsed;
+  }
+
   public static BenderConfig load(String json) {
+    json = swapEnvironmentVariables(json);
     validate(json);
 
     /*

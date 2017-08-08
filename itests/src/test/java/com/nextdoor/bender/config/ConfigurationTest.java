@@ -44,4 +44,5 @@ public class ConfigurationTest {
       assertNotNull(s.getSourceRegex());
     }
   }
+
 }
