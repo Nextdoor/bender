@@ -22,9 +22,18 @@ import com.nextdoor.bender.ipc.TransportSerializer;
 
 public class FirehoseTransportSerializer implements TransportSerializer {
   private Charset charset = Charset.forName("UTF-8");
+  private boolean appendNewline = true;
+  
+  public FirehoseTransportSerializer(boolean appendNewline) {
+    this.appendNewline = appendNewline;
+  }
 
   @Override
   public byte[] serialize(InternalEvent ievent) {
-    return (ievent.getSerialized() + '\n').getBytes(this.charset);
+    if (this.appendNewline) {
+      return (ievent.getSerialized() + '\n').getBytes(this.charset);
+    } else {
+      return (ievent.getSerialized()).getBytes(this.charset);
+    }
   }
 }
