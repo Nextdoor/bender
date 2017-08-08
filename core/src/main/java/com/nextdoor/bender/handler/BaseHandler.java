@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender.handler;
 
+import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
@@ -167,6 +168,12 @@ public abstract class BaseHandler<T> implements Handler<T> {
         }
       } else {
         throw new RuntimeException("function failed", e);
+      }
+    } finally {
+      try {
+        this.getInternalEventIterator().close();
+      } catch (IOException e) {
+        logger.warn("Error closing iterator", e);
       }
     }
   }
