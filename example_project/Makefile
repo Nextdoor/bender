@@ -32,7 +32,7 @@ ${APEX}:
 	curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sh
 
 compile:
-	cd ../ && mvn package -DskipTests -Dmaven.javadoc.skip=true
+	cd ../ && mvn install package -DskipTests -Dmaven.javadoc.skip=true
 
 test: compile
 	cd ../ && mvn test

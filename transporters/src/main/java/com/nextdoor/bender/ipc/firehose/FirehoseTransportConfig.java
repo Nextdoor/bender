@@ -18,6 +18,7 @@ package com.nextdoor.bender.ipc.firehose;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+
 import com.nextdoor.bender.ipc.TransportConfig;
 
 @JsonTypeName("Firehose")

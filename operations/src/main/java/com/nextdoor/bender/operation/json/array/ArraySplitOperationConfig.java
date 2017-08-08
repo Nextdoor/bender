@@ -16,9 +16,15 @@
 package com.nextdoor.bender.operation.json.array;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("JsonArraySplitOperation")
+@JsonSchemaDescription("Provided an event with a JsonArray payload it will produce "
+    + "new events with payloads coorepsonding to elements of the array. For example: "
+    + "[{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with "
+    + "payloads of {\"foo\": 1} and {\"bar\": 2}.")
+
 public class ArraySplitOperationConfig extends OperationConfig {
 
   @Override
