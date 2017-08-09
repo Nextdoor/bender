@@ -15,11 +15,11 @@
 
 package com.nextdoor.bender.ipc.s3;
 
-import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.log4j.Logger;
 

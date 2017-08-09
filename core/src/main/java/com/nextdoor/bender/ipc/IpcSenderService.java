@@ -70,6 +70,10 @@ public class IpcSenderService extends MonitoredProcess {
 
     // TODO: not sure why I made buffers synchronized
     synchronized (buffers) {
+      if (partitions == null) {
+        partitions = new LinkedHashMap<String, String>(0);
+      }
+
       if (!this.buffers.containsKey(partitions)) {
         partitions = new LinkedHashMap<String, String>(partitions);
         this.buffers.put(partitions, this.transportFactory.newTransportBuffer());

@@ -22,7 +22,7 @@ import com.nextdoor.bender.config.AbstractConfig;
 
 public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
   @JsonSchemaDescription("If an uncaught exception occurs fail the function")
-  @JsonProperty(required=false)
+  @JsonProperty(required = false)
   @JsonSchemaDefault(value = "true")
   private Boolean failOnException = true;
 

@@ -180,10 +180,7 @@ public class PartitionSpec {
   }
 
   public String toString() {
-    return name + "["
-        + "sources=" + StringUtils.join(',', sources)
-        + ", interpreter=" + interpreter
-        + ", format=" + (format != null ? format : "none")
-        + "]";
+    return name + "[" + "sources=" + StringUtils.join(',', sources) + ", interpreter=" + interpreter
+        + ", format=" + (format != null ? format : "none") + "]";
   }
 }

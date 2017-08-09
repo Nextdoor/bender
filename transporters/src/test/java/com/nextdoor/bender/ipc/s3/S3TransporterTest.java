@@ -31,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -39,15 +40,12 @@ import org.mockito.stubbing.Answer;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
-
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
 import com.amazonaws.services.s3.model.UploadPartRequest;
 import com.amazonaws.services.s3.model.UploadPartResult;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.ipc.TransportException;
-
-import org.apache.commons.io.output.ByteArrayOutputStream;
 
 
 public class S3TransporterTest {

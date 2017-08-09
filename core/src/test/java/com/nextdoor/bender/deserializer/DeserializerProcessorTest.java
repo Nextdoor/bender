@@ -15,28 +15,15 @@
 
 package com.nextdoor.bender.deserializer;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import org.junit.Test;
 
 import com.nextdoor.bender.monitoring.Stat;
-import com.nextdoor.bender.partition.PartitionSpec;
-import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyDeserializedEvent;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyDeserializer;;
 
 public class DeserializerProcessorTest {
@@ -122,96 +109,5 @@ public class DeserializerProcessorTest {
     } catch (DeserializationException e) {
       // expected
     }
-  }
-
-  @Test
-  public void testGetEvaluatedPartitionsString() {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
-    List<String> sources = Arrays.asList("foo");
-    PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
-    partitionSpecs.add(spec);
-
-    DeserializerProcessor deser = new DeserializerProcessor(new DummyDeserializer(partitionSpecs));
-    LinkedHashMap<String, String> actual =
-        deser.getEvaluatedPartitions(new DummyDeserializedEvent("baz"));
-
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", "baz");
-
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void testGetEvaluatedPartitionsStatic() {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
-    List<String> sources = Arrays.asList("foo");
-    PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STATIC, "123");
-    partitionSpecs.add(spec);
-
-    DeserializerProcessor deser = new DeserializerProcessor(new DummyDeserializer(partitionSpecs));
-    LinkedHashMap<String, String> actual =
-        deser.getEvaluatedPartitions(new DummyDeserializedEvent("baz"));
-
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", "123");
-
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void testGetEvaluatedPartitionsStringMultipleFields() {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
-    List<String> sources = Arrays.asList("one", "two");
-    PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
-    partitionSpecs.add(spec);
-
-    DeserializerProcessor deser = new DeserializerProcessor(new DummyDeserializer(partitionSpecs));
-    DummyDeserializedEvent dummyEventSpy = spy(new DummyDeserializedEvent("baz"));
-    doReturn(null).doReturn("5").when(dummyEventSpy).getField(any());
-
-    LinkedHashMap<String, String> actual = deser.getEvaluatedPartitions(dummyEventSpy);
-
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", "5");
-
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void testGetEvaluatedPartitionsStringMultipleFieldsNull() {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
-    List<String> sources = Arrays.asList("one", "two");
-    PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
-    partitionSpecs.add(spec);
-
-    DeserializerProcessor deser = new DeserializerProcessor(new DummyDeserializer(partitionSpecs));
-    DummyDeserializedEvent dummyEventSpy = spy(new DummyDeserializedEvent("baz"));
-    doReturn(null).doReturn(null).when(dummyEventSpy).getField(any());
-
-    LinkedHashMap<String, String> actual = deser.getEvaluatedPartitions(dummyEventSpy);
-
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", null);
-
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void testGetEvaluatedPartitionsNoSuchElementException() {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
-    List<String> sources = Arrays.asList("one");
-    PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
-    partitionSpecs.add(spec);
-
-    DeserializerProcessor deser = new DeserializerProcessor(new DummyDeserializer(partitionSpecs));
-    DummyDeserializedEvent dummyEventSpy = spy(new DummyDeserializedEvent("baz"));
-    doThrow(new NoSuchElementException()).when(dummyEventSpy).getField(any());
-
-    LinkedHashMap<String, String> actual = deser.getEvaluatedPartitions(dummyEventSpy);
-
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", null);
-
-    assertEquals(expected, actual);
   }
 }

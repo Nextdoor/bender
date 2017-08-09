@@ -7,10 +7,7 @@
       "name": "Test Events",
       "source_regex": ".*",
       "deserializer": {
-        "config_name": "TimeSeriesJson",
-        "partition_specs": [],
-        "time_field": "$.EPOCH",
-        "time_field_type": "SECONDS",
+        "config_name": "GenericJson",
         "nested_field_configs": [
           {
             "field": "MESSAGE",
@@ -18,12 +15,17 @@
           }
         ]
       },
-      "mutators": [
+      "operations": [
         {
-          "config_name": "DropArraysMutator"
+          "config_name": "TimeOperation",
+          "time_field": "$.EPOCH",
+          "time_field_type": "SECONDS"
         },
         {
-          "config_name": "KeyNameMutator"
+          "config_name": "JsonDropArraysOperation"
+        },
+        {
+          "config_name": "JsonKeyNameOperation"
         }
       ]
     }

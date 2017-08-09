@@ -15,25 +15,8 @@
 
 package com.nextdoor.bender.deserializer;
 
-import java.util.Collections;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.config.ConfigurableFactoryConfig;
-import com.nextdoor.bender.partition.PartitionSpec;
 
 public abstract class DeserializerConfig extends ConfigurableFactoryConfig {
-  @JsonSchemaDescription("Configuration to specify object fields that are treated as partitions")
-  private List<PartitionSpec> partitionSpecs = Collections.emptyList();
 
-  @JsonProperty("partition_specs")
-  public List<PartitionSpec> getPartitionSpecs() {
-    return partitionSpecs;
-  }
-
-  @JsonProperty("partition_specs")
-  public void setPartitionSpecs(List<PartitionSpec> partitionSpecs) {
-    this.partitionSpecs = partitionSpecs;
-  }
 }

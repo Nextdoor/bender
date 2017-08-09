@@ -35,7 +35,6 @@ import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
 import com.nextdoor.bender.deserializer.json.AbstractJsonDeserializerConfig.FieldConfig;
-import com.nextdoor.bender.partition.PartitionSpec;
 
 /**
  * Converts a JSON string into a JsonElement object.
@@ -45,14 +44,12 @@ public class GenericJsonDeserializer extends Deserializer {
   private final List<FieldConfig> nestedFieldConfigs;
   private String rootNodeOverridePath;
 
-  public GenericJsonDeserializer(List<PartitionSpec> partitionSpecs,
-      List<FieldConfig> nestedFieldConfigs) {
-    this(partitionSpecs, nestedFieldConfigs, null);
+  public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs) {
+    this(nestedFieldConfigs, null);
   }
 
-  public GenericJsonDeserializer(List<PartitionSpec> partitionSpecs,
-      List<FieldConfig> nestedFieldConfigs, String rootNodeOverridePath) {
-    super(partitionSpecs);
+  public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs,
+      String rootNodeOverridePath) {
     this.nestedFieldConfigs = nestedFieldConfigs;
     this.rootNodeOverridePath = rootNodeOverridePath;
   }

@@ -24,15 +24,12 @@ import com.google.re2j.Pattern;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
-import com.nextdoor.bender.partition.PartitionSpec;
 
 public class Re2jRegexDeserializer extends Deserializer {
   private final Pattern pattern;
   private final List<ReFieldConfig> fields;
 
-  public Re2jRegexDeserializer(List<PartitionSpec> partitionSpecs, final Pattern pattern,
-      final List<ReFieldConfig> fields) {
-    super(partitionSpecs);
+  public Re2jRegexDeserializer(final Pattern pattern, final List<ReFieldConfig> fields) {
     this.pattern = pattern;
     this.fields = fields;
   }

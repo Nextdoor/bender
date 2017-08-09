@@ -24,7 +24,6 @@ import static org.mockito.Mockito.verify;
 import org.junit.Test;
 
 import com.nextdoor.bender.monitoring.Stat;
-import com.nextdoor.bender.mutator.UnsupportedMutationException;
 import com.nextdoor.bender.testutils.DummySerializerHelper.DummySerializer;
 
 public class SerializerProcessorTest {
@@ -57,7 +56,7 @@ public class SerializerProcessorTest {
   }
 
   @Test
-  public void testStatsLoggingOnError() throws UnsupportedMutationException {
+  public void testStatsLoggingOnError() {
     DummySerializer serializer = mock(DummySerializer.class);
     SerializerProcessor processor = new SerializerProcessor(serializer);
 
@@ -90,7 +89,7 @@ public class SerializerProcessorTest {
   }
 
   @Test
-  public void testSerializeNull() throws UnsupportedMutationException {
+  public void testSerializeNull() {
     DummySerializer serializer = mock(DummySerializer.class);
     SerializerProcessor processor = new SerializerProcessor(serializer);
 

@@ -15,20 +15,7 @@
 
 package com.nextdoor.bender.deserializer;
 
-import java.util.List;
-
-import com.nextdoor.bender.partition.PartitionSpec;
-
 public abstract class Deserializer {
-  protected List<PartitionSpec> partitionSpecs;
-
-  /**
-   * @param partitionSpecs the {@link PartitionSpec} as loaded by the function configuration.
-   */
-  public Deserializer(List<PartitionSpec> partitionSpecs) {
-    this.partitionSpecs = partitionSpecs;
-  }
-
   /**
    * @param raw original event string.
    * @return the deserialized version of the event.

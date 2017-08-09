@@ -90,8 +90,7 @@ public class CloudwatchReporter implements Reporter {
   }
 
   private Collection<Dimension> tagsToDimensions(final Set<Tag> tags) {
-    return tags.stream().map(e -> tagToDim(e.getKey(), e.getValue()))
-        .collect(Collectors.toList());
+    return tags.stream().map(e -> tagToDim(e.getKey(), e.getValue())).collect(Collectors.toList());
   }
 
   private Dimension tagToDim(String name, String value) {

@@ -31,7 +31,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Module;
-import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 
 public class S3MockClientFactory extends AmazonS3ClientFactory {
   private static final String S3_BUCKET = "testbucket";

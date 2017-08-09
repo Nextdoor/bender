@@ -16,8 +16,8 @@
 package com.nextdoor.bender.monitoring;
 
 import java.util.Collections;
-import java.util.function.Predicate;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;

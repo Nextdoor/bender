@@ -22,9 +22,9 @@ import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,9 +46,9 @@ import com.nextdoor.bender.ipc.IpcSenderService;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
-import com.nextdoor.bender.mutator.Mutator;
-import com.nextdoor.bender.mutator.MutatorProcessor;
-import com.nextdoor.bender.mutator.UnsupportedMutationException;
+import com.nextdoor.bender.operation.BaseOperation;
+import com.nextdoor.bender.operation.OperationException;
+import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.serializer.SerializationException;
 import com.nextdoor.bender.serializer.Serializer;
 import com.nextdoor.bender.testutils.DummyTransportHelper.ArrayTransportBuffer;
@@ -161,8 +161,8 @@ public class BaseHandlerTest {
   }
 
   @Test
-  public void testEndToEndWithNoMutators() throws HandlerException {
-    BaseHandler.CONFIG_FILE = "/config/handler_config_no_mutators.json";
+  public void testEndToEndWithNoOperations() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_no_operations.json";
 
     List<DummyEvent> events = new ArrayList<DummyEvent>(2);
     events.add(new DummyEvent("foo", 0));
@@ -372,8 +372,7 @@ public class BaseHandlerTest {
   }
 
   @Test
-  public void testUnsupportedMutationException()
-      throws HandlerException, UnsupportedMutationException {
+  public void testOperationException() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
@@ -384,21 +383,20 @@ public class BaseHandlerTest {
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
     handler.init(context);
 
-    List<MutatorProcessor> mutatorProcessors = handler.sources.get(0).getMutatorProcessors();
-    for (MutatorProcessor mutatorProcessor: mutatorProcessors) {
-      Mutator mutatorSpy = spy(mutatorProcessor.getMutator());
-      doThrow(new UnsupportedMutationException("expected")).when(mutatorSpy).mutateEvent(any());
-      mutatorProcessor.setMutator(mutatorSpy);
+    List<OperationProcessor> operationProcessors = handler.sources.get(0).getOperationProcessors();
+    for (OperationProcessor operationProcessor : operationProcessors) {
+      BaseOperation operation = spy(operationProcessor.getOperation());
+      doThrow(new OperationException("expected")).when(operation).perform(any());
+      operationProcessor.setOperation(operation);
     }
 
     handler.handler(events, context);
-    assertEquals(1, mutatorProcessors.get(0).getErrorCountStat().getValue());
+    assertEquals(1, operationProcessors.get(0).getErrorCountStat().getValue());
   }
 
   @Test
-  public void testMultipleMutatorConfig()
-      throws HandlerException, UnsupportedMutationException {
-    BaseHandler.CONFIG_FILE = "/config/handler_config_two_mutators.json";
+  public void testMultipleOperationsConfig() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_two_operations.json";
 
     List<DummyEvent> events = new ArrayList<DummyEvent>(1);
     events.add(new DummyEvent("foo", 0));
@@ -407,20 +405,20 @@ public class BaseHandlerTest {
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
     handler.init(context);
 
-    List<MutatorProcessor> mutatorProcessors = handler.sources.get(0).getMutatorProcessors();
+    List<OperationProcessor> operationProcessores = handler.sources.get(0).getOperationProcessors();
 
-    for(int i = 0; i < mutatorProcessors.size(); i++) {
-      MutatorProcessor mockMutator = mock(MutatorProcessor.class);
-      mutatorProcessors.set(i, mockMutator);
+    for (int i = 0; i < operationProcessores.size(); i++) {
+      OperationProcessor operationProcessor = spy(operationProcessores.get(i));
+      operationProcessores.set(i, operationProcessor);
     }
 
     handler.handler(events, context);
 
     /*
-     * 2 mutators specified in the config file
+     * 2 operations specified in the config file
      */
-    verify(mutatorProcessors.get(0), times(1)).mutate(any());
-    verify(mutatorProcessors.get(1), times(1)).mutate(any());
+    verify(operationProcessores.get(0), times(1)).perform(any());
+    verify(operationProcessores.get(1), times(1)).perform(any());
   }
 
   @Test

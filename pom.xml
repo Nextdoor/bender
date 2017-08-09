@@ -68,7 +68,7 @@
     <module>handlers</module>
     <module>deserializers</module>
     <module>transporters</module>
-    <module>mutators</module>
+    <module>operations</module>
     <module>reporters</module>
     <module>wrappers</module>
     <module>serializers</module>
@@ -114,6 +114,7 @@
     <retry4j.version>0.6.2</retry4j.version>
     <s3proxy.version>1.5.3</s3proxy.version>
     <system-rules.version>1.16.0</system-rules.version>
+    <stringtemplate.version>4.0.8</stringtemplate.version>
   </properties>
 
   <build>

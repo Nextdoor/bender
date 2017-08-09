@@ -15,13 +15,20 @@
 
 package com.nextdoor.bender.handler;
 
+import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.log4j.Logger;
 
@@ -40,8 +47,7 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.logging.BenderLayout;
 import com.nextdoor.bender.monitoring.Monitor;
 import com.nextdoor.bender.monitoring.Stat;
-import com.nextdoor.bender.mutator.MutatorProcessor;
-import com.nextdoor.bender.mutator.UnsupportedMutationException;
+import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.serializer.SerializationException;
 import com.nextdoor.bender.serializer.SerializerProcessor;
 import com.nextdoor.bender.wrapper.Wrapper;
@@ -163,6 +169,26 @@ public abstract class BaseHandler<T> implements Handler<T> {
       } else {
         throw new RuntimeException("function failed", e);
       }
+    } finally {
+      try {
+        this.getInternalEventIterator().close();
+      } catch (IOException e) {
+        logger.warn("Error closing iterator", e);
+      }
+    }
+  }
+
+  private static void updateMax(AtomicLong max, long time) {
+    while (true) {
+      long curMax = max.get();
+
+      if (curMax >= time) {
+        return;
+      }
+
+      if (max.compareAndSet(curMax, time)) {
+        return;
+      }
     }
   }
 
@@ -178,7 +204,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
     Source source = this.getSource();
     DeserializerProcessor deser = source.getDeserProcessor();
-    List<MutatorProcessor> mutators = source.getMutatorProcessors();
+    List<OperationProcessor> operations = source.getOperationProcessors();
     List<String> containsStrings = source.getContainsStrings();
     List<Pattern> regexPatterns = source.getRegexPatterns();
 
@@ -189,103 +215,104 @@ public abstract class BaseHandler<T> implements Handler<T> {
      */
     this.monitor.invokeTimeNow();
 
-    int eventCount = 0;
-    long oldestArrivalTime = System.currentTimeMillis();
-    long oldestOccurrenceTime = System.currentTimeMillis();
+    AtomicLong eventCount = new AtomicLong(0);
+    AtomicLong oldestArrivalTime = new AtomicLong(System.currentTimeMillis());
+    AtomicLong oldestOccurrenceTime = new AtomicLong(System.currentTimeMillis());
 
     /*
      * Process each record
      */
-    while (events.hasNext()) {
-      eventCount++;
-      InternalEvent ievent = events.next();
-      String eventStr = ievent.getEventString();
+    int characteristics = Spliterator.IMMUTABLE;
+    Spliterator<InternalEvent> spliterator =
+        Spliterators.spliteratorUnknownSize(events, characteristics);
+    Stream<InternalEvent> input = StreamSupport.stream(spliterator, false);
 
-      /*
-       * Apply String contains filters before deserialization
-       */
-      boolean filtered = false;
-      for (String containsString : containsStrings) {
-        if (eventStr.contains(containsString)) {
-          filtered = true;
-          break;
-        }
-      }
+    /*
+     * Filter out raw events
+     */
+    Stream<InternalEvent> filtered = input.filter(
+        /*
+         * Perform regex filter
+         */
+        ievent -> {
+          eventCount.incrementAndGet();
+          String eventStr = ievent.getEventString();
 
-      /*
-       * If match found then skip processing event
-       */
-      if (filtered) {
-        continue;
-      }
+          /*
+           * Apply String contains filters before deserialization
+           */
+          for (String containsString : containsStrings) {
+            if (eventStr.contains(containsString)) {
+              return false;
+            }
+          }
 
-      /*
-       * Apply regex patterns before deserialization
-       */
-      for (Pattern regexPattern : regexPatterns) {
-        Matcher m = regexPattern.matcher(eventStr);
+          /*
+           * Apply regex patterns before deserialization
+           */
+          for (Pattern regexPattern : regexPatterns) {
+            Matcher m = regexPattern.matcher(eventStr);
 
-        if (m.find()) {
-          filtered = true;
-          break;
-        }
-      }
+            if (m.find()) {
+              return false;
+            }
+          }
 
-      /*
-       * If match found then skip processing event
-       */
-      if (filtered) {
-        continue;
-      }
+          return true;
+        });
 
-      /*
-       * Process event
-       */
+
+    /*
+     * Deserialize
+     */
+    Stream<InternalEvent> deserialized = filtered.map(ievent -> {
       DeserializedEvent data = deser.deserialize(ievent.getEventString());
       ievent.setEventObj(data);
-      ievent.setPartitions(deser.getPartitionSpecs());
 
-      if (oldestArrivalTime > ievent.getArrivalTime()) {
-        oldestArrivalTime = ievent.getArrivalTime();
-      }
+      return ievent;
+    });
 
-      if (oldestOccurrenceTime > ievent.getEventTimeMs()) {
-        oldestOccurrenceTime = ievent.getEventTimeMs();
-      }
+    /*
+     * Perform Operations
+     */
+    Stream<InternalEvent> operated = deserialized;
+    for (OperationProcessor operation : operations) {
+      operated = operation.perform(operated);
+    }
 
-      /*
-       * Mutate
-       */
-      if (mutators.size() > 0 && ievent.getEventObj() != null) {
-        try {
-          for (MutatorProcessor mutator : mutators) {
-            mutator.mutate(ievent.getEventObj());
-          }
-        } catch (UnsupportedMutationException e) {
-          logger.error("Mutation Failed: " + e.toString());
-        }
-      }
-
-      /*
-       * Wrap and Send through serializer
-       */
-      String serialized = null;
+    /*
+     * Serialize
+     */
+    Stream<InternalEvent> serialized = operated.map(ievent -> {
       try {
-        serialized = this.ser.serialize(this.wrapper.getWrapped(ievent));
-        ievent.setSerialized(serialized);
+        String raw = null;
+        raw = this.ser.serialize(this.wrapper.getWrapped(ievent));
+        ievent.setSerialized(raw);
+        return ievent;
       } catch (SerializationException e) {
-        continue;
+        return null;
       }
+    }).filter(Objects::nonNull);
+
+    /*
+     * Transport
+     */
+    serialized.forEach(ievent -> {
+      /*
+       * Update times
+       */
+      updateMax(oldestArrivalTime, ievent.getArrivalTime());
+      updateMax(oldestOccurrenceTime, ievent.getEventTime());
 
       try {
         this.getIpcService().add(ievent);
       } catch (TransportException e) {
         logger.warn("error adding event", e);
       }
-    }
+    });
 
     /*
-     * This is a blocking call. It waits for all transport threads to finish.
+     * Wait for transporters to finish
      */
     try {
       this.getIpcService().shutdown();
@@ -299,7 +326,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
       runtime.stop();
 
       if (!this.skipWriteStats) {
-        writeStats(eventCount, oldestArrivalTime, oldestOccurrenceTime, evtSource, runtime);
+        writeStats(eventCount.get(), oldestArrivalTime.get(), oldestOccurrenceTime.get(), evtSource,
+            runtime);
       }
 
       if (logger.isTraceEnabled()) {
@@ -308,7 +336,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
     }
   }
 
-  private void writeStats(int evtCount, long oldestArrivalTime, long oldestOccurrenceTime,
+  private void writeStats(long evtCount, long oldestArrivalTime, long oldestOccurrenceTime,
       String source, Stat runtime) {
     /*
      * Add some stats about this invocation

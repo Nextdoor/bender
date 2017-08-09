@@ -33,7 +33,7 @@ public class BasicWrapper implements Wrapper {
 
   private BasicWrapper(final InternalEvent internal) {
     this.sha1Hash = internal.getEventSha1Hash();
-    this.timestamp = internal.getEventTimeMs();
+    this.timestamp = internal.getEventTime();
 
     if (internal.getEventObj() != null) {
       this.payload = internal.getEventObj().getPayload();

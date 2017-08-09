@@ -7,12 +7,11 @@
       "name": "Test Events",
       "source_regex": ".*",
       "deserializer": {
-        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig",
-        "partition_specs": []
+        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig"
       },
-      "mutators": [
+      "operations": [
         {
-          "config_name": "DummyMutatorHelper$DummyMutatorConfig"
+          "config_name": "DummyOperationHelper$DummyOperationConfig"
         }
       ],
       "regex_patterns": ["o{2}p", "o{2}"]

@@ -46,8 +46,8 @@ public class DummyReporterHelper {
       for (Stat stat : stats) {
         allTags.addAll(tags);
         allTags.addAll(stat.getTags());
-        String tagsString = allTags.stream()
-            .map(e -> formatEntry(e.getKey(), e.getValue())).collect(Collectors.joining(","));
+        String tagsString = allTags.stream().map(e -> formatEntry(e.getKey(), e.getValue()))
+            .collect(Collectors.joining(","));
 
         String metric = String.format("%s %s %d", stat.getName(), tagsString, stat.getValue());
         buffer.add(metric);

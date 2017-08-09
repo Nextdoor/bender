@@ -17,8 +17,11 @@ package com.nextdoor.bender.ipc.firehose;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+
 import com.nextdoor.bender.ipc.TransportConfig;
+import com.nextdoor.bender.ipc.firehose.FirehoseTransportFactory.FirehoseBuffer;
 
 @JsonTypeName("Firehose")
 public class FirehoseTransportConfig extends TransportConfig {
@@ -27,12 +30,40 @@ public class FirehoseTransportConfig extends TransportConfig {
   @JsonProperty(required = true)
   private String streamName;
 
+  @JsonSchemaDescription("Type of buffer to use. BATCH buffer combines records "
+      + "while SIMPLE does not. Use SIMPLE when your firehose writes to ElasticSearch.")
+  @JsonProperty(required = false)
+  @JsonSchemaDefault(value = "BATCH")
+  private FirehoseBuffer firehoseBuffer = FirehoseBuffer.BATCH;
+
+  @JsonSchemaDescription("If a new line should be appended to records. Use this when "
+      + "selecting BATCH buffer.")
+  @JsonSchemaDefault(value = "true")
+  @JsonProperty(required = false)
+  private Boolean appendNewline = true;
+
   public String getStreamName() {
     return streamName;
   }
 
   public void setStreamName(String streamName) {
     this.streamName = streamName;
+  }
+
+  public FirehoseBuffer getFirehoseBuffer() {
+    return firehoseBuffer;
+  }
+
+  public void setFirehoseBuffer(FirehoseBuffer firehoseBuffer) {
+    this.firehoseBuffer = firehoseBuffer;
+  }
+
+  public Boolean getAppendNewline() {
+    return this.appendNewline;
+  }
+
+  public void setAppendNewline(Boolean appendNewline) {
+    this.appendNewline = appendNewline;
   }
 
   @Override

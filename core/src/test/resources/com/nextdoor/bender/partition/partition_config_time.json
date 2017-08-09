@@ -4,19 +4,19 @@
       "name": "Test Events",
       "source_regex": ".*",
       "deserializer": {
-        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig",
-        "partition_specs": [
-          {
-            "name": "dt",
-            "sources": ["epoch"],
-            "interpreter": "SECONDS",
-            "format": "YYYY-MM-dd HH:mm:ss"
-          }
-        ]
+        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig"
       },
-      "mutators": [
+      "operations": [
         {
-          "config_name": "DummyMutatorHelper$DummyMutatorConfig"
+          "config_name": "PartitionOperation",
+          "partition_specs": [
+            {
+              "name": "dt",
+              "sources": ["epoch"],
+              "interpreter": "SECONDS",
+              "format": "YYYY-MM-dd HH:mm:ss"
+            }
+          ]
         }
       ]
     }

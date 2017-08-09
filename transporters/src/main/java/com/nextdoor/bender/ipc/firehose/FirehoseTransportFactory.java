@@ -24,8 +24,12 @@ import com.nextdoor.bender.ipc.UnpartitionedTransport;
  * Creates a {@link FirehoseTransport} from a {@link FirehoseTransportConfig}.
  */
 public class FirehoseTransportFactory implements TransportFactory {
-  private FirehoseTransportSerializer serializer = new FirehoseTransportSerializer();
   private FirehoseTransportConfig config;
+  private FirehoseTransportSerializer serializer;
+  
+  protected enum FirehoseBuffer {
+    BATCH, SIMPLE
+  }
 
   @Override
   public UnpartitionedTransport newInstance() {
@@ -42,7 +46,13 @@ public class FirehoseTransportFactory implements TransportFactory {
 
   @Override
   public FirehoseTransportBuffer newTransportBuffer() throws TransportException {
-    return new FirehoseTransportBuffer(serializer);
+    switch (this.config.getFirehoseBuffer()) {
+      case SIMPLE:
+        return new FirehoseTransportBufferSimple(this.serializer);
+      default:
+      case BATCH:
+        return new FirehoseTransportBufferBatch(this.serializer);
+    }
   }
 
   @Override
@@ -53,5 +63,6 @@ public class FirehoseTransportFactory implements TransportFactory {
   @Override
   public void setConf(AbstractConfig config) {
     this.config = (FirehoseTransportConfig) config;
+    this.serializer = new FirehoseTransportSerializer(this.config.getAppendNewline());
   }
 }

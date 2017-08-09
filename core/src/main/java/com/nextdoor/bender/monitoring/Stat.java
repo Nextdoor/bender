@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.nextdoor.bender.monitoring.Tag;
-
 public class Stat {
   private long value = 0;
   private String name;

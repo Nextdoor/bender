@@ -15,20 +15,22 @@
 
 package com.nextdoor.bender.config;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.misc.ErrorBuffer;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3URI;
-import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,7 +48,7 @@ import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.handler.HandlerConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
 import com.nextdoor.bender.monitoring.ReporterConfig;
-import com.nextdoor.bender.mutator.MutatorConfig;
+import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.serializer.SerializerConfig;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
@@ -67,7 +69,7 @@ public class BenderConfig {
   @JsonSchemaDescription("List of reporter configurations")
   private List<ReporterConfig> reporters = Collections.emptyList();
 
-  @JsonSchemaDescription("Source configurations. This includes deserializer and mutator.")
+  @JsonSchemaDescription("Source configurations. This includes deserializer and operators.")
   private List<SourceConfig> sources = Collections.emptyList();
 
   @JsonSchemaDescription("Handler configuration")
@@ -94,7 +96,7 @@ public class BenderConfig {
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(WrapperConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(SerializerConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(DeserializerConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(MutatorConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(OperationConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(HandlerConfig.class));
     }
 
@@ -217,7 +219,39 @@ public class BenderConfig {
     }
   }
 
+  /**
+   * Parses an input String and replaces instances of {@literal <XXX>}" with the value
+   * of the XXX OS Environment Variable. This is used as a pre-parser for
+   * the Config files, allowing environment variables to be swapped at
+   * run-time.
+   *
+   * @param raw A raw string (not necessarily valid configuration data)
+   * @return    A parsed string with OS variables swapped in
+   * @throws ConfigurationException If any discovered {@literal <WRAPPED_VALUES>} are not
+   *                                found in System.getenv().
+   */
+  public static String swapEnvironmentVariables(String raw) throws ConfigurationException {
+    ErrorBuffer errors = new ErrorBuffer();
+    ST template = new ST(raw);
+    STGroup g = template.groupThatCreatedThisInstance;
+    g.setListener(errors);
+
+    Map<String, String> env = System.getenv();
+    for (String envName : env.keySet()) {
+      template.add(envName, env.get(envName));
+    }
+
+    String parsed = template.render();
+
+    if (errors.errors.size() > 0) {
+      throw new ConfigurationException(errors.toString());
+    }
+
+    return parsed;
+  }
+
   public static BenderConfig load(String json) {
+    json = swapEnvironmentVariables(json);
     validate(json);
 
     /*

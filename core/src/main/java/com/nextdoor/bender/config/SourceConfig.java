@@ -15,15 +15,15 @@
 
 package com.nextdoor.bender.config;
 
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
-import com.nextdoor.bender.mutator.MutatorConfig;
+import com.nextdoor.bender.operation.OperationConfig;
 
 public class SourceConfig {
   @JsonSchemaDescription("Source name")
@@ -38,9 +38,9 @@ public class SourceConfig {
   @JsonSchemaDescription("Deserializer configuration")
   private DeserializerConfig deserializerConfig;
 
-  @JsonSchemaDescription("Mutators configuration")
+  @JsonSchemaDescription("Operation configuration")
   @JsonProperty(required = false)
-  private List<MutatorConfig> mutatorConfigs = new ArrayList<MutatorConfig>(0);
+  private List<OperationConfig> operationConfigs = new ArrayList<OperationConfig>(0);
 
   @JsonSchemaDescription("Regex patterns to filter events by prior to deserialization")
   @JsonProperty(required = false)
@@ -76,14 +76,14 @@ public class SourceConfig {
     this.deserializerConfig = deserializerConfig;
   }
 
-  @JsonProperty("mutators")
-  public List<MutatorConfig> getMutatorConfigs() {
-    return mutatorConfigs;
+  @JsonProperty("operations")
+  public List<OperationConfig> getOperationConfigs() {
+    return this.operationConfigs;
   }
 
-  @JsonProperty("mutators")
-  public void setMutatorConfigs(List<MutatorConfig> mutatorConfigs) {
-    this.mutatorConfigs = mutatorConfigs;
+  @JsonProperty("operations")
+  public void setOperationConfigs(List<OperationConfig> operationConfigs) {
+    this.operationConfigs = operationConfigs;
   }
 
   public List<String> getRegexPatterns() {

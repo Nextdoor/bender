@@ -66,8 +66,8 @@ public class Tag {
 
     Tag t = (Tag) o;
 
-    boolean k =  (this.key == null ? t.key == null : this.key.equals(t.key));
-    boolean v =  (this.value == null ? t.value == null : this.value.equals(t.value));
+    boolean k = (this.key == null ? t.key == null : this.key.equals(t.key));
+    boolean v = (this.value == null ? t.value == null : this.value.equals(t.value));
 
     return k && v;
   }

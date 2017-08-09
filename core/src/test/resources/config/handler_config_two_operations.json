@@ -1,0 +1,34 @@
+{
+  "handler": {
+    "config_name": "DummyHandlerHelper$DummyHandler"
+  },
+  "sources": [
+    {
+      "name": "Test Events",
+      "source_regex": ".*",
+      "deserializer": {
+        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig"
+      },
+      "operations": [
+        {
+          "config_name": "DummyOperationHelper$DummyOperationConfig"
+        },
+        {
+          "config_name": "DummyOperationHelper$DummyOperationConfig"
+        }
+      ]
+    }
+  ],
+  "wrapper": {
+    "config_name": "DummyWrapperHelper$DummyWrapperConfig"
+  },
+  "serializer": {
+    "config_name": "DummySerializerHelper$DummySerializerConfig"
+  },
+  "transport": {
+    "config_name": "DummyTransportHelper$DummyTransporterConfig",
+    "threads": 1
+  },
+  "reporters": [
+  ]
+}

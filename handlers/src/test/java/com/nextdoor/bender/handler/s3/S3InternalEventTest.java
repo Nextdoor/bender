@@ -17,7 +17,6 @@ package com.nextdoor.bender.handler.s3;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +38,6 @@ public class S3InternalEventTest {
     Map<String, String> expected = new HashMap<String, String>(1);
     expected.put(S3InternalEvent.FILENAME_PARTITION, DigestUtils.sha1Hex("file"));
 
-    ievent.setPartitions(Collections.emptyList());
     assertEquals(expected, ievent.getPartitions());
   }
 }
