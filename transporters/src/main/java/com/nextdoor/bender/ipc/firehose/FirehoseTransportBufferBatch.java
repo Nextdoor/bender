@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 
 import com.amazonaws.services.kinesisfirehose.model.Record;
 import com.nextdoor.bender.InternalEvent;
-import com.nextdoor.bender.ipc.TransportBuffer;
 
 /**
  * A buffer that batches serialized events into four 1000kb {@link Record}s. This is done because
@@ -55,7 +54,7 @@ public class FirehoseTransportBufferBatch extends FirehoseTransportBuffer {
     /*
      * Write record if there's room in buffer
      */
-    if (dataRecords.size() == MAX_RECORDS) {
+    if (dataRecords.size() >= MAX_RECORDS) {
       logger.trace("hit record index max");
       throw new IllegalStateException("reached max payload size");
     } else {
@@ -78,7 +77,7 @@ public class FirehoseTransportBufferBatch extends FirehoseTransportBuffer {
        * If we hit the max number of Firehose Records (4) then notify IPC service that this buffer
        * needs to be sent.
        */
-      if (dataRecords.size() == MAX_RECORDS) {
+      if (dataRecords.size() >= MAX_RECORDS) {
         logger.trace("hit record index max");
         throw new IllegalStateException("reached max payload size");
       }
