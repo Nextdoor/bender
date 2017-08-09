@@ -23,7 +23,7 @@ public class PartitionOperationFactory implements OperationFactory {
 
   @Override
   public void setConf(AbstractConfig config) {
-    config = (PartitionOperationConfig) config;
+    this.config = (PartitionOperationConfig) config;
   }
 
   @Override
@@ -33,6 +33,6 @@ public class PartitionOperationFactory implements OperationFactory {
 
   @Override
   public PartitionOperation newInstance() {
-    return new PartitionOperation(config.getPartitionSpecs());
+    return new PartitionOperation(this.config.getPartitionSpecs());
   }
 }
