@@ -1,5 +1,8 @@
 .PHONY: clean test package
 
+apex: clean
+	mvn package -DskipTests -Dmaven.javadoc.skip=true -Papex
+
 package: clean
 	mvn package -DskipTests -Dmaven.javadoc.skip=true
 
