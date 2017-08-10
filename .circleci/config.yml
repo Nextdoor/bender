@@ -24,7 +24,7 @@ jobs:
             - v1-dependencies-{{ checksum "pom.xml" }}
             - v1-dependencies-
       - run: mvn dependency:resolve-plugins
-      - run: mvn compile -Dmaven.main.skip
+      - run: mvn clean compile -Dmaven.main.skip -Dexec.skip
       - save_cache:
           paths:
             - ~/.m2
@@ -33,7 +33,7 @@ jobs:
       - run: cp .circleci/m2.settings.xml ~/.m2/settings.xml
 
       # Run our tests
-      - run: mvn install -DskipTests
+      - run: mvn install -DskipTests -Dgpg.skip
       - run: mvn test
 
       # Build our docs!
@@ -63,7 +63,7 @@ jobs:
               sudo apt-get install gnupg1
               echo $GPG_KEY | base64 --decode > build.gpg
               gpg1 --import build.gpg
-              mvn clean verify gpg:sign install:install deploy:deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -DskipTests
+              mvn clean verify deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -DskipTests
             else
               echo "Skipping Release Deploy"
             fi
