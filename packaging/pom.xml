@@ -81,7 +81,7 @@
         <version>${exec-maven-plugin.version}</version>
         <executions>
           <execution>
-            <phase>pre-package</phase>
+            <phase>generate-resources</phase>
             <goals>
               <goal>java</goal>
             </goals>
