@@ -17,10 +17,13 @@ package com.nextdoor.bender.operation;
 
 import java.util.stream.Stream;
 
+import org.apache.log4j.Logger;
+
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.monitoring.MonitoredProcess;
 
 public class OperationProcessor extends MonitoredProcess {
+  private static final Logger logger = Logger.getLogger(OperationProcessor.class);
   private BaseOperation op;
 
   public OperationProcessor(OperationFactory operationFactory) {
@@ -76,11 +79,25 @@ public class OperationProcessor extends MonitoredProcess {
       throw new OperationException("Invalid type of operation");
     }
 
+    /*
+     * Filter out events if an operation did something that resulted in a null event or payload.
+     * This protects future operations from running on invalid data.
+     */
     return output.filter(ievent -> {
-      if (ievent != null) {
-        return true;
+      if (ievent == null) {
+        logger.warn(op.getClass().getName() + " produced a null InternalEvent");
+        return false;
       }
-      return false;
+      if (ievent.getEventObj() == null) {
+        logger.warn(op.getClass().getName() + " produced a null DeserializedEvent");
+        return false;
+      }
+      if (ievent.getEventObj().getPayload() == null) {
+        logger.warn(op.getClass().getName() + " produced a null DeserializedEvent payload");
+        return false;
+      }
+
+      return true;
     });
   }
 

@@ -343,11 +343,55 @@ public class BaseHandlerTest {
     DeserializerProcessor proc = handler.sources.get(0).getDeserProcessor();
 
     Deserializer deserSpy = spy(proc.getDeserializer());
-    doThrow(new DeserializationException("")).when(deserSpy).deserialize(anyString());
+    doThrow(new DeserializationException("expected")).when(deserSpy).deserialize(anyString());
     proc.setDeserializer(deserSpy);
 
     handler.handler(events, context);
     assertEquals(1, proc.getErrorCountStat().getValue());
+  }
+
+  @Test
+  public void testFilterFailedDeserialization() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config.json";
+    handler.skipWriteStats = true;
+
+    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    events.add(new DummyEvent("foo", 0));
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.init(context);
+
+    DeserializerProcessor proc = handler.sources.get(0).getDeserProcessor();
+
+    Deserializer deserSpy = spy(proc.getDeserializer());
+    doThrow(new DeserializationException("expected")).when(deserSpy).deserialize(anyString());
+    proc.setDeserializer(deserSpy);
+
+    handler.handler(events, context);
+    assertEquals(0, BufferedTransporter.output.size());
+  }
+
+  @Test
+  public void testFilterNullDeserialization() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config.json";
+    handler.skipWriteStats = true;
+
+    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    events.add(new DummyEvent("foo", 0));
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.init(context);
+
+    DeserializerProcessor proc = handler.sources.get(0).getDeserProcessor();
+
+    Deserializer deserSpy = spy(proc.getDeserializer());
+    when(deserSpy.deserialize(anyString())).thenReturn(null);
+    proc.setDeserializer(deserSpy);
+
+    handler.handler(events, context);
+    assertEquals(0, BufferedTransporter.output.size());
   }
 
   @Test
