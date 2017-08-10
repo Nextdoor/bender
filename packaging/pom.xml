@@ -45,43 +45,59 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
-        <version>1.12</version>
+        <version>${license-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>aggregate-download-licenses</id>
-            <phase>prepare-package</phase>
+            <phase>package</phase>
             <goals>
               <goal>aggregate-download-licenses</goal>
             </goals>
+            <configuration>
+              <includedScopes>compile</includedScopes>
+              <executeOnlyOnRootModule>false</executeOnlyOnRootModule>
+              <licensesOutputDirectory>${project.build.directory}/licenses/licenses</licensesOutputDirectory>
+              <skipAggregateDownloadLicenses>false</skipAggregateDownloadLicenses>
+            </configuration>
           </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.5</version>
-        <executions>
           <execution>
-            <id>copy-resources</id>
-            <phase>prepare-package</phase>
+            <id>add-third-party</id>
+            <phase>generate-resources</phase>
             <goals>
-              <goal>copy-resources</goal>
+              <goal>add-third-party</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.outputDirectory}/META-INF/licenses</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}/target/generated-resources/licenses</directory>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
+              <includedScopes>compile</includedScopes>
+              <useMissingFile>true</useMissingFile>
+              <outputDirectory>${project.build.directory}/licenses/licenses</outputDirectory>
             </configuration>
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>com.nextdoor.bender.config.WriteSchema</mainClass>
+          <arguments>
+            <argument>${project.build.directory}/generated-schema/schema/default.json</argument>
+          </arguments>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.3</version>
+        <version>${maven-shade-plugin.version}</version>
         <configuration>
           <createSourcesJar>true</createSourcesJar>
         </configuration>
@@ -95,6 +111,14 @@
         </executions>
       </plugin>
     </plugins>
+    <resources>
+      <resource>
+        <directory>${project.build.directory}/generated-schema</directory>
+      </resource>
+      <resource>
+        <directory>${project.build.directory}/licenses</directory>
+      </resource>
+    </resources>
   </build>
 
   <dependencies>

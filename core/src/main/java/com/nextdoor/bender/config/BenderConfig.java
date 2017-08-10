@@ -55,7 +55,7 @@ import com.nextdoor.bender.wrapper.WrapperConfig;
 public class BenderConfig {
   private static final Logger logger = Logger.getLogger(BenderConfig.class);
   public static final ConfiguredObjectMapper CMAPPER = new ConfiguredObjectMapper();
-  public static final BenderSchema SCHEMA = new BenderSchema("/schema/schema.json");
+  public static final BenderSchema SCHEMA = new BenderSchema("/schema/default.json");
 
   @JsonSchemaDescription("Transport configuration")
   private TransportConfig transportConfig;
