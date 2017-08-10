@@ -267,10 +267,15 @@ public abstract class BaseHandler<T> implements Handler<T> {
      */
     Stream<InternalEvent> deserialized = filtered.map(ievent -> {
       DeserializedEvent data = deser.deserialize(ievent.getEventString());
-      ievent.setEventObj(data);
 
+      if (data == null || data.getPayload() == null) {
+        logger.warn("Failed to deserialize: " + ievent.getEventString());
+        return null;
+      }
+
+      ievent.setEventObj(data);
       return ievent;
-    });
+    }).filter(Objects::nonNull);
 
     /*
      * Perform Operations

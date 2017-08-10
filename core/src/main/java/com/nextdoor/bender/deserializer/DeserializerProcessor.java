@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.deserializer;
 
+import org.apache.log4j.Logger;
+
 import com.nextdoor.bender.monitoring.MonitoredProcess;
 
 /**
@@ -22,6 +24,7 @@ import com.nextdoor.bender.monitoring.MonitoredProcess;
  * deserialize events and handles error cases.
  */
 public class DeserializerProcessor extends MonitoredProcess {
+  private static final Logger logger = Logger.getLogger(DeserializerProcessor.class);
   private Deserializer deser;
 
   public DeserializerProcessor(Deserializer deserializer) {
@@ -37,9 +40,8 @@ public class DeserializerProcessor extends MonitoredProcess {
    * @param eventString A plain text string which needs to be converted into a
    *        {@link DeserializedEvent}.
    * @return A DeserializedEvent if deserialization succeeded or null if it failed.
-   * @throws DeserializationException if event is not able to be deserialized.
    */
-  public DeserializedEvent deserialize(String eventString) throws DeserializationException {
+  public DeserializedEvent deserialize(String eventString) {
     DeserializedEvent dEvent = null;
     this.getRuntimeStat().start();
 
@@ -47,6 +49,7 @@ public class DeserializerProcessor extends MonitoredProcess {
       dEvent = this.deser.deserialize(eventString);
       this.getSuccessCountStat().increment();
     } catch (DeserializationException e) {
+      logger.warn("failed to deserialize", e);
       this.getErrorCountStat().increment();
     } finally {
       this.getRuntimeStat().stop();
