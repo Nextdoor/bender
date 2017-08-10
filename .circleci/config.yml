@@ -24,7 +24,7 @@ jobs:
             - v1-dependencies-{{ checksum "pom.xml" }}
             - v1-dependencies-
       - run: mvn dependency:resolve-plugins
-      - run: mvn compile -Dmaven.main.skip
+      - run: mvn clean compile -Dmaven.main.skip
       - save_cache:
           paths:
             - ~/.m2
