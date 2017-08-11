@@ -17,7 +17,9 @@ package com.nextdoor.bender.ipc;
 
 import java.util.LinkedHashMap;
 
+import com.amazonaws.services.lambda.runtime.Context;
+
 public interface PartitionedTransport extends Transport {
-  void sendBatch(TransportBuffer buffer, LinkedHashMap<String, String> partitions)
+  void sendBatch(TransportBuffer buffer, LinkedHashMap<String, String> partitions, Context context)
       throws TransportException;
 }

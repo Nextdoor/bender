@@ -34,7 +34,7 @@ import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
-import com.nextdoor.bender.deserializer.json.AbstractJsonDeserializerConfig.FieldConfig;
+import com.nextdoor.bender.deserializer.json.GenericJsonDeserializerConfig.FieldConfig;
 
 /**
  * Converts a JSON string into a JsonElement object.

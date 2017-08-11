@@ -16,9 +16,14 @@
 package com.nextdoor.bender.handler.kinesis;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.handler.HandlerConfig;
 
 @JsonTypeName("KinesisHandler")
+@JsonSchemaDescription("For use with Kinesis triggers. Set the function handler to "
+    + "\"com.nextdoor.bender.handler.s3.SNSS3Handler::handler\". The following IAM permissions "
+    + "are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, "
+    + "kinesis:GetRecords, and kinesis:ListTagsForStream.")
 public class KinesisHandlerConfig extends HandlerConfig {
 
 }

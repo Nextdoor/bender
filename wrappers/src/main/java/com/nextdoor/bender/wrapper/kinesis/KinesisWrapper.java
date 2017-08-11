@@ -36,7 +36,6 @@ public class KinesisWrapper implements Wrapper {
   private long arrivalTime;
   private long processingDelay;
   private long timestamp;
-
   private Object payload;
 
   public KinesisWrapper() {}

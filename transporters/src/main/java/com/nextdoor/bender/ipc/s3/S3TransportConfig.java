@@ -24,17 +24,23 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.ipc.TransportConfig;
 
 @JsonTypeName("S3")
+@JsonSchemaDescription("Writes batches of events to S3. The output filename will either "
+    + "be the unique function inocation request id as specified by Lambda or a hash of the input "
+    + "filename when using the S3 handler. Required IAM permissions are: "
+    + "s3:AbortMultipartUpload, s3:PutObject, s3:ListMultipartUploadParts, "
+    + "s3:ListBucketMultipartUploads")
+
 public class S3TransportConfig extends TransportConfig {
 
-  @JsonSchemaDescription("S3 bucket name")
+  @JsonSchemaDescription("S3 bucket name.")
   @JsonProperty(required = true)
   private String bucketName;
 
-  @JsonSchemaDescription("Path to append to S3 keys")
+  @JsonSchemaDescription("Path to append to S3 keys.")
   @JsonProperty(required = false)
   private String basePath;
 
-  @JsonSchemaDescription("Compress files with bz2 compression")
+  @JsonSchemaDescription("Compress files with bz2 compression.")
   @JsonSchemaDefault("true")
   @JsonProperty(required = false)
   private Boolean useCompression = true;

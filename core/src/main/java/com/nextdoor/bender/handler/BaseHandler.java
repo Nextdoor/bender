@@ -208,6 +208,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
     List<String> containsStrings = source.getContainsStrings();
     List<Pattern> regexPatterns = source.getRegexPatterns();
 
+    this.getIpcService().setContext(context);
+
     Iterator<InternalEvent> events = this.getInternalEventIterator();
 
     /*

@@ -37,23 +37,23 @@ public class PartitionSpec {
     TOLOWER, TOUPPER, NONE
   }
 
-  @JsonSchemaDescription("Value to use as the key for the partition")
+  @JsonSchemaDescription("Value to use as the key for the partition.")
   @JsonProperty(required = true)
   private String name;
 
-  @JsonSchemaDescription("Fields to use for the value of the partition")
+  @JsonSchemaDescription("Fields to use for the value of the partition.")
   private List<String> sources = Collections.emptyList();
 
-  @JsonSchemaDescription("Interpreter to use on the partition value")
+  @JsonSchemaDescription("Interpreter to use on the partition value.")
   @JsonProperty(required = true)
   @JsonSchemaDefault("STRING")
   private Interpreter interpreter = Interpreter.STRING;
 
-  @JsonSchemaDescription("Java date format to use when using a time based interpreter")
+  @JsonSchemaDescription("Java date format to use when using a time based interpreter.")
   @JsonProperty(required = false)
   private String format = null;
 
-  @JsonSchemaDescription("Basic string formatting")
+  @JsonSchemaDescription("Basic string formatting.")
   @JsonProperty(required = false)
   @JsonSchemaDefault("NONE")
   private StringFormat stringFormat = StringFormat.NONE;

@@ -21,6 +21,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.monitoring.ReporterConfig;
 
 @JsonTypeName("DataDog")
+@JsonSchemaDescription("Writes metrics to standard out. To setup DataDog lambda integration see "
+    + "https://www.datadoghq.com/blog/monitoring-lambda-functions-datadog/.")
 public class DataDogReporterConfig extends ReporterConfig {
   @JsonSchemaDefault("lambda.bender")
   @JsonSchemaDescription("Prefix to append to metric names")

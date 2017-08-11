@@ -27,6 +27,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
 
 import com.amazonaws.AmazonClientException;
+import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
@@ -129,15 +130,24 @@ public class S3Transport implements PartitionedTransport {
   }
 
   @Override
-  public void sendBatch(TransportBuffer buffer, LinkedHashMap<String, String> partitions)
-      throws TransportException {
+  public void sendBatch(TransportBuffer buffer, LinkedHashMap<String, String> partitions,
+      Context context) throws TransportException {
     S3TransportBuffer buf = (S3TransportBuffer) buffer;
 
     /*
      * Create s3 key (filepath + filename)
      */
     LinkedHashMap<String, String> parts = new LinkedHashMap<String, String>(partitions);
+
+
     String filename = parts.remove(FILENAME_KEY);
+
+    if (filename == null) {
+      filename = context.getAwsRequestId();
+    }
+
+
+
     String key = parts.entrySet().stream().map(s -> s.getKey() + "=" + s.getValue())
         .collect(Collectors.joining("/"));
 

@@ -16,9 +16,14 @@
 package com.nextdoor.bender.wrapper.s3;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
 @JsonTypeName("S3Wrapper")
+@JsonSchemaDescription("Adds information about function name, function version, processing "
+    + "time (in ms), processing delay (in ms), processing timestsamp (ms since epoch), sha1 "
+    + "hash of the original event, and s3 key, bucket, and key version from the source S3"
+    + "file read. Only works with the S3Handler and SNSS3Handler.")
 public class S3WrapperConfig extends WrapperConfig {
 
   @Override

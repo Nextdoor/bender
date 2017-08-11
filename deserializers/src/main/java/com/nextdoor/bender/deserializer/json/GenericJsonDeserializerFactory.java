@@ -24,7 +24,7 @@ import com.nextdoor.bender.deserializer.DeserializerFactory;
  */
 public class GenericJsonDeserializerFactory implements DeserializerFactory {
 
-  private AbstractJsonDeserializerConfig config;
+  private GenericJsonDeserializerConfig config;
 
   @Override
   public Deserializer newInstance() {
@@ -39,6 +39,6 @@ public class GenericJsonDeserializerFactory implements DeserializerFactory {
 
   @Override
   public void setConf(AbstractConfig config) {
-    this.config = (AbstractJsonDeserializerConfig) config;
+    this.config = (GenericJsonDeserializerConfig) config;
   }
 }

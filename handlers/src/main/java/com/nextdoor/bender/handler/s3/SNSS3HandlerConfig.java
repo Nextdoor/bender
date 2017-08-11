@@ -21,8 +21,18 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.handler.HandlerConfig;
 
 @JsonTypeName("SNSS3Handler")
+@JsonSchemaDescription("Similar to the S3Handler but reads SNS notifications which contain S3 "
+    + "Object creation events. This is may be required if you have multiple functions running "
+    + "against the same bucket. For more information about S3 SNS triggers see "
+    + "https://aws.amazon.com/blogs/compute/fanout-s3-event-notifications-to-multiple-endpoints/."
+    + "You will need to set the function handler to \"com.nextdoor.bender.handler.s3.SNSS3Handler::handler\". "
+    + "The following IAM permissions are required: s3:GetObject and lambda:InvokeFunction. Note you "
+    + "will also need to provide permissions to S3 bucket to publish to SNS and SNS to invoke "
+    + "your function.")
 public class SNSS3HandlerConfig extends HandlerConfig {
-  @JsonSchemaDescription("SNS Topic to publish function falures to")
+  @JsonSchemaDescription("SNS Topic to publish function falures to. Do not use this for function "
+      + "retries. Instead use DLQs http://docs.aws.amazon.com/lambda/latest/dg/dlq.html. This "
+      + "requires IAM permission SNS:Publish.")
   @JsonProperty(required = false)
   private String snsNotificationArn = null;
 

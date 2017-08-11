@@ -21,6 +21,10 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("JsonRootNodeOperation")
+@JsonSchemaDescription("Provided a JSON object and a path within the object it will promote the "
+    + "path's element to the root position. For example if the input is "
+    + "{\"foo\": {\"bar\": {\"baz\": 1}}} and specified path $.foo.bar the operation will produce "
+    + "{\"baz\": 1} as the new payload.")
 public class JsonRootNodeOperationConfig extends OperationConfig {
 
   @JsonSchemaDescription("Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath")

@@ -16,9 +16,14 @@
 package com.nextdoor.bender.operation.json.value;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("JsonDropArraysOperation")
+@JsonSchemaDescription("Provided a JSON object it will remove any keys which have array values. "
+    + "This is helpful for use with ElasticSearch which indexes arrays in a particular manner "
+    + "not conducive to exploration. See: "
+    + "https://www.elastic.co/guide/en/elasticsearch/guide/current/complex-core-fields.html")
 public class DropArraysOperationConfig extends OperationConfig {
 
   @Override

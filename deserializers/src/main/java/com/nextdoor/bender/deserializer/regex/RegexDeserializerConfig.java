@@ -25,6 +25,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 
 @JsonTypeName("Regex")
+@JsonSchemaDescription("Extracts fields from a line with regex groups. Note that number of groups "
+    + "in regex must match number of fields specified.")
 public class RegexDeserializerConfig extends DeserializerConfig {
 
   @JsonSchemaDescription("List of field names and their types")

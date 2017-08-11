@@ -25,6 +25,9 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("PartitionOperation")
+@JsonSchemaDescription("Sets the partition information for the Event using fields from the "
+    + "deserialized object. When using JSON use JsonPath format to specify fields. See "
+    + "https://github.com/jayway/JsonPath")
 public class PartitionOperationConfig extends OperationConfig {
 
   @JsonSchemaDescription("Configuration to specify object fields that are treated as partitions")

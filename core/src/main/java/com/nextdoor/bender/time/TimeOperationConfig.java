@@ -21,6 +21,9 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("TimeOperation")
+@JsonSchemaDescription("Sets the Event timestamp using the provided field in the deserialized "
+    + "object. When using JSON use JsonPath format to specify field. See "
+    + "https://github.com/jayway/JsonPath")
 public class TimeOperationConfig extends OperationConfig {
 
   public static enum TimeFieldType {
