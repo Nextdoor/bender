@@ -14,7 +14,7 @@ all aspects of the ETL process.
 ### Initial Support
 
 While developers are able to write their own Input Handlers, Deserializers,
-Mutators, Wrappers, Serializers, Transporters, or Reporters, out of box the
+Operations, Wrappers, Serializers, Transporters, or Reporters, out of box the
 Bender contains basic functionality to read, filter, manipulate, and write JSON
 from [Amazon Kinesis Streams](https://aws.amazon.com/kinesis/streams/) or
 [Amazon S3](https://aws.amazon.com/s3/) files. Specially the following is
@@ -40,13 +40,14 @@ This allows processing of loosely defined schemas such as those done in
 application logging. For schema validation the use of GSON to POJOs is
 encouraged.
 
-##### Mutators
-Data sometimes needs to be unwrapped, fixed, sanitized, or enriched. Mutators
+##### Operations
+Data sometimes needs to be transformed, fixed, sanitized, or enriched. Operations
 allow for these types of data manipulation. Included JSON mutators:
 
-* Root node promoter
+* Root node promoter (in the case you have nested data)
 * Array Dropping
-* Appending value type information to key names
+* Array Splitting (turning a single event into multiple)
+* Appending value type information to key names (helps with writing data to ElasticSearch)
 
 ##### Wrappers
 Optionally wrap data to provide additional information on where the data
@@ -57,7 +58,7 @@ originated from and what processed it:
 * Basic Wrapper
 
 ##### Serializers
-Write your mutated and wrapped data back into JSON before loading it elsewhere.
+Write your transformed and wrapped data back into JSON before loading it elsewhere.
 
 ##### Transporters
 Transporters convert string payloads to serialized wire formats and send

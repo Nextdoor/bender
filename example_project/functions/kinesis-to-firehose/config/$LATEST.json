@@ -9,10 +9,7 @@
       "source_regex": "arn:aws:kinesis:.*:.*:stream/.*",
       "deserializer": {
         "config_name": "GenericJson"
-      },
-      "regex_patterns": [
-        "foobar"
-      ]
+      }
     }
   ],
   "wrapper": {
