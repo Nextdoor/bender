@@ -25,18 +25,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
-    property = "config_name")
+    property = "type")
 public abstract class AbstractConfig<T> {
-  private String configName;
+  private String type;
 
-  @JsonProperty("config_name")
-  public String getConfigName() {
-    return configName;
+  @JsonProperty("type")
+  public String getType() {
+    return type;
   }
 
-  @JsonProperty("config_name")
-  public void getConfigName(String configName) {
-    this.configName = configName;
+  @JsonProperty("type")
+  public void getType(String type) {
+    this.type = type;
   }
 
   public static Class<?>[] getSubtypes(Class clazz) {
