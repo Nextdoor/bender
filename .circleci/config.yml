@@ -78,7 +78,7 @@ jobs:
             if [[ (${CIRCLE_BRANCH} == "master") && (`git diff --name-only index.html | grep index.html`)]]; then
               echo "Updating Docs"
               git config --global user.email "${GIT_EMAIL}"
-              git config --global user.name "{$GIT_USER}"
+              git config --global user.name "${GIT_USER}"
               git commit -a -m "Auto updating docs"
               git push origin master
             else
