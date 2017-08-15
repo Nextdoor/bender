@@ -42,7 +42,7 @@ public class CreateSchema {
     Options options = new Options();
     options.addOption(Option.builder().longOpt("out-file").hasArg()
         .desc("Filename to output schema to. Default: schema.json").build());
-    options.addOption(Option.builder().longOpt("doca").hasArg(false)
+    options.addOption(Option.builder().longOpt("docson").hasArg(false)
         .desc("Create a schema that is able to be read by docson").build());
     CommandLineParser parser = new DefaultParser();
     CommandLine cmd = parser.parse(options, args);

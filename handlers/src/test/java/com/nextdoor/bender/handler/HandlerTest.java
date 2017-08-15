@@ -29,7 +29,7 @@ import org.junit.Test;
 import com.nextdoor.bender.ipc.IpcSenderService;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.testutils.DummyTransportHelper;
-import com.nextdoor.bender.utils.TestContext;
+import com.nextdoor.bender.testutils.TestContext;
 
 public abstract class HandlerTest<T> {
 

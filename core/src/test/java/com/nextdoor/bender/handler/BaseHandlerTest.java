@@ -51,9 +51,9 @@ import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.serializer.SerializationException;
 import com.nextdoor.bender.serializer.Serializer;
+import com.nextdoor.bender.testutils.TestContext;
 import com.nextdoor.bender.testutils.DummyTransportHelper.ArrayTransportBuffer;
 import com.nextdoor.bender.testutils.DummyTransportHelper.BufferedTransporter;
-import com.nextdoor.bender.utils.TestContext;
 
 public class BaseHandlerTest {
 

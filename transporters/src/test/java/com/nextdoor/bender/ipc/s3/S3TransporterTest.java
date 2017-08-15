@@ -46,7 +46,7 @@ import com.amazonaws.services.s3.model.UploadPartRequest;
 import com.amazonaws.services.s3.model.UploadPartResult;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.ipc.TransportException;
-import com.nextdoor.bender.utils.TestContext;
+import com.nextdoor.bender.testutils.TestContext;
 
 
 public class S3TransporterTest {
