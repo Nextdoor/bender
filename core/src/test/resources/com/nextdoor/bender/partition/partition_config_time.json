@@ -4,11 +4,11 @@
       "name": "Test Events",
       "source_regex": ".*",
       "deserializer": {
-        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig"
+        "type": "DummyDeserializerHelper$DummyDeserializerConfig"
       },
       "operations": [
         {
-          "config_name": "PartitionOperation",
+          "type": "PartitionOperation",
           "partition_specs": [
             {
               "name": "dt",
@@ -22,13 +22,13 @@
     }
   ],
   "wrapper": {
-    "config_name": "DummyWrapperHelper$DummyWrapperConfig"
+    "type": "DummyWrapperHelper$DummyWrapperConfig"
   },
   "serializer": {
-    "config_name": "DummySerializerHelper$DummySerializerConfig"
+    "type": "DummySerializerHelper$DummySerializerConfig"
   },
   "transport": {
-    "config_name": "DummyTransportHelper$DummyTransporterConfig",
+    "type": "DummyTransportHelper$DummyTransporterConfig",
     "threads": 1
   },
   "reporters": [

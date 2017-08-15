@@ -36,7 +36,7 @@ import com.nextdoor.bender.handler.BaseHandler;
 import com.nextdoor.bender.handler.Handler;
 import com.nextdoor.bender.handler.HandlerTest;
 import com.nextdoor.bender.testutils.DummyTransportHelper;
-import com.nextdoor.bender.utils.TestContext;
+import com.nextdoor.bender.testutils.TestContext;
 
 public class S3HandlerTest extends HandlerTest<S3EventNotification> {
 

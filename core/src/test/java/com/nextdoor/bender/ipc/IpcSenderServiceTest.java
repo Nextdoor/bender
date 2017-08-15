@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.monitoring.Stat;
@@ -119,7 +120,7 @@ public class IpcSenderServiceTest {
 
   public static class DummyPartTransporter implements PartitionedTransport {
     @Override
-    public void sendBatch(TransportBuffer buffer, LinkedHashMap partitions)
+    public void sendBatch(TransportBuffer buffer, LinkedHashMap partitions, Context context)
         throws TransportException {
 
     }

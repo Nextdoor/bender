@@ -16,9 +16,14 @@
 package com.nextdoor.bender.wrapper.kinesis;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
 @JsonTypeName("KinesisWrapper")
+@JsonSchemaDescription("Adds information about kinesis stream which the event came from. Included "
+    + "is partition, sequence number, source arn, event source, function name, function version, "
+    + "arrival timestsamp (ms since epoch), processing time (ms), processing delay (ms), "
+    + "processing timestsamp (ms since epoch).")
 public class KinesisWrapperConfig extends WrapperConfig {
 
   @Override

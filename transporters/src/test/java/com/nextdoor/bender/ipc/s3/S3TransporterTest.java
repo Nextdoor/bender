@@ -46,6 +46,7 @@ import com.amazonaws.services.s3.model.UploadPartRequest;
 import com.amazonaws.services.s3.model.UploadPartResult;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.ipc.TransportException;
+import com.nextdoor.bender.testutils.TestContext;
 
 
 public class S3TransporterTest {
@@ -93,7 +94,7 @@ public class S3TransporterTest {
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
 
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
-    transport.sendBatch(buffer, partitions);
+    transport.sendBatch(buffer, partitions, new TestContext());
     verify(mockClient).uploadPart(argument.capture());
 
     /*
@@ -137,7 +138,7 @@ public class S3TransporterTest {
     partitions.put("hour", "23");
 
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
-    transport.sendBatch(buffer, partitions);
+    transport.sendBatch(buffer, partitions, new TestContext());
     verify(mockClient).uploadPart(argument.capture());
 
     /*
@@ -182,7 +183,7 @@ public class S3TransporterTest {
     partitions.put("hour", "23");
 
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
-    transport.sendBatch(buffer, partitions);
+    transport.sendBatch(buffer, partitions, new TestContext());
     verify(mockClient).uploadPart(argument.capture());
 
     /*
@@ -241,7 +242,7 @@ public class S3TransporterTest {
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
 
     buffer.close();
-    transport.sendBatch(buffer, partitions);
+    transport.sendBatch(buffer, partitions, new TestContext());
     verify(mockClient).uploadPart(argument.capture());
 
     /*
@@ -311,7 +312,7 @@ public class S3TransporterTest {
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
 
     buffer.close();
-    transport.sendBatch(buffer, partitions);
+    transport.sendBatch(buffer, partitions, new TestContext());
     verify(mockClient).uploadPart(argument.capture());
 
     /*
@@ -338,7 +339,7 @@ public class S3TransporterTest {
   @Test
   public void testGzFilename() throws TransportException, IllegalStateException, IOException {
     /*
-     * Create mock client, requets, and replies
+     * Create mock client, requests, and replies
      */
     AmazonS3Client mockClient = getMockClient();
 
@@ -363,13 +364,52 @@ public class S3TransporterTest {
     LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename.gz");
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
-    transport.sendBatch(buffer, partitions);
+    transport.sendBatch(buffer, partitions, new TestContext());
     verify(mockClient).uploadPart(argument.capture());
 
     /*
      * Check results
      */
     assertEquals("basepath/a_filename.bz2", argument.getValue().getKey());
+  }
+
+  @Test
+  public void testContextBasedFilename()
+      throws TransportException, IllegalStateException, IOException {
+    /*
+     * Create mock client, requests, and replies
+     */
+    AmazonS3Client mockClient = getMockClient();
+
+    /*
+     * Fill buffer with mock data
+     */
+    S3TransportBuffer buffer = new S3TransportBuffer(1000, true, new S3TransportSerializer());
+    InternalEvent mockIevent = mock(InternalEvent.class);
+    doReturn("foo").when(mockIevent).getSerialized();
+
+    /*
+     * Create transport
+     */
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    S3Transport transport =
+        new S3Transport(mockClient, "bucket", "basepath/", true, multiPartUploads);
+
+    /*
+     * Do actual test
+     */
+    buffer.add(mockIevent);
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
+    TestContext context = new TestContext();
+    context.setAwsRequestId("request_id");
+    transport.sendBatch(buffer, partitions, context);
+    verify(mockClient).uploadPart(argument.capture());
+
+    /*
+     * Check results
+     */
+    assertEquals("basepath/request_id.bz2", argument.getValue().getKey());
   }
 
   @Test
@@ -403,8 +443,8 @@ public class S3TransporterTest {
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
 
-    transport.sendBatch(buffer1, partitions);
-    transport.sendBatch(buffer2, partitions);
+    transport.sendBatch(buffer1, partitions, new TestContext());
+    transport.sendBatch(buffer2, partitions, new TestContext());
 
     verify(mockClient, times(2)).uploadPart(argument.capture());
 
@@ -459,7 +499,7 @@ public class S3TransporterTest {
 
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
     try {
-      transport.sendBatch(buffer, partitions);
+      transport.sendBatch(buffer, partitions, new TestContext());
     } catch (Exception e) {
       assertEquals(e.getCause().getClass(), AmazonClientException.class);
       throw e;

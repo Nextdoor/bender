@@ -52,6 +52,14 @@ public class FirehoseTransportBufferBatch extends FirehoseTransportBuffer {
     byte[] record = serializer.serialize(ievent);
 
     /*
+     * Restrict size of individual record
+     */
+    if (record.length > MAX_RECORD_SIZE) {
+      throw new IOException(
+          "serialized event is " + record.length + " larger than max of " + MAX_RECORD_SIZE);
+    }
+
+    /*
      * Write record if there's room in buffer
      */
     if (dataRecords.size() >= MAX_RECORDS) {

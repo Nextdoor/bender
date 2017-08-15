@@ -24,9 +24,18 @@ import com.nextdoor.bender.ipc.TransportConfig;
 import com.nextdoor.bender.ipc.firehose.FirehoseTransportFactory.FirehoseBuffer;
 
 @JsonTypeName("Firehose")
+@JsonSchemaDescription("Transports events to AWS Kinesis Firehose. This transport is agnostic of "
+    + "the data being sent. However there are important limits to consider. The maximum size of a "
+    + "single Firehose record can not exceed 1000kb and the maximum for a batch is 4mb. Events larger "
+    + "than 1000kb will not be split across multiple Records. The transport contains two types of "
+    + "buffers. In BATCH mode it will attempt to write multiple events into a single Firehose Record "
+    + "in order to minimize number of Records sent. In SIMPLE mode each serialized event is put"
+    + "into a its own Record. Firehose sinks like ElasticSearch require each event be its own "
+    + "Firehose Record.Required IAM permissions are: firehose:DescribeDeliveryStream, "
+    + "firehose:ListDeliveryStreams, firehose:PutRecord, firehose:PutRecordBatch")
 public class FirehoseTransportConfig extends TransportConfig {
 
-  @JsonSchemaDescription("Firehose stream name to publish to")
+  @JsonSchemaDescription("Firehose stream name to publish to.")
   @JsonProperty(required = true)
   private String streamName;
 
@@ -36,8 +45,9 @@ public class FirehoseTransportConfig extends TransportConfig {
   @JsonSchemaDefault(value = "BATCH")
   private FirehoseBuffer firehoseBuffer = FirehoseBuffer.BATCH;
 
-  @JsonSchemaDescription("If a new line should be appended to records. Use this when "
-      + "selecting BATCH buffer.")
+  @JsonSchemaDescription("If a new line should be appended to records. This is typically what you "
+      + "will want unless you are writing binary data. Set to false when Firehose is writing into "
+      + "ElasticSearch.")
   @JsonSchemaDefault(value = "true")
   @JsonProperty(required = false)
   private Boolean appendNewline = true;

@@ -22,9 +22,10 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.serializer.SerializerConfig;
 
 @JsonTypeName("Json")
+@JsonSchemaDescription("Serializes events into JSON format.")
 public class JsonSerializerConfig extends SerializerConfig {
   @JsonSchemaDefault("LOWER_CASE_WITH_UNDERSCORES")
-  @JsonSchemaDescription("GSON field naming policy")
+  @JsonSchemaDescription("GSON field naming policy. See https://google.github.io/gson/apidocs/com/google/gson/FieldNamingPolicy.html")
   private FieldNamingPolicy fieldNamingPolicy = FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
   @Override

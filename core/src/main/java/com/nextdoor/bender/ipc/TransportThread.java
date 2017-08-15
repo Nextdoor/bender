@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.monitoring.Stat;
 
 public class TransportThread extends Thread {
@@ -29,11 +30,13 @@ public class TransportThread extends Thread {
   private Stat threadStat;
   private Stat errorStat;
   private Stat successStat;
+  private Context context;
   private LinkedHashMap<String, String> partitions;
 
   public TransportThread(TransportFactory tf, TransportBuffer buffer,
       LinkedHashMap<String, String> partitions, AtomicInteger threadCounter,
-      AtomicBoolean hasUnrecoverableException, Stat threadStat, Stat errorStat, Stat successStat) {
+      AtomicBoolean hasUnrecoverableException, Stat threadStat, Stat errorStat, Stat successStat,
+      Context context) {
     this.tf = tf;
     this.buffer = buffer;
     this.partitions = partitions;
@@ -42,6 +45,7 @@ public class TransportThread extends Thread {
     this.threadStat = threadStat;
     this.errorStat = errorStat;
     this.successStat = successStat;
+    this.context = context;
   }
 
   @Override
@@ -76,7 +80,7 @@ public class TransportThread extends Thread {
       if (transport instanceof UnpartitionedTransport) {
         ((UnpartitionedTransport) transport).sendBatch(buffer);
       } else if (transport instanceof PartitionedTransport) {
-        ((PartitionedTransport) transport).sendBatch(buffer, partitions);
+        ((PartitionedTransport) transport).sendBatch(buffer, partitions, context);
       } else {
         throw new TransportException("unknown type of transport");
       }

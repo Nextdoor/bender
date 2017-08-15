@@ -21,6 +21,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.ipc.TransportConfig;
 
 @JsonTypeName("File")
+@JsonSchemaDescription("Writes events to a file on the local file system. Typically only used for "
+    + "testing and debugging.")
 public class FileTransportConfig extends TransportConfig {
 
   @JsonSchemaDescription("Local filesystem file to write data to")

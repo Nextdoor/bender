@@ -16,9 +16,11 @@
 package com.nextdoor.bender.wrapper.passthrough;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
 @JsonTypeName("PassthroughWrapper")
+@JsonSchemaDescription("A meta wrapper that performs no wrapping and passes the payload through.")
 public class PassthroughWrapperConfig extends WrapperConfig {
 
   @Override

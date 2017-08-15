@@ -1,29 +1,29 @@
 {
   "handler": {
-    "config_name": "DummyHandlerHelper$DummyHandler"
+    "type": "DummyHandlerHelper$DummyHandler"
   },
   "sources": [
     {
       "name": "Test Events",
       "source_regex": ".*",
       "deserializer": {
-        "config_name": "DummyDeserializerHelper$DummyDeserializerConfig"
+        "type": "DummyDeserializerHelper$DummyDeserializerConfig"
       },
       "operations": [
         {
-          "config_name": "DummyOperationHelper$DummyOperationConfig"
+          "type": "DummyOperationHelper$DummyOperationConfig"
         }
       ]
     }
   ],
   "wrapper": {
-    "config_name": "DummyWrapperHelper$DummyWrapperConfig"
+    "type": "DummyWrapperHelper$DummyWrapperConfig"
   },
   "serializer": {
-    "config_name": "DummySerializerHelper$DummySerializerConfig"
+    "type": "DummySerializerHelper$DummySerializerConfig"
   },
   "transport": {
-    "config_name": "DummyTransportHelper$DummyTransporterConfig",
+    "type": "DummyTransportHelper$DummyTransporterConfig",
     "threads": 1
   },
   "reporters": [

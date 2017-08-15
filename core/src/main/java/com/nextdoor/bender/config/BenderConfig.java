@@ -43,6 +43,7 @@ import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaTitle;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.handler.HandlerConfig;
@@ -52,13 +53,33 @@ import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.serializer.SerializerConfig;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
+@JsonSchemaTitle("Bender - Serverless ETL Framework")
+@JsonSchemaDescription("Bender provides an extendable Java framework for creating serverless  ETL functions on AWS Lambda.\n"
+    + "It handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL\n"
+    + "process. Check it out at https://github.com/nextdoor/bender."
+    + "<br><br><h3>Specifying Configuration</h3><br>" + "<h4>S3 File</h4><br>"
+    + "Upload your configuration file to an S3 bucket and when creating your lambda function specify the environment\n"
+    + "variable BENDER_CONFIG pointing to your configuration file in S3. For example BENDER_CONFIG=s3://example/bender.json.\n"
+    + "Note that your function will require sufficient IAM privileges to read from this file."
+    + "<br><br><h4>Embedded File</h4><br>"
+    + "If using APEX to deploy your lambda function you can add your configuration file inside a config directory.\n"
+    + "See https://github.com/Nextdoor/bender/tree/master/example_project for an example. When using this method name your\n"
+    + "configuration files corresponding to your lambda function aliases. Default is $LATEST.json"
+    + "<br><br><h3>Variable Substitution</h3><br>"
+    + "Your configuration file can contain variables which are substituted for lambda function \n"
+    + "environment variables. In your configuration wrap the environment with &lt;&gt; tags. \n"
+    + "For example: <br>" + "<pre>{\"foo\": &lt;BAR&gt;}</pre>")
 public class BenderConfig {
   private static final Logger logger = Logger.getLogger(BenderConfig.class);
   public static final ConfiguredObjectMapper CMAPPER = new ConfiguredObjectMapper();
   public static final BenderSchema SCHEMA = new BenderSchema("/schema/default.json");
 
-  @JsonSchemaDescription("Transport configuration")
-  private TransportConfig transportConfig;
+  @JsonSchemaDescription("Handler configuration")
+  @JsonProperty(required = false)
+  private HandlerConfig handlerConfig;
+
+  @JsonSchemaDescription("Source configurations. This includes deserializer and operators.")
+  private List<SourceConfig> sources = Collections.emptyList();
 
   @JsonSchemaDescription("Wrapper configuration")
   private WrapperConfig wrapperConfig;
@@ -66,15 +87,11 @@ public class BenderConfig {
   @JsonSchemaDescription("Serializer configuration")
   private SerializerConfig serializerConfig;
 
+  @JsonSchemaDescription("Transport configuration")
+  private TransportConfig transportConfig;
+
   @JsonSchemaDescription("List of reporter configurations")
   private List<ReporterConfig> reporters = Collections.emptyList();
-
-  @JsonSchemaDescription("Source configurations. This includes deserializer and operators.")
-  private List<SourceConfig> sources = Collections.emptyList();
-
-  @JsonSchemaDescription("Handler configuration")
-  @JsonProperty(required = false)
-  private HandlerConfig handlerConfig;
 
   // Inherited from creation
   private String configFile;
@@ -91,13 +108,13 @@ public class BenderConfig {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public ConfiguredObjectMapper() {
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(TransportConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(ReporterConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(WrapperConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(SerializerConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(HandlerConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(DeserializerConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(OperationConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(HandlerConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(WrapperConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(SerializerConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(TransportConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(ReporterConfig.class));
     }
 
     public ObjectMapper getObjectMapper() {
@@ -220,15 +237,14 @@ public class BenderConfig {
   }
 
   /**
-   * Parses an input String and replaces instances of {@literal <XXX>}" with the value
-   * of the XXX OS Environment Variable. This is used as a pre-parser for
-   * the Config files, allowing environment variables to be swapped at
-   * run-time.
+   * Parses an input String and replaces instances of {@literal <XXX>}" with the value of the XXX OS
+   * Environment Variable. This is used as a pre-parser for the Config files, allowing environment
+   * variables to be swapped at run-time.
    *
    * @param raw A raw string (not necessarily valid configuration data)
-   * @return    A parsed string with OS variables swapped in
-   * @throws ConfigurationException If any discovered {@literal <WRAPPED_VALUES>} are not
-   *                                found in System.getenv().
+   * @return A parsed string with OS variables swapped in
+   * @throws ConfigurationException If any discovered {@literal <WRAPPED_VALUES>} are not found in
+   *         System.getenv().
    */
   public static String swapEnvironmentVariables(String raw) throws ConfigurationException {
     ErrorBuffer errors = new ErrorBuffer();

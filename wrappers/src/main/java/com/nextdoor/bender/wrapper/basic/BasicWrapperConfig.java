@@ -16,9 +16,12 @@
 package com.nextdoor.bender.wrapper.basic;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
 @JsonTypeName("BasicWrapper")
+@JsonSchemaDescription("Includes the original payload, sha1 hash of the original "
+    + "event and event timestamp.")
 public class BasicWrapperConfig extends WrapperConfig {
 
   @Override

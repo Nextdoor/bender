@@ -29,8 +29,6 @@ import org.apache.commons.cli.ParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nextdoor.bender.config.BenderConfig.BenderSchema;
 
@@ -44,8 +42,8 @@ public class CreateSchema {
     Options options = new Options();
     options.addOption(Option.builder().longOpt("out-file").hasArg()
         .desc("Filename to output schema to. Default: schema.json").build());
-    options.addOption(Option.builder().longOpt("doca").hasArg(false)
-        .desc("Create a schema that is able to be read by doca").build());
+    options.addOption(Option.builder().longOpt("docson").hasArg(false)
+        .desc("Create a schema that is able to be read by docson").build());
     CommandLineParser parser = new DefaultParser();
     CommandLine cmd = parser.parse(options, args);
 
@@ -60,7 +58,7 @@ public class CreateSchema {
 
     JsonNode node = schema.getSchema();
 
-    if (cmd.hasOption("doca")) {
+    if (cmd.hasOption("docson")) {
       modifyNode(node);
     }
 
@@ -74,17 +72,6 @@ public class CreateSchema {
       if (parent.hasNonNull("type") && parent.get("type").asText().equals("array")) {
         if (parent.get("items").hasNonNull("oneOf")) {
           ((ObjectNode) parent).put("anyOf", parent.get("items").get("oneOf"));
-          ((ObjectNode) parent).remove("items");
-        } else if ((parent.get("items").hasNonNull("$ref"))
-            && parent.get("type").asText().equals("array")) {
-          JsonNode items = parent.get("items");
-
-
-          ArrayNode array = JsonNodeFactory.instance.objectNode().arrayNode();
-          array.add(items);
-
-
-          ((ObjectNode) parent).put("anyOf", array);
           ((ObjectNode) parent).remove("items");
         }
       }

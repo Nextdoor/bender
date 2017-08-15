@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.monitoring.MonitoredProcess;
 
@@ -42,6 +43,7 @@ public class IpcSenderService extends MonitoredProcess {
    */
   private final ExecutorService pool;
   private TransportFactory transportFactory;
+  private Context context;
 
   protected AtomicInteger threadCounter = new AtomicInteger(0);
   protected AtomicBoolean hasUnrecoverableException = new AtomicBoolean(false);
@@ -130,7 +132,7 @@ public class IpcSenderService extends MonitoredProcess {
 
     TransportThread tt = new TransportThread(transportFactory, buffer, partitions,
         this.threadCounter, this.hasUnrecoverableException, getRuntimeStat().fork(),
-        getErrorCountStat(), getSuccessCountStat());
+        getErrorCountStat(), getSuccessCountStat(), getContext());
 
     tt.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
       public void uncaughtException(Thread th, Throwable ex) {
@@ -196,5 +198,13 @@ public class IpcSenderService extends MonitoredProcess {
 
   public void setTransportFactory(TransportFactory transportFactory) {
     this.transportFactory = transportFactory;
+  }
+
+  public Context getContext() {
+    return context;
+  }
+
+  public void setContext(Context context) {
+    this.context = context;
   }
 }

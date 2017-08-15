@@ -23,7 +23,7 @@ import java.util.Map;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 
-import com.nextdoor.bender.utils.TestContext;
+import com.nextdoor.bender.testutils.TestContext;
 
 public class S3InternalEventTest {
 

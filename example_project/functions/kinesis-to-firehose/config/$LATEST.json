@@ -1,6 +1,6 @@
 {
   "handler": {
-    "config_name": "KinesisHandler",
+    "type": "KinesisHandler",
     "fail_on_exception": true
   },
   "sources": [
@@ -8,21 +8,18 @@
       "name": "My kinesis stream",
       "source_regex": "arn:aws:kinesis:.*:.*:stream/.*",
       "deserializer": {
-        "config_name": "GenericJson"
-      },
-      "regex_patterns": [
-        "foobar"
-      ]
+        "type": "GenericJson"
+      }
     }
   ],
   "wrapper": {
-    "config_name": "KinesisWrapper"
+    "type": "KinesisWrapper"
   },
   "serializer": {
-    "config_name": "Json"
+    "type": "Json"
   },
   "transport": {
-    "config_name": "Firehose",
+    "type": "Firehose",
     "threads": 5,
     "stream_name": "my-firehose-stream"
   }

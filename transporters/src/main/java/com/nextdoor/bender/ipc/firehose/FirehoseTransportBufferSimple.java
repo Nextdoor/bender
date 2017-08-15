@@ -27,6 +27,7 @@ import com.nextdoor.bender.InternalEvent;
 public class FirehoseTransportBufferSimple extends FirehoseTransportBuffer {
   private static final Logger logger = Logger.getLogger(FirehoseTransportBufferSimple.class);
   public static int MAX_RECORDS = 500;
+  public static int MAX_RECORD_SIZE = 1000 * 1000; // 1000kb
 
   private ArrayList<Record> dataRecords = new ArrayList<Record>(MAX_RECORDS);
 
@@ -38,12 +39,21 @@ public class FirehoseTransportBufferSimple extends FirehoseTransportBuffer {
 
   @Override
   public boolean add(InternalEvent ievent) throws IllegalStateException, IOException {
-    if (dataRecords.size() == MAX_RECORDS) {
+    if (dataRecords.size() >= MAX_RECORDS) {
       logger.trace("hit record index max");
       throw new IllegalStateException("reached max payload size");
     }
 
     byte[] record = this.serializer.serialize(ievent);
+
+    /*
+     * Restrict size of individual record
+     */
+    if (record.length > MAX_RECORD_SIZE) {
+      throw new IOException(
+          "serialized event is " + record.length + " larger than max of " + MAX_RECORD_SIZE);
+    }
+
     ByteBuffer data = ByteBuffer.wrap(record);
     dataRecords.add(new Record().withData(data));
 
