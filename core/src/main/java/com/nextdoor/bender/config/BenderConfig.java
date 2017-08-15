@@ -52,13 +52,20 @@ import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.serializer.SerializerConfig;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
+@JsonSchemaDescription("Bender provides an extendable Java framework for creating serverless "
+    + "ETL functions on AWS Lambda. It handles the complex plumbing and provides the "
+    + "interfaces necessary to build modules for all aspects of the ETL process.")
 public class BenderConfig {
   private static final Logger logger = Logger.getLogger(BenderConfig.class);
   public static final ConfiguredObjectMapper CMAPPER = new ConfiguredObjectMapper();
   public static final BenderSchema SCHEMA = new BenderSchema("/schema/default.json");
 
-  @JsonSchemaDescription("Transport configuration")
-  private TransportConfig transportConfig;
+  @JsonSchemaDescription("Handler configuration")
+  @JsonProperty(required = false)
+  private HandlerConfig handlerConfig;
+
+  @JsonSchemaDescription("Source configurations. This includes deserializer and operators.")
+  private List<SourceConfig> sources = Collections.emptyList();
 
   @JsonSchemaDescription("Wrapper configuration")
   private WrapperConfig wrapperConfig;
@@ -66,15 +73,11 @@ public class BenderConfig {
   @JsonSchemaDescription("Serializer configuration")
   private SerializerConfig serializerConfig;
 
+  @JsonSchemaDescription("Transport configuration")
+  private TransportConfig transportConfig;
+
   @JsonSchemaDescription("List of reporter configurations")
   private List<ReporterConfig> reporters = Collections.emptyList();
-
-  @JsonSchemaDescription("Source configurations. This includes deserializer and operators.")
-  private List<SourceConfig> sources = Collections.emptyList();
-
-  @JsonSchemaDescription("Handler configuration")
-  @JsonProperty(required = false)
-  private HandlerConfig handlerConfig;
 
   // Inherited from creation
   private String configFile;
@@ -91,13 +94,13 @@ public class BenderConfig {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public ConfiguredObjectMapper() {
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(TransportConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(ReporterConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(WrapperConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(SerializerConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(HandlerConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(DeserializerConfig.class));
       objectMapper.registerSubtypes(AbstractConfig.getSubtypes(OperationConfig.class));
-      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(HandlerConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(WrapperConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(SerializerConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(TransportConfig.class));
+      objectMapper.registerSubtypes(AbstractConfig.getSubtypes(ReporterConfig.class));
     }
 
     public ObjectMapper getObjectMapper() {
