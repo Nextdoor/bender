@@ -8,6 +8,7 @@ jobs:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
     steps:
+      - run: sudo apt-get install -y make
       # Set up NPM/NodeJS for doc building
       - run:
           command: |
@@ -71,9 +72,11 @@ jobs:
       - run:
           name: Update docs
           command: |
+            java -cp "cli/target/cli.jar" com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
+            export NODE_PATH=/usr/lib/node_modules
+            cd docs && node gendocs.js
             if [[ (${CIRCLE_BRANCH} == "master") && (`git diff --name-only docs/index.html | grep docs/index.html`)]]; then
               echo "Updating Docs"
-              make docs
               git commit -a -m "Auto updating docs"
               git push origin master
             else
