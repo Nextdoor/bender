@@ -585,8 +585,8 @@ function sourceButton(element) {
 </script></head><body><div class="docson"> <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-">
         <div class="box-title" ref="<root>">
-            <div class="box-name title">Bender Config</div>
-            <div class="box-description desc"><p>Bender provides an extendable Java framework for creating serverless ETL functions on AWS Lambda. It handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL process.</p>
+            <div class="box-name title">Bender - Serverless ETL Framework</div>
+            <div class="box-description desc"><p>Bender provides an extendable Java framework for creating serverless  ETL functions on AWS Lambda.<br>It handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL<br>process. Check it out at <a href="https://github.com/nextdoor/bender">https://github.com/nextdoor/bender</a>.<br><br></p><h3>Specifying Configuration</h3><br><h4>S3 File</h4><br>Upload your configuration file to an S3 bucket and when creating your lambda function specify the environment<br>variable BENDER_CONFIG pointing to your configuration file in S3. For example BENDER_CONFIG=s3://example/bender.json.<br>Note that your function will require sufficient IAM privileges to read from this file.<br><br><h4>Embedded File</h4><br>If using APEX to deploy your lambda function you can add your configuration file inside a config directory.<br>See <a href="https://github.com/Nextdoor/bender/tree/master/example_project">https://github.com/Nextdoor/bender/tree/master/example_project</a> for an example. When using this method name your<br>configuration files corresponding to your lambda function aliases. Default is $LATEST.json<br><br><h3>Variable Substitution</h3><br>Your configuration file can contain variables which are substituted for lambda function<br>environment variables. In your configuration wrap the environment with &lt;&gt; tags.<br>For example: <br><pre>{"foo": &lt;BAR&gt;}</pre><p></p>
 </div>
             <div class="end"></div>
         </div>
@@ -1498,9 +1498,9 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
+                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -1855,73 +1855,6 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-5">
         <div class="box-title" ref="">
-            <div class="box-name ">JsonKeyNameOperation</div>
-            <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo<strong>str": "one", "bar</strong>long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or _<em>float. It also repalces "." with "</em>" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
-</div>
-            <div class="end"></div>
-        </div>
-    </div>
-     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
-    <div class="box-body">
-        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
-        <div>
-            
-        </div>
-        <div class="container ">
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name required">type</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-            <span class="type-keyword">constant</span>
-                <span class="type-enum">JsonKeyNameOperation</span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">JsonKeyNameOperation</span>
-
-                </div>
-                <div class="signature-description desc"></div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-
-
-</div>
-
-    </div>
-    <div class="source">
-        <pre class="json-schema">{
-  "type": "object",
-  "additionalProperties": false,
-  "description": "Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {\"foo\": \"one\", \"bar\": 2} will become {\"foo__str\": \"one\", \"bar__long\": 2}. The mapping is string:__str, boolean:__boolean, array:__arr, number:__long or __float. It also repalces \".\" with \"_\" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or \".\" in key names.",
-  "properties": {
-    "type": {
-      "type": "string",
-      "enum": [
-        "JsonKeyNameOperation"
-      ],
-      "default": "JsonKeyNameOperation"
-    }
-  },
-  "title": "JsonKeyNameOperation",
-  "required": [
-    "type"
-  ]
-}</pre>
-    </div>
-</div>
-<div class="end"></div>
-
-                </div>
-                <div class="box-container" boxid="6">
-                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-6">
-        <div class="box-title" ref="">
             <div class="box-name ">PartitionOperation</div>
             <div class="box-description desc"><p>Sets the partition information for the Event using fields from the deserialized object. When using JSON use JsonPath format to specify fields. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
 </div>
@@ -2186,6 +2119,73 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
+                <div class="box-container" boxid="6">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-6">
+        <div class="box-title" ref="">
+            <div class="box-name ">JsonKeyNameOperation</div>
+            <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo<strong>str": "one", "bar</strong>long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or _<em>float. It also repalces "." with "</em>" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">JsonKeyNameOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">JsonKeyNameOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {\"foo\": \"one\", \"bar\": 2} will become {\"foo__str\": \"one\", \"bar__long\": 2}. The mapping is string:__str, boolean:__boolean, array:__arr, number:__long or __float. It also repalces \".\" with \"_\" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or \".\" in key names.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "JsonKeyNameOperation"
+      ],
+      "default": "JsonKeyNameOperation"
+    }
+  },
+  "title": "JsonKeyNameOperation",
+  "required": [
+    "type"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
 
@@ -2249,10 +2249,10 @@ function sourceButton(element) {
           "$ref": "#/definitions/JsonRootNodeOperationConfig"
         },
         {
-          "$ref": "#/definitions/KeyNameOperationConfig"
+          "$ref": "#/definitions/PartitionOperationConfig"
         },
         {
-          "$ref": "#/definitions/PartitionOperationConfig"
+          "$ref": "#/definitions/KeyNameOperationConfig"
         }
       ]
     }
@@ -4237,10 +4237,10 @@ function sourceButton(element) {
     <div class="source">
         <pre class="json-schema">{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Bender Config",
+  "title": "Bender - Serverless ETL Framework",
   "type": "object",
   "additionalProperties": false,
-  "description": "Bender provides an extendable Java framework for creating serverless ETL functions on AWS Lambda. It handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL process.",
+  "description": "Bender provides an extendable Java framework for creating serverless  ETL functions on AWS Lambda.\nIt handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL\nprocess. Check it out at https://github.com/nextdoor/bender.&lt;br&gt;&lt;br&gt;&lt;h3&gt;Specifying Configuration&lt;/h3&gt;&lt;br&gt;&lt;h4&gt;S3 File&lt;/h4&gt;&lt;br&gt;Upload your configuration file to an S3 bucket and when creating your lambda function specify the environment\nvariable BENDER_CONFIG pointing to your configuration file in S3. For example BENDER_CONFIG=s3://example/bender.json.\nNote that your function will require sufficient IAM privileges to read from this file.&lt;br&gt;&lt;br&gt;&lt;h4&gt;Embedded File&lt;/h4&gt;&lt;br&gt;If using APEX to deploy your lambda function you can add your configuration file inside a config directory.\nSee https://github.com/Nextdoor/bender/tree/master/example_project for an example. When using this method name your\nconfiguration files corresponding to your lambda function aliases. Default is $LATEST.json&lt;br&gt;&lt;br&gt;&lt;h3&gt;Variable Substitution&lt;/h3&gt;&lt;br&gt;Your configuration file can contain variables which are substituted for lambda function \nenvironment variables. In your configuration wrap the environment with &amp;lt;&amp;gt; tags. \nFor example: &lt;br&gt;&lt;pre&gt;{\"foo\": &amp;lt;BAR&amp;gt;}&lt;/pre&gt;",
   "properties": {
     "handler": {
       "oneOf": [
@@ -4451,10 +4451,10 @@ function sourceButton(element) {
               "$ref": "#/definitions/JsonRootNodeOperationConfig"
             },
             {
-              "$ref": "#/definitions/KeyNameOperationConfig"
+              "$ref": "#/definitions/PartitionOperationConfig"
             },
             {
-              "$ref": "#/definitions/PartitionOperationConfig"
+              "$ref": "#/definitions/KeyNameOperationConfig"
             }
           ]
         }
@@ -4659,24 +4659,6 @@ function sourceButton(element) {
         "root_path"
       ]
     },
-    "KeyNameOperationConfig": {
-      "type": "object",
-      "additionalProperties": false,
-      "description": "Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {\"foo\": \"one\", \"bar\": 2} will become {\"foo__str\": \"one\", \"bar__long\": 2}. The mapping is string:__str, boolean:__boolean, array:__arr, number:__long or __float. It also repalces \".\" with \"_\" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or \".\" in key names.",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "JsonKeyNameOperation"
-          ],
-          "default": "JsonKeyNameOperation"
-        }
-      },
-      "title": "JsonKeyNameOperation",
-      "required": [
-        "type"
-      ]
-    },
     "PartitionOperationConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -4746,6 +4728,24 @@ function sourceButton(element) {
       "required": [
         "name",
         "interpreter"
+      ]
+    },
+    "KeyNameOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {\"foo\": \"one\", \"bar\": 2} will become {\"foo__str\": \"one\", \"bar__long\": 2}. The mapping is string:__str, boolean:__boolean, array:__arr, number:__long or __float. It also repalces \".\" with \"_\" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or \".\" in key names.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "JsonKeyNameOperation"
+          ],
+          "default": "JsonKeyNameOperation"
+        }
+      },
+      "title": "JsonKeyNameOperation",
+      "required": [
+        "type"
       ]
     },
     "KinesisWrapperConfig": {
