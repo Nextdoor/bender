@@ -72,7 +72,7 @@ jobs:
       - run:
           name: Update docs
           command: |
-            java -cp "cli/target/cli.jar" com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
+            java -cp cli/target/bender-cli-*-SNAPSHOT.jar com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
             export NODE_PATH=/usr/lib/node_modules
             cd docs && node gendocs.js
             if [[ (${CIRCLE_BRANCH} == "master") && (`git diff --name-only index.html | grep index.html`)]]; then
