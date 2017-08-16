@@ -21,5 +21,5 @@ docson:
 	npm install node-docson -g
 
 docs: docson package
-	java -cp cli/target/bender-cli-*-SNAPSHOT.jar com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
+	java -cp "cli/target/*" com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
 	cd docs && node gendocs.js
