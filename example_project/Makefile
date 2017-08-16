@@ -38,10 +38,10 @@ test: compile
 	cd ../ && mvn test
 
 schema: compile
-	java -cp "../cli/target/cli.jar" com.nextdoor.bender.CreateSchema --out-file schema.json
+	java -cp "../cli/target/*" com.nextdoor.bender.CreateSchema --out-file schema.json
 
 validate: schema
-	java -cp "../cli/target/cli.jar" com.nextdoor.bender.ValidateSchema --schema schema.json --configs ${CONFIGS}
+	java -cp "../cli/target/*" com.nextdoor.bender.ValidateSchema --schema schema.json --configs ${CONFIGS}
 
 deploy: validate
 	${APEX} ${APEX_DRY} ${APEX_OPTS} deploy
