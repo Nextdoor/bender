@@ -78,11 +78,8 @@ metrics for easy consumption in
 ## Configuration
 
 Bender uses JSON configuration files. See the
-[docs](https://pages.github.com/Nextdoor/bender/) for more details on config
-file specifics.
-
-Different configurations per lambda function alias are supported. The filename
-of the configuration must match the function alias.
+[docs](http://oss.nextdoor.com/bender/) for more details on config
+file specifics and how to include your configuration in deployment.
 
 ## Deployment
 
