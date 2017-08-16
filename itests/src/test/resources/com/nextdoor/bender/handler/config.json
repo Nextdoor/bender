@@ -1,0 +1,49 @@
+{
+  "handler": {
+    "type": "DummyHandlerHelper$DummyHandler"
+  },
+  "sources": [
+    {
+      "name": "Test Events",
+      "source_regex": ".*",
+      "deserializer": {
+        "type": "GenericJson",
+        "nested_field_configs": [
+          {
+            "field": "MESSAGE",
+            "prefix_field": "MESSAGE_PREFIX"
+          }
+        ]
+      },
+      "operations": [
+        {
+          "type": "TimeOperation",
+          "time_field": "$.EPOCH",
+          "time_field_type": "SECONDS"
+        },
+        {
+          "type": "JsonDropArraysOperation"
+        },
+        {
+          "type": "JsonKeyNameOperation"
+        }
+      ]
+    }
+  ],
+  "wrapper": {
+    "type": "KinesisWrapper"
+  },
+  "serializer": {
+    "type": "Json"
+  },
+  "transport": {
+    "type": "File",
+    "threads": 1,
+    "filename": "/tmp/bender.out"
+  },
+  "reporters": [
+    {
+      "type": "DataDog"
+    }
+  ]
+}

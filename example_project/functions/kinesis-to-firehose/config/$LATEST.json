@@ -1,0 +1,26 @@
+{
+  "handler": {
+    "type": "KinesisHandler",
+    "fail_on_exception": true
+  },
+  "sources": [
+    {
+      "name": "My kinesis stream",
+      "source_regex": "arn:aws:kinesis:.*:.*:stream/.*",
+      "deserializer": {
+        "type": "GenericJson"
+      }
+    }
+  ],
+  "wrapper": {
+    "type": "KinesisWrapper"
+  },
+  "serializer": {
+    "type": "Json"
+  },
+  "transport": {
+    "type": "Firehose",
+    "threads": 5,
+    "stream_name": "my-firehose-stream"
+  }
+}

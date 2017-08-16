@@ -1,0 +1,2 @@
+{"index": {"_type":"event","_index":"log-2016-11-10"}}
+null

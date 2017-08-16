@@ -1,0 +1,31 @@
+{
+  "handler": {
+    "type": "DummyHandlerHelper$DummyHandler"
+  },
+  "sources": [
+    {
+      "name": "<CUSTOM_SOURCE_NAME>",
+      "source_regex": ".*",
+      "deserializer": {
+        "type": "DummyDeserializerHelper$DummyDeserializerConfig"
+      },
+      "operations": [
+        {
+          "type": "DummyOperationHelper$DummyOperationConfig"
+        }
+      ]
+    }
+  ],
+  "wrapper": {
+    "type": "DummyWrapperHelper$DummyWrapperConfig"
+  },
+  "serializer": {
+    "type": "DummySerializerHelper$DummySerializerConfig"
+  },
+  "transport": {
+    "type": "DummyTransportHelper$DummyTransporterConfig",
+    "threads": 1
+  },
+  "reporters": [
+  ]
+}
