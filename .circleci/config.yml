@@ -65,7 +65,7 @@ jobs:
               sudo apt-get install gnupg1
               echo $GPG_KEY | base64 --decode > build.gpg
               gpg1 --import build.gpg
-              mvn clean verify deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -DskipTests
+              mvn clean deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -DskipTests
             else
               echo "Skipping Release Deploy"
             fi
