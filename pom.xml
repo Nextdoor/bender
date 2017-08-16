@@ -55,13 +55,11 @@
     </developer>
   </developers>
 
-  <!-- Uncomment on release
   <scm>
     <connection>scm:git:git://github.com/Nextdoor/bender.git</connection>
     <developerConnection>scm:git:ssh://github.com:Nextdoor/bender.git</developerConnection>
     <url>https://github.com/Nextdoor/bender/tree/master</url>
   </scm>
-   -->
 
   <modules>
     <module>core</module>

@@ -43,6 +43,25 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <includeDependencySources>true</includeDependencySources>
+              <dependencySourceIncludes>
+                <dependencySourceInclude>com.nextdoor.bender:*</dependencySourceInclude>
+              </dependencySourceIncludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>${license-maven-plugin.version}</version>
