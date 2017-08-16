@@ -7,8 +7,36 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
+
+      # CircleCI Environment Variables
+      #
+      #   - COMMIT_DOCS
+      #       - Default is "false". When set to "true" docs site will be built and
+      #         auto commited to master branch.
+      #   - DEPLOY_ARTIFACTS
+      #       - Default is "false". When set to "true" the build artifacts will be
+      #         deployed to specified repository locations.
+      #   - GIT_EMAIL
+      #       - Email used for commiting docs updates.
+      #   - GIT_USER
+      #       - User used for commiting docs updates.
+      #   - GPG_KEY
+      #       - Key for singing maven artifacts. This needs to be base64 encoded.
+      #   - GPG_KEYNAME
+      #       - Key id for singing maven artifacts.
+      #   - GPG_PASSPHRASE
+      #       - Passphrase of GPG key.
+      #   - MVN_PASSWORD
+      #       - Maven repo password used to deploy artifacts.
+      #   - MVN_USERNAME
+      #       - Maven repo username used to deploy artifacts.
+      #   - RELEASE_LOC
+      #       - Repository to deploy release artifacts to.
+      #   - SNAPSHOT_LOC
+      #       - Repository to deploy snapshot artifacts to.
+      #
+
     steps:
-      - run: sudo apt-get install -y make
       # Set up NPM/NodeJS for doc building
       - run:
           command: |
@@ -54,7 +82,8 @@ jobs:
       - deploy:
           name: Deploy to Maven Central Repository
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            DEPLOY_ARTIFACTS=${DEPLOY_ARTIFACTS-false}
+            if [[ ("${DEPLOY_ARTIFACTS}" == "true") && ("${CIRCLE_BRANCH}" == "master") ]]; then
               echo "Deploying Snapshot"
               mvn clean deploy -DaltDeploymentRepository=ossrh::default::${SNAPSHOT_LOC} -Dgpg.skip -DskipTests
             else
@@ -72,10 +101,11 @@ jobs:
       - run:
           name: Update docs
           command: |
-            java -cp cli/target/bender-cli-*-SNAPSHOT.jar com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
+            COMMIT_DOCS=${COMMIT_DOCS-false}
+            java -cp "cli/target/*" com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
             export NODE_PATH=/usr/lib/node_modules
             cd docs && node gendocs.js
-            if [[ (${CIRCLE_BRANCH} == "master") && (`git diff --name-only index.html | grep index.html`)]]; then
+            if [[ ("${COMMIT_DOCS}" == "true") && (${CIRCLE_BRANCH} == "master") && (`git diff --name-only index.html | grep index.html`)]]; then
               echo "Updating Docs"
               git config --global user.email "${GIT_EMAIL}"
               git config --global user.name "${GIT_USER}"
