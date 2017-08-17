@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Copyright $year Nextdoor.com, Inc
+ * Copyright 2017 Nextdoor.com, Inc
  */
 
 package com.nextdoor.bender.config;
@@ -24,8 +24,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
-import com.nextdoor.bender.handler.BaseHandler;
-
 public class ConfigurationTest {
 
   @Rule
@@ -34,7 +32,7 @@ public class ConfigurationTest {
   @Test
   public void testStringTemplatesInConfig() throws ConfigurationException, ClassNotFoundException {
     envVars.set("CUSTOM_SOURCE_NAME", "TestSourceName");
-    BenderConfig config = BenderConfig.load(BaseHandler.class, "/config/config_with_env.json");
+    BenderConfig config = BenderConfig.load("/config/config_with_env.json");
 
     List<SourceConfig> sources = config.getSources();
     assertEquals(sources.size(), 1);
@@ -43,6 +41,16 @@ public class ConfigurationTest {
 
   @Test(expected = ConfigurationException.class)
   public void testMissingStringTemplatesInConfig() throws ConfigurationException, ClassNotFoundException {
-    BenderConfig.load(BaseHandler.class, "/config/config_with_env.json");
+    BenderConfig.load("/config/config_with_env.json");
+  }
+
+  @Test
+  public void testYaml() throws ConfigurationException, ClassNotFoundException {
+    envVars.set("CUSTOM_SOURCE_NAME", "TestSourceName");
+    BenderConfig config = BenderConfig.load("/config/config_with_env.yaml");
+
+    List<SourceConfig> sources = config.getSources();
+    assertEquals(sources.size(), 1);
+    assertEquals(sources.get(0).getName(), "TestSourceName");
   }
 }

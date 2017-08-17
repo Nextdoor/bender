@@ -139,7 +139,7 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
 
   @Test
   public void testExceptionHandlingd() throws Throwable {
-    BaseHandler.CONFIG_FILE = "config_test_sns.json";
+    BaseHandler.CONFIG_FILE = "/com/nextdoor/bender/handler/config_test_sns.json";
 
     TestContext ctx = new TestContext();
     ctx.setFunctionName("unittest");
@@ -172,7 +172,7 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
 
   @Test
   public void testSourceRegexFail() throws Throwable {
-    BaseHandler.CONFIG_FILE = "config_s3_source.json";
+    BaseHandler.CONFIG_FILE = "/com/nextdoor/bender/handler/config_s3_source.json";
 
     TestContext ctx = new TestContext();
     ctx.setFunctionName("unittest");
@@ -187,7 +187,7 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
 
   @Test
   public void testSourceRegex() throws Throwable {
-    BaseHandler.CONFIG_FILE = "config_s3_source.json";
+    BaseHandler.CONFIG_FILE = "/com/nextdoor/bender/handler/config_s3_source.json";
 
     TestContext ctx = new TestContext();
     ctx.setFunctionName("unittest");

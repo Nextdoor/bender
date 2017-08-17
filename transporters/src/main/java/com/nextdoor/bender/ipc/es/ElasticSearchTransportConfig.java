@@ -56,7 +56,7 @@ public class ElasticSearchTransportConfig extends TransportConfig {
 
   @JsonSchemaDescription("ElasticSearch document type.")
   @JsonProperty(required = true)
-  private String type;
+  private String documentType;
 
   @JsonSchemaDescription("Maximum number of documents in  bulk api call.")
   @JsonSchemaDefault(value = "500")
@@ -161,12 +161,12 @@ public class ElasticSearchTransportConfig extends TransportConfig {
     this.index = index;
   }
 
-  public String getType() {
-    return type;
+  public String getDocumentType() {
+    return documentType;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setDocumentType(String documentType) {
+    this.documentType = documentType;
   }
 
   public Integer getBatchSize() {
