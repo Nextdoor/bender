@@ -32,7 +32,7 @@ public class PartitionSpecTest {
 
   @Test
   public void testLoadConfg() {
-    BenderConfig config = BenderConfig.load(PartitionSpecTest.class, "partition_config.json");
+    BenderConfig config = BenderConfig.load("/com/nextdoor/bender/partition/partition_config.json");
     PartitionOperationConfig op =
         (PartitionOperationConfig) config.getSources().get(0).getOperationConfigs().get(0);
     PartitionSpec spec = op.getPartitionSpecs().get(0);
@@ -46,7 +46,7 @@ public class PartitionSpecTest {
 
   @Test
   public void testLoadConfgTime() {
-    BenderConfig config = BenderConfig.load(PartitionSpecTest.class, "partition_config_time.json");
+    BenderConfig config = BenderConfig.load("/com/nextdoor/bender/partition/partition_config_time.json");
     PartitionOperationConfig op =
         (PartitionOperationConfig) config.getSources().get(0).getOperationConfigs().get(0);
     PartitionSpec spec = op.getPartitionSpecs().get(0);
@@ -111,7 +111,7 @@ public class PartitionSpecTest {
   @Test
   public void testStringFormatUpper() {
     BenderConfig config =
-        BenderConfig.load(PartitionSpecTest.class, "partition_config_format.json");
+        BenderConfig.load("/com/nextdoor/bender/partition/partition_config_format.json");
     PartitionOperationConfig op =
         (PartitionOperationConfig) config.getSources().get(0).getOperationConfigs().get(0);
     PartitionSpec spec = op.getPartitionSpecs().get(0);
@@ -126,7 +126,7 @@ public class PartitionSpecTest {
   @Test
   public void testStringFormatLower() {
     BenderConfig config =
-        BenderConfig.load(PartitionSpecTest.class, "partition_config_format.json");
+        BenderConfig.load("/com/nextdoor/bender/partition/partition_config_format.json");
     PartitionOperationConfig op =
         (PartitionOperationConfig) config.getSources().get(0).getOperationConfigs().get(0);
     PartitionSpec spec = op.getPartitionSpecs().get(0);

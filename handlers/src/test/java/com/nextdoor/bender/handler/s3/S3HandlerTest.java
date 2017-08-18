@@ -88,7 +88,7 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
 
   @Test
   public void testSourceRegexFail() throws Throwable {
-    BaseHandler.CONFIG_FILE = "config_s3_source.json";
+    BaseHandler.CONFIG_FILE = "/com/nextdoor/bender/handler/config_s3_source.json";
 
     TestContext ctx = new TestContext();
     ctx.setFunctionName("unittest");
@@ -103,7 +103,7 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
 
   @Test
   public void testSourceRegex() throws Throwable {
-    BaseHandler.CONFIG_FILE = "config_s3_source.json";
+    BaseHandler.CONFIG_FILE = "/com/nextdoor/bender/handler/config_s3_source.json";
 
     TestContext ctx = new TestContext();
     ctx.setFunctionName("unittest");

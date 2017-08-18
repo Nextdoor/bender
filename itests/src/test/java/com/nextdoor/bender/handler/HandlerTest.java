@@ -46,7 +46,7 @@ public abstract class HandlerTest<T> {
 
   @Test
   public void testBasicEndtoEnd() throws Exception {
-    BaseHandler.CONFIG_FILE = "config_unittest.json";
+    BaseHandler.CONFIG_FILE = "/com/nextdoor/bender/handler/config_unittest.json";
 
     TestContext ctx = new TestContext();
     ctx.setFunctionName("unittest");
