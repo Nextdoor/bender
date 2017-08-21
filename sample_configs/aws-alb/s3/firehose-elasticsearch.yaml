@@ -1,0 +1,71 @@
+---
+handler:
+  type: S3Handler
+  fail_on_exception: true
+sources:
+- name: ALB Logs
+  source_regex: ".*"
+  deserializer:
+    type: Regex
+    use_re2j: false
+    regex: ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*):([0-9]*) ([^ ]*):([0-9]*) ([.0-9]*) ([.0-9]*) ([.0-9]*) (-|[0-9]*) (-|[0-9]*) ([-0-9]*) ([-0-9]*) \"([^ ]*) ([^ ]*) (- |[^ ]*)\" (\"[^\"]*\") ([A-Z0-9-]+) ([A-Za-z0-9.-]*) ([^ ]*) ([^ ]*)\s
+    fields:
+    - name: type
+      type: STRING
+    - name: timestamp
+      type: STRING
+    - name: elb
+      type: STRING
+    - name: client_ip
+      type: STRING
+    - name: client_port
+      type: NUMBER
+    - name: target_ip
+      type: STRING
+    - name: target_port
+      type: NUMBER
+    - name: request_processing_time
+      type: NUMBER
+    - name: target_processing_time
+      type: NUMBER
+    - name: elb_status_code
+      type: NUMBER
+    - name: target_status_code
+      type: NUMBER
+    - name: received_bytes
+      type: NUMBER
+    - name: sent_bytes
+      type: NUMBER
+    - name: request_verb
+      type: STRING
+    - name: url
+      type: STRING
+    - name: protocol
+      type: STRING
+    - name: user_agent
+      type: STRING
+    - name: ssl_cipher
+      type: STRING
+    - name: ssl_protocol
+      type: STRING
+    - name: target_group_arn
+      type: STRING
+    - name: trace_id
+      type: STRING
+wrapper:
+  type: PassthroughWrapper
+serializer:
+  type: Json
+transport:
+  type: Firehose
+  threads: 5
+  append_newline: false
+  firehose_buffer: SIMPLE
+  stream_name: "<FIREHOSE_STREAM>"
+reporters:
+- type: Cloudwatch
+  stat_filters:
+  - name: timing.ns
+  - name: success.count
+  - name: error.count
+    report_zeros: false

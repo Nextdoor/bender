@@ -1,0 +1,34 @@
+handler:
+  type: KinesisHandler
+  fail_on_exception: true
+sources:
+- deserializer:
+    nested_field_configs:
+    - field: MESSAGE
+      prefix_field: MESSAGE_PREFIX
+    type: GenericJson
+  name: Syslog Messages
+  operations:
+  - type: TimeOperation
+    time_field: $.EPOCH
+    time_field_type: SECONDS
+  - type: JsonKeyNameOperation
+  - type: JsonDropArraysOperation
+  source_regex: .*
+wrapper:
+  type: KinesisWrapper
+serializer:
+  type: Json
+transport:
+  type: Firehose
+  threads: 5
+  append_newline: false
+  firehose_buffer: SIMPLE
+  stream_name: "<FIREHOSE_STREAM>"
+reporters:
+- type: Cloudwatch
+  stat_filters:
+  - name: timing.ns
+  - name: success.count
+  - name: error.count
+    report_zeros: false
