@@ -10,16 +10,9 @@ jobs:
 
       # CircleCI Environment Variables
       #
-      #   - COMMIT_DOCS
-      #       - Default is "false". When set to "true" docs site will be built and
-      #         auto commited to master branch.
       #   - DEPLOY_ARTIFACTS
       #       - Default is "false". When set to "true" the build artifacts will be
       #         deployed to specified repository locations.
-      #   - GIT_EMAIL
-      #       - Email used for commiting docs updates.
-      #   - GIT_USER
-      #       - User used for commiting docs updates.
       #   - GPG_KEY
       #       - Key for singing maven artifacts. This needs to be base64 encoded.
       #   - GPG_KEYNAME
@@ -68,6 +61,19 @@ jobs:
 
       # Build javadocs
       - run: mvn compile javadoc:aggregate
+
+      - run:
+          name: Verifying docs
+          command: |
+            java -cp "cli/target/*" com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
+            export NODE_PATH=/usr/lib/node_modules
+            cd docs && node gendocs.js
+            if [[ (`git diff --name-only index.html | grep index.html`) ]]; then
+              echo "FAIL: Schema changes were made but docs were not updated"
+              exit 1
+            else
+              echo "OK: Docs don't need updating"
+            fi
       
       # Copy our test results to a single directory for CircleCI's
       # store_test_results configuration.
@@ -97,20 +103,4 @@ jobs:
               mvn clean deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -DskipTests
             else
               echo "Skipping Release Deploy"
-            fi
-      - run:
-          name: Update docs
-          command: |
-            COMMIT_DOCS=${COMMIT_DOCS-false}
-            java -cp "cli/target/*" com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
-            export NODE_PATH=/usr/lib/node_modules
-            cd docs && node gendocs.js
-            if [[ ("${COMMIT_DOCS}" == "true") && (${CIRCLE_BRANCH} == "master") && (`git diff --name-only index.html | grep index.html`)]]; then
-              echo "Updating Docs"
-              git config --global user.email "${GIT_EMAIL}"
-              git config --global user.name "${GIT_USER}"
-              git commit -a -m "Auto updating docs"
-              git push origin master
-            else
-              echo "Skipping Docs Update"
             fi
