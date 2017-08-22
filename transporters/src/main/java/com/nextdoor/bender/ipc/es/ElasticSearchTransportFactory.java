@@ -215,6 +215,6 @@ public class ElasticSearchTransportFactory implements TransportFactory {
     this.config = (ElasticSearchTransportConfig) config;
     this.password = ((ElasticSearchTransportConfig) config).getPassword();
     this.serializer = new ElasticSearchTransportSerializer(this.config.isUseHashId(),
-        this.config.getType(), this.config.getIndex(), this.config.getIndexTimeFormat());
+        this.config.getDocumentType(), this.config.getIndex(), this.config.getIndexTimeFormat());
   }
 }

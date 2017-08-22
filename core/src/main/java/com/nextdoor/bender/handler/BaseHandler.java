@@ -101,6 +101,10 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
     String configFile;
 
+    /*
+     * TODO: Replace this to always use env vars. Code was written prior to
+     * lambda env vars existing.
+     */
     if (System.getenv("BENDER_CONFIG") != null) {
       configFile = System.getenv("BENDER_CONFIG");
     } else if (CONFIG_FILE == null) {
@@ -115,7 +119,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
       if (configFile.startsWith("s3://")) {
         config = BenderConfig.load(s3ClientFactory, new AmazonS3URI(configFile));
       } else {
-        config = BenderConfig.load(getClass().getSuperclass(), configFile);
+        config = BenderConfig.load(configFile);
       }
     } catch (ConfigurationException e) {
       throw new HandlerException("Error loading configuration: " + e.getMessage(), e);

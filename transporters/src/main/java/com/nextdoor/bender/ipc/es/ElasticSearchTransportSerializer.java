@@ -25,18 +25,18 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
 
   private final boolean useHashId;
   private final String index;
-  private final String type;
+  private final String documentType;
   private final DateTimeFormatter dtFormat;
 
-  public ElasticSearchTransportSerializer(boolean useHashId, String type, String index) {
-    this(useHashId, type, index, null);
+  public ElasticSearchTransportSerializer(boolean useHashId, String documentType, String index) {
+    this(useHashId, documentType, index, null);
   }
 
-  public ElasticSearchTransportSerializer(boolean useHashId, String type, String index,
+  public ElasticSearchTransportSerializer(boolean useHashId, String documentType, String index,
       String indexTimeFormat) {
     this.useHashId = useHashId;
     this.index = index;
-    this.type = type;
+    this.documentType = documentType;
 
     if (indexTimeFormat != null) {
       this.dtFormat = DateTimeFormat.forPattern(indexTimeFormat).withZoneUTC();
@@ -66,7 +66,7 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
 
     payload.append("\"_type\":");
     payload.append("\"");
-    payload.append(this.type);
+    payload.append(this.documentType);
     payload.append("\",");
 
     payload.append("\"_index\":");

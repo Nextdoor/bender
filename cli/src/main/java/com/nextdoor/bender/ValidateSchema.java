@@ -28,6 +28,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nextdoor.bender.config.BenderConfig;
 import com.nextdoor.bender.config.BenderConfig.BenderSchema;
 import com.nextdoor.bender.config.ConfigurationException;
@@ -57,11 +58,12 @@ public class ValidateSchema {
     boolean hasFailures = false;
     for (String configFilename : configFilenames) {
       StringBuilder sb = new StringBuilder();
-      Files.lines(Paths.get(configFilename), StandardCharsets.UTF_8).forEach(p -> sb.append(p));
+      Files.lines(Paths.get(configFilename), StandardCharsets.UTF_8).forEach(p -> sb.append(p + "\n"));
 
       System.out.println("Attempting to validate " + configFilename);
       try {
-        BenderConfig.validate(sb.toString(), schema);
+        ObjectMapper mapper = BenderConfig.getObjectMapper(configFilename);
+        BenderConfig.validate(sb.toString(), mapper, schema);
         System.out.println("Valid");
       } catch (ConfigurationException e) {
         System.out.println("Invalid");

@@ -20,13 +20,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.nextdoor.bender.handler.BaseHandler;
-
 public class ConfigurationTest {
 
   @Test
   public void testConfigurationFile() throws Exception {
-    BenderConfig config = BenderConfig.load(BaseHandler.class, "config.json");
+    BenderConfig config = BenderConfig.load("/com/nextdoor/bender/handler/config.json");
 
     HandlerResources resources;
     try {
