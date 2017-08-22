@@ -2,7 +2,7 @@
 
 ### Description
 
-Writes Application Load Balancer (ALB) logs stored in S3 to Firehose steam which pushes to an AWS hosted Elasticsearch cluster. Consult [es services docs](https://aws.amazon.com/elasticsearch-service/) on how to setup Elasticsearch service and [ALB docs](http://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html#enable-access-logging) on how to enable logging to S3.
+Writes Application Load Balancer (ALB) logs stored in S3 to Firehose stream which pushes to an AWS hosted Elasticsearch cluster. Consult [ElasticSearch Services docs](https://aws.amazon.com/elasticsearch-service/) on how to setup Elasticsearch Service and [ALB docs](http://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html#enable-access-logging) on how to enable logging to S3.
 
 
 ### Function Settings
