@@ -16,9 +16,9 @@ javadoc:
 	mvn compile javadoc:aggregate
 
 docson:
-	npm install node -g
-	npm install jquery -g
-	npm install node-docson -g
+	npm install node
+	npm install jquery
+	npm install node-docson
 
 docs: docson package
 	java -cp "cli/target/*" com.nextdoor.bender.CreateSchema --out-file docs/schema.json --docson
