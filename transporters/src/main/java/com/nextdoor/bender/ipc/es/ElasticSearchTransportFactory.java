@@ -20,7 +20,10 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -30,18 +33,25 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSCredentialsProviderChain;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
+
+import vc.inreach.aws.request.AWSSigner;
+import vc.inreach.aws.request.AWSSigningRequestInterceptor;
 
 /**
  * Creates a {@link ElasticSearchTransport} from a {@link ElasticSearchTransportConfig}.
@@ -171,10 +181,28 @@ public class ElasticSearchTransportFactory implements TransportFactory {
         return requestConfigBuilder.setConnectTimeout(5000).setSocketTimeout(config.getTimeout());
       }
     });
-
+    cb.setHttpClientConfigCallback(new SigningHttpClientConfigCallback());
     cb.setMaxRetryTimeoutMillis(config.getTimeout());
-
     return cb.build();
+  }
+
+  public class SigningHttpClientConfigCallback
+      implements RestClientBuilder.HttpClientConfigCallback {
+    final AWSSigningRequestInterceptor requestInterceptor;
+
+    public SigningHttpClientConfigCallback() {
+      final com.google.common.base.Supplier<LocalDateTime> clock =
+          () -> LocalDateTime.now(ZoneOffset.UTC);
+      DefaultAWSCredentialsProviderChain cp = new DefaultAWSCredentialsProviderChain();
+
+      AWSSigner awsSigner = new AWSSigner(cp, "us-east-1", "es", clock);
+      this.requestInterceptor = new AWSSigningRequestInterceptor(awsSigner);
+    }
+
+    @Override
+    public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+      return httpClientBuilder.addInterceptorLast(this.requestInterceptor);
+    }
   }
 
   @Override

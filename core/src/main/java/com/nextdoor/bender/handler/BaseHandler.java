@@ -104,7 +104,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
     if (System.getenv("BENDER_CONFIG") != null) {
       configFile = System.getenv("BENDER_CONFIG");
     } else if (CONFIG_FILE == null) {
-      configFile = "/config/" + alias + ".json";
+      configFile = "/config/" + alias + ".yaml";
     } else {
       configFile = CONFIG_FILE;
     }

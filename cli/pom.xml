@@ -54,7 +54,12 @@
       <artifactId>bender-packaging</artifactId>
       <version>${project.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>bender-core</artifactId>
+      <type>test-jar</type>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.kjetland</groupId>
       <artifactId>mbknor-jackson-jsonschema_2.12</artifactId>
