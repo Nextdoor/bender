@@ -2,7 +2,7 @@
 
 ### Description
 
-Reads syslog-ng json data from a kinesis stream, performs data transformation,
+Reads syslog-ng json data from a Kinesis Stream, performs data transformation,
 and writes to a firehose stream connected to an Amazon Elasitcsearch Service
 cluster. Your data pipeline will look like:
 
@@ -55,42 +55,9 @@ Additional Resources:
 | Permission       | cloudwatch:PutMetricData        |                        |
 
 ### Trigger
-Add a Lambda S3 trigger that triggers on object creation in the S3 bucket
-containing your Cloudtrail logs.
+Add a Lambda Kinesis trigger that links to the Kinesis stream the Agent is
+publishing to.
 
 ### Configuration
 
-```
-handler:
-  type: KinesisHandler
-  fail_on_exception: true
-sources:
-- deserializer:
-    type: GenericJson
-    nested_field_configs:
-    - field: MESSAGE
-      prefix_field: MESSAGE_PREFIX
-  name: Syslog Messages
-  operations:
-  - type: TimeOperation
-    time_field: $.EPOCH
-    time_field_type: SECONDS
-  - type: JsonKeyNameOperation
-  - type: JsonDropArraysOperation
-  source_regex: .*
-wrapper:
-  type: KinesisWrapper
-serializer:
-  type: Json
-transport:
-  type: Firehose
-  stream_name: "<FIREHOSE_STREAM>"
-  threads: 5
-reporters:
-- type: Cloudwatch
-  stat_filters:
-  - name: timing.ns
-  - name: success.count
-  - name: error.count
-    report_zeros: false
-```
+See [firehose-s3.yaml](firehose-s3.yaml)

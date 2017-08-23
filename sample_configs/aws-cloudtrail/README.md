@@ -42,35 +42,4 @@ containing your Cloudtrail logs.
 
 ### Configuration
 
-```
-handler:
-  type: S3Handler
-  fail_on_exception: true
-sources:
-- name: Cloudtrail
-  source_regex: ".*"
-  deserializer:
-    type: GenericJson
-  operations:
-  - type: JsonRootNodeOperation
-    root_path: "$.Records"
-  - type: JsonArraySplitOperation
-  - type: JsonKeyNameOperation
-wrapper:
-  type: PassthroughWrapper
-serializer:
-  type: Json
-transport:
-  type: Firehose
-  threads: 5
-  append_newline: false
-  firehose_buffer: SIMPLE
-  stream_name: "<FIREHOSE_STREAM>"
-reporters:
-- type: Cloudwatch
-  stat_filters:
-  - name: timing.ns
-  - name: success.count
-  - name: error.count
-    report_zeros: false
-```
+See [firehose-elasticsearch.yaml](firehose-elasticsearch.yaml)
