@@ -1,0 +1,47 @@
+handler:
+  type: KinesisHandler
+  fail_on_exception: true
+sources:
+- deserializer:
+    nested_field_configs:
+    - field: MESSAGE
+      prefix_field: MESSAGE_PREFIX
+    type: GenericJson
+  name: Syslog Messages
+  operations:
+  - type: TimeOperation
+    time_field: $.EPOCH
+    time_field_type: SECONDS
+  - type: JsonKeyNameOperation
+  - type: JsonDropArraysOperation
+  source_regex: .*
+wrapper:
+  type: KinesisWrapper
+serializer:
+  type: Json
+transport:
+  type: ElasticSearch
+  threads: 1
+  index: syslog-
+  index_time_format: yyyy-MM-dd
+  document_type: event
+  hostname: <ES_HOSTNAME>
+  auth_config:
+    type: UrlSigningAuth
+    region: <ES_REGION>
+    service: es
+  use_ssl: true
+  use_gzip: true
+  use_hashid: true
+  batch_size: 1000
+  port: 443
+  timeout: 10000
+  retry_count: 4
+  retry_delay: 3000
+reporters:
+- type: Cloudwatch
+  stat_filters:
+  - name: timing.ns
+  - name: success.count
+  - name: error.count
+    report_zeros: false
