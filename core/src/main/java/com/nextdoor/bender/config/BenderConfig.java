@@ -50,6 +50,7 @@ import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaTitle;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
+import com.nextdoor.bender.aws.auth.AuthConfig;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.handler.HandlerConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
@@ -120,6 +121,7 @@ public class BenderConfig {
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(SerializerConfig.class)));
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(TransportConfig.class)));
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(ReporterConfig.class)));
+      subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(AuthConfig.class)));
 
       /*
        * Sort the subtypes so that the order is deterministic. Without this locally generated
@@ -137,6 +139,7 @@ public class BenderConfig {
       return this.subtypes.toArray(new Class<?>[0]);
     }
   }
+
 
   /**
    * Wrap JsonNode containing JSON schema for Bender in order to provide a schema object. This is

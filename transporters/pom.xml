@@ -61,12 +61,6 @@
       <version>${commons-compress.version}</version>
     </dependency>
 
-<dependency>
-    <groupId>vc.inreach.aws</groupId>
-    <artifactId>aws-signing-request-interceptor</artifactId>
-    <version>0.0.16</version>
-</dependency>
-
     <dependency>
       <groupId>net.sf.jsignature.io-tools</groupId>
       <artifactId>easystream</artifactId>

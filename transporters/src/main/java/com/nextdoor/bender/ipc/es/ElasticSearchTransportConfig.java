@@ -1,3 +1,18 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * Copyright 2017 Nextdoor.com, Inc
+ *
+ */
+
 package com.nextdoor.bender.ipc.es;
 
 import java.io.UnsupportedEncodingException;
@@ -9,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.aws.auth.AuthConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
 import com.nextdoor.bender.utils.Passwords;
 
@@ -19,15 +35,9 @@ import com.nextdoor.bender.utils.Passwords;
     + "tested with version 2.3.x but may work with 5.x.")
 public class ElasticSearchTransportConfig extends TransportConfig {
 
-  @JsonSchemaDescription("HTTP auth username.")
-  @JsonSchemaDefault("false")
+  @JsonSchemaDescription("Authentication scheme.")
   @JsonProperty(required = false)
-  private String username = null;
-
-  @JsonSchemaDescription("HTTP auth password.")
-  @JsonSchemaDefault("false")
-  @JsonProperty(required = false)
-  private String password = null;
+  private AuthConfig<?> authConfig = null;
 
   @JsonSchemaDescription("ElasticSearch HTTP endpoint hostname.")
   @JsonProperty(required = true)
@@ -95,30 +105,12 @@ public class ElasticSearchTransportConfig extends TransportConfig {
   @Max(60000)
   private Long retryDelay = 1000l;
 
-  public String getUsername() {
-    return username;
+  public AuthConfig<?> getAuthConfig() {
+    return this.authConfig;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    /*
-     * If password uses KMS then decrypt it.
-     */
-    if (this.password != null) {
-      try {
-        return Passwords.getPassword(this.password);
-      } catch (UnsupportedEncodingException e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
+  public void setAuthConfig(AuthConfig<?> authConfig) {
+    this.authConfig = authConfig;
   }
 
   public String getHostname() {

@@ -20,10 +20,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.function.Supplier;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -33,16 +30,14 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSCredentialsProviderChain;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.nextdoor.bender.aws.auth.UrlSigningAuthConfig;
+import com.nextdoor.bender.aws.auth.UserPassAuthConfig;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
@@ -50,7 +45,6 @@ import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
 
-import vc.inreach.aws.request.AWSSigner;
 import vc.inreach.aws.request.AWSSigningRequestInterceptor;
 
 /**
@@ -60,7 +54,6 @@ public class ElasticSearchTransportFactory implements TransportFactory {
 
   private ElasticSearchTransportConfig config;
   private ElasticSearchTransportSerializer serializer;
-  private String password;
 
   @Override
   public Class<ElasticSearchTransport> getChildClass() {
@@ -127,82 +120,68 @@ public class ElasticSearchTransportFactory implements TransportFactory {
 
   private RestClient getHttpClient() throws TransportFactoryInitException {
     HttpHost httpHost;
-    boolean additionalConfig = false;
 
     if (this.config.isUseSSL()) {
       httpHost = new HttpHost(this.config.getHostname(), this.config.getPort(), "https");
-      additionalConfig = true;
     } else {
       httpHost = new HttpHost(this.config.getHostname(), this.config.getPort(), "http");
     }
 
-    if (this.config.getUsername() != null && this.password != null) {
-      additionalConfig = true;
-    }
+    RestClientBuilder rcb = RestClient.builder(httpHost);
 
-    RestClientBuilder cb = RestClient.builder(httpHost);
-
-    if (additionalConfig) {
-      cb.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-        @Override
-        public HttpAsyncClientBuilder customizeHttpClient(
-            HttpAsyncClientBuilder httpClientBuilder) {
-          if (config.isUseSSL()) {
-            httpClientBuilder.setSSLContext(getSSLContext());
-            httpClientBuilder
-                .setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-          }
-
-          if (config.getUsername() != null && password != null) {
-            /*
-             * Send auth via headers as the credentials provider method of auth does not work when
-             * using SSL.
-             */
-            byte[] encodedAuth =
-                Base64.encodeBase64((config.getUsername() + ":" + password).getBytes());
-            String authHeader = "Basic " + new String(encodedAuth);
-
-            httpClientBuilder.setDefaultHeaders(
-                Arrays.asList(new BasicHeader(HttpHeaders.AUTHORIZATION, authHeader)));
-          }
-
-          return httpClientBuilder;
+    rcb.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+      @Override
+      public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder cb) {
+        if (config.isUseSSL()) {
+          cb.setSSLContext(getSSLContext());
+          cb.setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         }
-      });
-    }
+
+        if (config.getAuthConfig() != null) {
+          if (config.getAuthConfig() instanceof UserPassAuthConfig) {
+            cb = addUserPassAuth(cb, (UserPassAuthConfig) config.getAuthConfig());
+          } else if (config.getAuthConfig() instanceof UrlSigningAuthConfig) {
+            cb = addSigningAuth(cb, (UrlSigningAuthConfig) config.getAuthConfig());
+          }
+        }
+
+        return cb;
+      }
+    });
+
 
     /*
      * Client default is 10 seconds. The default this factory has is 40 seconds.
      */
-    cb.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
+    rcb = rcb.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
       @Override
       public RequestConfig.Builder customizeRequestConfig(
           RequestConfig.Builder requestConfigBuilder) {
         return requestConfigBuilder.setConnectTimeout(5000).setSocketTimeout(config.getTimeout());
       }
     });
-    cb.setHttpClientConfigCallback(new SigningHttpClientConfigCallback());
-    cb.setMaxRetryTimeoutMillis(config.getTimeout());
-    return cb.build();
+    rcb = rcb.setMaxRetryTimeoutMillis(config.getTimeout());
+    return rcb.build();
   }
 
-  public class SigningHttpClientConfigCallback
-      implements RestClientBuilder.HttpClientConfigCallback {
-    final AWSSigningRequestInterceptor requestInterceptor;
+  private HttpAsyncClientBuilder addUserPassAuth(HttpAsyncClientBuilder cb,
+      UserPassAuthConfig auth) {
+    /*
+     * Send auth via headers as the credentials provider method of auth does not work when using
+     * SSL.
+     */
+    byte[] encodedAuth =
+        Base64.encodeBase64((auth.getUsername() + ":" + auth.getPassword()).getBytes());
+    String authHeader = "Basic " + new String(encodedAuth);
 
-    public SigningHttpClientConfigCallback() {
-      final com.google.common.base.Supplier<LocalDateTime> clock =
-          () -> LocalDateTime.now(ZoneOffset.UTC);
-      DefaultAWSCredentialsProviderChain cp = new DefaultAWSCredentialsProviderChain();
+    cb.setDefaultHeaders(Arrays.asList(new BasicHeader(HttpHeaders.AUTHORIZATION, authHeader)));
 
-      AWSSigner awsSigner = new AWSSigner(cp, "us-east-1", "es", clock);
-      this.requestInterceptor = new AWSSigningRequestInterceptor(awsSigner);
-    }
+    return cb;
+  }
 
-    @Override
-    public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
-      return httpClientBuilder.addInterceptorLast(this.requestInterceptor);
-    }
+  private HttpAsyncClientBuilder addSigningAuth(HttpAsyncClientBuilder cb,
+      UrlSigningAuthConfig auth) {
+    return cb.addInterceptorLast(new AWSSigningRequestInterceptor(auth.getAWSSigner()));
   }
 
   @Override
@@ -213,7 +192,6 @@ public class ElasticSearchTransportFactory implements TransportFactory {
   @Override
   public void setConf(AbstractConfig config) {
     this.config = (ElasticSearchTransportConfig) config;
-    this.password = ((ElasticSearchTransportConfig) config).getPassword();
     this.serializer = new ElasticSearchTransportSerializer(this.config.isUseHashId(),
         this.config.getDocumentType(), this.config.getIndex(), this.config.getIndexTimeFormat());
   }
