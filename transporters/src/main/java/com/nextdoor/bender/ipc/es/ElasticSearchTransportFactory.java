@@ -36,12 +36,16 @@ import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 
+import com.nextdoor.bender.aws.auth.UrlSigningAuthConfig;
+import com.nextdoor.bender.aws.auth.UserPassAuthConfig;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
+
+import vc.inreach.aws.request.AWSSigningRequestInterceptor;
 
 /**
  * Creates a {@link ElasticSearchTransport} from a {@link ElasticSearchTransportConfig}.
@@ -50,7 +54,6 @@ public class ElasticSearchTransportFactory implements TransportFactory {
 
   private ElasticSearchTransportConfig config;
   private ElasticSearchTransportSerializer serializer;
-  private String password;
 
   @Override
   public Class<ElasticSearchTransport> getChildClass() {
@@ -117,64 +120,68 @@ public class ElasticSearchTransportFactory implements TransportFactory {
 
   private RestClient getHttpClient() throws TransportFactoryInitException {
     HttpHost httpHost;
-    boolean additionalConfig = false;
 
     if (this.config.isUseSSL()) {
       httpHost = new HttpHost(this.config.getHostname(), this.config.getPort(), "https");
-      additionalConfig = true;
     } else {
       httpHost = new HttpHost(this.config.getHostname(), this.config.getPort(), "http");
     }
 
-    if (this.config.getUsername() != null && this.password != null) {
-      additionalConfig = true;
-    }
+    RestClientBuilder rcb = RestClient.builder(httpHost);
 
-    RestClientBuilder cb = RestClient.builder(httpHost);
-
-    if (additionalConfig) {
-      cb.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-        @Override
-        public HttpAsyncClientBuilder customizeHttpClient(
-            HttpAsyncClientBuilder httpClientBuilder) {
-          if (config.isUseSSL()) {
-            httpClientBuilder.setSSLContext(getSSLContext());
-            httpClientBuilder
-                .setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-          }
-
-          if (config.getUsername() != null && password != null) {
-            /*
-             * Send auth via headers as the credentials provider method of auth does not work when
-             * using SSL.
-             */
-            byte[] encodedAuth =
-                Base64.encodeBase64((config.getUsername() + ":" + password).getBytes());
-            String authHeader = "Basic " + new String(encodedAuth);
-
-            httpClientBuilder.setDefaultHeaders(
-                Arrays.asList(new BasicHeader(HttpHeaders.AUTHORIZATION, authHeader)));
-          }
-
-          return httpClientBuilder;
+    rcb.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+      @Override
+      public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder cb) {
+        if (config.isUseSSL()) {
+          cb.setSSLContext(getSSLContext());
+          cb.setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         }
-      });
-    }
+
+        if (config.getAuthConfig() != null) {
+          if (config.getAuthConfig() instanceof UserPassAuthConfig) {
+            cb = addUserPassAuth(cb, (UserPassAuthConfig) config.getAuthConfig());
+          } else if (config.getAuthConfig() instanceof UrlSigningAuthConfig) {
+            cb = addSigningAuth(cb, (UrlSigningAuthConfig) config.getAuthConfig());
+          }
+        }
+
+        return cb;
+      }
+    });
+
 
     /*
      * Client default is 10 seconds. The default this factory has is 40 seconds.
      */
-    cb.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
+    rcb = rcb.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
       @Override
       public RequestConfig.Builder customizeRequestConfig(
           RequestConfig.Builder requestConfigBuilder) {
         return requestConfigBuilder.setConnectTimeout(5000).setSocketTimeout(config.getTimeout());
       }
     });
+    rcb = rcb.setMaxRetryTimeoutMillis(config.getTimeout());
+    return rcb.build();
+  }
 
-    cb.setMaxRetryTimeoutMillis(config.getTimeout());
+  private HttpAsyncClientBuilder addUserPassAuth(HttpAsyncClientBuilder cb,
+      UserPassAuthConfig auth) {
+    /*
+     * Send auth via headers as the credentials provider method of auth does not work when using
+     * SSL.
+     */
+    byte[] encodedAuth =
+        Base64.encodeBase64((auth.getUsername() + ":" + auth.getPassword()).getBytes());
+    String authHeader = "Basic " + new String(encodedAuth);
 
-    return cb.build();
+    cb.setDefaultHeaders(Arrays.asList(new BasicHeader(HttpHeaders.AUTHORIZATION, authHeader)));
+
+    return cb;
+  }
+
+  private HttpAsyncClientBuilder addSigningAuth(HttpAsyncClientBuilder cb,
+      UrlSigningAuthConfig auth) {
+    return cb.addInterceptorLast(new AWSSigningRequestInterceptor(auth.getAWSSigner()));
   }
 
   @Override
@@ -185,7 +192,6 @@ public class ElasticSearchTransportFactory implements TransportFactory {
   @Override
   public void setConf(AbstractConfig config) {
     this.config = (ElasticSearchTransportConfig) config;
-    this.password = ((ElasticSearchTransportConfig) config).getPassword();
     this.serializer = new ElasticSearchTransportSerializer(this.config.isUseHashId(),
         this.config.getDocumentType(), this.config.getIndex(), this.config.getIndexTimeFormat());
   }

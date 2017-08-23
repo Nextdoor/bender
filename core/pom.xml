@@ -79,6 +79,12 @@
     </dependency>
 
     <dependency>
+      <groupId>vc.inreach.aws</groupId>
+      <artifactId>aws-signing-request-interceptor</artifactId>
+      <version>${aws-signing-request-interceptor.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commons-io.version}</version>

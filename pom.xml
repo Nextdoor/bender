@@ -89,6 +89,7 @@
     <license-maven-plugin.version>1.13</license-maven-plugin.version>
 
     <!-- Library Dependency Versions -->
+    <aws-signing-request-interceptor.version>0.0.16</aws-signing-request-interceptor.version>
     <aws-java-sdk-cloudwatch.version>1.11.49</aws-java-sdk-cloudwatch.version>
     <aws-java-sdk-kms.version>1.11.46</aws-java-sdk-kms.version>
     <aws-java-sdk-s3.version>1.11.78</aws-java-sdk-s3.version>

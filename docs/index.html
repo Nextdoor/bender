@@ -3084,7 +3084,38 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">username</div>
+                <div class="property-name ">auth_config</div>
+                <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UserPassAuth</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UrlSigningAuth</span>
+
+                </div>
+                <div class="signature-description desc"><p>Authentication scheme.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">UserPassAuth</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
                string
@@ -3092,19 +3123,20 @@ function sourceButton(element) {
             <span class="type-keyword">
                
             </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">UserPassAuth</span>
             <span class="type-keyword">default</span>
-            <span class="type-default">false</span>
+            <span class="type-default">UserPassAuth</span>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP auth username.</p>
-</div>
+                <div class="signature-description desc"></div>
             </div>
             <div class="signature-box-container">
             </div>
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">password</div>
+                <div class="property-name required">username</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
                string
@@ -3112,14 +3144,185 @@ function sourceButton(element) {
             <span class="type-keyword">
                
             </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">false</span>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP auth password.</p>
-</div>
+                <div class="signature-description desc"></div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">password</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "UserPassAuth"
+      ],
+      "default": "UserPassAuth"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    }
+  },
+  "title": "UserPassAuth",
+  "required": [
+    "type",
+    "username",
+    "password"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">UrlSigningAuth</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">UrlSigningAuth</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">UrlSigningAuth</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">service</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">awssigner</div>
+                <div class="signature-type">
+                        
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "UrlSigningAuth"
+      ],
+      "default": "UrlSigningAuth"
+    },
+    "region": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "awssigner": {}
+  },
+  "title": "UrlSigningAuth",
+  "required": [
+    "type",
+    "region",
+    "service"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
         <div class="signature">
@@ -3377,15 +3580,16 @@ function sourceButton(element) {
       "default": 5,
       "description": "Number of concurrent transporters allowed"
     },
-    "username": {
-      "type": "string",
-      "default": "false",
-      "description": "HTTP auth username."
-    },
-    "password": {
-      "type": "string",
-      "default": "false",
-      "description": "HTTP auth password."
+    "auth_config": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/UserPassAuthConfig"
+        },
+        {
+          "$ref": "#/definitions/UrlSigningAuthConfig"
+        }
+      ],
+      "description": "Authentication scheme."
     },
     "hostname": {
       "type": "string",
@@ -4966,15 +5170,16 @@ function sourceButton(element) {
           "default": 5,
           "description": "Number of concurrent transporters allowed"
         },
-        "username": {
-          "type": "string",
-          "default": "false",
-          "description": "HTTP auth username."
-        },
-        "password": {
-          "type": "string",
-          "default": "false",
-          "description": "HTTP auth password."
+        "auth_config": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/UserPassAuthConfig"
+            },
+            {
+              "$ref": "#/definitions/UrlSigningAuthConfig"
+            }
+          ],
+          "description": "Authentication scheme."
         },
         "hostname": {
           "type": "string",
@@ -5049,6 +5254,57 @@ function sourceButton(element) {
         "hostname",
         "index",
         "document_type"
+      ]
+    },
+    "UserPassAuthConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "UserPassAuth"
+          ],
+          "default": "UserPassAuth"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "UserPassAuth",
+      "required": [
+        "type",
+        "username",
+        "password"
+      ]
+    },
+    "UrlSigningAuthConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "UrlSigningAuth"
+          ],
+          "default": "UrlSigningAuth"
+        },
+        "region": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "awssigner": {}
+      },
+      "title": "UrlSigningAuth",
+      "required": [
+        "type",
+        "region",
+        "service"
       ]
     },
     "FirehoseTransportConfig": {

@@ -17,8 +17,10 @@ package com.nextdoor.bender.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,6 +52,7 @@ import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaTitle;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
+import com.nextdoor.bender.aws.auth.AuthConfig;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.handler.HandlerConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
@@ -120,6 +123,7 @@ public class BenderConfig {
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(SerializerConfig.class)));
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(TransportConfig.class)));
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(ReporterConfig.class)));
+      subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(AuthConfig.class)));
 
       /*
        * Sort the subtypes so that the order is deterministic. Without this locally generated
@@ -137,6 +141,7 @@ public class BenderConfig {
       return this.subtypes.toArray(new Class<?>[0]);
     }
   }
+
 
   /**
    * Wrap JsonNode containing JSON schema for Bender in order to provide a schema object. This is
@@ -331,18 +336,28 @@ public class BenderConfig {
     return config;
   }
 
-
   public static BenderConfig load(String resource) {
     /*
      * Read config file
      */
     String data;
 
-    try {
-      data = IOUtils
-          .toString(new InputStreamReader(Class.class.getResourceAsStream(resource), "UTF-8"));
-    } catch (NullPointerException | IOException e) {
+    URL url;
+    if ((url = Class.class.getResource(resource)) != null) {
+    } else if ((url = Class.class.getResource(resource + ".yaml")) != null) {
+      resource += ".yaml";
+      logger.debug("found config file with .yaml extension " + resource);
+    } else if ((url = Class.class.getResource(resource + ".json")) != null) {
+      resource += ".json";
+      logger.debug("found config file with .json extension " + resource);
+    } else {
       throw new ConfigurationException("unable to find " + resource);
+    }
+
+    try {
+      data = IOUtils.toString(new InputStreamReader(url.openStream(), "UTF-8"));
+    } catch (NullPointerException | IOException e) {
+      throw new ConfigurationException("unable to read " + resource);
     }
 
     BenderConfig config = load(resource, data);
