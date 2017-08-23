@@ -2,9 +2,6 @@
 
 # Bender - Serverless ETL Framework
 
-
-## About
-
 This project provides an extendable Java framework for creating serverless ETL
 functions on [AWS Lambda](https://aws.amazon.com/lambda/). Bender Core handles
 the complex plumbing and provides the interfaces necessary to build modules for
@@ -12,10 +9,10 @@ all aspects of the ETL process.
 
 ### Configuration
 
-Bender is easily configurable with either json or yaml. The [configuration guide](http://oss.nextdoor.com/bender)
-provides documentation for option specifics and [sample_configs](https://github.com/Nextdoor/bender/blob/master/sample_configs)
-contains real world examples of how Bender is configured with commonly used
-pipelines.
+Bender is easily configurable with either json or yaml. The
+[configuration guide](http://oss.nextdoor.com/bender) provides documentation
+for option specifics and [sample_configs/](sample_configs/) contains real world
+examples of how Bender is configured with commonly used pipelines.
 
 ### Initial Support
 
@@ -87,7 +84,7 @@ metrics for easy consumption in
 
 The easiest way to deploy your function is to use
 [Apex](https://github.com/apex/apex). A sample project is included under
-[example_project/](https://github.com/Nextdoor/bender/tree/master/example_project).
+[example_project/](example_project/).
 The project provides an example of a function that is triggered by Kinesis,
 drops data matching a regex, and forwards the rest to Firehose.
 

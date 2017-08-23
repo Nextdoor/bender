@@ -43,48 +43,4 @@ Firehose writes data to.
 
 ### Configuration
 
-```
-handler:
-  type: S3Handler
-  fail_on_exception: true
-sources:
-- deserializer:
-    type: GenericJson
-  name: Logs
-  source_regex: .*
-  operations:
-  - type: PartitionOperation
-    partition_specs:
-    - name: host
-      sources:
-      - $.payload.HOST
-      interpreter: STRING
-    - name: facility
-      sources:
-      - $.payload.FACILITY
-      interpreter: STRING
-    - format: YYYY-MM-dd-HH
-      interpreter: SECONDS
-      name: ds
-      sources:
-      - $.payload.EPOCH
-wrapper:
-  type: PassthroughWrapper
-serializer:
-  type: Json
-transport:
-  type: S3
-  base_path: <S3_BASE_PATH>
-  bucket_name: <S3_BUCKET_NAME>
-  compress_buffer: false
-  max_buffer_size: 134217728
-  threads: 5
-  use_compression: true
-reporters:
-- type: Cloudwatch
-  stat_filters:
-  - name: timing.ns
-  - name: success.count
-  - name: error.count
-    report_zeros: false
-```
+See [partitioned-s3.yaml](partitioned-s3.yaml)
