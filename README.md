@@ -2,14 +2,17 @@
 
 # Bender - Serverless ETL Framework
 
-
-## About
-
 This project provides an extendable Java framework for creating serverless ETL
 functions on [AWS Lambda](https://aws.amazon.com/lambda/). Bender Core handles
 the complex plumbing and provides the interfaces necessary to build modules for
 all aspects of the ETL process.
 
+### Configuration
+
+Bender is easily configurable with either json or yaml. The
+[configuration guide](http://oss.nextdoor.com/bender) provides documentation
+for option specifics and [sample_configs/](sample_configs/) contains real world
+examples of how Bender is configured with commonly used pipelines.
 
 ### Initial Support
 
@@ -41,13 +44,14 @@ application logging. For schema validation the use of GSON to POJOs is
 encouraged.
 
 ##### Operations
-Data sometimes needs to be transformed, fixed, sanitized, or enriched. Operations
-allow for these types of data manipulation. Included JSON mutators:
+Data sometimes needs to be transformed, fixed, sanitized, or enriched.
+Operations allow for these types of data manipulation. Included JSON mutators:
 
 * Root node promoter (in the case you have nested data)
 * Array Dropping
 * Array Splitting (turning a single event into multiple)
-* Appending value type information to key names (helps with writing data to ElasticSearch)
+* Appending value type information to key names (helps with writing data to
+  ElasticSearch)
 
 ##### Wrappers
 Optionally wrap data to provide additional information on where the data
@@ -58,7 +62,8 @@ originated from and what processed it:
 * Basic Wrapper
 
 ##### Serializers
-Write your transformed and wrapped data back into JSON before loading it elsewhere.
+Write your transformed and wrapped data back into JSON before loading it
+elsewhere.
 
 ##### Transporters
 Transporters convert string payloads to serialized wire formats and send
@@ -75,17 +80,11 @@ metrics for easy consumption in
 * Cloudwatch Metrics
 * Datadog
 
-## Configuration
-
-Bender uses JSON configuration files. See the
-[docs](http://oss.nextdoor.com/bender/) for more details on config
-file specifics and how to include your configuration in deployment.
-
 ## Deployment
 
 The easiest way to deploy your function is to use
 [Apex](https://github.com/apex/apex). A sample project is included under
-[example_project/](https://github.com/Nextdoor/bender/tree/master/example_project).
+[example_project/](example_project/).
 The project provides an example of a function that is triggered by Kinesis,
 drops data matching a regex, and forwards the rest to Firehose.
 
@@ -110,6 +109,8 @@ To deploy:
 ## Contributing
 Features and bug fixes are welcome. Please adhere to the following guidelines:
 
-- Use Google's Java [style guide](https://github.com/google/styleguide) for your IDE.
-- Be conscientious of dependencies you add to Core.
-- Help maintain unit test code coverage by adding tests for each branch in new code.
+- Use Google's Java [style guide](https://github.com/google/styleguide) for
+  your IDE.
+- Be conscientious of dependencies you add to Bender Core.
+- Help maintain unit test code coverage by adding tests for each branch in new 
+  code.
