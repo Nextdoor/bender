@@ -12,7 +12,7 @@ all aspects of the ETL process.
 
 ### Configuration
 
-Bender is easily configurable with either json or yaml. The [configuration guide](http://oss.nextdoor.com) provides documentation for option specifics and [sample_configs](https://github.com/Nextdoor/bender/blob/master/sample_configs) contains real world examples of how Bender is configured with commonly used pipelines.
+Bender is easily configurable with either json or yaml. The [configuration guide](http://oss.nextdoor.com/bender) provides documentation for option specifics and [sample_configs](https://github.com/Nextdoor/bender/blob/master/sample_configs) contains real world examples of how Bender is configured with commonly used pipelines.
 
 ### Initial Support
 

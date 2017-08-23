@@ -2,7 +2,7 @@
 
 ### Description
 
-Writes CloudTrail logs stored in S3 to Firehose steam which pushes to an AWS hosted Elasticsearch cluster. Consult [es services docs](https://aws.amazon.com/elasticsearch-service/) on how to setup Elasticsearch service and [CloudTrail docs](https://docs.aws.amazon.com/console/awscloudtrail/) on how to setup CloudTrail.
+Writes CloudTrail logs stored in S3 to Firehose steam which pushes to an AWS hosted Elasticsearch cluster. Consult [Elasticsearch Services docs](https://aws.amazon.com/elasticsearch-service/) on how to setup Elasticsearch service and [CloudTrail docs](https://docs.aws.amazon.com/console/awscloudtrail/) on how to setup CloudTrail.
 
 
 ### Function Settings
