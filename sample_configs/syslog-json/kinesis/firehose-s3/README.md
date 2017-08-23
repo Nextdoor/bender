@@ -2,9 +2,12 @@
 
 ### Description
 
-Reads syslog-ng json data from a kinesis stream, performs data transformation, and writes to a firehose stream connected to an AWS hosted Elasticsearch cluster. Your data pipeline will look like:
+Reads syslog-ng json data from a kinesis stream, performs data transformation,
+and writes to a firehose stream connected to an Amazon Elasitcsearch Service
+cluster. Your data pipeline will look like:
 
-syslog messages -> syslog-ng -> local file (json) -> kinesis agent -> kinesis -> Lambda -> Firehose -> S3
+syslog messages -> syslog-ng -> local file (json) -> kinesis agent -> kinesis
+-> Lambda -> Firehose -> S3
 
 Here is an example of the syslog-ng configuration to write to json:
 
@@ -28,31 +31,32 @@ Additional Resources:
 ### Function Settings
 
 
-| Lambda Setting | Value                                                         |
-| -------------- | ------------------------------------------------------------- |
-| runtime        | java                                                          |
+| Lambda Setting | Value                                                      |
+| -------------- | ---------------------------------------------------------- |
+| runtime        | java                                                       |
 | handler        | `com.nextdoor.bender.handler.kinesis.KinesisHandler::handler` |
-| memory         | 512                                                           |
-| timeout        | 300                                                           |
+| memory         | 512                                                        |
+| timeout        | 300                                                        |
 
-| Environment Vars | Value                     | Notes                      |
-| ---------------- | ------------------------- | -------------------------- |
+| Environment Vars | Value                     | Notes                        |
+| ---------------- | ------------------------- | ---------------------------- |
 | BENDER_CONFIG    | s3://mybucket/myfile.yaml | Your function will need IAM permissions to read this file |
 | FIREHOSE_STREAM  | my-stream                 | The name of your destination firehose stream. Must be the name and not the ARN. |
 
 ### Permissions
 
-| Type             | Value                           | Notes                     |
-| ---------------- | ------------------------------- |-------------------------- |
-| Role             | AWSLambdaKinesisExecutionRole   |                           |
-| Permission       | firehose:DescribeDeliveryStream |                           |
-| Permission       | firehose:ListDeliveryStreams    |                           |
-| Permission       | firehose:PutRecord              |                           |
-| Permission       | firehose:PutRecordBatch         |                           |
-| Permission       | cloudwatch:PutMetricData        |                           |
+| Type             | Value                           | Notes                  |
+| ---------------- | ------------------------------- |----------------------- |
+| Role             | AWSLambdaKinesisExecutionRole   |                        |
+| Permission       | firehose:DescribeDeliveryStream |                        |
+| Permission       | firehose:ListDeliveryStreams    |                        |
+| Permission       | firehose:PutRecord              |                        |
+| Permission       | firehose:PutRecordBatch         |                        |
+| Permission       | cloudwatch:PutMetricData        |                        |
 
 ### Trigger
-Add a Lambda S3 trigger that triggers on object creation in the S3 bucket containing your Cloudtrail logs.
+Add a Lambda S3 trigger that triggers on object creation in the S3 bucket
+containing your Cloudtrail logs.
 
 ### Configuration
 

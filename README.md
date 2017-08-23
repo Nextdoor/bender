@@ -12,7 +12,10 @@ all aspects of the ETL process.
 
 ### Configuration
 
-Bender is easily configurable with either json or yaml. The [configuration guide](http://oss.nextdoor.com/bender) provides documentation for option specifics and [sample_configs](https://github.com/Nextdoor/bender/blob/master/sample_configs) contains real world examples of how Bender is configured with commonly used pipelines.
+Bender is easily configurable with either json or yaml. The [configuration guide](http://oss.nextdoor.com/bender)
+provides documentation for option specifics and [sample_configs](https://github.com/Nextdoor/bender/blob/master/sample_configs)
+contains real world examples of how Bender is configured with commonly used
+pipelines.
 
 ### Initial Support
 
@@ -44,13 +47,14 @@ application logging. For schema validation the use of GSON to POJOs is
 encouraged.
 
 ##### Operations
-Data sometimes needs to be transformed, fixed, sanitized, or enriched. Operations
-allow for these types of data manipulation. Included JSON mutators:
+Data sometimes needs to be transformed, fixed, sanitized, or enriched.
+Operations allow for these types of data manipulation. Included JSON mutators:
 
 * Root node promoter (in the case you have nested data)
 * Array Dropping
 * Array Splitting (turning a single event into multiple)
-* Appending value type information to key names (helps with writing data to ElasticSearch)
+* Appending value type information to key names (helps with writing data to
+  ElasticSearch)
 
 ##### Wrappers
 Optionally wrap data to provide additional information on where the data
@@ -61,7 +65,8 @@ originated from and what processed it:
 * Basic Wrapper
 
 ##### Serializers
-Write your transformed and wrapped data back into JSON before loading it elsewhere.
+Write your transformed and wrapped data back into JSON before loading it
+elsewhere.
 
 ##### Transporters
 Transporters convert string payloads to serialized wire formats and send
@@ -107,6 +112,8 @@ To deploy:
 ## Contributing
 Features and bug fixes are welcome. Please adhere to the following guidelines:
 
-- Use Google's Java [style guide](https://github.com/google/styleguide) for your IDE.
-- Be conscientious of dependencies you add to Core.
-- Help maintain unit test code coverage by adding tests for each branch in new code.
+- Use Google's Java [style guide](https://github.com/google/styleguide) for
+  your IDE.
+- Be conscientious of dependencies you add to Bender Core.
+- Help maintain unit test code coverage by adding tests for each branch in new 
+  code.
