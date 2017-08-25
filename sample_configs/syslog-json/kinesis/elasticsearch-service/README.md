@@ -50,7 +50,7 @@ Additional Resources:
 | ---------------- | ------------------------- | ---------------------------- |
 | BENDER_CONFIG    | s3://mybucket/myfile.yaml | Your function will need IAM permissions to read this file |
 | ES_HOSTNAME      | ...es.amazonaws.com       |                              |
-| ES_REGION        |                           | For example us-east-1        |
+| ES_REGION        |                           | For example US_EAST_1        |
 
 
 ### Permissions

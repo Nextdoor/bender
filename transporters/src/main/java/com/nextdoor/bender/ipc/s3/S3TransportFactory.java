@@ -48,6 +48,12 @@ public class S3TransportFactory implements TransportFactory {
 
   @Override
   public Transport newInstance() throws TransportFactoryInitException {
+    AmazonS3Client client = new AmazonS3Client();
+
+    if (this.config.getRegion() != null) {
+      client.withRegion(this.config.getRegion());
+    }
+
     return new S3Transport(new AmazonS3Client(), this.config.getBucketName(),
         this.config.getBasePath(), this.config.getUseCompression(), this.pendingMultiPartUploads);
   }
@@ -55,6 +61,10 @@ public class S3TransportFactory implements TransportFactory {
   @Override
   public void close() {
     AmazonS3Client client = new AmazonS3Client();
+
+    if (this.config.getRegion() != null) {
+      client.withRegion(this.config.getRegion());
+    }
 
     Exception e = null;
     for (MultiPartUpload upload : this.pendingMultiPartUploads.values()) {

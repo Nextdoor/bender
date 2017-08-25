@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -27,7 +28,7 @@ import vc.inreach.aws.request.AWSSigner;
 @JsonTypeName("UrlSigningAuth")
 public class UrlSigningAuthConfig extends AuthConfig<UrlSigningAuthConfig> {
   @JsonProperty(required = true)
-  private String region;
+  private Regions region;
 
   @JsonProperty(required = true)
   private String service;
@@ -40,11 +41,11 @@ public class UrlSigningAuthConfig extends AuthConfig<UrlSigningAuthConfig> {
     this.service = service;
   }
 
-  public String getRegion() {
-    return region;
+  public Regions getRegion() {
+    return this.region;
   }
 
-  public void setRegion(String region) {
+  public void setRegion(Regions region) {
     this.region = region;
   }
 
@@ -53,6 +54,6 @@ public class UrlSigningAuthConfig extends AuthConfig<UrlSigningAuthConfig> {
         () -> LocalDateTime.now(ZoneOffset.UTC);
     DefaultAWSCredentialsProviderChain cp = new DefaultAWSCredentialsProviderChain();
 
-    return new AWSSigner(cp, this.region, this.service, clock);
+    return new AWSSigner(cp, this.region.getName(), this.service, clock);
   }
 }

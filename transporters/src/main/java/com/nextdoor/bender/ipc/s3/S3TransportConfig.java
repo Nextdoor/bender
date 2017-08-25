@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.ipc.TransportConfig;
+import com.nextdoor.bender.ipc.AWSTransportConfig;
 
 @JsonTypeName("S3")
 @JsonSchemaDescription("Writes batches of events to S3. The output filename will either "
@@ -30,7 +30,7 @@ import com.nextdoor.bender.ipc.TransportConfig;
     + "s3:AbortMultipartUpload, s3:PutObject, s3:ListMultipartUploadParts, "
     + "s3:ListBucketMultipartUploads")
 
-public class S3TransportConfig extends TransportConfig {
+public class S3TransportConfig extends AWSTransportConfig {
 
   @JsonSchemaDescription("S3 bucket name.")
   @JsonProperty(required = true)
