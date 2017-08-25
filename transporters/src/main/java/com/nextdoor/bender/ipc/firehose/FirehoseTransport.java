@@ -15,7 +15,6 @@
 
 package com.nextdoor.bender.ipc.firehose;
 
-import com.amazonaws.ClientConfiguration;
 import com.amazonaws.services.kinesisfirehose.AmazonKinesisFirehoseClient;
 import com.amazonaws.services.kinesisfirehose.model.PutRecordBatchRequest;
 import com.nextdoor.bender.ipc.TransportBuffer;
@@ -26,10 +25,10 @@ import com.nextdoor.bender.ipc.UnpartitionedTransport;
  */
 public class FirehoseTransport implements UnpartitionedTransport {
   private final String deliveryStreamName;
-  private AmazonKinesisFirehoseClient client =
-      new AmazonKinesisFirehoseClient(new ClientConfiguration().withGzip(true));
+  private final AmazonKinesisFirehoseClient client;
 
-  protected FirehoseTransport(String deliveryStreamName) {
+  protected FirehoseTransport(AmazonKinesisFirehoseClient client, String deliveryStreamName) {
+    this.client = client;
     this.deliveryStreamName = deliveryStreamName;
   }
 

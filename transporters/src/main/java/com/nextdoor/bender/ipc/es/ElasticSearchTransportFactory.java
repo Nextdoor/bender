@@ -54,6 +54,7 @@ public class ElasticSearchTransportFactory implements TransportFactory {
 
   private ElasticSearchTransportConfig config;
   private ElasticSearchTransportSerializer serializer;
+  private RestClient client;
 
   @Override
   public Class<ElasticSearchTransport> getChildClass() {
@@ -65,7 +66,7 @@ public class ElasticSearchTransportFactory implements TransportFactory {
 
   @Override
   public UnpartitionedTransport newInstance() throws TransportFactoryInitException {
-    return new ElasticSearchTransport(getHttpClient(), this.config.isUseGzip(),
+    return new ElasticSearchTransport(this.client, this.config.isUseGzip(),
         this.config.getRetryCount(), this.config.getRetryDelay());
   }
 
@@ -194,5 +195,6 @@ public class ElasticSearchTransportFactory implements TransportFactory {
     this.config = (ElasticSearchTransportConfig) config;
     this.serializer = new ElasticSearchTransportSerializer(this.config.isUseHashId(),
         this.config.getDocumentType(), this.config.getIndex(), this.config.getIndexTimeFormat());
+    this.client = getHttpClient();
   }
 }

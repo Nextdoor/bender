@@ -15,8 +15,6 @@
 
 package com.nextdoor.bender.ipc.es;
 
-import java.io.UnsupportedEncodingException;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -26,7 +24,6 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.aws.auth.AuthConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
-import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("ElasticSearch")
 @JsonSchemaDescription("Writes events into a self-hosted ElasticSearch. This transport does not"

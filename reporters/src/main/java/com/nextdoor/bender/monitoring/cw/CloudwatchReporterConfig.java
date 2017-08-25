@@ -18,12 +18,12 @@ package com.nextdoor.bender.monitoring.cw;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.monitoring.ReporterConfig;
+import com.nextdoor.bender.monitoring.RegionalReporterConfig;
 
 @JsonTypeName("Cloudwatch")
 @JsonSchemaDescription("Writes metrics to Cloudwatch. It is important to consider costs when "
     + "using this reporter see https://aws.amazon.com/cloudwatch/pricing/.")
-public class CloudwatchReporterConfig extends ReporterConfig {
+public class CloudwatchReporterConfig extends RegionalReporterConfig {
   @JsonSchemaDefault("Nextdoor/bender")
   @JsonSchemaDescription("Cloudwatch namespace to write metrics under.")
   private String namespace = "Nextdoor/bender";

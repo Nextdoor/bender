@@ -36,6 +36,7 @@ import com.nextdoor.bender.ipc.TransportFactoryInitException;
 public class S3TransportFactory implements TransportFactory {
   private static final Logger logger = Logger.getLogger(S3TransportFactory.class);
   private S3TransportConfig config;
+  private AmazonS3Client client;
 
   private Map<String, MultiPartUpload> pendingMultiPartUploads =
       new HashMap<String, MultiPartUpload>();
@@ -48,21 +49,19 @@ public class S3TransportFactory implements TransportFactory {
 
   @Override
   public Transport newInstance() throws TransportFactoryInitException {
-    return new S3Transport(new AmazonS3Client(), this.config.getBucketName(),
-        this.config.getBasePath(), this.config.getUseCompression(), this.pendingMultiPartUploads);
+    return new S3Transport(this.client, this.config.getBucketName(), this.config.getBasePath(),
+        this.config.getUseCompression(), this.pendingMultiPartUploads);
   }
 
   @Override
   public void close() {
-    AmazonS3Client client = new AmazonS3Client();
-
     Exception e = null;
     for (MultiPartUpload upload : this.pendingMultiPartUploads.values()) {
 
       if (e == null) {
         CompleteMultipartUploadRequest req = upload.getCompleteMultipartUploadRequest();
         try {
-          client.completeMultipartUpload(req);
+          this.client.completeMultipartUpload(req);
         } catch (AmazonS3Exception e1) {
           logger.error("failed to complete multi-part upload for " + upload.getKey() + " parts "
               + upload.getPartCount(), e1);
@@ -72,15 +71,13 @@ public class S3TransportFactory implements TransportFactory {
         logger.warn("aborting upload for: " + upload.getKey());
         AbortMultipartUploadRequest req = upload.getAbortMultipartUploadRequest();
         try {
-          client.abortMultipartUpload(req);
+          this.client.abortMultipartUpload(req);
         } catch (AmazonS3Exception e1) {
           logger.error("failed to abort multi-part upload", e1);
         }
       }
     }
     this.pendingMultiPartUploads.clear();
-
-    client.shutdown();
 
     if (e != null) {
       throw new RuntimeException("failed while closing transport", e);
@@ -101,5 +98,10 @@ public class S3TransportFactory implements TransportFactory {
   @Override
   public void setConf(AbstractConfig config) {
     this.config = (S3TransportConfig) config;
+    this.client = new AmazonS3Client();
+
+    if (this.config.getRegion() != null) {
+      this.client.withRegion(this.config.getRegion());
+    }
   }
 }
