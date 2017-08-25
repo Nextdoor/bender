@@ -13,12 +13,12 @@
  *
  */
 
-package com.nextdoor.bender.ipc;
+package com.nextdoor.bender.monitoring;
 
 import com.amazonaws.regions.Regions;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 
-public abstract class AWSTransportConfig extends TransportConfig {
+public abstract class RegionalReporterConfig extends ReporterConfig {
   @JsonSchemaDescription("Region of remote AWS service. Not required to be set if you are "
       + "using a service within the Lambda's current region. Ensure a service is supported "
       + "in the remote region.")

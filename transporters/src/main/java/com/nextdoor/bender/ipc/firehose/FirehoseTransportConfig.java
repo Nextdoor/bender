@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.ipc.AWSTransportConfig;
+import com.nextdoor.bender.ipc.RegionalTransportConfig;
 import com.nextdoor.bender.ipc.firehose.FirehoseTransportFactory.FirehoseBuffer;
 
 @JsonTypeName("Firehose")
@@ -32,7 +32,7 @@ import com.nextdoor.bender.ipc.firehose.FirehoseTransportFactory.FirehoseBuffer;
     + "into a its own Record. Firehose sinks like ElasticSearch require each event be its own "
     + "Firehose Record.Required IAM permissions are: firehose:DescribeDeliveryStream, "
     + "firehose:ListDeliveryStreams, firehose:PutRecord, firehose:PutRecordBatch")
-public class FirehoseTransportConfig extends AWSTransportConfig {
+public class FirehoseTransportConfig extends RegionalTransportConfig {
 
   @JsonSchemaDescription("Firehose stream name to publish to.")
   @JsonProperty(required = true)

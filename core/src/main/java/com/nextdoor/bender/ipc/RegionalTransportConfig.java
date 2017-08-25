@@ -13,15 +13,22 @@
  *
  */
 
-package com.nextdoor.bender.aws;
+package com.nextdoor.bender.ipc;
 
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.regions.Regions;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 
-public class AmazonS3ClientFactory {
-  private AmazonS3Client client = new AmazonS3Client(new ClientConfiguration().withSocketTimeout(5000));
+public abstract class RegionalTransportConfig extends TransportConfig {
+  @JsonSchemaDescription("Region of remote AWS service. Not required to be set if you are "
+      + "using a service within the Lambda's current region. Ensure a service is supported "
+      + "in the remote region.")
+  private Regions region = null;
 
-  public AmazonS3Client newInstance() {
-    return this.client;
+  public Regions getRegion() {
+    return region;
   }
+
+  public void setRegion(Regions region) {
+    this.region = region;
+  } 
 }
