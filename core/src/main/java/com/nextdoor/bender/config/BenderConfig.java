@@ -17,11 +17,11 @@ package com.nextdoor.bender.config;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -338,26 +338,36 @@ public class BenderConfig {
 
   public static BenderConfig load(String resource) {
     /*
-     * Read config file
+     * Check for .json or .yaml config files
      */
-    String data;
-
-    URL url;
-    if ((url = Class.class.getResource(resource)) != null) {
-    } else if ((url = Class.class.getResource(resource + ".yaml")) != null) {
-      resource += ".yaml";
-      logger.debug("found config file with .yaml extension " + resource);
-    } else if ((url = Class.class.getResource(resource + ".json")) != null) {
-      resource += ".json";
-      logger.debug("found config file with .json extension " + resource);
+    URL url = null;
+    if (resource.endsWith(".yaml") || resource.endsWith(".json")) {
+      url = BenderConfig.class.getResource(resource);
     } else {
+      List<String> resources = Arrays.asList(resource + ".json", resource + ".yaml");
+
+      for (String res : resources) {
+        url = BenderConfig.class.getResource(res);
+        if (url != null) {
+          resource = res;
+          logger.debug("using discovered config file " + res);
+          break;
+        }
+      }
+    }
+
+    if (url == null) {
       throw new ConfigurationException("unable to find " + resource);
     }
 
+    /*
+     * Read config file
+     */
+    String data;
     try {
       data = IOUtils.toString(new InputStreamReader(url.openStream(), "UTF-8"));
     } catch (NullPointerException | IOException e) {
-      throw new ConfigurationException("unable to read " + resource);
+      throw new ConfigurationException("unable to read " + resource, e);
     }
 
     BenderConfig config = load(resource, data);
