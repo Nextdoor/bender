@@ -38,11 +38,13 @@ import com.nextdoor.bender.monitoring.Tag;
  * Writes metrics to Amazon Cloudwatch.
  */
 public class CloudwatchReporter implements Reporter {
-  private final AmazonCloudWatchClient client = new AmazonCloudWatchClient();
+  private final AmazonCloudWatchClient client;
   private final String namespace;
   private final List<StatFilter> statFilters;
 
-  public CloudwatchReporter(final String namespace, final List<StatFilter> statFilters) {
+  public CloudwatchReporter(AmazonCloudWatchClient client, final String namespace,
+      final List<StatFilter> statFilters) {
+    this.client = client;
     this.namespace = namespace;
     this.statFilters = statFilters;
   }

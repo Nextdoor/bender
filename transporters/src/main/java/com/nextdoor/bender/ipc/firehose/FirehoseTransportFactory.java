@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.ipc.firehose;
 
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.services.kinesisfirehose.AmazonKinesisFirehoseClient;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
@@ -26,14 +28,15 @@ import com.nextdoor.bender.ipc.UnpartitionedTransport;
 public class FirehoseTransportFactory implements TransportFactory {
   private FirehoseTransportConfig config;
   private FirehoseTransportSerializer serializer;
-  
+  private AmazonKinesisFirehoseClient client;
+
   protected enum FirehoseBuffer {
     BATCH, SIMPLE
   }
 
   @Override
   public UnpartitionedTransport newInstance() {
-    return new FirehoseTransport(this.config.getStreamName());
+    return new FirehoseTransport(this.client, this.config.getStreamName());
   }
 
   @Override
@@ -64,5 +67,10 @@ public class FirehoseTransportFactory implements TransportFactory {
   public void setConf(AbstractConfig config) {
     this.config = (FirehoseTransportConfig) config;
     this.serializer = new FirehoseTransportSerializer(this.config.getAppendNewline());
+    this.client = new AmazonKinesisFirehoseClient(new ClientConfiguration().withGzip(true));
+
+    if (this.config.getRegion() != null) {
+      this.client.withRegion(this.config.getRegion());
+    }
   }
 }

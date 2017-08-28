@@ -2871,6 +2871,41 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
+                <div class="property-name ">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
                 <div class="property-name required">bucket_name</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
@@ -2987,6 +3022,28 @@ function sourceButton(element) {
       "type": "integer",
       "default": 5,
       "description": "Number of concurrent transporters allowed"
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
     },
     "bucket_name": {
       "type": "string",
@@ -3251,6 +3308,23 @@ function sourceButton(element) {
             <span class="type-keyword">
                
             </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
 
                 </div>
                 <div class="signature-description desc"></div>
@@ -3304,7 +3378,25 @@ function sourceButton(element) {
       "default": "UrlSigningAuth"
     },
     "region": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ]
     },
     "service": {
       "type": "string"
@@ -3731,6 +3823,41 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
+                <div class="property-name ">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
                 <div class="property-name required">stream_name</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
@@ -3812,6 +3939,28 @@ function sourceButton(element) {
       "type": "integer",
       "default": 5,
       "description": "Number of concurrent transporters allowed"
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
     },
     "stream_name": {
       "type": "string",
@@ -4099,6 +4248,41 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
+                <div class="property-name ">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
                 <div class="property-name ">namespace</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
@@ -4141,6 +4325,28 @@ function sourceButton(element) {
         "$ref": "#/definitions/StatFilter"
       },
       "description": "List of filter to apply to stats. If a stat matches the filter it is excluded when being published."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
     },
     "namespace": {
       "type": "string",
@@ -5122,6 +5328,28 @@ function sourceButton(element) {
           "default": 5,
           "description": "Number of concurrent transporters allowed"
         },
+        "region": {
+          "type": "string",
+          "enum": [
+            "GovCloud",
+            "US_EAST_1",
+            "US_EAST_2",
+            "US_WEST_1",
+            "US_WEST_2",
+            "EU_WEST_1",
+            "EU_WEST_2",
+            "EU_CENTRAL_1",
+            "AP_SOUTH_1",
+            "AP_SOUTHEAST_1",
+            "AP_SOUTHEAST_2",
+            "AP_NORTHEAST_1",
+            "AP_NORTHEAST_2",
+            "SA_EAST_1",
+            "CN_NORTH_1",
+            "CA_CENTRAL_1"
+          ],
+          "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
+        },
         "bucket_name": {
           "type": "string",
           "description": "S3 bucket name."
@@ -5293,7 +5521,25 @@ function sourceButton(element) {
           "default": "UrlSigningAuth"
         },
         "region": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "GovCloud",
+            "US_EAST_1",
+            "US_EAST_2",
+            "US_WEST_1",
+            "US_WEST_2",
+            "EU_WEST_1",
+            "EU_WEST_2",
+            "EU_CENTRAL_1",
+            "AP_SOUTH_1",
+            "AP_SOUTHEAST_1",
+            "AP_SOUTHEAST_2",
+            "AP_NORTHEAST_1",
+            "AP_NORTHEAST_2",
+            "SA_EAST_1",
+            "CN_NORTH_1",
+            "CA_CENTRAL_1"
+          ]
         },
         "service": {
           "type": "string"
@@ -5323,6 +5569,28 @@ function sourceButton(element) {
           "type": "integer",
           "default": 5,
           "description": "Number of concurrent transporters allowed"
+        },
+        "region": {
+          "type": "string",
+          "enum": [
+            "GovCloud",
+            "US_EAST_1",
+            "US_EAST_2",
+            "US_WEST_1",
+            "US_WEST_2",
+            "EU_WEST_1",
+            "EU_WEST_2",
+            "EU_CENTRAL_1",
+            "AP_SOUTH_1",
+            "AP_SOUTHEAST_1",
+            "AP_SOUTHEAST_2",
+            "AP_NORTHEAST_1",
+            "AP_NORTHEAST_2",
+            "SA_EAST_1",
+            "CN_NORTH_1",
+            "CA_CENTRAL_1"
+          ],
+          "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
         },
         "stream_name": {
           "type": "string",
@@ -5367,6 +5635,28 @@ function sourceButton(element) {
             "$ref": "#/definitions/StatFilter"
           },
           "description": "List of filter to apply to stats. If a stat matches the filter it is excluded when being published."
+        },
+        "region": {
+          "type": "string",
+          "enum": [
+            "GovCloud",
+            "US_EAST_1",
+            "US_EAST_2",
+            "US_WEST_1",
+            "US_WEST_2",
+            "EU_WEST_1",
+            "EU_WEST_2",
+            "EU_CENTRAL_1",
+            "AP_SOUTH_1",
+            "AP_SOUTHEAST_1",
+            "AP_SOUTHEAST_2",
+            "AP_NORTHEAST_1",
+            "AP_NORTHEAST_2",
+            "SA_EAST_1",
+            "CN_NORTH_1",
+            "CA_CENTRAL_1"
+          ],
+          "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
         },
         "namespace": {
           "type": "string",
