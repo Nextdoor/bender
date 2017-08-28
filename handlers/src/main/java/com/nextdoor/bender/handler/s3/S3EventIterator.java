@@ -146,7 +146,6 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
   @Override
   public void close() throws IOException {
     closeCurrentReader();
-    client.shutdown();
   }
 
   private void updateCursor() {

@@ -138,12 +138,6 @@ public class ElasticSearchTransport implements UnpartitionedTransport {
       throw new TransportException(ree.getCallResults().getLastExceptionThatCausedRetry());
     } catch (UnexpectedException ue) {
       throw new TransportException(ue);
-    } finally {
-      try {
-        client.close();
-      } catch (IOException e) {
-        logger.warn("error occurred while closing http client", e);
-      }
     }
   }
 
