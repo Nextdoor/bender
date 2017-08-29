@@ -182,11 +182,14 @@ public abstract class BaseHandler<T> implements Handler<T> {
     }
   }
 
-  private static void updateMax(AtomicLong max, long time) {
+  private static void updateOldest(AtomicLong max, long time) {
     while (true) {
       long curMax = max.get();
 
-      if (curMax >= time) {
+      /*
+       * With time smaller value is older
+       */
+      if (curMax <= time) {
         return;
       }
 
@@ -312,8 +315,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
       /*
        * Update times
        */
-      updateMax(oldestArrivalTime, ievent.getArrivalTime());
-      updateMax(oldestOccurrenceTime, ievent.getEventTime());
+      updateOldest(oldestArrivalTime, ievent.getArrivalTime());
+      updateOldest(oldestOccurrenceTime, ievent.getEventTime());
 
       try {
         this.getIpcService().add(ievent);
