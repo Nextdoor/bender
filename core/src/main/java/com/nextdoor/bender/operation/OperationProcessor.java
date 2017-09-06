@@ -52,6 +52,7 @@ public class OperationProcessor extends MonitoredProcess {
           return i;
         } catch (OperationException e) {
           this.getErrorCountStat().increment();
+          logger.debug(e);
           return null;
         } finally {
           this.getRuntimeStat().stop();
@@ -70,6 +71,7 @@ public class OperationProcessor extends MonitoredProcess {
           return s;
         } catch (OperationException e) {
           this.getErrorCountStat().increment();
+          logger.debug(e);
           return Stream.empty();
         } finally {
           this.getRuntimeStat().stop();

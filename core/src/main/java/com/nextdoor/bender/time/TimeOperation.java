@@ -16,8 +16,8 @@
 package com.nextdoor.bender.time;
 
 import com.nextdoor.bender.InternalEvent;
-import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.time.TimeOperationConfig.TimeFieldType;
 import com.nextdoor.bender.utils.Time;
 
@@ -40,7 +40,7 @@ public class TimeOperation implements Operation {
         ts = (long) (Double.parseDouble(dvalue));
         break;
       default:
-        throw new DeserializationException("unsupported TimeFieldType");
+        throw new OperationException("unsupported TimeFieldType");
     }
 
     /*
@@ -49,13 +49,22 @@ public class TimeOperation implements Operation {
     try {
       return Time.toMilliseconds(ts);
     } catch (IllegalArgumentException e) {
-      throw new DeserializationException(e);
+      throw new OperationException(e);
     }
   }
 
   @Override
   public InternalEvent perform(InternalEvent ievent) {
     String field = ievent.getEventObj().getField(timeField);
+
+    /*
+     * Filter out events without a time field
+     */
+    if (field == null) {
+      throw new OperationException(
+          "time field " + timeField + " returned null from " + ievent.getEventString());
+    }
+
     ievent.setEventTime(getTimestamp(field, timeFieldType));
 
     return ievent;
