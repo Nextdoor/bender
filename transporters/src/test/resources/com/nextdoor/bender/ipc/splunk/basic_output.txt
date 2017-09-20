@@ -1,0 +1,1 @@
+{"index": "log", "event": foo, "time": 1505927823.123}
