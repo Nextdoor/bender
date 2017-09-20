@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.ipc.splunk;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -23,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.ipc.TransportConfig;
+import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("Splunk")
 @JsonSchemaDescription("Writes events to a Splunk HEC endpoint.")
@@ -106,7 +109,18 @@ public class SplunkTransportConfig extends TransportConfig {
   }
 
   public String getAuthToken() {
-    return this.authToken;
+    /*
+     * If token uses KMS then decrypt it.
+     */
+    if (this.authToken != null) {
+      try {
+        return Passwords.getPassword(this.authToken);
+      } catch (UnsupportedEncodingException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    return authToken;
   }
 
   public void setIndex(String index) {
