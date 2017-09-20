@@ -1496,11 +1496,13 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">TimeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
+                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">LowerCaseKeyOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
+                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -1765,6 +1767,73 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-4">
         <div class="box-title" ref="">
+            <div class="box-name ">LowerCaseKeyOperation</div>
+            <div class="box-description desc"><p>Provided a JSON object it will recursively lower case all fields.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">LowerCaseKeyOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">LowerCaseKeyOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Provided a JSON object it will recursively lower case all fields.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "LowerCaseKeyOperation"
+      ],
+      "default": "LowerCaseKeyOperation"
+    }
+  },
+  "title": "LowerCaseKeyOperation",
+  "required": [
+    "type"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="5">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-5">
+        <div class="box-title" ref="">
             <div class="box-name ">JsonRootNodeOperation</div>
             <div class="box-description desc"><p>Provided a JSON object and a path within the object it will promote the path's element to the root position. For example if the input is {"foo": {"bar": {"baz": 1}}} and specified path $.foo.bar the operation will produce {"baz": 1} as the new payload.</p>
 </div>
@@ -1851,9 +1920,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="5">
+                <div class="box-container" boxid="6">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-5">
+    <div class="box-header box-6">
         <div class="box-title" ref="">
             <div class="box-name ">JsonKeyNameOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo<strong>str": "one", "bar</strong>long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or _<em>float. It also repalces "." with "</em>" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
@@ -1918,9 +1987,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="6">
+                <div class="box-container" boxid="7">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-6">
+    <div class="box-header box-7">
         <div class="box-title" ref="">
             <div class="box-name ">PartitionOperation</div>
             <div class="box-description desc"><p>Sets the partition information for the Event using fields from the deserialized object. When using JSON use JsonPath format to specify fields. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
@@ -2244,6 +2313,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/TimeOperationConfig"
+        },
+        {
+          "$ref": "#/definitions/LowerCaseKeyOperationConfig"
         },
         {
           "$ref": "#/definitions/JsonRootNodeOperationConfig"
@@ -5232,6 +5304,9 @@ function sourceButton(element) {
               "$ref": "#/definitions/TimeOperationConfig"
             },
             {
+              "$ref": "#/definitions/LowerCaseKeyOperationConfig"
+            },
+            {
               "$ref": "#/definitions/JsonRootNodeOperationConfig"
             },
             {
@@ -5418,6 +5493,24 @@ function sourceButton(element) {
         "type",
         "time_field",
         "time_field_type"
+      ]
+    },
+    "LowerCaseKeyOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Provided a JSON object it will recursively lower case all fields.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "LowerCaseKeyOperation"
+          ],
+          "default": "LowerCaseKeyOperation"
+        }
+      },
+      "title": "LowerCaseKeyOperation",
+      "required": [
+        "type"
       ]
     },
     "JsonRootNodeOperationConfig": {
