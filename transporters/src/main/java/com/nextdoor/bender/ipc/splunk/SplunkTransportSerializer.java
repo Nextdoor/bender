@@ -33,11 +33,14 @@ public class SplunkTransportSerializer implements TransportSerializer {
      * Create a JSON line that describes the record for Splunk.
      */
     StringBuilder payload = new StringBuilder();
-    payload.append("{\"index\": \""+ this.index +"\", \"event\": ");
+    payload.append("{");
+    if (this.index != null) {
+      payload.append("\"index\":\""+ this.index +"\",");
+    }
+    payload.append("\"event\":");
     payload.append(ievent.getSerialized());
-    payload.append(", \"time\": ");
+    payload.append(",\"time\": ");
     payload.append(String.format(Locale.US, "%.3f", ievent.getEventTime()/1000.0));
-    
     payload.append("}");
 
     return payload.toString().getBytes();

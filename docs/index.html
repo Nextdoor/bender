@@ -3873,7 +3873,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Splunk auth token.</p>
+                <div class="signature-description desc"><p>Splunk auth token. If value is kms encrypted prefix with 'KMS='.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -3881,7 +3881,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">index</div>
+                <div class="property-name ">index</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
                string
@@ -4053,7 +4053,7 @@ function sourceButton(element) {
     },
     "auth_token": {
       "type": "string",
-      "description": "Splunk auth token."
+      "description": "Splunk auth token. If value is kms encrypted prefix with 'KMS='."
     },
     "index": {
       "type": "string",
@@ -4102,8 +4102,7 @@ function sourceButton(element) {
   "required": [
     "type",
     "hostname",
-    "auth_token",
-    "index"
+    "auth_token"
   ]
 }</pre>
     </div>
@@ -5934,7 +5933,7 @@ function sourceButton(element) {
         },
         "auth_token": {
           "type": "string",
-          "description": "Splunk auth token."
+          "description": "Splunk auth token. If value is kms encrypted prefix with 'KMS='."
         },
         "index": {
           "type": "string",
@@ -5983,8 +5982,7 @@ function sourceButton(element) {
       "required": [
         "type",
         "hostname",
-        "auth_token",
-        "index"
+        "auth_token"
       ]
     },
     "FirehoseTransportConfig": {

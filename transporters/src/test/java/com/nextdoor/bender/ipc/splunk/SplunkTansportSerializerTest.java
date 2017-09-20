@@ -51,16 +51,27 @@ public class SplunkTansportSerializerTest {
   public void testSerialize() throws UnsupportedEncodingException, IOException {
     SplunkTransportSerializer serializer = new SplunkTransportSerializer("log");
     InternalEvent record = new DummyEvent("foo", 0);
-    
+
     record.setEventTime(1505927823123l);
     record.setSerialized("foo");
 
     String actual = new String(serializer.serialize(record));
     String expected = TestUtils.getResourceString(this.getClass(), "basic_output.txt");
 
-    /*
-     * Verify build output does not contain hash
-     */
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  public void testSerializeNoIndex() throws UnsupportedEncodingException, IOException {
+    SplunkTransportSerializer serializer = new SplunkTransportSerializer(null);
+    InternalEvent record = new DummyEvent("foo", 0);
+
+    record.setEventTime(1505927823123l);
+    record.setSerialized("foo");
+
+    String actual = new String(serializer.serialize(record));
+    String expected = TestUtils.getResourceString(this.getClass(), "basic_output_no_index.txt");
+
     assertEquals(expected, actual);
   }
 }

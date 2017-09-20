@@ -42,12 +42,12 @@ public class SplunkTransportConfig extends TransportConfig {
   @Max(65535)
   private Integer port = 443;
 
-  @JsonSchemaDescription("Splunk auth token.")
+  @JsonSchemaDescription("Splunk auth token. If value is kms encrypted prefix with 'KMS='.")
   @JsonProperty(required = true)
   private String authToken = null;
 
   @JsonSchemaDescription("Splunk data index.")
-  @JsonProperty(required = true)
+  @JsonProperty(required = false)
   private String index = null;
 
   @JsonSchemaDescription("Use SSL connections (certificates are not validated).")
@@ -110,7 +110,7 @@ public class SplunkTransportConfig extends TransportConfig {
 
   public String getAuthToken() {
     /*
-     * If token uses KMS then decrypt it.
+     * Decrypt token using KMS automatically.
      */
     if (this.authToken != null) {
       try {
