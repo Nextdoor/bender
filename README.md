@@ -1,5 +1,7 @@
 [![CircleCI](https://circleci.com/gh/Nextdoor/bender.svg?style=svg)](https://circleci.com/gh/Nextdoor/bender)
 
+![Bender - Serverless ETL Framework](docs/bender-logo.png)
+
 # Bender - Serverless ETL Framework
 
 This project provides an extendable Java framework for creating serverless ETL
