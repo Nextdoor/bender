@@ -1,9 +1,6 @@
 [![CircleCI](https://circleci.com/gh/Nextdoor/bender.svg?style=svg)](https://circleci.com/gh/Nextdoor/bender)
 
 ![Bender - Serverless ETL Framework](docs/bender-logo.png)
-
-# Bender - Serverless ETL Framework
-
 This project provides an extendable Java framework for creating serverless ETL
 functions on [AWS Lambda](https://aws.amazon.com/lambda/). Bender Core handles
 the complex plumbing and provides the interfaces necessary to build modules for
