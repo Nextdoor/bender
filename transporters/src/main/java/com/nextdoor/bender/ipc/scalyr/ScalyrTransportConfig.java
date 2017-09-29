@@ -48,6 +48,11 @@ public class ScalyrTransportConfig extends TransportConfig {
   @JsonProperty(required = true)
   private String token = null;
 
+  @JsonSchemaDescription("Scalyr String Parser.")
+  @JsonSchemaDefault(value = "json")
+  @JsonProperty(required = false)
+  private String parser = "json";
+
   @JsonSchemaDescription("Use SSL connections (certificates are not validated).")
   @JsonSchemaDefault(value = "true")
   @JsonProperty(required = false)
@@ -94,8 +99,7 @@ public class ScalyrTransportConfig extends TransportConfig {
     this.hostname = hostname;
   }
 
-  public Integer getPort() {
-    return port;
+  public Integer getPort() { return port;
   }
 
   public void setPort(Integer port) {
@@ -119,6 +123,13 @@ public class ScalyrTransportConfig extends TransportConfig {
     }
 
     return token;
+  }
+
+  public String getParser() { return parser;
+  }
+
+  public void setParser(String parser) {
+    this.parser = parser;
   }
 
   public Boolean isUseSSL() {

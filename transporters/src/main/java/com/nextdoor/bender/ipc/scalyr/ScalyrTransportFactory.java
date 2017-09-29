@@ -150,7 +150,10 @@ public class ScalyrTransportFactory implements TransportFactory {
       confUrl += "http://";
     }
 
-    confUrl += this.config.getHostname() + ":" + this.config.getPort() + "/api/uploadLogs?parser=json&token=" + this.config.getToken();
+    confUrl += this.config.getHostname() + ":" +
+               this.config.getPort() +
+               "/api/uploadLogs?parser=" + this.config.getParser() +
+               "&token=" + this.config.getToken();
 
     this.url = confUrl;
   }
