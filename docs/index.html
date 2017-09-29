@@ -3908,7 +3908,7 @@ function sourceButton(element) {
                
             </span>
             <span class="type-keyword">default</span>
-            <span class="type-default">https://www.scalyr.com</span>
+            <span class="type-default">www.scalyr.com</span>
 
                 </div>
                 <div class="signature-description desc"><p>Scalyr HTTP endpoint hostname.</p>
@@ -3950,6 +3950,26 @@ function sourceButton(element) {
 
                 </div>
                 <div class="signature-description desc"><p>Scalyr auth token. If value is kms encrypted prefix with 'KMS='.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">parser</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">json</span>
+
+                </div>
+                <div class="signature-description desc"><p>Scalyr String Parser.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -4100,7 +4120,7 @@ function sourceButton(element) {
     },
     "hostname": {
       "type": "string",
-      "default": "https://www.scalyr.com",
+      "default": "www.scalyr.com",
       "description": "Scalyr HTTP endpoint hostname."
     },
     "port": {
@@ -4113,6 +4133,11 @@ function sourceButton(element) {
     "token": {
       "type": "string",
       "description": "Scalyr auth token. If value is kms encrypted prefix with 'KMS='."
+    },
+    "parser": {
+      "type": "string",
+      "default": "json",
+      "description": "Scalyr String Parser."
     },
     "use_ssl": {
       "type": "boolean",
@@ -6345,7 +6370,7 @@ function sourceButton(element) {
         },
         "hostname": {
           "type": "string",
-          "default": "https://www.scalyr.com",
+          "default": "www.scalyr.com",
           "description": "Scalyr HTTP endpoint hostname."
         },
         "port": {
@@ -6358,6 +6383,11 @@ function sourceButton(element) {
         "token": {
           "type": "string",
           "description": "Scalyr auth token. If value is kms encrypted prefix with 'KMS='."
+        },
+        "parser": {
+          "type": "string",
+          "default": "json",
+          "description": "Scalyr String Parser."
         },
         "use_ssl": {
           "type": "boolean",
