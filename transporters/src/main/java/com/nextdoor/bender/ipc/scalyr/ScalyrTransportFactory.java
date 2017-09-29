@@ -21,19 +21,16 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.HttpHeaders;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicHeader;
 
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.ipc.TransportBuffer;
@@ -153,7 +150,7 @@ public class ScalyrTransportFactory implements TransportFactory {
       confUrl += "http://";
     }
 
-    confUrl += this.config.getHostname() + ":" + this.config.getPort() + "/api/uploadLogs?token=" + this.config.getToken();
+    confUrl += this.config.getHostname() + ":" + this.config.getPort() + "/api/uploadLogs?parser=json&token=" + this.config.getToken();
 
     this.url = confUrl;
   }
