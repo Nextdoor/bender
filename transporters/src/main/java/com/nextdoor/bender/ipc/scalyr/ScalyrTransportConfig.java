@@ -33,9 +33,9 @@ import com.nextdoor.bender.utils.Passwords;
 public class ScalyrTransportConfig extends TransportConfig {
 
   @JsonSchemaDescription("Scalyr HTTP endpoint hostname.")
-  @JsonSchemaDefault(value = "https://www.scalyr.com")
+  @JsonSchemaDefault(value = "www.scalyr.com")
   @JsonProperty(required = false)
-  private String hostname = "https://www.scalyr.com";
+  private String hostname = "www.scalyr.com";
 
   @JsonSchemaDescription("Scalyr HTTP endpoint port.")
   @JsonSchemaDefault(value = "443")
