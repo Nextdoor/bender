@@ -16,21 +16,15 @@
 package com.nextdoor.bender.ipc.es;
 
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
@@ -44,6 +38,7 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
+import com.nextdoor.bender.ipc.generic.BenderHttpClientBuilder;
 import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
 
 import vc.inreach.aws.request.AWSSigningRequestInterceptor;
@@ -81,45 +76,6 @@ public class ElasticSearchTransportFactory implements TransportFactory {
     }
   }
 
-  /**
-   * There isn't an easy way in java to trust non-self signed certs. Just allow all until java
-   * KeyStore functionality is added to Bender.
-   *
-   * @return a context that trusts all SSL certs
-   */
-  private SSLContext getSSLContext() {
-    /*
-     * Create SSLContext and TrustManager that will trust all SSL certs.
-     *
-     * Copy pasta from http://stackoverflow.com/a/4837230
-     */
-    TrustManager tm = new X509TrustManager() {
-      public void checkClientTrusted(X509Certificate[] chain, String authType)
-          throws CertificateException {}
-
-      public void checkServerTrusted(X509Certificate[] chain, String authType)
-          throws CertificateException {}
-
-      public X509Certificate[] getAcceptedIssuers() {
-        return null;
-      }
-    };
-
-    SSLContext ctx;
-    try {
-      ctx = SSLContext.getInstance("TLS");
-    } catch (NoSuchAlgorithmException e) {
-      throw new TransportFactoryInitException("JVM does not have proper libraries for TSL");
-    }
-
-    try {
-      ctx.init(null, new TrustManager[] {tm}, new java.security.SecureRandom());
-    } catch (KeyManagementException e) {
-      throw new TransportFactoryInitException("Unable to init SSLContext with TrustManager", e);
-    }
-    return ctx;
-  }
-
   private RestClient getHttpClient() throws TransportFactoryInitException {
     HttpHost httpHost;
 
@@ -135,8 +91,12 @@ public class ElasticSearchTransportFactory implements TransportFactory {
       @Override
       public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder cb) {
         if (config.isUseSSL()) {
-          cb.setSSLContext(getSSLContext());
-          cb.setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+          cb.setSSLContext(BenderHttpClientBuilder.getSSLContext());
+          cb.setSSLHostnameVerifier(new HostnameVerifier() {
+            public boolean verify(String s, SSLSession sslSession) {
+              return true;
+            }
+          });
         }
 
         if (config.getAuthConfig() != null) {

@@ -16,22 +16,12 @@
 package com.nextdoor.bender.ipc.splunk;
 
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.HttpHeaders;
 import org.apache.http.config.SocketConfig;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 
 import com.nextdoor.bender.config.AbstractConfig;
@@ -41,6 +31,7 @@ import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
 import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
+import com.nextdoor.bender.ipc.generic.BenderHttpClientBuilder;
 import com.nextdoor.bender.ipc.generic.GenericHttpTransport;
 
 /**
@@ -77,54 +68,11 @@ public class SplunkTransportFactory implements TransportFactory {
     }
   }
 
-  /**
-   * There isn't an easy way in java to trust non-self signed certs. Just allow all until java
-   * KeyStore functionality is added to Bender.
-   *
-   * @return a context that trusts all SSL certs
-   */
-  private SSLContext getSSLContext() {
-    /*
-     * Create SSLContext and TrustManager that will trust all SSL certs.
-     *
-     * Copy pasta from http://stackoverflow.com/a/4837230
-     */
-    TrustManager tm = new X509TrustManager() {
-      public void checkClientTrusted(X509Certificate[] chain, String authType)
-          throws CertificateException {}
-
-      public void checkServerTrusted(X509Certificate[] chain, String authType)
-          throws CertificateException {}
-
-      public X509Certificate[] getAcceptedIssuers() {
-        return null;
-      }
-    };
-
-    SSLContext ctx;
-    try {
-      ctx = SSLContext.getInstance("TLS");
-    } catch (NoSuchAlgorithmException e) {
-      throw new TransportFactoryInitException("JVM does not have proper libraries for TSL");
-    }
-
-    try {
-      ctx.init(null, new TrustManager[] {tm}, new java.security.SecureRandom());
-    } catch (KeyManagementException e) {
-      throw new TransportFactoryInitException("Unable to init SSLContext with TrustManager", e);
-    }
-    return ctx;
-  }
-
   private CloseableHttpClient getHttpClient() throws TransportFactoryInitException {
-    HttpClientBuilder cb = HttpClients.custom();
+    HttpClientBuilder cb = BenderHttpClientBuilder.create();
 
     if (this.config.isUseSSL()) {
-      try {
-        cb.setSslcontext(getSSLContext());
-        cb = cb.setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-      } catch (Exception e) {
-      }
+      ((BenderHttpClientBuilder) (cb) ).withSSL();
     }
 
     cb.setMaxConnTotal(this.config.getThreads());
