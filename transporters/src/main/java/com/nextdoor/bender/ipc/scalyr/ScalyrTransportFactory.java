@@ -38,9 +38,11 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
+import com.nextdoor.bender.ipc.generic.GenericHttpTransport;
+import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
 
 /**
- * Creates a {@link ScalyrTransport} from a {@link ScalyrTransportConfig}.
+ * Creates a {@link GenericHttpTransport} from a {@link ScalyrTransportConfig}.
  */
 public class ScalyrTransportFactory implements TransportFactory {
 
@@ -50,8 +52,8 @@ public class ScalyrTransportFactory implements TransportFactory {
   private String url;
 
   @Override
-  public Class<ScalyrTransport> getChildClass() {
-    return ScalyrTransport.class;
+  public Class<GenericHttpTransport> getChildClass() {
+    return GenericHttpTransport.class;
   }
 
   @Override
@@ -59,17 +61,17 @@ public class ScalyrTransportFactory implements TransportFactory {
 
   @Override
   public UnpartitionedTransport newInstance() throws TransportFactoryInitException {
-    return new ScalyrTransport(this.client, this.url,
+    return new GenericHttpTransport(this.client, this.url,
         this.config.isUseGzip(), this.config.getRetryCount(), this.config.getRetryDelay());
   }
 
   @Override
   public TransportBuffer newTransportBuffer() throws TransportException {
     try {
-      return new ScalyrTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
+      return new GenericTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
           this.serializer);
     } catch (IOException e) {
-      throw new TransportException("error creating ElasticSearchTransportBuffer", e);
+      throw new TransportException("error creating GenericTransportBuffer", e);
     }
   }
 

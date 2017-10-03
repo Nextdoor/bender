@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.ipc.splunk;
+package com.nextdoor.bender.ipc.generic;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -38,13 +37,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
-import org.apache.http.message.BasicHeader;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.nextdoor.bender.ipc.TransportException;
+import com.nextdoor.bender.ipc.generic.GenericHttpTransport;
 
-public class SplunkTransporterTest {
+public class GenericHttpTransporterTest {
 
   private HttpClient getMockClientWithResponse(byte[] respPayload, ContentType contentType,
       int status) throws IOException {
@@ -71,7 +70,7 @@ public class SplunkTransporterTest {
 
     HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    SplunkTransport transport = new SplunkTransport(client, "", false, 1, 1);
+    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 1, 1);
     transport.sendBatch(payload);
   }
 
@@ -81,7 +80,7 @@ public class SplunkTransporterTest {
 
     HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    SplunkTransport transport = new SplunkTransport(client, "", false, 1, 1);
+    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 1, 1);
 
     transport.sendBatch("foo".getBytes());
   }
@@ -92,7 +91,7 @@ public class SplunkTransporterTest {
 
     HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    SplunkTransport transport = new SplunkTransport(client, "", false, 1, 1);
+    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 1, 1);
 
     transport.sendBatch("foo".getBytes());
   }
@@ -103,12 +102,12 @@ public class SplunkTransporterTest {
 
     HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    SplunkTransport transport = new SplunkTransport(client, "", false, 1, 1);
+    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 1, 1);
 
     try {
       transport.sendBatch("foo".getBytes());
     } catch (Exception e) {
-      assertEquals("splunk call failed because resp", e.getCause().getMessage());
+      assertEquals("http transport call failed because resp", e.getCause().getMessage());
       throw e;
     }
   }
@@ -125,12 +124,12 @@ public class SplunkTransporterTest {
 
     HttpClient client = getMockClientWithResponse(compressedResponse, ContentType.DEFAULT_BINARY,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    SplunkTransport transport = new SplunkTransport(client, "", true, 1, 1);
+    GenericHttpTransport transport = new GenericHttpTransport(client, "", true, 1, 1);
 
     try {
       transport.sendBatch("foo".getBytes());
     } catch (Exception e) {
-      assertEquals("splunk call failed because gzip resp", e.getCause().getMessage());
+      assertEquals("http transport call failed because gzip resp", e.getCause().getMessage());
       throw e;
     }
   }
@@ -141,12 +140,12 @@ public class SplunkTransporterTest {
 
     HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    SplunkTransport transport = new SplunkTransport(client, "", false, 3, 10);
+    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 3, 10);
 
     try {
       transport.sendBatch("foo".getBytes());
     } catch (Exception e) {
-      assertEquals("splunk call failed because resp", e.getCause().getMessage());
+      assertEquals("http transport call failed because resp", e.getCause().getMessage());
       throw e;
     }
   }
@@ -159,7 +158,7 @@ public class SplunkTransporterTest {
 
     doThrow(new IOException()).when(client).execute(any(HttpPost.class));
 
-    SplunkTransport transport = new SplunkTransport(client, "", true, 3, 1);
+    GenericHttpTransport transport = new GenericHttpTransport(client, "", true, 3, 1);
 
     try {
       transport.sendBatch("foo".getBytes());
@@ -176,7 +175,7 @@ public class SplunkTransporterTest {
 
     HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    SplunkTransport transport = spy(new SplunkTransport(client, url, false, 1, 1));
+    GenericHttpTransport transport = spy(new GenericHttpTransport(client, url, false, 1, 1));
     transport.sendBatch(payload);
 
     ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);
@@ -193,7 +192,7 @@ public class SplunkTransporterTest {
 
     HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    SplunkTransport transport = spy(new SplunkTransport(client, url, true, 1, 1));
+    GenericHttpTransport transport = spy(new GenericHttpTransport(client, url, true, 1, 1));
     transport.sendBatch(payload);
 
     ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);

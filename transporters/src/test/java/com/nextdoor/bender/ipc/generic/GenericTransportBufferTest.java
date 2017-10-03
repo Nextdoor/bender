@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.ipc.es;
+package com.nextdoor.bender.ipc.generic;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -28,14 +28,16 @@ import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.ipc.TransportException;
+import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
+import com.nextdoor.bender.ipc.scalyr.ScalyrTransportSerializer;
 
-public class ElasticSearchTransportBufferTest {
+public class GenericTransportBufferTest {
 
   @Test
   public void testAdd() throws IOException {
-    ElasticSearchTransportSerializer serializer = mock(ElasticSearchTransportSerializer.class);
+    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
-    ElasticSearchTransportBuffer buffer = new ElasticSearchTransportBuffer(1, false, serializer);
+    GenericTransportBuffer buffer = new GenericTransportBuffer(1, false, serializer);
 
     InternalEvent mockEvent = mock(InternalEvent.class);
     buffer.add(mockEvent);
@@ -50,9 +52,9 @@ public class ElasticSearchTransportBufferTest {
 
   @Test(expected = IllegalStateException.class)
   public void testAddBufferFull() throws IOException {
-    ElasticSearchTransportSerializer serializer = mock(ElasticSearchTransportSerializer.class);
+    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
-    ElasticSearchTransportBuffer buffer = new ElasticSearchTransportBuffer(1, false, serializer);
+    GenericTransportBuffer buffer = new GenericTransportBuffer(1, false, serializer);
 
     InternalEvent mockEvent = mock(InternalEvent.class);
     buffer.add(mockEvent);
@@ -61,18 +63,18 @@ public class ElasticSearchTransportBufferTest {
 
   @Test
   public void testEmptyBuffer() throws IOException {
-    ElasticSearchTransportSerializer serializer = mock(ElasticSearchTransportSerializer.class);
+    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
-    ElasticSearchTransportBuffer buffer = new ElasticSearchTransportBuffer(1, false, serializer);
+    GenericTransportBuffer buffer = new GenericTransportBuffer(1, false, serializer);
 
     assertEquals(true, buffer.isEmpty());
   }
 
   @Test
   public void testClear() throws IOException {
-    ElasticSearchTransportSerializer serializer = mock(ElasticSearchTransportSerializer.class);
+    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
-    ElasticSearchTransportBuffer buffer = new ElasticSearchTransportBuffer(1, false, serializer);
+    GenericTransportBuffer buffer = new GenericTransportBuffer(1, false, serializer);
 
     InternalEvent mockEvent = mock(InternalEvent.class);
     buffer.add(mockEvent);
@@ -87,9 +89,9 @@ public class ElasticSearchTransportBufferTest {
 
   @Test
   public void testGzip() throws IOException {
-    ElasticSearchTransportSerializer serializer = mock(ElasticSearchTransportSerializer.class);
+    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
-    ElasticSearchTransportBuffer buffer = new ElasticSearchTransportBuffer(1, true, serializer);
+    GenericTransportBuffer buffer = new GenericTransportBuffer(1, true, serializer);
 
     InternalEvent mockEvent = mock(InternalEvent.class);
     buffer.add(mockEvent);
@@ -104,8 +106,8 @@ public class ElasticSearchTransportBufferTest {
 
   @Test
   public void testDoubleClose() throws IOException, TransportException {
-    ElasticSearchTransportSerializer serializer = mock(ElasticSearchTransportSerializer.class);
-    ElasticSearchTransportBuffer buffer = new ElasticSearchTransportBuffer(1, true, serializer);
+    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
+    GenericTransportBuffer buffer = new GenericTransportBuffer(1, true, serializer);
 
     buffer.close();
     buffer.close();

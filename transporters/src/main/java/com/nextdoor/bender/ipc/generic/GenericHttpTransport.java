@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.ipc.sumologic;
+package com.nextdoor.bender.ipc.generic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,21 +44,19 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
 
 /**
- * Transporter that uses the SumoLogic HTTP API
- *
- * https://www.sumologic.com/help/api-uploadLogs
- *
+ * Generic HTTP Transport. The HTTP client must be configured by your
+ * transport factory.
  */
-public class SumoLogicTransport implements UnpartitionedTransport {
+public class GenericHttpTransport implements UnpartitionedTransport {
   private final HttpClient client;
   private final boolean useGzip;
   private final long retryDelayMs;
   private final int retries;
   private final String url;
 
-  private static final Logger logger = Logger.getLogger(SumoLogicTransport.class);
+  private static final Logger logger = Logger.getLogger(GenericHttpTransport.class);
 
-  protected SumoLogicTransport(HttpClient client, String url, boolean useGzip,
+  public GenericHttpTransport(HttpClient client, String url, boolean useGzip,
       int retries, long retryDelayMs) {
     this.client = client;
     this.url = url;
@@ -116,13 +114,13 @@ public class SumoLogicTransport implements UnpartitionedTransport {
 
   @Override
   public void sendBatch(TransportBuffer buf) throws TransportException {
-    com.nextdoor.bender.ipc.sumologic.SumoLogicTransportBuffer buffer = (com.nextdoor.bender.ipc.sumologic.SumoLogicTransportBuffer) buf;
+    GenericTransportBuffer buffer = (GenericTransportBuffer) buf;
     sendBatch(buffer.getInternalBuffer().toByteArray());
   }
 
   protected void sendBatch(byte[] raw) throws TransportException {
     /*
-     * Wrap the call with retry logic to avoid intermittent issues.
+     * Wrap the call with retry logic to avoid intermittent ES issues.
      */
     Callable<HttpResponse> callable = () -> {
       HttpResponse resp;
@@ -196,9 +194,9 @@ public class SumoLogicTransport implements UnpartitionedTransport {
       }
     } catch (ParseException | IOException e) {
       throw new TransportException(
-          "sumologic call failed because " + resp.getStatusLine().getReasonPhrase());
+          "http transport call failed because " + resp.getStatusLine().getReasonPhrase());
     }
 
-    throw new TransportException("sumologic call failed because " + responseString);
+    throw new TransportException("http transport call failed because " + responseString);
   }
 }

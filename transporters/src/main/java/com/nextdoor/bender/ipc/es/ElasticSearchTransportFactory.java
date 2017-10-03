@@ -44,6 +44,7 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
+import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
 
 import vc.inreach.aws.request.AWSSigningRequestInterceptor;
 
@@ -73,7 +74,7 @@ public class ElasticSearchTransportFactory implements TransportFactory {
   @Override
   public TransportBuffer newTransportBuffer() throws TransportException {
     try {
-      return new ElasticSearchTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
+      return new GenericTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
           this.serializer);
     } catch (IOException e) {
       throw new TransportException("error creating ElasticSearchTransportBuffer", e);

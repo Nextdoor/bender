@@ -40,9 +40,11 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
+import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
+import com.nextdoor.bender.ipc.generic.GenericHttpTransport;
 
 /**
- * Creates a {@link SplunkTransport} from a {@link SplunkTransportConfig}.
+ * Creates a {@link GenericHttpTransport} from a {@link SplunkTransportConfig}.
  */
 public class SplunkTransportFactory implements TransportFactory {
 
@@ -52,8 +54,8 @@ public class SplunkTransportFactory implements TransportFactory {
   private String url;
 
   @Override
-  public Class<SplunkTransport> getChildClass() {
-    return SplunkTransport.class;
+  public Class<GenericHttpTransport> getChildClass() {
+    return GenericHttpTransport.class;
   }
 
   @Override
@@ -61,17 +63,17 @@ public class SplunkTransportFactory implements TransportFactory {
 
   @Override
   public UnpartitionedTransport newInstance() throws TransportFactoryInitException {
-    return new SplunkTransport(this.client, this.url,
+    return new GenericHttpTransport(this.client, this.url,
         this.config.isUseGzip(), this.config.getRetryCount(), this.config.getRetryDelay());
   }
 
   @Override
   public TransportBuffer newTransportBuffer() throws TransportException {
     try {
-      return new SplunkTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
+      return new GenericTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
           this.serializer);
     } catch (IOException e) {
-      throw new TransportException("error creating ElasticSearchTransportBuffer", e);
+      throw new TransportException("error creating GenericTransportBuffer", e);
     }
   }
 

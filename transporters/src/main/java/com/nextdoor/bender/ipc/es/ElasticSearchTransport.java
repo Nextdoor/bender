@@ -47,6 +47,7 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
 import com.nextdoor.bender.ipc.es.EsResponse.Index;
 import com.nextdoor.bender.ipc.es.EsResponse.Item;
+import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
 
 /**
  * Transporter that uses the ES bulk index http api. Note this has only been tested against ES 2.4.x
@@ -106,7 +107,7 @@ public class ElasticSearchTransport implements UnpartitionedTransport {
 
   @Override
   public void sendBatch(TransportBuffer buf) throws TransportException {
-    ElasticSearchTransportBuffer buffer = (ElasticSearchTransportBuffer) buf;
+    GenericTransportBuffer buffer = (GenericTransportBuffer) buf;
     sendBatch(buffer.getInternalBuffer().toByteArray());
   }
 

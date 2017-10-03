@@ -71,6 +71,9 @@ batches of data to destinations.
 * Firehose
 * S3 (partitioning support included)
 * Elasticsearch (time based index inserts)
+* Splunk
+* Scalyr
+* Sumo Logic
 
 ##### Reporters
 Monitor the ETL process at each phase within your function and output those
