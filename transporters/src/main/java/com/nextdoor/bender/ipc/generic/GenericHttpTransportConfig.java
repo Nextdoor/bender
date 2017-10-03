@@ -15,13 +15,19 @@
 
 package com.nextdoor.bender.ipc.generic;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.Map;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+
 import com.nextdoor.bender.ipc.TransportConfig;
+import com.nextdoor.bender.utils.Passwords;
 
 public abstract class GenericHttpTransportConfig extends TransportConfig {
 
@@ -46,7 +52,7 @@ public abstract class GenericHttpTransportConfig extends TransportConfig {
   @JsonProperty(required = false)
   private Boolean useGzip = false;
 
-  @JsonSchemaDescription("Maximum number of documents in  bulk api call.")
+  @JsonSchemaDescription("Maximum number of documents in api call.")
   @JsonSchemaDefault(value = "500")
   @JsonProperty(required = false)
   @Min(500)
@@ -73,7 +79,11 @@ public abstract class GenericHttpTransportConfig extends TransportConfig {
   @Min(1000)
   @Max(300000)
   private Integer timeout = 40000;
-  
+
+  @JsonSchemaDescription("HTTP headers to include. If header value starts with KMS= it will be decrypted.")
+  @JsonSchemaDefault(value = "{}")
+  @JsonProperty(required = false)
+  private Map<String,String> httpHeaders = Collections.emptyMap();
 
   public Boolean isUseSSL() {
     return useSSL;
@@ -122,7 +132,7 @@ public abstract class GenericHttpTransportConfig extends TransportConfig {
   public void setTimeout(Integer timeout) {
     this.timeout = timeout;
   }
-  
+
   public String getHostname() {
     return hostname;
   }
@@ -137,5 +147,22 @@ public abstract class GenericHttpTransportConfig extends TransportConfig {
 
   public void setPort(Integer port) {
     this.port = port;
+  }
+
+  public Map<String,String> getHttpHeaders() {
+    if (this.httpHeaders != null) {
+      this.httpHeaders.replaceAll((k, v) -> {
+        try {
+          return Passwords.getPassword(v);
+        } catch (UnsupportedEncodingException e) {
+          return v;
+        }
+      });
+    }
+    return this.httpHeaders;
+  }
+
+  public void setHttpHeaders(Map<String,String> httpHeaders) {
+    this.httpHeaders = httpHeaders;
   }
 }
