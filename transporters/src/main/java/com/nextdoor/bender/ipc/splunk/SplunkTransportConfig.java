@@ -20,12 +20,12 @@ import java.io.UnsupportedEncodingException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.ipc.generic.GenericHttpTransportConfig;
+import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
 import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("Splunk")
 @JsonSchemaDescription("Writes events to a Splunk HEC endpoint.")
-public class SplunkTransportConfig extends GenericHttpTransportConfig {
+public class SplunkTransportConfig extends AbstractHttpTransportConfig {
 
   @JsonSchemaDescription("Splunk auth token. If value is kms encrypted prefix with 'KMS='.")
   @JsonProperty(required = true)

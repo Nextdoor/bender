@@ -12,7 +12,7 @@
  * Copyright 2017 Nextdoor.com, Inc
  */
 
-package com.nextdoor.bender.ipc.generic;
+package com.nextdoor.bender.ipc.http;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;

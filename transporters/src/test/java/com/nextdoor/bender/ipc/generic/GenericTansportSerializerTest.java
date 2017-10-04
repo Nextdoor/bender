@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.ipc.sumologic;
+package com.nextdoor.bender.ipc.generic;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,9 +24,10 @@ import java.util.LinkedHashMap;
 import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
 import com.nextdoor.bender.testutils.TestUtils;
 
-public class SumoLogicTransportSerializerTest {
+public class GenericTansportSerializerTest {
 
   private static class DummyEvent extends InternalEvent {
     private LinkedHashMap<String, String> partitions;
@@ -49,7 +50,7 @@ public class SumoLogicTransportSerializerTest {
 
   @Test
   public void testSerialize() throws UnsupportedEncodingException, IOException {
-    SumoLogicTransportSerializer serializer = new SumoLogicTransportSerializer();
+    GenericTransportSerializer serializer = new GenericTransportSerializer();
     InternalEvent record = new DummyEvent("foo", 0);
 
     record.setEventTime(1505927823123l);

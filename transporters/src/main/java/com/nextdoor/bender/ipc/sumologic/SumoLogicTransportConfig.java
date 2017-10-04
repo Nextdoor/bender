@@ -19,12 +19,12 @@ import java.io.UnsupportedEncodingException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.ipc.generic.GenericHttpTransportConfig;
+import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
 import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("SumoLogic")
 @JsonSchemaDescription("Writes events to a SumoLogic endpoint.")
-public class SumoLogicTransportConfig extends GenericHttpTransportConfig {
+public class SumoLogicTransportConfig extends AbstractHttpTransportConfig {
   @JsonSchemaDescription("Sumo Logic auth token. This is suffix of the http source url "
       + "starting after '/receiver/v1/http/'. If value is kms encrypted prefix with 'KMS='.")
   @JsonProperty(required = true)

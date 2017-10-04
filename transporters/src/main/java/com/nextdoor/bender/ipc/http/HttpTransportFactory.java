@@ -10,27 +10,24 @@
  * the License.
  *
  * Copyright 2017 Nextdoor.com, Inc
+ *
  */
 
-package com.nextdoor.bender.ipc.sumologic;
+package com.nextdoor.bender.ipc.http;
 
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
-import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
-import com.nextdoor.bender.ipc.http.HttpTransport;
 
-/**
- * Creates a {@link HttpTransport} from a {@link SumoLogicTransportConfig}.
- */
-public class SumoLogicTransportFactory extends AbstractHttpTransportFactory {
+public class HttpTransportFactory extends AbstractHttpTransportFactory {
   @Override
   protected String getPath() {
-    SumoLogicTransportConfig config = (SumoLogicTransportConfig) super.config;
-    return "/receiver/v1/http/" + config.getAuthToken();
+    HttpTransportConfig config = (HttpTransportConfig) super.config;
+    return config.getPath();
   }
 
   @Override
   protected TransportSerializer getSerializer() {
-    return new GenericTransportSerializer('\n');
+    HttpTransportConfig config = (HttpTransportConfig) super.config;
+    return new GenericTransportSerializer(config.getSeparator());
   }
 }

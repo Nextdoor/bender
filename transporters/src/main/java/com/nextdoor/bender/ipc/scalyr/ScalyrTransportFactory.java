@@ -14,95 +14,24 @@
 
 package com.nextdoor.bender.ipc.scalyr;
 
-import java.io.IOException;
-
-import org.apache.http.config.SocketConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-
-import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.ipc.TransportBuffer;
-import com.nextdoor.bender.ipc.TransportException;
-import com.nextdoor.bender.ipc.TransportFactory;
-import com.nextdoor.bender.ipc.TransportFactoryInitException;
-import com.nextdoor.bender.ipc.UnpartitionedTransport;
-import com.nextdoor.bender.ipc.generic.BenderHttpClientBuilder;
-import com.nextdoor.bender.ipc.generic.GenericHttpTransport;
-import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
+import com.nextdoor.bender.ipc.TransportSerializer;
+import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
+import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
+import com.nextdoor.bender.ipc.http.HttpTransport;
 
 /**
- * Creates a {@link GenericHttpTransport} from a {@link ScalyrTransportConfig}.
+ * Creates a {@link HttpTransport} from a {@link ScalyrTransportConfig}.
  */
-public class ScalyrTransportFactory implements TransportFactory {
-
-  private ScalyrTransportConfig config;
-  private ScalyrTransportSerializer serializer;
-  private CloseableHttpClient client;
-  private String url;
-
+public class ScalyrTransportFactory extends AbstractHttpTransportFactory {
   @Override
-  public Class<GenericHttpTransport> getChildClass() {
-    return GenericHttpTransport.class;
+  protected String getPath() {
+    ScalyrTransportConfig config = (ScalyrTransportConfig) super.config;
+    return "/api/uploadLogs?parser="
+        + config.getParser() + "&token=" + config.getToken();
   }
 
   @Override
-  public void close() {}
-
-  @Override
-  public UnpartitionedTransport newInstance() throws TransportFactoryInitException {
-    return new GenericHttpTransport(this.client, this.url, this.config.isUseGzip(),
-        this.config.getRetryCount(), this.config.getRetryDelay());
-  }
-
-  @Override
-  public TransportBuffer newTransportBuffer() throws TransportException {
-    try {
-      return new GenericTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
-          this.serializer);
-    } catch (IOException e) {
-      throw new TransportException("error creating GenericTransportBuffer", e);
-    }
-  }
-
-
-
-  private CloseableHttpClient getHttpClient() throws TransportFactoryInitException {
-    HttpClientBuilder cb = BenderHttpClientBuilder.create();
-
-    if (this.config.isUseSSL()) {
-      ((BenderHttpClientBuilder) (cb)).withSSL();
-    }
-
-    cb.setMaxConnTotal(this.config.getThreads());
-
-    SocketConfig sc = SocketConfig.custom().setSoTimeout(this.config.getTimeout()).build();
-    cb.setDefaultSocketConfig(sc);
-
-    return cb.build();
-  }
-
-  @Override
-  public int getMaxThreads() {
-    return this.config.getThreads();
-  }
-
-  @Override
-  public void setConf(AbstractConfig config) {
-    this.config = (ScalyrTransportConfig) config;
-    this.serializer = new ScalyrTransportSerializer();
-    this.client = getHttpClient();
-
-    String confUrl = "";
-
-    if (this.config.isUseSSL()) {
-      confUrl += "https://";
-    } else {
-      confUrl += "http://";
-    }
-
-    confUrl += this.config.getHostname() + ":" + this.config.getPort() + "/api/uploadLogs?parser="
-        + this.config.getParser() + "&token=" + this.config.getToken();
-
-    this.url = confUrl;
+  protected TransportSerializer getSerializer() {
+    return new GenericTransportSerializer('\n');
   }
 }

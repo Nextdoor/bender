@@ -29,13 +29,13 @@ import org.junit.Test;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
-import com.nextdoor.bender.ipc.scalyr.ScalyrTransportSerializer;
+import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
 
 public class GenericTransportBufferTest {
 
   @Test
   public void testAdd() throws IOException {
-    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
+    GenericTransportSerializer serializer = mock(GenericTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
     GenericTransportBuffer buffer = new GenericTransportBuffer(1, false, serializer);
 
@@ -52,7 +52,7 @@ public class GenericTransportBufferTest {
 
   @Test(expected = IllegalStateException.class)
   public void testAddBufferFull() throws IOException {
-    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
+    GenericTransportSerializer serializer = mock(GenericTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
     GenericTransportBuffer buffer = new GenericTransportBuffer(1, false, serializer);
 
@@ -63,7 +63,7 @@ public class GenericTransportBufferTest {
 
   @Test
   public void testEmptyBuffer() throws IOException {
-    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
+    GenericTransportSerializer serializer = mock(GenericTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
     GenericTransportBuffer buffer = new GenericTransportBuffer(1, false, serializer);
 
@@ -72,7 +72,7 @@ public class GenericTransportBufferTest {
 
   @Test
   public void testClear() throws IOException {
-    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
+    GenericTransportSerializer serializer = mock(GenericTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
     GenericTransportBuffer buffer = new GenericTransportBuffer(1, false, serializer);
 
@@ -89,7 +89,7 @@ public class GenericTransportBufferTest {
 
   @Test
   public void testGzip() throws IOException {
-    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
+    GenericTransportSerializer serializer = mock(GenericTransportSerializer.class);
     doReturn("foo".getBytes()).when(serializer).serialize(any(InternalEvent.class));
     GenericTransportBuffer buffer = new GenericTransportBuffer(1, true, serializer);
 
@@ -106,7 +106,7 @@ public class GenericTransportBufferTest {
 
   @Test
   public void testDoubleClose() throws IOException, TransportException {
-    ScalyrTransportSerializer serializer = mock(ScalyrTransportSerializer.class);
+    GenericTransportSerializer serializer = mock(GenericTransportSerializer.class);
     GenericTransportBuffer buffer = new GenericTransportBuffer(1, true, serializer);
 
     buffer.close();

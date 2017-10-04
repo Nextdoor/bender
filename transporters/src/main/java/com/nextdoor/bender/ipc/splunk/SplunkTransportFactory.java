@@ -15,98 +15,39 @@
 
 package com.nextdoor.bender.ipc.splunk;
 
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpHeaders;
-import org.apache.http.config.SocketConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
 
-import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.ipc.TransportBuffer;
-import com.nextdoor.bender.ipc.TransportException;
-import com.nextdoor.bender.ipc.TransportFactory;
-import com.nextdoor.bender.ipc.TransportFactoryInitException;
-import com.nextdoor.bender.ipc.UnpartitionedTransport;
-import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
-import com.nextdoor.bender.ipc.generic.BenderHttpClientBuilder;
-import com.nextdoor.bender.ipc.generic.GenericHttpTransport;
+import com.nextdoor.bender.ipc.TransportSerializer;
+import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
+import com.nextdoor.bender.ipc.http.HttpTransport;
 
 /**
- * Creates a {@link GenericHttpTransport} from a {@link SplunkTransportConfig}.
+ * Creates a {@link HttpTransport} from a {@link SplunkTransportConfig}.
  */
-public class SplunkTransportFactory implements TransportFactory {
-
-  private SplunkTransportConfig config;
-  private SplunkTransportSerializer serializer;
-  private CloseableHttpClient client;
-  private String url;
+public class SplunkTransportFactory extends AbstractHttpTransportFactory {
 
   @Override
-  public Class<GenericHttpTransport> getChildClass() {
-    return GenericHttpTransport.class;
+  protected String getPath() {
+    return "/services/collector";
   }
 
   @Override
-  public void close() {}
+  protected Map<String, String> getHeaders() {
+    SplunkTransportConfig config = (SplunkTransportConfig) super.config;
+    Map<String,String> parentHeaders = super.getHeaders();
+    Map<String,String> myHeaders = new HashMap<String, String>(parentHeaders);
+    String authHeader = "Splunk " + config.getAuthToken();
+    myHeaders.put(HttpHeaders.AUTHORIZATION, authHeader);
 
-  @Override
-  public UnpartitionedTransport newInstance() throws TransportFactoryInitException {
-    return new GenericHttpTransport(this.client, this.url,
-        this.config.isUseGzip(), this.config.getRetryCount(), this.config.getRetryDelay());
+    return myHeaders;
   }
 
   @Override
-  public TransportBuffer newTransportBuffer() throws TransportException {
-    try {
-      return new GenericTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
-          this.serializer);
-    } catch (IOException e) {
-      throw new TransportException("error creating GenericTransportBuffer", e);
-    }
-  }
-
-  private CloseableHttpClient getHttpClient() throws TransportFactoryInitException {
-    HttpClientBuilder cb = BenderHttpClientBuilder.create();
-
-    if (this.config.isUseSSL()) {
-      ((BenderHttpClientBuilder) (cb) ).withSSL();
-    }
-
-    cb.setMaxConnTotal(this.config.getThreads());
-
-    String authHeader = "Splunk " + this.config.getAuthToken();
-    cb.setDefaultHeaders(Arrays.asList(new BasicHeader(HttpHeaders.AUTHORIZATION, authHeader)));
-
-    SocketConfig sc = SocketConfig.custom().setSoTimeout(this.config.getTimeout()).build();
-    cb.setDefaultSocketConfig(sc);
-
-    return cb.build();
-  }
-
-  @Override
-  public int getMaxThreads() {
-    return this.config.getThreads();
-  }
-
-  @Override
-  public void setConf(AbstractConfig config) {
-    this.config = (SplunkTransportConfig) config;
-    this.serializer = new SplunkTransportSerializer(this.config.getIndex());
-    this.client = getHttpClient();
-
-    String confUrl = "";
-
-    if (this.config.isUseSSL()) {
-      confUrl += "https://";
-    } else {
-      confUrl += "http://";
-    }
-
-    confUrl += this.config.getHostname() + ":" + this.config.getPort() + "/services/collector";
-
-    this.url = confUrl;
+  protected TransportSerializer getSerializer() {
+    SplunkTransportConfig config = (SplunkTransportConfig) super.config;
+    return new SplunkTransportSerializer(config.getIndex());
   }
 }

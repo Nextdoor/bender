@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.ipc.generic;
+package com.nextdoor.bender.ipc.http;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
@@ -29,7 +29,7 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.ipc.TransportConfig;
 import com.nextdoor.bender.utils.Passwords;
 
-public abstract class GenericHttpTransportConfig extends TransportConfig {
+public abstract class AbstractHttpTransportConfig extends TransportConfig {
 
   @JsonSchemaDescription("HTTP endpoint hostname.")
   @JsonProperty(required = true)
@@ -45,7 +45,7 @@ public abstract class GenericHttpTransportConfig extends TransportConfig {
   @JsonSchemaDescription("Use SSL connections (certificates are not validated).")
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
-  private Boolean useSSL = false;
+  private Boolean useSSL = true;
 
   @JsonSchemaDescription("Use GZIP compression on HTTP calls.")
   @JsonSchemaDefault(value = "false")

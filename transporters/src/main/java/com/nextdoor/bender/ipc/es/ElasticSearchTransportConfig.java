@@ -23,14 +23,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.aws.auth.AuthConfig;
-import com.nextdoor.bender.ipc.generic.GenericHttpTransportConfig;
+import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
 
 @JsonTypeName("ElasticSearch")
 @JsonSchemaDescription("Writes events into a self-hosted ElasticSearch. This transport does not"
     + "work with AWS hosted ElasticSearch. Instead use Firehose transport with a destination of "
     + "your cluster. Note that events must be JSON serialized or transport will fail. Only "
     + "tested with version 2.3.x but may work with 5.x.")
-public class ElasticSearchTransportConfig extends GenericHttpTransportConfig {
+public class ElasticSearchTransportConfig extends AbstractHttpTransportConfig {
 
   @JsonSchemaDescription("Authentication scheme.")
   @JsonProperty(required = false)

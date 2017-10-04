@@ -1,15 +1,13 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  * Copyright 2017 Nextdoor.com, Inc
  */
@@ -22,12 +20,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.ipc.generic.GenericHttpTransportConfig;
+import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
 import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("Scalyr")
 @JsonSchemaDescription("Writes events to a Scalyr endpoint.")
-public class ScalyrTransportConfig extends GenericHttpTransportConfig {
+public class ScalyrTransportConfig extends AbstractHttpTransportConfig {
 
   @JsonSchemaDescription("Scalyr HTTP endpoint hostname.")
   @JsonSchemaDefault(value = "www.scalyr.com")
@@ -70,7 +68,8 @@ public class ScalyrTransportConfig extends GenericHttpTransportConfig {
     return token;
   }
 
-  public String getParser() { return parser;
+  public String getParser() {
+    return parser;
   }
 
   public void setParser(String parser) {

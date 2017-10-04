@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.ipc.generic;
+package com.nextdoor.bender.ipc.http;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -41,9 +41,9 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.nextdoor.bender.ipc.TransportException;
-import com.nextdoor.bender.ipc.generic.GenericHttpTransport;
+import com.nextdoor.bender.ipc.http.HttpTransport;
 
-public class GenericHttpTransporterTest {
+public class HttpTransportTest {
 
   private HttpClient getMockClientWithResponse(byte[] respPayload, ContentType contentType,
       int status) throws IOException {
@@ -70,7 +70,7 @@ public class GenericHttpTransporterTest {
 
     HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 1, 1);
+    HttpTransport transport = new HttpTransport(client, "", false, 1, 1);
     transport.sendBatch(payload);
   }
 
@@ -80,7 +80,7 @@ public class GenericHttpTransporterTest {
 
     HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 1, 1);
+    HttpTransport transport = new HttpTransport(client, "", false, 1, 1);
 
     transport.sendBatch("foo".getBytes());
   }
@@ -91,7 +91,7 @@ public class GenericHttpTransporterTest {
 
     HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 1, 1);
+    HttpTransport transport = new HttpTransport(client, "", false, 1, 1);
 
     transport.sendBatch("foo".getBytes());
   }
@@ -102,7 +102,7 @@ public class GenericHttpTransporterTest {
 
     HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 1, 1);
+    HttpTransport transport = new HttpTransport(client, "", false, 1, 1);
 
     try {
       transport.sendBatch("foo".getBytes());
@@ -124,7 +124,7 @@ public class GenericHttpTransporterTest {
 
     HttpClient client = getMockClientWithResponse(compressedResponse, ContentType.DEFAULT_BINARY,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    GenericHttpTransport transport = new GenericHttpTransport(client, "", true, 1, 1);
+    HttpTransport transport = new HttpTransport(client, "", true, 1, 1);
 
     try {
       transport.sendBatch("foo".getBytes());
@@ -140,7 +140,7 @@ public class GenericHttpTransporterTest {
 
     HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    GenericHttpTransport transport = new GenericHttpTransport(client, "", false, 3, 10);
+    HttpTransport transport = new HttpTransport(client, "", false, 3, 10);
 
     try {
       transport.sendBatch("foo".getBytes());
@@ -158,7 +158,7 @@ public class GenericHttpTransporterTest {
 
     doThrow(new IOException()).when(client).execute(any(HttpPost.class));
 
-    GenericHttpTransport transport = new GenericHttpTransport(client, "", true, 3, 1);
+    HttpTransport transport = new HttpTransport(client, "", true, 3, 1);
 
     try {
       transport.sendBatch("foo".getBytes());
@@ -175,7 +175,7 @@ public class GenericHttpTransporterTest {
 
     HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    GenericHttpTransport transport = spy(new GenericHttpTransport(client, url, false, 1, 1));
+    HttpTransport transport = spy(new HttpTransport(client, url, false, 1, 1));
     transport.sendBatch(payload);
 
     ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);
@@ -192,7 +192,7 @@ public class GenericHttpTransporterTest {
 
     HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    GenericHttpTransport transport = spy(new GenericHttpTransport(client, url, true, 1, 1));
+    HttpTransport transport = spy(new HttpTransport(client, url, true, 1, 1));
     transport.sendBatch(payload);
 
     ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);

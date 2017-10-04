@@ -12,25 +12,31 @@
  * Copyright 2017 Nextdoor.com, Inc
  */
 
-package com.nextdoor.bender.ipc.sumologic;
+package com.nextdoor.bender.ipc.generic;
 
+import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.ipc.TransportSerializer;
-import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
-import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
-import com.nextdoor.bender.ipc.http.HttpTransport;
 
-/**
- * Creates a {@link HttpTransport} from a {@link SumoLogicTransportConfig}.
- */
-public class SumoLogicTransportFactory extends AbstractHttpTransportFactory {
-  @Override
-  protected String getPath() {
-    SumoLogicTransportConfig config = (SumoLogicTransportConfig) super.config;
-    return "/receiver/v1/http/" + config.getAuthToken();
+public class GenericTransportSerializer implements TransportSerializer {
+  private char separator;
+
+  public GenericTransportSerializer(char separator) {
+    this.separator = separator;
+  }
+
+  public GenericTransportSerializer() {
+    this.separator = '\n';
   }
 
   @Override
-  protected TransportSerializer getSerializer() {
-    return new GenericTransportSerializer('\n');
+  public byte[] serialize(InternalEvent ievent) {
+    /*
+     * Separates each serialized record with a defined separator
+     */
+    StringBuilder payload = new StringBuilder();
+    payload.append(ievent.getSerialized());
+    payload.append(this.separator);
+
+    return payload.toString().getBytes();
   }
 }

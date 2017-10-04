@@ -13,13 +13,12 @@
  *
  */
 
-package com.nextdoor.bender.ipc.generic;
+package com.nextdoor.bender.ipc.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.temporal.ChronoUnit;
-import java.util.LinkedHashMap;
 import java.util.concurrent.Callable;
 import java.util.zip.GZIPInputStream;
 
@@ -35,32 +34,30 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import com.amazonaws.services.lambda.runtime.Context;
 import com.evanlennick.retry4j.CallExecutor;
 import com.evanlennick.retry4j.RetryConfig;
 import com.evanlennick.retry4j.RetryConfigBuilder;
 import com.evanlennick.retry4j.exception.RetriesExhaustedException;
 import com.evanlennick.retry4j.exception.UnexpectedException;
-import com.nextdoor.bender.ipc.PartitionedTransport;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
+import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
 
 /**
- * Generic HTTP Transport. The HTTP client must be configured by your
- * transport factory.
+ * Generic HTTP Transport. The HTTP client must be configured by your transport factory.
  */
-public class GenericHttpTransport implements UnpartitionedTransport {
+public class HttpTransport implements UnpartitionedTransport {
   private final HttpClient client;
   private final boolean useGzip;
   private final long retryDelayMs;
   private final int retries;
   private final String url;
 
-  private static final Logger logger = Logger.getLogger(GenericHttpTransport.class);
+  private static final Logger logger = Logger.getLogger(HttpTransport.class);
 
-  public GenericHttpTransport(HttpClient client, String url, boolean useGzip,
-      int retries, long retryDelayMs) {
+  public HttpTransport(HttpClient client, String url, boolean useGzip, int retries,
+      long retryDelayMs) {
     this.client = client;
     this.url = url;
     this.useGzip = useGzip;

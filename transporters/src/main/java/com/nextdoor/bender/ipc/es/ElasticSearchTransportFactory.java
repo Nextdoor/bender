@@ -38,8 +38,8 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
-import com.nextdoor.bender.ipc.generic.BenderHttpClientBuilder;
 import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
+import com.nextdoor.bender.ipc.http.BenderHttpClientBuilder;
 
 import vc.inreach.aws.request.AWSSigningRequestInterceptor;
 
