@@ -26,6 +26,8 @@ import com.nextdoor.bender.aws.auth.AuthConfig;
 import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
 
 @JsonTypeName("ElasticSearch")
+@JsonSchemaDescription("Writes to an ElasticSearch cluster. When using AWS hosted ES do not "
+    + "use gzip compression.")
 public class ElasticSearchTransportConfig extends AbstractHttpTransportConfig {
 
   @JsonSchemaDescription("Authentication scheme.")
