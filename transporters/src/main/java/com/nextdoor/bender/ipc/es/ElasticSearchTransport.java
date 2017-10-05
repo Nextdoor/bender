@@ -15,153 +15,40 @@
 
 package com.nextdoor.bender.ipc.es;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.concurrent.Callable;
-import java.util.zip.GZIPInputStream;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.client.HttpClient;
 import org.apache.http.entity.ContentType;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.RestClient;
 
-import com.evanlennick.retry4j.CallExecutor;
-import com.evanlennick.retry4j.RetryConfig;
-import com.evanlennick.retry4j.RetryConfigBuilder;
-import com.evanlennick.retry4j.exception.RetriesExhaustedException;
-import com.evanlennick.retry4j.exception.UnexpectedException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
-import com.nextdoor.bender.ipc.UnpartitionedTransport;
 import com.nextdoor.bender.ipc.es.EsResponse.Index;
 import com.nextdoor.bender.ipc.es.EsResponse.Item;
-import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
+import com.nextdoor.bender.ipc.http.HttpTransport;
 
-/**
- * Transporter that uses the ES bulk index http api. Note this has only been tested against ES 2.4.x
- * bulk api responses.
- */
-public class ElasticSearchTransport implements UnpartitionedTransport {
-  private final RestClient client;
-  private final boolean useGzip;
-  private final long retryDelayMs;
-  private final int retries;
-
+public class ElasticSearchTransport extends HttpTransport {
   private static final Logger logger = Logger.getLogger(ElasticSearchTransport.class);
 
-  protected ElasticSearchTransport(RestClient client, boolean useGzip, int retries,
+  public ElasticSearchTransport(HttpClient client, String url, boolean useGzip, int retries,
       long retryDelayMs) {
-    this.client = client;
-    this.useGzip = useGzip;
-    this.retries = retries;
-    this.retryDelayMs = retryDelayMs;
+    super(client, url, useGzip, retries, retryDelayMs);
   }
 
-  protected ElasticSearchTransport(RestClient client, boolean useGzip) {
-    this(client, useGzip, 1, 0);
-  }
-
-  protected Response sendBatchUncompressed(byte[] raw) throws TransportException {
-    HttpEntity entity = new ByteArrayEntity(raw, ContentType.APPLICATION_JSON);
-
-    /*
-     * Make call
-     */
-    try {
-      return client.performRequest("POST", "/_bulk", Collections.<String, String>emptyMap(),
-          entity);
-    } catch (IOException e) {
-      throw new TransportException("failed to make call", e);
-    }
-  }
-
-  protected Response sendBatchCompressed(byte[] raw) throws TransportException {
-    /*
-     * Write gzip data to Entity and set content encoding to gzip
-     */
-    HttpEntity entity = new ByteArrayEntity(raw, ContentType.DEFAULT_BINARY);
-    ((ByteArrayEntity) entity).setContentEncoding("gzip");
-
-    /*
-     * Make call
-     */
-    try {
-      return client.performRequest("POST", "/_bulk", Collections.<String, String>emptyMap(), entity,
-          new BasicHeader("Accept-Encoding", "gzip"));
-    } catch (IOException e) {
-      throw new TransportException("failed to make call", e);
-    }
+  public ElasticSearchTransport(HttpClient client, boolean useGzip) {
+    super(client, "/_bulk", useGzip, 0, 1000);
   }
 
   @Override
-  public void sendBatch(TransportBuffer buf) throws TransportException {
-    GenericTransportBuffer buffer = (GenericTransportBuffer) buf;
-    sendBatch(buffer.getInternalBuffer().toByteArray());
-  }
-
-  protected void sendBatch(byte[] raw) throws TransportException {
-    /*
-     * Wrap the call with retry logic to avoid intermittent ES issues.
-     */
-    Callable<Response> callable = () -> {
-      Response resp;
-      if (this.useGzip) {
-        resp = sendBatchCompressed(raw);
-      } else {
-        resp = sendBatchUncompressed(raw);
-      }
-
-      checkResponse(resp);
-      return resp;
-    };
-
-    RetryConfig config = new RetryConfigBuilder()
-        .retryOnSpecificExceptions(TransportException.class).withMaxNumberOfTries(this.retries + 1)
-        .withDelayBetweenTries(this.retryDelayMs, ChronoUnit.MILLIS).withExponentialBackoff()
-        .build();
-
-    try {
-      new CallExecutor(config).execute(callable);
-    } catch (RetriesExhaustedException ree) {
-      logger.warn("transport failed after " + ree.getCallResults().getTotalTries() + " tries.");
-      throw new TransportException(ree.getCallResults().getLastExceptionThatCausedRetry());
-    } catch (UnexpectedException ue) {
-      throw new TransportException(ue);
-    }
-  }
-
-  /**
-   * Reads a HttpEntity containing gzip content and outputs a String.
-   *
-   * @param ent entity to read.
-   * @return payload contained by the entity.
-   * @throws UnsupportedOperationException if getContent failed.
-   * @throws IOException reading entity payload failed.
-   */
-  private String readCompressedResponse(HttpEntity ent)
-      throws UnsupportedOperationException, IOException {
-    GZIPInputStream gzip = new GZIPInputStream(ent.getContent());;
-    BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
-    StringBuilder sb = new StringBuilder();
-
-    String line;
-    while ((line = br.readLine()) != null) {
-      sb.append(line);
-    }
-
-    return sb.toString();
+  protected ContentType getUncompressedContentType() {
+    return ContentType.APPLICATION_JSON;
   }
 
   /**
@@ -171,7 +58,8 @@ public class ElasticSearchTransport implements UnpartitionedTransport {
    * @param resp response from ES.
    * @throws TransportException unable to parse response or response has index failures.
    */
-  protected void checkResponse(Response resp) throws TransportException {
+  @Override
+  protected void checkResponse(HttpResponse resp) throws TransportException {
     /*
      * Check responses status code of the overall bulk call. The call can succeed but have
      * individual failures which are checked later.

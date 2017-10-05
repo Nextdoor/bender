@@ -49,7 +49,7 @@ import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
  */
 public class HttpTransport implements UnpartitionedTransport {
   private final HttpClient client;
-  private final boolean useGzip;
+  protected final boolean useGzip;
   private final long retryDelayMs;
   private final int retries;
   private final String url;
@@ -65,8 +65,12 @@ public class HttpTransport implements UnpartitionedTransport {
     this.retryDelayMs = retryDelayMs;
   }
 
+  protected ContentType getUncompressedContentType() {
+    return ContentType.DEFAULT_TEXT;
+  }
+
   protected HttpResponse sendBatchUncompressed(byte[] raw) throws TransportException {
-    HttpEntity entity = new ByteArrayEntity(raw, ContentType.DEFAULT_TEXT);
+    HttpEntity entity = new ByteArrayEntity(raw, getUncompressedContentType());
 
     final HttpPost httpPost = new HttpPost(this.url);
     httpPost.setEntity(entity);
@@ -112,13 +116,12 @@ public class HttpTransport implements UnpartitionedTransport {
     return resp;
   }
 
-  @Override
   public void sendBatch(TransportBuffer buf) throws TransportException {
     GenericTransportBuffer buffer = (GenericTransportBuffer) buf;
     sendBatch(buffer.getInternalBuffer().toByteArray());
   }
 
-  protected void sendBatch(byte[] raw) throws TransportException {
+  public void sendBatch(byte[] raw) throws TransportException {
     /*
      * Wrap the call with retry logic to avoid intermittent ES issues.
      */
@@ -157,7 +160,7 @@ public class HttpTransport implements UnpartitionedTransport {
    * @throws UnsupportedOperationException if getContent failed.
    * @throws IOException reading entity payload failed.
    */
-  private String readCompressedResponse(HttpEntity ent)
+  public String readCompressedResponse(HttpEntity ent)
       throws UnsupportedOperationException, IOException {
     GZIPInputStream gzip = new GZIPInputStream(ent.getContent());;
     BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
@@ -171,6 +174,12 @@ public class HttpTransport implements UnpartitionedTransport {
     return sb.toString();
   }
 
+  /**
+   * Processes the response sent back by HTTP server. Override this method to implement
+   * custom response processing logic.
+   * @param resp Response from server.
+   * @throws TransportException when HTTP call was unsuccessful.
+   */
   protected void checkResponse(HttpResponse resp) throws TransportException {
     /*
      * Check responses status code of the overall bulk call.

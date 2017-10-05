@@ -67,8 +67,9 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
     return this.config.getHttpHeaders();
   }
 
-  private CloseableHttpClient getClient(boolean useSSL, String url,
+  protected HttpClientBuilder getClientBuilder(boolean useSSL, String url,
       Map<String, String> stringHeaders, int socketTimeout) {
+
     HttpClientBuilder cb = BenderHttpClientBuilder.create();
 
     /*
@@ -92,7 +93,13 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
     cb.setDefaultSocketConfig(sc);
 
     cb.setMaxConnTotal(this.config.getThreads());
-    return cb.build();
+
+    return cb;
+  }
+
+  protected CloseableHttpClient getClient(boolean useSSL, String url,
+      Map<String, String> stringHeaders, int socketTimeout) {
+    return getClientBuilder(useSSL, url, stringHeaders, socketTimeout).build();
   }
 
   @Override
