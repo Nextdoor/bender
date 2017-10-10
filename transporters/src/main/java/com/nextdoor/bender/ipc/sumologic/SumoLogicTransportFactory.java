@@ -16,13 +16,13 @@ package com.nextdoor.bender.ipc.sumologic;
 
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
-import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
+import com.nextdoor.bender.ipc.http.BaseHttpTransportFactory;
 import com.nextdoor.bender.ipc.http.HttpTransport;
 
 /**
  * Creates a {@link HttpTransport} from a {@link SumoLogicTransportConfig}.
  */
-public class SumoLogicTransportFactory extends AbstractHttpTransportFactory {
+public class SumoLogicTransportFactory extends BaseHttpTransportFactory {
   @Override
   protected String getPath() {
     SumoLogicTransportConfig config = (SumoLogicTransportConfig) super.config;

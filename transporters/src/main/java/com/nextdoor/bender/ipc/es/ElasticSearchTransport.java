@@ -15,20 +15,17 @@
 
 package com.nextdoor.bender.ipc.es;
 
-import java.io.IOException;
 import java.util.HashSet;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.ContentType;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.es.EsResponse.Index;
 import com.nextdoor.bender.ipc.es.EsResponse.Item;
@@ -51,15 +48,8 @@ public class ElasticSearchTransport extends HttpTransport {
     return ContentType.APPLICATION_JSON;
   }
 
-  /**
-   * Deserializes the response from ES and checks for per index request errors. Currently only
-   * tested with ES 2.4.x responses.
-   *
-   * @param resp response from ES.
-   * @throws TransportException unable to parse response or response has index failures.
-   */
   @Override
-  protected void checkResponse(HttpResponse resp) throws TransportException {
+  public void checkResponse(HttpResponse resp, String responseString) throws TransportException {
     /*
      * Check responses status code of the overall bulk call. The call can succeed but have
      * individual failures which are checked later.
@@ -70,55 +60,44 @@ public class ElasticSearchTransport extends HttpTransport {
     }
 
     /*
-     * Read the http response to a String. If compression was used in the request the response is
-     * also compressed and must be decompressed.
+     * Short circuit deserializing the response by just looking if there are any errors
      */
-    HttpEntity ent = resp.getEntity();
-
-    String responseString;
-    try {
-      if (this.useGzip) {
-        responseString = readCompressedResponse(ent);
-      } else {
-        responseString = EntityUtils.toString(ent);
-      }
-    } catch (ParseException | IOException e) {
-      throw new TransportException("unable to read es response", e);
+    if (responseString.contains("\"errors\":false")) {
+      return;
     }
 
     /*
-     * Convert response text to a POJO
+     * Convert response text to a POJO. Only tested with ES 2.4.x but seems to work with 5.x
      */
     Gson gson = new GsonBuilder().create();
-    EsResponse esResp = gson.fromJson(responseString, EsResponse.class);
-
-    /*
-     * EsResponse provides an easy way to check if there are any errors. If there aren't we can exit
-     * early.
-     */
-    if (!esResp.errors) {
-      return;
+    EsResponse esResp = null;
+    try {
+      esResp = gson.fromJson(responseString, EsResponse.class);
+    } catch (JsonSyntaxException e) {
+      throw new TransportException(
+          "es call failed because " + resp.getStatusLine().getReasonPhrase(), e);
     }
 
     /*
      * Look for the errors per index request
      */
     int failures = 0;
+
+    if (esResp.items == null) {
+      throw new TransportException(
+          "es call failed because " + resp.getStatusLine().getReasonPhrase());
+    }
+
     HashSet<String> errorTypes = new HashSet<String>();
     for (Item item : esResp.items) {
       Index index = item.index;
 
-      if (index == null) {
-        continue;
-      }
-
-      if (index.error != null && index.error.reason != null
-          && index.error.reason.startsWith("blocked")) {
+      if (index == null || index.error == null || index.error.reason == null) {
         continue;
       }
 
       /*
-       * For now just handle 200's and 400's. Both are considered non-fatal errors from the lambda's
+       * For now just allow 200's and 400's. Both are considered non-fatal errors from the lambda's
        * perspective.
        */
       switch (index.status) {

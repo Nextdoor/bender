@@ -27,12 +27,20 @@ import org.apache.http.message.BasicHeader;
 
 import com.nextdoor.bender.aws.auth.UrlSigningAuthConfig;
 import com.nextdoor.bender.aws.auth.UserPassAuthConfig;
+import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.TransportSerializer;
+import com.nextdoor.bender.ipc.UnpartitionedTransport;
 import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
 
 import vc.inreach.aws.request.AWSSigningRequestInterceptor;
 
 public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory {
+
+  @Override
+  public UnpartitionedTransport newInstance() throws TransportFactoryInitException {
+    return new ElasticSearchTransport(this.client, super.getUrl(), this.config.isUseGzip(),
+        this.config.getRetryCount(), this.config.getRetryDelay());
+  }
 
   @Override
   protected String getPath() {
@@ -46,6 +54,11 @@ public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory 
 
     return new ElasticSearchTransportSerializer(config.isUseHashId(), config.getDocumentType(),
         config.getIndex(), config.getIndexTimeFormat());
+  }
+
+  @Override
+  public Class<ElasticSearchTransport> getChildClass() {
+    return ElasticSearchTransport.class;
   }
 
   @Override

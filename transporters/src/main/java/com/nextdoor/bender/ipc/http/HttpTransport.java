@@ -15,12 +15,9 @@
 
 package com.nextdoor.bender.ipc.http;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Callable;
-import java.util.zip.GZIPInputStream;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -69,10 +66,9 @@ public class HttpTransport implements UnpartitionedTransport {
     return ContentType.DEFAULT_TEXT;
   }
 
-  protected HttpResponse sendBatchUncompressed(byte[] raw) throws TransportException {
+  protected HttpResponse sendBatchUncompressed(HttpPost httpPost, byte[] raw)
+      throws TransportException {
     HttpEntity entity = new ByteArrayEntity(raw, getUncompressedContentType());
-
-    final HttpPost httpPost = new HttpPost(this.url);
     httpPost.setEntity(entity);
 
     /*
@@ -80,24 +76,22 @@ public class HttpTransport implements UnpartitionedTransport {
      */
     HttpResponse resp = null;
     try {
-      resp = client.execute(httpPost);
+      resp = this.client.execute(httpPost);
     } catch (IOException e) {
       throw new TransportException("failed to make call", e);
-    } finally {
-      httpPost.releaseConnection();
     }
 
     return resp;
   }
 
-  protected HttpResponse sendBatchCompressed(byte[] raw) throws TransportException {
+  protected HttpResponse sendBatchCompressed(HttpPost httpPost, byte[] raw)
+      throws TransportException {
     /*
      * Write gzip data to Entity and set content encoding to gzip
      */
-    HttpEntity entity = new ByteArrayEntity(raw, ContentType.DEFAULT_BINARY);
-    ((ByteArrayEntity) entity).setContentEncoding("gzip");
+    ByteArrayEntity entity = new ByteArrayEntity(raw, ContentType.DEFAULT_BINARY);
+    entity.setContentEncoding("gzip");
 
-    final HttpPost httpPost = new HttpPost(this.url);
     httpPost.addHeader(new BasicHeader("Accept-Encoding", "gzip"));
     httpPost.setEntity(entity);
 
@@ -106,11 +100,9 @@ public class HttpTransport implements UnpartitionedTransport {
      */
     HttpResponse resp = null;
     try {
-      resp = client.execute(httpPost);
+      resp = this.client.execute(httpPost);
     } catch (IOException e) {
       throw new TransportException("failed to make call", e);
-    } finally {
-      httpPost.releaseConnection();
     }
 
     return resp;
@@ -127,13 +119,34 @@ public class HttpTransport implements UnpartitionedTransport {
      */
     Callable<HttpResponse> callable = () -> {
       HttpResponse resp;
-      if (this.useGzip) {
-        resp = sendBatchCompressed(raw);
-      } else {
-        resp = sendBatchUncompressed(raw);
+      String responseString = null;
+      HttpPost httpPost = new HttpPost(this.url);
+
+      /*
+       * Do the call, read response, release connection so it is available for use again, and
+       * finally check the response.
+       */
+      try {
+        if (this.useGzip) {
+          resp = sendBatchCompressed(httpPost, raw);
+        } else {
+          resp = sendBatchUncompressed(httpPost, raw);
+        }
+
+        try {
+          responseString = EntityUtils.toString(resp.getEntity());
+        } catch (ParseException | IOException e) {
+          throw new TransportException(
+              "http transport call failed because " + resp.getStatusLine().getReasonPhrase());
+        }
+      } finally {
+        /*
+         * Always release connection otherwise it blocks future requests.
+         */
+        httpPost.releaseConnection();
       }
 
-      checkResponse(resp);
+      checkResponse(resp, responseString);
       return resp;
     };
 
@@ -153,34 +166,14 @@ public class HttpTransport implements UnpartitionedTransport {
   }
 
   /**
-   * Reads a HttpEntity containing gzip content and outputs a String.
-   *
-   * @param ent entity to read.
-   * @return payload contained by the entity.
-   * @throws UnsupportedOperationException if getContent failed.
-   * @throws IOException reading entity payload failed.
-   */
-  public String readCompressedResponse(HttpEntity ent)
-      throws UnsupportedOperationException, IOException {
-    GZIPInputStream gzip = new GZIPInputStream(ent.getContent());;
-    BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
-    StringBuilder sb = new StringBuilder();
-
-    String line;
-    while ((line = br.readLine()) != null) {
-      sb.append(line);
-    }
-
-    return sb.toString();
-  }
-
-  /**
-   * Processes the response sent back by HTTP server. Override this method to implement
-   * custom response processing logic.
-   * @param resp Response from server.
+   * Processes the response sent back by HTTP server. Override this method to implement custom
+   * response processing logic. Note connection is already released when this method is called.
+   * 
+   * @param resp Response object from server.
+   * @param responseString Response string message from server.
    * @throws TransportException when HTTP call was unsuccessful.
    */
-  protected void checkResponse(HttpResponse resp) throws TransportException {
+  public void checkResponse(HttpResponse resp, String responseString) throws TransportException {
     /*
      * Check responses status code of the overall bulk call.
      */
@@ -188,24 +181,8 @@ public class HttpTransport implements UnpartitionedTransport {
       return;
     }
 
-    /*
-     * Read the http response to a String. If compression was used in the request the response is
-     * also compressed and must be decompressed.
-     */
-    HttpEntity ent = resp.getEntity();
-
-    String responseString;
-    try {
-      if (this.useGzip) {
-        responseString = readCompressedResponse(ent);
-      } else {
-        responseString = EntityUtils.toString(ent);
-      }
-    } catch (ParseException | IOException e) {
-      throw new TransportException(
-          "http transport call failed because " + resp.getStatusLine().getReasonPhrase());
-    }
-
-    throw new TransportException("http transport call failed because " + responseString);
+    throw new TransportException(
+        "http transport call failed because \"" + resp.getStatusLine().getReasonPhrase()
+            + "\" payload response \"" + responseString + "\"");
   }
 }

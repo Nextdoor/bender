@@ -16,13 +16,13 @@ package com.nextdoor.bender.ipc.scalyr;
 
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
-import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
+import com.nextdoor.bender.ipc.http.BaseHttpTransportFactory;
 import com.nextdoor.bender.ipc.http.HttpTransport;
 
 /**
  * Creates a {@link HttpTransport} from a {@link ScalyrTransportConfig}.
  */
-public class ScalyrTransportFactory extends AbstractHttpTransportFactory {
+public class ScalyrTransportFactory extends BaseHttpTransportFactory {
   @Override
   protected String getPath() {
     ScalyrTransportConfig config = (ScalyrTransportConfig) super.config;

@@ -21,13 +21,13 @@ import java.util.Map;
 import org.apache.http.HttpHeaders;
 
 import com.nextdoor.bender.ipc.TransportSerializer;
-import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
+import com.nextdoor.bender.ipc.http.BaseHttpTransportFactory;
 import com.nextdoor.bender.ipc.http.HttpTransport;
 
 /**
  * Creates a {@link HttpTransport} from a {@link SplunkTransportConfig}.
  */
-public class SplunkTransportFactory extends AbstractHttpTransportFactory {
+public class SplunkTransportFactory extends BaseHttpTransportFactory {
 
   @Override
   protected String getPath() {

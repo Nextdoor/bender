@@ -18,7 +18,7 @@ package com.nextdoor.bender.ipc.http;
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
 
-public class HttpTransportFactory extends AbstractHttpTransportFactory {
+public class HttpTransportFactory extends BaseHttpTransportFactory {
   @Override
   protected String getPath() {
     HttpTransportConfig config = (HttpTransportConfig) super.config;

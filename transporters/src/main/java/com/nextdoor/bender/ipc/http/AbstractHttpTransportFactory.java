@@ -16,12 +16,23 @@
 package com.nextdoor.bender.ipc.http;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 
 import com.nextdoor.bender.config.AbstractConfig;
@@ -36,7 +47,7 @@ import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
 public abstract class AbstractHttpTransportFactory implements TransportFactory {
   protected AbstractHttpTransportConfig config;
   protected TransportSerializer serializer;
-  private CloseableHttpClient client;
+  protected CloseableHttpClient client;
 
   abstract protected String getPath();
 
@@ -51,7 +62,7 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
         this.config.getTimeout());
   }
 
-  private String getUrl() {
+  protected String getUrl() {
     String url = "";
     if (this.config.isUseSSL()) {
       url += "https://";
@@ -67,16 +78,71 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
     return this.config.getHttpHeaders();
   }
 
+  /**
+   * There isn't an easy way in java to trust non-self signed certs. Just allow all until java
+   * KeyStore functionality is added to Bender.
+   *
+   * @return a context that trusts all SSL certs
+   */
+  private SSLContext getSSLContext() {
+    /*
+     * Create SSLContext and TrustManager that will trust all SSL certs.
+     *
+     * Copy pasta from http://stackoverflow.com/a/4837230
+     */
+    TrustManager tm = new X509TrustManager() {
+      public void checkClientTrusted(X509Certificate[] chain, String authType)
+          throws CertificateException {}
+
+      public void checkServerTrusted(X509Certificate[] chain, String authType)
+          throws CertificateException {}
+
+      public X509Certificate[] getAcceptedIssuers() {
+        return null;
+      }
+    };
+
+    SSLContext ctx;
+    try {
+      ctx = SSLContext.getInstance("TLS");
+    } catch (NoSuchAlgorithmException e) {
+      throw new TransportFactoryInitException("JVM does not have proper libraries for TSL");
+    }
+
+    try {
+      ctx.init(null, new TrustManager[] {tm}, new java.security.SecureRandom());
+    } catch (KeyManagementException e) {
+      throw new TransportFactoryInitException("Unable to init SSLContext with TrustManager", e);
+    }
+    return ctx;
+  }
+
   protected HttpClientBuilder getClientBuilder(boolean useSSL, String url,
       Map<String, String> stringHeaders, int socketTimeout) {
 
-    HttpClientBuilder cb = BenderHttpClientBuilder.create();
+    HttpClientBuilder cb = HttpClientBuilder.create();
 
     /*
      * Setup SSL
      */
     if (useSSL) {
-      ((BenderHttpClientBuilder) (cb)).withSSL();
+      /*
+       * All trusting SSL context
+       */
+      try {
+        cb.setSSLContext(getSSLContext());
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+
+      /*
+       * All trusting hostname verifier
+       */
+      cb.setSSLHostnameVerifier(new HostnameVerifier() {
+        public boolean verify(String s, SSLSession sslSession) {
+          return true;
+        }
+      });
     }
 
     /*
@@ -91,7 +157,7 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
      */
     SocketConfig sc = SocketConfig.custom().setSoTimeout(socketTimeout).build();
     cb.setDefaultSocketConfig(sc);
-
+    cb.setMaxConnPerRoute(this.config.getThreads());
     cb.setMaxConnTotal(this.config.getThreads());
 
     return cb;
@@ -105,11 +171,6 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
   @Override
   public int getMaxThreads() {
     return this.config.getThreads();
-  }
-
-  @Override
-  public Class<HttpTransport> getChildClass() {
-    return HttpTransport.class;
   }
 
   @Override
