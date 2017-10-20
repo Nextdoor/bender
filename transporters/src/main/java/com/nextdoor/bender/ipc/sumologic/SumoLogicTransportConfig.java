@@ -10,10 +10,9 @@
  * the License.
  *
  * Copyright 2017 Nextdoor.com, Inc
- *
  */
 
-package com.nextdoor.bender.ipc.splunk;
+package com.nextdoor.bender.ipc.sumologic;
 
 import java.io.UnsupportedEncodingException;
 
@@ -23,21 +22,13 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
 import com.nextdoor.bender.utils.Passwords;
 
-@JsonTypeName("Splunk")
-@JsonSchemaDescription("Writes events to a Splunk HEC endpoint.")
-public class SplunkTransportConfig extends AbstractHttpTransportConfig {
-
-  @JsonSchemaDescription("Splunk auth token. If value is kms encrypted prefix with 'KMS='.")
+@JsonTypeName("SumoLogic")
+@JsonSchemaDescription("Writes events to a SumoLogic endpoint.")
+public class SumoLogicTransportConfig extends AbstractHttpTransportConfig {
+  @JsonSchemaDescription("Sumo Logic auth token. This is suffix of the http source url "
+      + "starting after '/receiver/v1/http/'. If value is kms encrypted prefix with 'KMS='.")
   @JsonProperty(required = true)
   private String authToken = null;
-
-  @JsonSchemaDescription("Splunk data index.")
-  @JsonProperty(required = false)
-  private String index = null;
-
-  public void setAuthToken(String authToken) {
-    this.authToken = authToken;
-  }
 
   public String getAuthToken() {
     /*
@@ -54,16 +45,12 @@ public class SplunkTransportConfig extends AbstractHttpTransportConfig {
     return authToken;
   }
 
-  public void setIndex(String index) {
-    this.index = index;
-  }
-
-  public String getIndex() {
-    return this.index;
+  public void setAuthToken(String authToken) {
+    this.authToken = authToken;
   }
 
   @Override
   public Class<?> getFactoryClass() {
-    return SplunkTransportFactory.class;
+    return SumoLogicTransportFactory.class;
   }
 }

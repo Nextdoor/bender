@@ -17,37 +17,36 @@ package com.nextdoor.bender.ipc.es;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doThrow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.RestClient;
 import org.junit.Test;
 
-import com.evanlennick.retry4j.exception.UnexpectedException;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.nextdoor.bender.ipc.TransportException;
 
 public class ElasticSearchTransporterTest {
 
-  private RestClient getMockClientWithResponse(byte[] respPayload, ContentType contentType,
+  private HttpClient getMockClientWithResponse(byte[] respPayload, ContentType contentType,
       int status) throws IOException {
-    RestClient mockClient = mock(RestClient.class);
-    Response mockResponse = mock(Response.class);
+    HttpClient mockClient = mock(HttpClient.class);
+    HttpResponse mockResponse = mock(HttpResponse.class);
 
     StatusLine mockStatusLine = mock(StatusLine.class);
     doReturn("expected failure").when(mockStatusLine).getReasonPhrase();
@@ -57,20 +56,17 @@ public class ElasticSearchTransporterTest {
     HttpEntity entity = new ByteArrayEntity(respPayload, contentType);
 
     doReturn(entity).when(mockResponse).getEntity();
-    doReturn(mockResponse).when(mockClient).performRequest(eq("POST"), eq("/_bulk"), any(Map.class),
-        any(HttpEntity.class));
-    doReturn(mockResponse).when(mockClient).performRequest(eq("POST"), eq("/_bulk"), any(Map.class),
-        any(HttpEntity.class), any(Header.class));
+    doReturn(mockResponse).when(mockClient).execute(any(HttpPost.class));
 
     return mockClient;
   }
 
   @Test
   public void testOkResponse() throws TransportException, IOException {
-    byte[] respPayload = "{}".getBytes(StandardCharsets.UTF_8);
+    byte[] respPayload = "{\"errors\":false}".getBytes(StandardCharsets.UTF_8);
     byte[] payload = "foo".getBytes();
 
-    RestClient client =
+    HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
     ElasticSearchTransport transport = new ElasticSearchTransport(client, false);
 
@@ -81,7 +77,7 @@ public class ElasticSearchTransporterTest {
   public void testNotOkResponse() throws TransportException, IOException {
     byte[] respPayload = "{\"foo\": \"bar\"}".getBytes(StandardCharsets.UTF_8);
 
-    RestClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
+    HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR);
     ElasticSearchTransport transport = new ElasticSearchTransport(client, false);
 
@@ -92,9 +88,9 @@ public class ElasticSearchTransporterTest {
   public void testNoErrorsResponse() throws TransportException, IOException {
     EsResponse resp = new EsResponse();
     resp.errors = false;
-    byte[] respPayload = "{}".getBytes(StandardCharsets.UTF_8);
+    byte[] respPayload = "{\"errors\":false}".getBytes(StandardCharsets.UTF_8);
 
-    RestClient client =
+    HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
     ElasticSearchTransport transport = new ElasticSearchTransport(client, false);
 
@@ -124,7 +120,7 @@ public class ElasticSearchTransporterTest {
   public void testErrorsResponse() throws TransportException, IOException {
     byte[] respPayload = getResponse().getBytes(StandardCharsets.UTF_8);
 
-    RestClient client =
+    HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
     ElasticSearchTransport transport = new ElasticSearchTransport(client, false);
 
@@ -146,14 +142,14 @@ public class ElasticSearchTransporterTest {
     os.close();
     byte[] compressedResponse = baos.toByteArray();
 
-    RestClient client =
+    HttpClient client =
         getMockClientWithResponse(compressedResponse, ContentType.DEFAULT_BINARY, HttpStatus.SC_OK);
     ElasticSearchTransport transport = new ElasticSearchTransport(client, true);
 
     try {
       transport.sendBatch("foo".getBytes());
     } catch (Exception e) {
-      assertEquals("es index failure count is 1", e.getCause().getMessage());
+      assertEquals("es call failed because expected failure", e.getCause().getMessage());
       throw e;
     }
   }
@@ -162,9 +158,9 @@ public class ElasticSearchTransporterTest {
   public void testRetries() throws Exception {
     byte[] respPayload = getResponse().getBytes(StandardCharsets.UTF_8);
 
-    RestClient client =
+    HttpClient client =
         getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    ElasticSearchTransport transport = new ElasticSearchTransport(client, false, 3, 10);
+    ElasticSearchTransport transport = new ElasticSearchTransport(client, "", false, 3, 10);
 
     try {
       transport.sendBatch("foo".getBytes());
@@ -174,25 +170,10 @@ public class ElasticSearchTransporterTest {
     }
   }
 
-  @Test(expected = TransportException.class)
-  public void testUnexpectedException() throws Exception {
+  @Test(expected = JsonSyntaxException.class)
+  public void testBadJson() throws Throwable {
     byte[] arr = "{".getBytes();
-    RestClient client =
-        getMockClientWithResponse(arr, ContentType.APPLICATION_JSON, HttpStatus.SC_OK);
-    ElasticSearchTransport transport = new ElasticSearchTransport(client, false, 3, 10);
-
-    try {
-      transport.sendBatch("foo".getBytes());
-    } catch (Exception e) {
-      assertEquals(UnexpectedException.class, e.getCause().getClass());
-      throw e;
-    }
-  }
-
-  @Test(expected = IOException.class)
-  public void testIOException() throws Throwable {
-    byte[] arr = "{".getBytes();
-    RestClient client =
+    HttpClient client =
         getMockClientWithResponse(arr, ContentType.DEFAULT_BINARY, HttpStatus.SC_OK);
     ElasticSearchTransport transport = new ElasticSearchTransport(client, true);
 
@@ -201,5 +182,11 @@ public class ElasticSearchTransporterTest {
     } catch (Exception e) {
       throw e.getCause().getCause();
     }
+  }
+
+  @Test
+  public void testUncompressedContentType() {
+    ElasticSearchTransport transport = new ElasticSearchTransport(null, false);
+    assertEquals(ContentType.APPLICATION_JSON, transport.getUncompressedContentType());
   }
 }

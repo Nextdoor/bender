@@ -15,46 +15,46 @@
 
 package com.nextdoor.bender.ipc.es;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpHeaders;
-import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
 
 import com.nextdoor.bender.aws.auth.UrlSigningAuthConfig;
 import com.nextdoor.bender.aws.auth.UserPassAuthConfig;
-import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.ipc.TransportBuffer;
-import com.nextdoor.bender.ipc.TransportException;
-import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
+import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
+import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
 
 import vc.inreach.aws.request.AWSSigningRequestInterceptor;
 
-/**
- * Creates a {@link ElasticSearchTransport} from a {@link ElasticSearchTransportConfig}.
- */
-public class ElasticSearchTransportFactory implements TransportFactory {
+public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory {
 
-  private ElasticSearchTransportConfig config;
-  private ElasticSearchTransportSerializer serializer;
-  private RestClient client;
+  @Override
+  public UnpartitionedTransport newInstance() throws TransportFactoryInitException {
+    return new ElasticSearchTransport(this.client, super.getUrl(), this.config.isUseGzip(),
+        this.config.getRetryCount(), this.config.getRetryDelay());
+  }
+
+  @Override
+  protected String getPath() {
+    ElasticSearchTransportConfig config = (ElasticSearchTransportConfig) super.config;
+    return config.getBulkApiPath();
+  }
+
+  @Override
+  protected TransportSerializer getSerializer() {
+    ElasticSearchTransportConfig config = (ElasticSearchTransportConfig) super.config;
+
+    return new ElasticSearchTransportSerializer(config.isUseHashId(), config.getDocumentType(),
+        config.getIndex(), config.getIndexTimeFormat());
+  }
 
   @Override
   public Class<ElasticSearchTransport> getChildClass() {
@@ -62,111 +62,27 @@ public class ElasticSearchTransportFactory implements TransportFactory {
   }
 
   @Override
-  public void close() {}
+  protected CloseableHttpClient getClient(boolean useSSL, String url,
+      Map<String, String> stringHeaders, int socketTimeout) {
+    HttpClientBuilder cb = super.getClientBuilder(useSSL, url, stringHeaders, socketTimeout);
+    ElasticSearchTransportConfig config = (ElasticSearchTransportConfig) super.config;
 
-  @Override
-  public UnpartitionedTransport newInstance() throws TransportFactoryInitException {
-    return new ElasticSearchTransport(this.client, this.config.isUseGzip(),
-        this.config.getRetryCount(), this.config.getRetryDelay());
-  }
-
-  @Override
-  public TransportBuffer newTransportBuffer() throws TransportException {
-    try {
-      return new ElasticSearchTransportBuffer(this.config.getBatchSize(), this.config.isUseGzip(),
-          this.serializer);
-    } catch (IOException e) {
-      throw new TransportException("error creating ElasticSearchTransportBuffer", e);
-    }
-  }
-
-  /**
-   * There isn't an easy way in java to trust non-self signed certs. Just allow all until java
-   * KeyStore functionality is added to Bender.
-   *
-   * @return a context that trusts all SSL certs
-   */
-  private SSLContext getSSLContext() {
-    /*
-     * Create SSLContext and TrustManager that will trust all SSL certs.
-     *
-     * Copy pasta from http://stackoverflow.com/a/4837230
-     */
-    TrustManager tm = new X509TrustManager() {
-      public void checkClientTrusted(X509Certificate[] chain, String authType)
-          throws CertificateException {}
-
-      public void checkServerTrusted(X509Certificate[] chain, String authType)
-          throws CertificateException {}
-
-      public X509Certificate[] getAcceptedIssuers() {
-        return null;
+    if (config.getAuthConfig() != null) {
+      if (config.getAuthConfig() instanceof UserPassAuthConfig) {
+        cb = addUserPassAuth(cb, (UserPassAuthConfig) config.getAuthConfig());
+      } else if (config.getAuthConfig() instanceof UrlSigningAuthConfig) {
+        cb = addSigningAuth(cb, (UrlSigningAuthConfig) config.getAuthConfig());
       }
-    };
-
-    SSLContext ctx;
-    try {
-      ctx = SSLContext.getInstance("TLS");
-    } catch (NoSuchAlgorithmException e) {
-      throw new TransportFactoryInitException("JVM does not have proper libraries for TSL");
     }
 
-    try {
-      ctx.init(null, new TrustManager[] {tm}, new java.security.SecureRandom());
-    } catch (KeyManagementException e) {
-      throw new TransportFactoryInitException("Unable to init SSLContext with TrustManager", e);
-    }
-    return ctx;
+    RequestConfig rc = RequestConfig.custom().setConnectTimeout(5000)
+        .setSocketTimeout(config.getTimeout()).build();
+    cb.setDefaultRequestConfig(rc);
+
+    return cb.build();
   }
 
-  private RestClient getHttpClient() throws TransportFactoryInitException {
-    HttpHost httpHost;
-
-    if (this.config.isUseSSL()) {
-      httpHost = new HttpHost(this.config.getHostname(), this.config.getPort(), "https");
-    } else {
-      httpHost = new HttpHost(this.config.getHostname(), this.config.getPort(), "http");
-    }
-
-    RestClientBuilder rcb = RestClient.builder(httpHost);
-
-    rcb.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-      @Override
-      public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder cb) {
-        if (config.isUseSSL()) {
-          cb.setSSLContext(getSSLContext());
-          cb.setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-        }
-
-        if (config.getAuthConfig() != null) {
-          if (config.getAuthConfig() instanceof UserPassAuthConfig) {
-            cb = addUserPassAuth(cb, (UserPassAuthConfig) config.getAuthConfig());
-          } else if (config.getAuthConfig() instanceof UrlSigningAuthConfig) {
-            cb = addSigningAuth(cb, (UrlSigningAuthConfig) config.getAuthConfig());
-          }
-        }
-
-        return cb;
-      }
-    });
-
-
-    /*
-     * Client default is 10 seconds. The default this factory has is 40 seconds.
-     */
-    rcb = rcb.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
-      @Override
-      public RequestConfig.Builder customizeRequestConfig(
-          RequestConfig.Builder requestConfigBuilder) {
-        return requestConfigBuilder.setConnectTimeout(5000).setSocketTimeout(config.getTimeout());
-      }
-    });
-    rcb = rcb.setMaxRetryTimeoutMillis(config.getTimeout());
-    return rcb.build();
-  }
-
-  private HttpAsyncClientBuilder addUserPassAuth(HttpAsyncClientBuilder cb,
-      UserPassAuthConfig auth) {
+  private HttpClientBuilder addUserPassAuth(HttpClientBuilder cb, UserPassAuthConfig auth) {
     /*
      * Send auth via headers as the credentials provider method of auth does not work when using
      * SSL.
@@ -180,21 +96,7 @@ public class ElasticSearchTransportFactory implements TransportFactory {
     return cb;
   }
 
-  private HttpAsyncClientBuilder addSigningAuth(HttpAsyncClientBuilder cb,
-      UrlSigningAuthConfig auth) {
+  private HttpClientBuilder addSigningAuth(HttpClientBuilder cb, UrlSigningAuthConfig auth) {
     return cb.addInterceptorLast(new AWSSigningRequestInterceptor(auth.getAWSSigner()));
-  }
-
-  @Override
-  public int getMaxThreads() {
-    return this.config.getThreads();
-  }
-
-  @Override
-  public void setConf(AbstractConfig config) {
-    this.config = (ElasticSearchTransportConfig) config;
-    this.serializer = new ElasticSearchTransportSerializer(this.config.isUseHashId(),
-        this.config.getDocumentType(), this.config.getIndex(), this.config.getIndexTimeFormat());
-    this.client = getHttpClient();
   }
 }

@@ -2755,17 +2755,21 @@ function sourceButton(element) {
                 <div class="signature-type">
                             <span class="type-keyword">one of</span>
         <span class="type-keyword"></span>
-                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">File</span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">HTTP</span>
         <span class="type-keyword"></span>
-                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">S3</span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">File</span>
         <span class="type-keyword"></span>
-                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">ElasticSearch</span>
+                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">S3</span>
         <span class="type-keyword"></span>
-                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Scalyr</span>
+                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">ElasticSearch</span>
         <span class="type-keyword"></span>
-                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Splunk</span>
+                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Scalyr</span>
         <span class="type-keyword"></span>
-                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
+                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">SumoLogic</span>
+        <span class="type-keyword"></span>
+                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Splunk</span>
+        <span class="type-keyword"></span>
+                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
 
                 </div>
                 <div class="signature-description desc"><p>Transport configuration</p>
@@ -2775,6 +2779,422 @@ function sourceButton(element) {
                 <div class="box-container" boxid="1">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">HTTP</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">HTTP</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">HTTP</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">threads</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">5</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of concurrent transporters allowed</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">hostname</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint hostname.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">port</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;65535]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">443</span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint port.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_gzip</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use GZIP compression on HTTP calls.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">batch_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [500;100000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">500</span>
+
+                </div>
+                <div class="signature-description desc"><p>Maximum number of documents in api call.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_count</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [0;10]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">0</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of retries to make when a put failure occurs.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_delay</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;60000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">1000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Initial delay between retries. If more than one retries specified exponential backoff is used.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">timeout</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1000;300000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">40000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Socket timeout on HTTP connection.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
+  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">path</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint path and query string including leading slash '/'.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">separator</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Separator used between serialized records.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "HTTP"
+      ],
+      "default": "HTTP"
+    },
+    "threads": {
+      "type": "integer",
+      "default": 5,
+      "description": "Number of concurrent transporters allowed"
+    },
+    "hostname": {
+      "type": "string",
+      "description": "HTTP endpoint hostname."
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535,
+      "default": 443,
+      "description": "HTTP endpoint port."
+    },
+    "use_ssl": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use SSL connections (certificates are not validated)."
+    },
+    "use_gzip": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use GZIP compression on HTTP calls."
+    },
+    "batch_size": {
+      "type": "integer",
+      "minimum": 500,
+      "maximum": 100000,
+      "default": 500,
+      "description": "Maximum number of documents in api call."
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "default": 0,
+      "description": "Number of retries to make when a put failure occurs."
+    },
+    "retry_delay": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 60000,
+      "default": 1000,
+      "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+    },
+    "timeout": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 300000,
+      "default": 40000,
+      "description": "Socket timeout on HTTP connection."
+    },
+    "http_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+    },
+    "path": {
+      "type": "string",
+      "description": "HTTP endpoint path and query string including leading slash '/'."
+    },
+    "separator": {
+      "type": "string",
+      "description": "Separator used between serialized records."
+    }
+  },
+  "title": "HTTP",
+  "required": [
+    "type",
+    "hostname",
+    "path"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
         <div class="box-title" ref="">
             <div class="box-name ">File</div>
             <div class="box-description desc"><p>Writes events to a file on the local file system. Typically only used for testing and debugging.</p>
@@ -2887,9 +3307,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="2">
+                <div class="box-container" boxid="3">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-2">
+    <div class="box-header box-3">
         <div class="box-title" ref="">
             <div class="box-name ">S3</div>
             <div class="box-description desc"><p>Writes batches of events to S3. The output filename will either be the unique function inocation request id as specified by Lambda or a hash of the input filename when using the S3 handler. Required IAM permissions are: s3:AbortMultipartUpload, s3:PutObject, s3:ListMultipartUploadParts, s3:ListBucketMultipartUploads</p>
@@ -3157,12 +3577,12 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="3">
+                <div class="box-container" boxid="4">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-3">
+    <div class="box-header box-4">
         <div class="box-title" ref="">
             <div class="box-name ">ElasticSearch</div>
-            <div class="box-description desc"><p>Writes events into a self-hosted ElasticSearch. This transport does notwork with AWS hosted ElasticSearch. Instead use Firehose transport with a destination of your cluster. Note that events must be JSON serialized or transport will fail. Only tested with version 2.3.x but may work with 5.x.</p>
+            <div class="box-description desc"><p>Writes to an ElasticSearch cluster. When using AWS hosted ES do not use gzip compression.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -3213,6 +3633,230 @@ function sourceButton(element) {
 </div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">hostname</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint hostname.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">port</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;65535]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">9200</span>
+
+                </div>
+                <div class="signature-description desc"><p>ElasticSearch HTTP endpoint port.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_gzip</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use GZIP compression on HTTP calls.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">batch_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [500;100000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">500</span>
+
+                </div>
+                <div class="signature-description desc"><p>Maximum number of documents in api call.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_count</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [0;10]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">0</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of retries to make when a put failure occurs.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_delay</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;60000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">1000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Initial delay between retries. If more than one retries specified exponential backoff is used.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">timeout</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1000;300000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">40000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Socket timeout on HTTP connection.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
+  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
         <div class="signature">
@@ -3495,84 +4139,6 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">hostname</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-
-                </div>
-                <div class="signature-description desc"><p>ElasticSearch HTTP endpoint hostname.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">port</div>
-                <div class="signature-type">
-                                   <span class="signature-type-integer">
-               integer
-            </span>
-            <span class="type-keyword">
-               [1;65535]
-            </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">9200</span>
-
-                </div>
-                <div class="signature-description desc"><p>ElasticSearch HTTP endpoint port.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">use_ssl</div>
-                <div class="signature-type">
-                                   <span class="signature-type-boolean">
-               boolean
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">false</span>
-
-                </div>
-                <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">use_gzip</div>
-                <div class="signature-type">
-                                   <span class="signature-type-boolean">
-               boolean
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">false</span>
-
-                </div>
-                <div class="signature-description desc"><p>Use GZIP compression on HTTP calls.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
                 <div class="property-name required">index</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
@@ -3609,19 +4175,19 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">batch_size</div>
+                <div class="property-name ">bulk_api_path</div>
                 <div class="signature-type">
-                                   <span class="signature-type-integer">
-               integer
+                                   <span class="signature-type-string">
+               string
             </span>
             <span class="type-keyword">
-               [500;100000]
+               
             </span>
             <span class="type-keyword">default</span>
-            <span class="type-default">500</span>
+            <span class="type-default">/_bulk</span>
 
                 </div>
-                <div class="signature-description desc"><p>Maximum number of documents in  bulk api call.</p>
+                <div class="signature-description desc"><p>ElasticSearch bulk api path including leading slash '/'.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -3640,66 +4206,6 @@ function sourceButton(element) {
 
                 </div>
                 <div class="signature-description desc"><p>Java time format to append to index name.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">timeout</div>
-                <div class="signature-type">
-                                   <span class="signature-type-integer">
-               integer
-            </span>
-            <span class="type-keyword">
-               [1000;300000]
-            </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">40000</span>
-
-                </div>
-                <div class="signature-description desc"><p>Socket timeout on HTTP connection.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">retry_count</div>
-                <div class="signature-type">
-                                   <span class="signature-type-integer">
-               integer
-            </span>
-            <span class="type-keyword">
-               [0;10]
-            </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">0</span>
-
-                </div>
-                <div class="signature-description desc"><p>Number of retries to make when a put failure occurs.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">retry_delay</div>
-                <div class="signature-type">
-                                   <span class="signature-type-integer">
-               integer
-            </span>
-            <span class="type-keyword">
-               [1;60000]
-            </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">1000</span>
-
-                </div>
-                <div class="signature-description desc"><p>Initial delay between retries. If more than one retries specified exponential backoff is used.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -3734,7 +4240,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Writes events into a self-hosted ElasticSearch. This transport does notwork with AWS hosted ElasticSearch. Instead use Firehose transport with a destination of your cluster. Note that events must be JSON serialized or transport will fail. Only tested with version 2.3.x but may work with 5.x.",
+  "description": "Writes to an ElasticSearch cluster. When using AWS hosted ES do not use gzip compression.",
   "properties": {
     "type": {
       "type": "string",
@@ -3748,20 +4254,9 @@ function sourceButton(element) {
       "default": 5,
       "description": "Number of concurrent transporters allowed"
     },
-    "auth_config": {
-      "oneOf": [
-        {
-          "$ref": "#/definitions/UserPassAuthConfig"
-        },
-        {
-          "$ref": "#/definitions/UrlSigningAuthConfig"
-        }
-      ],
-      "description": "Authentication scheme."
-    },
     "hostname": {
       "type": "string",
-      "description": "ElasticSearch HTTP endpoint hostname."
+      "description": "HTTP endpoint hostname."
     },
     "port": {
       "type": "integer",
@@ -3780,31 +4275,12 @@ function sourceButton(element) {
       "default": false,
       "description": "Use GZIP compression on HTTP calls."
     },
-    "index": {
-      "type": "string",
-      "description": "Index to write to."
-    },
-    "document_type": {
-      "type": "string",
-      "description": "ElasticSearch document type."
-    },
     "batch_size": {
       "type": "integer",
       "minimum": 500,
       "maximum": 100000,
       "default": 500,
-      "description": "Maximum number of documents in  bulk api call."
-    },
-    "index_time_format": {
-      "type": "string",
-      "description": "Java time format to append to index name."
-    },
-    "timeout": {
-      "type": "integer",
-      "minimum": 1000,
-      "maximum": 300000,
-      "default": 40000,
-      "description": "Socket timeout on HTTP connection."
+      "description": "Maximum number of documents in api call."
     },
     "retry_count": {
       "type": "integer",
@@ -3819,6 +4295,48 @@ function sourceButton(element) {
       "maximum": 60000,
       "default": 1000,
       "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+    },
+    "timeout": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 300000,
+      "default": 40000,
+      "description": "Socket timeout on HTTP connection."
+    },
+    "http_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+    },
+    "auth_config": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/UserPassAuthConfig"
+        },
+        {
+          "$ref": "#/definitions/UrlSigningAuthConfig"
+        }
+      ],
+      "description": "Authentication scheme."
+    },
+    "index": {
+      "type": "string",
+      "description": "Index to write to."
+    },
+    "document_type": {
+      "type": "string",
+      "description": "ElasticSearch document type."
+    },
+    "bulk_api_path": {
+      "type": "string",
+      "default": "/_bulk",
+      "description": "ElasticSearch bulk api path including leading slash '/'."
+    },
+    "index_time_format": {
+      "type": "string",
+      "description": "Java time format to append to index name."
     },
     "use_hashid": {
       "type": "boolean",
@@ -3839,9 +4357,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="4">
+                <div class="box-container" boxid="5">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-4">
+    <div class="box-header box-5">
         <div class="box-title" ref="">
             <div class="box-name ">Scalyr</div>
             <div class="box-description desc"><p>Writes events to a Scalyr endpoint.</p>
@@ -3931,45 +4449,7 @@ function sourceButton(element) {
             <span class="type-default">443</span>
 
                 </div>
-                <div class="signature-description desc"><p>Scalyr HTTP endpoint port.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name required">token</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-
-                </div>
-                <div class="signature-description desc"><p>Scalyr auth token. If value is kms encrypted prefix with 'KMS='.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">parser</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">json</span>
-
-                </div>
-                <div class="signature-description desc"><p>Scalyr String Parser.</p>
+                <div class="signature-description desc"><p>HTTP endpoint port.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -3986,7 +4466,7 @@ function sourceButton(element) {
                
             </span>
             <span class="type-keyword">default</span>
-            <span class="type-default">true</span>
+            <span class="type-default">false</span>
 
                 </div>
                 <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
@@ -4029,7 +4509,7 @@ function sourceButton(element) {
             <span class="type-default">500</span>
 
                 </div>
-                <div class="signature-description desc"><p>Maximum number of documents in bulk api call.</p>
+                <div class="signature-description desc"><p>Maximum number of documents in api call.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -4095,6 +4575,110 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
+  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">token</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Scalyr auth token. If value is kms encrypted prefix with 'KMS='.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">parser</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">json</span>
+
+                </div>
+                <div class="signature-description desc"><p>Scalyr String Parser.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -4128,20 +4712,11 @@ function sourceButton(element) {
       "minimum": 1,
       "maximum": 65535,
       "default": 443,
-      "description": "Scalyr HTTP endpoint port."
-    },
-    "token": {
-      "type": "string",
-      "description": "Scalyr auth token. If value is kms encrypted prefix with 'KMS='."
-    },
-    "parser": {
-      "type": "string",
-      "default": "json",
-      "description": "Scalyr String Parser."
+      "description": "HTTP endpoint port."
     },
     "use_ssl": {
       "type": "boolean",
-      "default": true,
+      "default": false,
       "description": "Use SSL connections (certificates are not validated)."
     },
     "use_gzip": {
@@ -4154,7 +4729,7 @@ function sourceButton(element) {
       "minimum": 500,
       "maximum": 100000,
       "default": 500,
-      "description": "Maximum number of documents in bulk api call."
+      "description": "Maximum number of documents in api call."
     },
     "retry_count": {
       "type": "integer",
@@ -4176,6 +4751,22 @@ function sourceButton(element) {
       "maximum": 300000,
       "default": 40000,
       "description": "Socket timeout on HTTP connection."
+    },
+    "http_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+    },
+    "token": {
+      "type": "string",
+      "description": "Scalyr auth token. If value is kms encrypted prefix with 'KMS='."
+    },
+    "parser": {
+      "type": "string",
+      "default": "json",
+      "description": "Scalyr String Parser."
     }
   },
   "title": "Scalyr",
@@ -4189,9 +4780,405 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="5">
+                <div class="box-container" boxid="6">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-5">
+    <div class="box-header box-6">
+        <div class="box-title" ref="">
+            <div class="box-name ">SumoLogic</div>
+            <div class="box-description desc"><p>Writes events to a SumoLogic endpoint.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">SumoLogic</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">SumoLogic</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">threads</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">5</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of concurrent transporters allowed</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">hostname</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint hostname.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">port</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;65535]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">443</span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint port.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_gzip</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use GZIP compression on HTTP calls.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">batch_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [500;100000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">500</span>
+
+                </div>
+                <div class="signature-description desc"><p>Maximum number of documents in api call.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_count</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [0;10]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">0</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of retries to make when a put failure occurs.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_delay</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;60000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">1000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Initial delay between retries. If more than one retries specified exponential backoff is used.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">timeout</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1000;300000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">40000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Socket timeout on HTTP connection.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
+  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">auth_token</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'. If value is kms encrypted prefix with 'KMS='.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Writes events to a SumoLogic endpoint.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "SumoLogic"
+      ],
+      "default": "SumoLogic"
+    },
+    "threads": {
+      "type": "integer",
+      "default": 5,
+      "description": "Number of concurrent transporters allowed"
+    },
+    "hostname": {
+      "type": "string",
+      "description": "HTTP endpoint hostname."
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535,
+      "default": 443,
+      "description": "HTTP endpoint port."
+    },
+    "use_ssl": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use SSL connections (certificates are not validated)."
+    },
+    "use_gzip": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use GZIP compression on HTTP calls."
+    },
+    "batch_size": {
+      "type": "integer",
+      "minimum": 500,
+      "maximum": 100000,
+      "default": 500,
+      "description": "Maximum number of documents in api call."
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "default": 0,
+      "description": "Number of retries to make when a put failure occurs."
+    },
+    "retry_delay": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 60000,
+      "default": 1000,
+      "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+    },
+    "timeout": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 300000,
+      "default": 40000,
+      "description": "Socket timeout on HTTP connection."
+    },
+    "http_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+    },
+    "auth_token": {
+      "type": "string",
+      "description": "Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'. If value is kms encrypted prefix with 'KMS='."
+    }
+  },
+  "title": "SumoLogic",
+  "required": [
+    "type",
+    "hostname",
+    "auth_token"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="7">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-7">
         <div class="box-title" ref="">
             <div class="box-name ">Splunk</div>
             <div class="box-description desc"><p>Writes events to a Splunk HEC endpoint.</p>
@@ -4259,7 +5246,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Splunk HTTP endpoint hostname.</p>
+                <div class="signature-description desc"><p>HTTP endpoint hostname.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -4279,43 +5266,7 @@ function sourceButton(element) {
             <span class="type-default">443</span>
 
                 </div>
-                <div class="signature-description desc"><p>Splunk HTTP endpoint port.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name required">auth_token</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-
-                </div>
-                <div class="signature-description desc"><p>Splunk auth token. If value is kms encrypted prefix with 'KMS='.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">index</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-
-                </div>
-                <div class="signature-description desc"><p>Splunk data index.</p>
+                <div class="signature-description desc"><p>HTTP endpoint port.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -4375,7 +5326,7 @@ function sourceButton(element) {
             <span class="type-default">500</span>
 
                 </div>
-                <div class="signature-description desc"><p>Maximum number of documents in  bulk api call.</p>
+                <div class="signature-description desc"><p>Maximum number of documents in api call.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -4441,6 +5392,108 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
+  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">auth_token</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Splunk auth token. If value is kms encrypted prefix with 'KMS='.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">index</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Splunk data index.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -4466,22 +5519,14 @@ function sourceButton(element) {
     },
     "hostname": {
       "type": "string",
-      "description": "Splunk HTTP endpoint hostname."
+      "description": "HTTP endpoint hostname."
     },
     "port": {
       "type": "integer",
       "minimum": 1,
       "maximum": 65535,
       "default": 443,
-      "description": "Splunk HTTP endpoint port."
-    },
-    "auth_token": {
-      "type": "string",
-      "description": "Splunk auth token. If value is kms encrypted prefix with 'KMS='."
-    },
-    "index": {
-      "type": "string",
-      "description": "Splunk data index."
+      "description": "HTTP endpoint port."
     },
     "use_ssl": {
       "type": "boolean",
@@ -4498,7 +5543,7 @@ function sourceButton(element) {
       "minimum": 500,
       "maximum": 100000,
       "default": 500,
-      "description": "Maximum number of documents in  bulk api call."
+      "description": "Maximum number of documents in api call."
     },
     "retry_count": {
       "type": "integer",
@@ -4520,6 +5565,21 @@ function sourceButton(element) {
       "maximum": 300000,
       "default": 40000,
       "description": "Socket timeout on HTTP connection."
+    },
+    "http_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+    },
+    "auth_token": {
+      "type": "string",
+      "description": "Splunk auth token. If value is kms encrypted prefix with 'KMS='."
+    },
+    "index": {
+      "type": "string",
+      "description": "Splunk data index."
     }
   },
   "title": "Splunk",
@@ -4534,9 +5594,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="6">
+                <div class="box-container" boxid="8">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-6">
+    <div class="box-header box-8">
         <div class="box-title" ref="">
             <div class="box-name ">Firehose</div>
             <div class="box-description desc"><p>Transports events to AWS Kinesis Firehose. This transport is agnostic of the data being sent. However there are important limits to consider. The maximum size of a single Firehose record can not exceed 1000kb and the maximum for a batch is 4mb. Events larger than 1000kb will not be split across multiple Records. The transport contains two types of buffers. In BATCH mode it will attempt to write multiple events into a single Firehose Record in order to minimize number of Records sent. In SIMPLE mode each serialized event is putinto a its own Record. Firehose sinks like ElasticSearch require each event be its own Firehose Record.Required IAM permissions are: firehose:DescribeDeliveryStream, firehose:ListDeliveryStreams, firehose:PutRecord, firehose:PutRecordBatch</p>
@@ -5495,6 +6555,9 @@ function sourceButton(element) {
     "transport": {
       "oneOf": [
         {
+          "$ref": "#/definitions/HttpTransportConfig"
+        },
+        {
           "$ref": "#/definitions/FileTransportConfig"
         },
         {
@@ -5505,6 +6568,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/ScalyrTransportConfig"
+        },
+        {
+          "$ref": "#/definitions/SumoLogicTransportConfig"
         },
         {
           "$ref": "#/definitions/SplunkTransportConfig"
@@ -6081,6 +7147,94 @@ function sourceButton(element) {
         "type"
       ]
     },
+    "HttpTransportConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "HTTP"
+          ],
+          "default": "HTTP"
+        },
+        "threads": {
+          "type": "integer",
+          "default": 5,
+          "description": "Number of concurrent transporters allowed"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "HTTP endpoint hostname."
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 443,
+          "description": "HTTP endpoint port."
+        },
+        "use_ssl": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use SSL connections (certificates are not validated)."
+        },
+        "use_gzip": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use GZIP compression on HTTP calls."
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 100000,
+          "default": 500,
+          "description": "Maximum number of documents in api call."
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 0,
+          "description": "Number of retries to make when a put failure occurs."
+        },
+        "retry_delay": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000,
+          "default": 1000,
+          "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 40000,
+          "description": "Socket timeout on HTTP connection."
+        },
+        "http_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+        },
+        "path": {
+          "type": "string",
+          "description": "HTTP endpoint path and query string including leading slash '/'."
+        },
+        "separator": {
+          "type": "string",
+          "description": "Separator used between serialized records."
+        }
+      },
+      "title": "HTTP",
+      "required": [
+        "type",
+        "hostname",
+        "path"
+      ]
+    },
     "FileTransportConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -6182,7 +7336,7 @@ function sourceButton(element) {
     "ElasticSearchTransportConfig": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Writes events into a self-hosted ElasticSearch. This transport does notwork with AWS hosted ElasticSearch. Instead use Firehose transport with a destination of your cluster. Note that events must be JSON serialized or transport will fail. Only tested with version 2.3.x but may work with 5.x.",
+      "description": "Writes to an ElasticSearch cluster. When using AWS hosted ES do not use gzip compression.",
       "properties": {
         "type": {
           "type": "string",
@@ -6196,20 +7350,9 @@ function sourceButton(element) {
           "default": 5,
           "description": "Number of concurrent transporters allowed"
         },
-        "auth_config": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/UserPassAuthConfig"
-            },
-            {
-              "$ref": "#/definitions/UrlSigningAuthConfig"
-            }
-          ],
-          "description": "Authentication scheme."
-        },
         "hostname": {
           "type": "string",
-          "description": "ElasticSearch HTTP endpoint hostname."
+          "description": "HTTP endpoint hostname."
         },
         "port": {
           "type": "integer",
@@ -6228,31 +7371,12 @@ function sourceButton(element) {
           "default": false,
           "description": "Use GZIP compression on HTTP calls."
         },
-        "index": {
-          "type": "string",
-          "description": "Index to write to."
-        },
-        "document_type": {
-          "type": "string",
-          "description": "ElasticSearch document type."
-        },
         "batch_size": {
           "type": "integer",
           "minimum": 500,
           "maximum": 100000,
           "default": 500,
-          "description": "Maximum number of documents in  bulk api call."
-        },
-        "index_time_format": {
-          "type": "string",
-          "description": "Java time format to append to index name."
-        },
-        "timeout": {
-          "type": "integer",
-          "minimum": 1000,
-          "maximum": 300000,
-          "default": 40000,
-          "description": "Socket timeout on HTTP connection."
+          "description": "Maximum number of documents in api call."
         },
         "retry_count": {
           "type": "integer",
@@ -6267,6 +7391,48 @@ function sourceButton(element) {
           "maximum": 60000,
           "default": 1000,
           "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 40000,
+          "description": "Socket timeout on HTTP connection."
+        },
+        "http_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+        },
+        "auth_config": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/UserPassAuthConfig"
+            },
+            {
+              "$ref": "#/definitions/UrlSigningAuthConfig"
+            }
+          ],
+          "description": "Authentication scheme."
+        },
+        "index": {
+          "type": "string",
+          "description": "Index to write to."
+        },
+        "document_type": {
+          "type": "string",
+          "description": "ElasticSearch document type."
+        },
+        "bulk_api_path": {
+          "type": "string",
+          "default": "/_bulk",
+          "description": "ElasticSearch bulk api path including leading slash '/'."
+        },
+        "index_time_format": {
+          "type": "string",
+          "description": "Java time format to append to index name."
         },
         "use_hashid": {
           "type": "boolean",
@@ -6378,20 +7544,11 @@ function sourceButton(element) {
           "minimum": 1,
           "maximum": 65535,
           "default": 443,
-          "description": "Scalyr HTTP endpoint port."
-        },
-        "token": {
-          "type": "string",
-          "description": "Scalyr auth token. If value is kms encrypted prefix with 'KMS='."
-        },
-        "parser": {
-          "type": "string",
-          "default": "json",
-          "description": "Scalyr String Parser."
+          "description": "HTTP endpoint port."
         },
         "use_ssl": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Use SSL connections (certificates are not validated)."
         },
         "use_gzip": {
@@ -6404,7 +7561,7 @@ function sourceButton(element) {
           "minimum": 500,
           "maximum": 100000,
           "default": 500,
-          "description": "Maximum number of documents in bulk api call."
+          "description": "Maximum number of documents in api call."
         },
         "retry_count": {
           "type": "integer",
@@ -6426,12 +7583,113 @@ function sourceButton(element) {
           "maximum": 300000,
           "default": 40000,
           "description": "Socket timeout on HTTP connection."
+        },
+        "http_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+        },
+        "token": {
+          "type": "string",
+          "description": "Scalyr auth token. If value is kms encrypted prefix with 'KMS='."
+        },
+        "parser": {
+          "type": "string",
+          "default": "json",
+          "description": "Scalyr String Parser."
         }
       },
       "title": "Scalyr",
       "required": [
         "type",
         "token"
+      ]
+    },
+    "SumoLogicTransportConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Writes events to a SumoLogic endpoint.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "SumoLogic"
+          ],
+          "default": "SumoLogic"
+        },
+        "threads": {
+          "type": "integer",
+          "default": 5,
+          "description": "Number of concurrent transporters allowed"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "HTTP endpoint hostname."
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 443,
+          "description": "HTTP endpoint port."
+        },
+        "use_ssl": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use SSL connections (certificates are not validated)."
+        },
+        "use_gzip": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use GZIP compression on HTTP calls."
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 100000,
+          "default": 500,
+          "description": "Maximum number of documents in api call."
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 0,
+          "description": "Number of retries to make when a put failure occurs."
+        },
+        "retry_delay": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000,
+          "default": 1000,
+          "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 40000,
+          "description": "Socket timeout on HTTP connection."
+        },
+        "http_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+        },
+        "auth_token": {
+          "type": "string",
+          "description": "Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'. If value is kms encrypted prefix with 'KMS='."
+        }
+      },
+      "title": "SumoLogic",
+      "required": [
+        "type",
+        "hostname",
+        "auth_token"
       ]
     },
     "SplunkTransportConfig": {
@@ -6453,22 +7711,14 @@ function sourceButton(element) {
         },
         "hostname": {
           "type": "string",
-          "description": "Splunk HTTP endpoint hostname."
+          "description": "HTTP endpoint hostname."
         },
         "port": {
           "type": "integer",
           "minimum": 1,
           "maximum": 65535,
           "default": 443,
-          "description": "Splunk HTTP endpoint port."
-        },
-        "auth_token": {
-          "type": "string",
-          "description": "Splunk auth token. If value is kms encrypted prefix with 'KMS='."
-        },
-        "index": {
-          "type": "string",
-          "description": "Splunk data index."
+          "description": "HTTP endpoint port."
         },
         "use_ssl": {
           "type": "boolean",
@@ -6485,7 +7735,7 @@ function sourceButton(element) {
           "minimum": 500,
           "maximum": 100000,
           "default": 500,
-          "description": "Maximum number of documents in  bulk api call."
+          "description": "Maximum number of documents in api call."
         },
         "retry_count": {
           "type": "integer",
@@ -6507,6 +7757,21 @@ function sourceButton(element) {
           "maximum": 300000,
           "default": 40000,
           "description": "Socket timeout on HTTP connection."
+        },
+        "http_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+        },
+        "auth_token": {
+          "type": "string",
+          "description": "Splunk auth token. If value is kms encrypted prefix with 'KMS='."
+        },
+        "index": {
+          "type": "string",
+          "description": "Splunk data index."
         }
       },
       "title": "Splunk",
@@ -6755,6 +8020,9 @@ function sourceButton(element) {
       "transport": {
         "oneOf": [
           {
+            "$ref": "#/definitions/HttpTransportConfig"
+          },
+          {
             "$ref": "#/definitions/FileTransportConfig"
           },
           {
@@ -6765,6 +8033,9 @@ function sourceButton(element) {
           },
           {
             "$ref": "#/definitions/ScalyrTransportConfig"
+          },
+          {
+            "$ref": "#/definitions/SumoLogicTransportConfig"
           },
           {
             "$ref": "#/definitions/SplunkTransportConfig"
@@ -6841,6 +8112,9 @@ function sourceButton(element) {
       "transport": {
         "oneOf": [
           {
+            "$ref": "#/definitions/HttpTransportConfig"
+          },
+          {
             "$ref": "#/definitions/FileTransportConfig"
           },
           {
@@ -6851,6 +8125,9 @@ function sourceButton(element) {
           },
           {
             "$ref": "#/definitions/ScalyrTransportConfig"
+          },
+          {
+            "$ref": "#/definitions/SumoLogicTransportConfig"
           },
           {
             "$ref": "#/definitions/SplunkTransportConfig"

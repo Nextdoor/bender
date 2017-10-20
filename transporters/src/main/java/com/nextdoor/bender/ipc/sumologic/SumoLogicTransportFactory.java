@@ -12,7 +12,7 @@
  * Copyright 2017 Nextdoor.com, Inc
  */
 
-package com.nextdoor.bender.ipc.scalyr;
+package com.nextdoor.bender.ipc.sumologic;
 
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
@@ -20,14 +20,13 @@ import com.nextdoor.bender.ipc.http.BaseHttpTransportFactory;
 import com.nextdoor.bender.ipc.http.HttpTransport;
 
 /**
- * Creates a {@link HttpTransport} from a {@link ScalyrTransportConfig}.
+ * Creates a {@link HttpTransport} from a {@link SumoLogicTransportConfig}.
  */
-public class ScalyrTransportFactory extends BaseHttpTransportFactory {
+public class SumoLogicTransportFactory extends BaseHttpTransportFactory {
   @Override
   protected String getPath() {
-    ScalyrTransportConfig config = (ScalyrTransportConfig) super.config;
-    return "/api/uploadLogs?parser="
-        + config.getParser() + "&token=" + config.getToken();
+    SumoLogicTransportConfig config = (SumoLogicTransportConfig) super.config;
+    return "/receiver/v1/http/" + config.getAuthToken();
   }
 
   @Override
