@@ -41,7 +41,6 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3Entity;
 import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRecord;
 import com.amazonaws.services.s3.event.S3EventNotification.S3ObjectEntity;
 import com.amazonaws.services.sns.AmazonSNSClient;
-import com.nextdoor.bender.aws.AmazonSNSClientFactory;
 import com.nextdoor.bender.handler.BaseHandler;
 import com.nextdoor.bender.handler.Handler;
 import com.nextdoor.bender.handler.HandlerTest;
@@ -49,6 +48,8 @@ import com.nextdoor.bender.ipc.IpcSenderService;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.testutils.DummyTransportHelper;
 import com.nextdoor.bender.testutils.TestContext;
+import com.nextdoor.bender.aws.AmazonSNSClientFactory;
+import com.nextdoor.bender.aws.S3MockClientFactory;
 
 public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
 

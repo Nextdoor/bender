@@ -1496,13 +1496,17 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">TimeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">LowerCaseKeyOperation</span>
+                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GeoIpOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
+                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">LowerCaseKeyOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonReplaceKVOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
+                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -1767,6 +1771,215 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-4">
         <div class="box-title" ref="">
+            <div class="box-name ">GeoIpOperation</div>
+            <div class="box-description desc"><p>Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example </p>
+<p> input = {"ip": "</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">GeoIpOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">GeoIpOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">ip_addr_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing an IP address string in the payload</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">destination_field_name</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">geo_ip</span>
+
+                </div>
+                <div class="signature-description desc"><p>Field name to save the geo data to</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">geo_lite_db</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>S3 path to the GeoLite2 database file. Prefix with s3://</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">geo_properties</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword">enum</span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+                <span class="type-enum">COUNTRY_NAME</span>
+                <span class="type-enum">COUNTRY_ISO_CODE</span>
+                <span class="type-enum">SUBDIVISION_NAME</span>
+                <span class="type-enum">SUBDIVISION_ISO_CODE</span>
+                <span class="type-enum">CITY_NAME</span>
+                <span class="type-enum">POSTAL_CODE</span>
+                <span class="type-enum">LOCATION</span>
+
+                </div>
+                <div class="signature-description desc"><p>List of geo properties to include</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">fail_on_not_found</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>If ip lookup fails also fail the operation. Doing so will filter the event.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "GeoIpOperation"
+      ],
+      "default": "GeoIpOperation"
+    },
+    "ip_addr_field": {
+      "type": "string",
+      "description": "Field containing an IP address string in the payload"
+    },
+    "destination_field_name": {
+      "type": "string",
+      "default": "geo_ip",
+      "description": "Field name to save the geo data to"
+    },
+    "geo_lite_db": {
+      "type": "string",
+      "description": "S3 path to the GeoLite2 database file. Prefix with s3://"
+    },
+    "geo_properties": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "COUNTRY_NAME",
+          "COUNTRY_ISO_CODE",
+          "SUBDIVISION_NAME",
+          "SUBDIVISION_ISO_CODE",
+          "CITY_NAME",
+          "POSTAL_CODE",
+          "LOCATION"
+        ]
+      },
+      "description": "List of geo properties to include"
+    },
+    "fail_on_not_found": {
+      "type": "boolean",
+      "default": false,
+      "description": "If ip lookup fails also fail the operation. Doing so will filter the event."
+    }
+  },
+  "title": "GeoIpOperation",
+  "required": [
+    "type",
+    "ip_addr_field",
+    "destination_field_name",
+    "geo_lite_db"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="5">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-5">
+        <div class="box-title" ref="">
             <div class="box-name ">LowerCaseKeyOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will recursively lower case all fields.</p>
 </div>
@@ -1830,9 +2043,122 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="5">
+                <div class="box-container" boxid="6">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-5">
+    <div class="box-header box-6">
+        <div class="box-title" ref="">
+            <div class="box-name ">JsonReplaceKVOperation</div>
+            <div class="box-description desc"><p>Replaces a given key with specified value.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">JsonReplaceKVOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">JsonReplaceKVOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Key name to find</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>New string value</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Replaces a given key with specified value.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "JsonReplaceKVOperation"
+      ],
+      "default": "JsonReplaceKVOperation"
+    },
+    "key": {
+      "type": "string",
+      "description": "Key name to find"
+    },
+    "value": {
+      "type": "string",
+      "description": "New string value"
+    }
+  },
+  "title": "JsonReplaceKVOperation",
+  "required": [
+    "type",
+    "key",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="7">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-7">
         <div class="box-title" ref="">
             <div class="box-name ">JsonRootNodeOperation</div>
             <div class="box-description desc"><p>Provided a JSON object and a path within the object it will promote the path's element to the root position. For example if the input is {"foo": {"bar": {"baz": 1}}} and specified path $.foo.bar the operation will produce {"baz": 1} as the new payload.</p>
@@ -1920,9 +2246,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="6">
+                <div class="box-container" boxid="8">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-6">
+    <div class="box-header box-8">
         <div class="box-title" ref="">
             <div class="box-name ">JsonKeyNameOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo<strong>str": "one", "bar</strong>long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or _<em>float. It also repalces "." with "</em>" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
@@ -1987,9 +2313,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="7">
+                <div class="box-container" boxid="9">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-7">
+    <div class="box-header box-9">
         <div class="box-title" ref="">
             <div class="box-name ">PartitionOperation</div>
             <div class="box-description desc"><p>Sets the partition information for the Event using fields from the deserialized object. When using JSON use JsonPath format to specify fields. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
@@ -2315,7 +2641,13 @@ function sourceButton(element) {
           "$ref": "#/definitions/TimeOperationConfig"
         },
         {
+          "$ref": "#/definitions/GeoIpOperationConfig"
+        },
+        {
           "$ref": "#/definitions/LowerCaseKeyOperationConfig"
+        },
+        {
+          "$ref": "#/definitions/JsonReplaceKVOperationConfig"
         },
         {
           "$ref": "#/definitions/JsonRootNodeOperationConfig"
@@ -6724,7 +7056,13 @@ function sourceButton(element) {
               "$ref": "#/definitions/TimeOperationConfig"
             },
             {
+              "$ref": "#/definitions/GeoIpOperationConfig"
+            },
+            {
               "$ref": "#/definitions/LowerCaseKeyOperationConfig"
+            },
+            {
+              "$ref": "#/definitions/JsonReplaceKVOperationConfig"
             },
             {
               "$ref": "#/definitions/JsonRootNodeOperationConfig"
@@ -6915,6 +7253,61 @@ function sourceButton(element) {
         "time_field_type"
       ]
     },
+    "GeoIpOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "GeoIpOperation"
+          ],
+          "default": "GeoIpOperation"
+        },
+        "ip_addr_field": {
+          "type": "string",
+          "description": "Field containing an IP address string in the payload"
+        },
+        "destination_field_name": {
+          "type": "string",
+          "default": "geo_ip",
+          "description": "Field name to save the geo data to"
+        },
+        "geo_lite_db": {
+          "type": "string",
+          "description": "S3 path to the GeoLite2 database file. Prefix with s3://"
+        },
+        "geo_properties": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "COUNTRY_NAME",
+              "COUNTRY_ISO_CODE",
+              "SUBDIVISION_NAME",
+              "SUBDIVISION_ISO_CODE",
+              "CITY_NAME",
+              "POSTAL_CODE",
+              "LOCATION"
+            ]
+          },
+          "description": "List of geo properties to include"
+        },
+        "fail_on_not_found": {
+          "type": "boolean",
+          "default": false,
+          "description": "If ip lookup fails also fail the operation. Doing so will filter the event."
+        }
+      },
+      "title": "GeoIpOperation",
+      "required": [
+        "type",
+        "ip_addr_field",
+        "destination_field_name",
+        "geo_lite_db"
+      ]
+    },
     "LowerCaseKeyOperationConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -6931,6 +7324,34 @@ function sourceButton(element) {
       "title": "LowerCaseKeyOperation",
       "required": [
         "type"
+      ]
+    },
+    "JsonReplaceKVOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Replaces a given key with specified value.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "JsonReplaceKVOperation"
+          ],
+          "default": "JsonReplaceKVOperation"
+        },
+        "key": {
+          "type": "string",
+          "description": "Key name to find"
+        },
+        "value": {
+          "type": "string",
+          "description": "New string value"
+        }
+      },
+      "title": "JsonReplaceKVOperation",
+      "required": [
+        "type",
+        "key",
+        "value"
       ]
     },
     "JsonRootNodeOperationConfig": {

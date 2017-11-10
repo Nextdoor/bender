@@ -15,8 +15,11 @@
 
 package com.nextdoor.bender.deserializer.regex;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import org.apache.commons.lang3.NotImplementedException;
 
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 
@@ -47,5 +50,14 @@ public class RegexEvent implements DeserializedEvent {
     Object o = this.payload.getOrDefault(fieldName, null);
 
     return o != null ? o.toString() : null;
+  }
+
+  @Override
+  public void setField(String fieldName, Object value) throws NotImplementedException {
+    if (this.payload == null) {
+      this.payload = new HashMap<String, Object>();
+    }
+
+    this.payload.put(fieldName, value);
   }
 }

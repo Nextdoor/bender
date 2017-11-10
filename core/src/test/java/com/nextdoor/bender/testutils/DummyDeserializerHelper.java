@@ -17,6 +17,8 @@ package com.nextdoor.bender.testutils;
 
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
@@ -45,6 +47,12 @@ public class DummyDeserializerHelper {
     @Override
     public void setPayload(Object object) {
       this.payload = (String) object;
+    }
+
+    @Override
+    public void setField(String fieldName, Object value)
+        throws NotImplementedException {
+      throw new NotImplementedException("setField not supported by DummyDeserializedEvent");
     }
   }
 

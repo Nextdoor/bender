@@ -15,9 +15,7 @@
 
 package com.nextdoor.bender.deserializer.json;
 
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,12 +23,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.Option;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
-import com.jayway.jsonpath.spi.json.JsonProvider;
-import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
-import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
@@ -96,7 +88,7 @@ public class GenericJsonDeserializer extends Deserializer {
     }
 
     if (rootNodeOverridePath != null) {
-      obj = JsonPath.read(obj, rootNodeOverridePath);
+      obj = JsonPathProvider.read(obj, rootNodeOverridePath);
       if (obj == null) {
         throw new DeserializationException(rootNodeOverridePath + " path not found in object");
       }
@@ -113,29 +105,6 @@ public class GenericJsonDeserializer extends Deserializer {
   @Override
   public void init() {
     this.parser = new JsonParser();
-
-    /*
-     * Set static configuration for JsonPath
-     */
-    com.jayway.jsonpath.Configuration.setDefaults(new com.jayway.jsonpath.Configuration.Defaults() {
-      private final JsonProvider jsonProvider = new GsonJsonProvider();
-      private final MappingProvider mappingProvider = new GsonMappingProvider();
-
-      @Override
-      public JsonProvider jsonProvider() {
-        return jsonProvider;
-      }
-
-      @Override
-      public MappingProvider mappingProvider() {
-        return mappingProvider;
-      }
-
-      @Override
-      public Set<Option> options() {
-        return EnumSet.of(Option.SUPPRESS_EXCEPTIONS);
-      }
-    });
   }
 
   /**

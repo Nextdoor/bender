@@ -15,14 +15,6 @@
 
 package com.nextdoor.bender.operation.json.key;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import com.jayway.jsonpath.Option;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
-import com.jayway.jsonpath.spi.json.JsonProvider;
-import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
-import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationFactory;
@@ -35,28 +27,7 @@ public class JsonRootNodeOperationFactory implements OperationFactory {
   private JsonRootNodeOperationConfig config;
 
   public JsonRootNodeOperationFactory() {
-    /*
-     * Set static configuration for JsonPath
-     */
-    com.jayway.jsonpath.Configuration.setDefaults(new com.jayway.jsonpath.Configuration.Defaults() {
-      private final JsonProvider jsonProvider = new GsonJsonProvider();
-      private final MappingProvider mappingProvider = new GsonMappingProvider();
 
-      @Override
-      public JsonProvider jsonProvider() {
-        return jsonProvider;
-      }
-
-      @Override
-      public MappingProvider mappingProvider() {
-        return mappingProvider;
-      }
-
-      @Override
-      public Set<Option> options() {
-        return EnumSet.of(Option.SUPPRESS_EXCEPTIONS);
-      }
-    });
   }
 
   @Override

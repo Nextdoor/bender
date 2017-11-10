@@ -5,7 +5,7 @@ jobs:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo
     environment:
-      JVM_OPTS: -Xmx3200m
+      MAVEN_OPTS: "-Xms256m -Xmx3072m"
       TERM: dumb
 
       # CircleCI Environment Variables
@@ -57,7 +57,7 @@ jobs:
 
       # Run our tests
       - run: mvn install -DskipTests -Dgpg.skip
-      - run: mvn test
+      - run: mvn package
 
       # Build javadocs
       - run: mvn compile javadoc:aggregate

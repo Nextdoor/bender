@@ -32,6 +32,7 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3BucketEntity;
 import com.amazonaws.services.s3.event.S3EventNotification.S3Entity;
 import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRecord;
 import com.amazonaws.services.s3.event.S3EventNotification.S3ObjectEntity;
+import com.nextdoor.bender.aws.S3MockClientFactory;
 import com.nextdoor.bender.handler.BaseHandler;
 import com.nextdoor.bender.handler.Handler;
 import com.nextdoor.bender.handler.HandlerTest;

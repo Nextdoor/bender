@@ -17,6 +17,8 @@ package com.nextdoor.bender.deserializer;
 
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 public interface DeserializedEvent {
   /**
    * Retrieves deserialized object. Could be "this" object itself.
@@ -40,4 +42,16 @@ public interface DeserializedEvent {
    * @throws NoSuchElementException when the field does not exist.
    */
   public String getField(String fieldName) throws NoSuchElementException;
+
+  /**
+   * Sets a field in the deserialized object.
+   *
+   * @param fieldName name of the field to set.
+   * @param value of the field.
+   * @throws NotImplementedException if the deserialized event does not support this action.
+   * @throws IllegalArgumentException if field was unable to be set. Most likely due to payload
+   *         being null.
+   */
+  public void setField(String fieldName, Object value)
+      throws NotImplementedException, IllegalArgumentException;
 }

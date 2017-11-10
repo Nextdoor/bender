@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.DocumentContext;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 
 /**
@@ -54,7 +54,7 @@ public class GenericJsonEvent implements DeserializedEvent {
     }
 
     JsonObject json = this.payload.getAsJsonObject();
-    Object obj = JsonPath.read(json, field);
+    Object obj = JsonPathProvider.read(json, field);
 
     if (obj == null) {
       return null;
@@ -70,5 +70,27 @@ public class GenericJsonEvent implements DeserializedEvent {
   @Override
   public void setPayload(Object object) {
     this.payload = (JsonElement) object;
+  }
+
+  @Override
+  public void setField(String fieldName, Object value) throws IllegalArgumentException {
+    if (this.payload == null) {
+      throw new IllegalArgumentException("payload is null");
+    }
+
+    int lastDot = fieldName.lastIndexOf('.');
+
+    if (lastDot == -1) {
+      throw new IllegalArgumentException("Unable to find '.' in field name denoting path");
+    }
+
+    if (!fieldName.startsWith("$")) {
+      throw new IllegalArgumentException("Field name must be a path and must start with '$'");
+    }
+
+    DocumentContext json = JsonPathProvider.parse(this.payload.getAsJsonObject());
+    String path = fieldName.substring(0, lastDot);
+    String field = fieldName.substring(lastDot + 1);
+    json.put(path, field, value);
   }
 }
