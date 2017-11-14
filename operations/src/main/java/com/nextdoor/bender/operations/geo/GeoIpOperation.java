@@ -45,14 +45,12 @@ public class GeoIpOperation implements Operation {
     this.required = required;
   }
 
-
-
   @Override
   public InternalEvent perform(InternalEvent ievent) {
 
-    String ipStr = ievent.getEventObj().getField(pathToIpAddress);
+    String ipStr = ievent.getEventObj().getField(this.pathToIpAddress);
     if (ipStr == null) {
-      if (!required) {
+      if (!this.required) {
         return ievent;
       }
       throw new OperationException("ip address field " + this.pathToIpAddress + " was null");
@@ -62,7 +60,7 @@ public class GeoIpOperation implements Operation {
     try {
       ipAddress = InetAddress.getByName(ipStr);
     } catch (UnknownHostException e) {
-      if (!required) {
+      if (!this.required) {
         return ievent;
       }
       throw new OperationException(e);
@@ -72,7 +70,7 @@ public class GeoIpOperation implements Operation {
     try {
       response = databaseReader.city(ipAddress);
     } catch (IOException | GeoIp2Exception e) {
-      if (!required) {
+      if (!this.required) {
         return ievent;
       }
       throw new OperationException(e);

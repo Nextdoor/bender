@@ -38,7 +38,7 @@ public class GeoIpOperationFactory implements OperationFactory {
 
   @Override
   public GeoIpOperation newInstance() {
-    return new GeoIpOperation(this.config.getIpAddrField(), this.config.getDestinationFieldName(),
+    return new GeoIpOperation(this.config.getSrcFieldName(), this.config.getDstFieldName(),
         this.databaseReader, this.config.getGeoProperties(), this.config.getFailOnNotFound());
   }
 

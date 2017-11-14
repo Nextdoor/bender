@@ -28,7 +28,8 @@ import com.nextdoor.bender.operation.OperationConfig;
 @JsonSchemaDescription("Looks up geo location provided an IP address and adds a map field to the "
     + "payload that optionally contains country_name, country_iso_code, subdivision_name, "
     + "subdivision_iso_code, city_name, postal_code, and location. For example "
-    + "\n\n input = {\"ip\": \"")
+    + "\n\n input = {\"ip\": \"8.8.8.8\"} "
+    + "\n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}")
 public class GeoIpOperationConfig extends OperationConfig {
 
   public static enum GeoProperty {
@@ -37,12 +38,12 @@ public class GeoIpOperationConfig extends OperationConfig {
 
   @JsonSchemaDescription("Field containing an IP address string in the payload")
   @JsonProperty(required = true)
-  private String ipAddrField;
+  private String srcFieldName;
 
   @JsonSchemaDescription("Field name to save the geo data to")
   @JsonProperty(required = true)
   @JsonSchemaDefault(value = "geo_ip")
-  private String destinationFieldName = "geo_ip";
+  private String dstFieldName = "geo_ip";
 
   @JsonSchemaDescription("S3 path to the GeoLite2 database file. Prefix with s3://")
   @JsonProperty(required = true)
@@ -53,7 +54,7 @@ public class GeoIpOperationConfig extends OperationConfig {
   @JsonSchemaDefault(value = "[]")
   private List<GeoProperty> geoProperties = Collections.emptyList();
 
-  @JsonSchemaDescription("If ip lookup fails also fail the operation. Doing so will filter the event.")
+  @JsonSchemaDescription("If ip lookup fails also fail the operation. Doing so will filter out the event.")
   @JsonProperty(required = false)
   @JsonSchemaDefault(value = "false")
   private Boolean failOnNotFound = false;
@@ -63,20 +64,20 @@ public class GeoIpOperationConfig extends OperationConfig {
     return GeoIpOperationFactory.class;
   }
 
-  public String getIpAddrField() {
-    return this.ipAddrField;
+  public String getSrcFieldName() {
+    return this.srcFieldName;
   }
 
-  public void setIpAddrField(String ipAddrField) {
-    this.ipAddrField = ipAddrField;
+  public void setSrcFieldName(String srcFieldName) {
+    this.srcFieldName = srcFieldName;
   }
 
-  public String getDestinationFieldName() {
-    return this.destinationFieldName;
+  public String getDstFieldName() {
+    return this.dstFieldName;
   }
 
-  public void setDestinationFieldName(String destinationFieldName) {
-    this.destinationFieldName = destinationFieldName;
+  public void setDstFieldName(String dstFieldName) {
+    this.dstFieldName = dstFieldName;
   }
 
   public String getGeoLiteDb() {

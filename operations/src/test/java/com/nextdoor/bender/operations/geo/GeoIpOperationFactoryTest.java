@@ -80,10 +80,10 @@ public class GeoIpOperationFactoryTest {
   @Test
   public void testFactoryCreated() {
     GeoIpOperationConfig config = new GeoIpOperationConfig();
-    config.setDestinationFieldName("test");
+    config.setDstFieldName("test");
     config.setFailOnNotFound(false);
     config.setGeoLiteDb("s3://" + BUCKET + "/my-ip-data.mmdb");
-    config.setIpAddrField("ip_address");
+    config.setSrcFieldName("ip_address");
     config.setGeoProperties(Arrays.asList(GeoProperty.COUNTRY_NAME, GeoProperty.COUNTRY_ISO_CODE,
         GeoProperty.SUBDIVISION_NAME, GeoProperty.SUBDIVISION_ISO_CODE, GeoProperty.CITY_NAME,
         GeoProperty.POSTAL_CODE, GeoProperty.LOCATION));

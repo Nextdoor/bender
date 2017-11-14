@@ -39,6 +39,12 @@
 
     <dependency>
       <groupId>com.amazonaws</groupId>
+      <artifactId>aws-lambda-java-core</artifactId>
+      <version>${aws-lambda-java-core.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-sns</artifactId>
       <version>${aws-java-sdk.version}</version>
     </dependency>

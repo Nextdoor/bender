@@ -1773,7 +1773,8 @@ function sourceButton(element) {
         <div class="box-title" ref="">
             <div class="box-name ">GeoIpOperation</div>
             <div class="box-description desc"><p>Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example </p>
-<p> input = {"ip": "</p>
+<p> input = {"ip": "8.8.8.8"} </p>
+<p> output = {"ip": "8.8.8.8", "geo_ip": {"location": {"lat": 37.751, "lon": -97.822}}}</p>
 </div>
             <div class="end"></div>
         </div>
@@ -1808,7 +1809,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">ip_addr_field</div>
+                <div class="property-name required">src_field_name</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
                string
@@ -1826,7 +1827,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">destination_field_name</div>
+                <div class="property-name required">dst_field_name</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
                string
@@ -1904,7 +1905,7 @@ function sourceButton(element) {
             <span class="type-default">false</span>
 
                 </div>
-                <div class="signature-description desc"><p>If ip lookup fails also fail the operation. Doing so will filter the event.</p>
+                <div class="signature-description desc"><p>If ip lookup fails also fail the operation. Doing so will filter out the event.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -1919,7 +1920,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"",
+  "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"8.8.8.8\"} \n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}",
   "properties": {
     "type": {
       "type": "string",
@@ -1928,11 +1929,11 @@ function sourceButton(element) {
       ],
       "default": "GeoIpOperation"
     },
-    "ip_addr_field": {
+    "src_field_name": {
       "type": "string",
       "description": "Field containing an IP address string in the payload"
     },
-    "destination_field_name": {
+    "dst_field_name": {
       "type": "string",
       "default": "geo_ip",
       "description": "Field name to save the geo data to"
@@ -1960,14 +1961,14 @@ function sourceButton(element) {
     "fail_on_not_found": {
       "type": "boolean",
       "default": false,
-      "description": "If ip lookup fails also fail the operation. Doing so will filter the event."
+      "description": "If ip lookup fails also fail the operation. Doing so will filter out the event."
     }
   },
   "title": "GeoIpOperation",
   "required": [
     "type",
-    "ip_addr_field",
-    "destination_field_name",
+    "src_field_name",
+    "dst_field_name",
     "geo_lite_db"
   ]
 }</pre>
@@ -7256,7 +7257,7 @@ function sourceButton(element) {
     "GeoIpOperationConfig": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"",
+      "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"8.8.8.8\"} \n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}",
       "properties": {
         "type": {
           "type": "string",
@@ -7265,11 +7266,11 @@ function sourceButton(element) {
           ],
           "default": "GeoIpOperation"
         },
-        "ip_addr_field": {
+        "src_field_name": {
           "type": "string",
           "description": "Field containing an IP address string in the payload"
         },
-        "destination_field_name": {
+        "dst_field_name": {
           "type": "string",
           "default": "geo_ip",
           "description": "Field name to save the geo data to"
@@ -7297,14 +7298,14 @@ function sourceButton(element) {
         "fail_on_not_found": {
           "type": "boolean",
           "default": false,
-          "description": "If ip lookup fails also fail the operation. Doing so will filter the event."
+          "description": "If ip lookup fails also fail the operation. Doing so will filter out the event."
         }
       },
       "title": "GeoIpOperation",
       "required": [
         "type",
-        "ip_addr_field",
-        "destination_field_name",
+        "src_field_name",
+        "dst_field_name",
         "geo_lite_db"
       ]
     },

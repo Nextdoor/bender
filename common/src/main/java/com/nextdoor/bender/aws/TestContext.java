@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.testutils;
+package com.nextdoor.bender.aws;
 
 import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;

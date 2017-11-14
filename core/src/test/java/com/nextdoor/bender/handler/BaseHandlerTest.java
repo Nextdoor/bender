@@ -38,6 +38,7 @@ import org.junit.Test;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
+import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.config.Source;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.Deserializer;
@@ -51,7 +52,6 @@ import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.serializer.SerializationException;
 import com.nextdoor.bender.serializer.Serializer;
-import com.nextdoor.bender.testutils.TestContext;
 import com.nextdoor.bender.testutils.DummyTransportHelper.ArrayTransportBuffer;
 import com.nextdoor.bender.testutils.DummyTransportHelper.BufferedTransporter;
 
