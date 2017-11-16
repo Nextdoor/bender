@@ -16,9 +16,9 @@
 package com.nextdoor.bender.operation.json.key;
 
 import com.google.gson.JsonObject;
-import com.jayway.jsonpath.JsonPath;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.json.JsonPathProvider;
 import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationException;
 
@@ -49,7 +49,7 @@ public class JsonRootNodeOperation implements Operation {
     }
 
     JsonObject jsonPayload = (JsonObject) payload;
-    event.setPayload(JsonPath.read(jsonPayload, path));
+    event.setPayload(JsonPathProvider.read(jsonPayload, path));
   }
 
   @Override

@@ -98,23 +98,15 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-s3</artifactId>
-      <version>${aws-java-sdk-s3.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Hard coded to resolve dep issue in s3proxy -->
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.5</version>
+      <version>${aws-java-sdk.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.gaul</groupId>
-      <artifactId>s3proxy</artifactId>
-      <version>${s3proxy.version}</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>bender-shaded</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
-    </dependency>
+   </dependency>
   </dependencies>
 </project>

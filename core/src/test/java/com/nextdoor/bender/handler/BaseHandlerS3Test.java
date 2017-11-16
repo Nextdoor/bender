@@ -33,9 +33,9 @@ import org.junit.rules.TemporaryFolder;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.nextdoor.bender.aws.S3MockClientFactory;
+import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.handler.BaseHandlerTest.DummyEvent;
 import com.nextdoor.bender.handler.BaseHandlerTest.DummyHandler;
-import com.nextdoor.bender.testutils.TestContext;
 
 public class BaseHandlerS3Test {
   private static final String S3_BUCKET = "foo";

@@ -41,6 +41,11 @@ public class OperationTest {
     public void setPayload(Object object) {
       this.payload = object;
     }
+
+    @Override
+    public void setField(String fieldName, Object value) {
+
+    }
   }
 
   protected String getResourceString(String resource)

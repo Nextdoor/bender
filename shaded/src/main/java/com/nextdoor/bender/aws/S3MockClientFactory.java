@@ -20,17 +20,16 @@ import java.util.Properties;
 
 import org.gaul.s3proxy.AuthenticationType;
 import org.gaul.s3proxy.S3Proxy;
+import org.gaul.s3proxy.S3Proxy.Builder;
 import org.jclouds.ContextBuilder;
 import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;
-import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.junit.rules.TemporaryFolder;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Module;
+import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 
 public class S3MockClientFactory extends AmazonS3ClientFactory {
   private static final String S3_BUCKET = "testbucket";
@@ -46,13 +45,15 @@ public class S3MockClientFactory extends AmazonS3ClientFactory {
     properties.setProperty("jclouds.provider", "filesystem");
     properties.setProperty("jclouds.filesystem.basedir", tmpFolder.getRoot().getPath());
 
-    ContextBuilder builder = ContextBuilder.newBuilder("filesystem").credentials("x", "x")
-        .modules(ImmutableList.<Module>of(new SLF4JLoggingModule())).overrides(properties);
+    Builder s3Builder = S3Proxy.builder().awsAuthentication(AuthenticationType.NONE, "x", "x")
+        .endpoint(uri).keyStore("", "");
+
+    ContextBuilder builder =
+        ContextBuilder.newBuilder("filesystem").credentials("x", "x").overrides(properties);
     BlobStoreContext context = builder.build(BlobStoreContext.class);
     BlobStore blobStore = context.getBlobStore();
 
-    this.s3Proxy = S3Proxy.builder().awsAuthentication(AuthenticationType.NONE, "x", "x")
-        .endpoint(uri).keyStore("", "").blobStore(blobStore).build();
+    this.s3Proxy = s3Builder.blobStore(blobStore).build();
     this.s3Proxy.start();
 
     BasicAWSCredentials awsCredentials = new BasicAWSCredentials("x", "x");

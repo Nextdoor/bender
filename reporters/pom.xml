@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-cloudwatch</artifactId>
-      <version>${aws-java-sdk-cloudwatch.version}</version>
+      <version>${aws-java-sdk.version}</version>
     </dependency>
 
     <dependency>

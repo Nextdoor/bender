@@ -49,6 +49,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>bender-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>${log4j.version}</version>
@@ -75,7 +81,7 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-s3</artifactId>
-      <version>${aws-java-sdk-s3.version}</version>
+      <version>${aws-java-sdk.version}</version>
     </dependency>
 
     <dependency>
@@ -94,12 +100,6 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>${joda-time.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>${gson.version}</version>
     </dependency>
 
     <dependency>
@@ -145,17 +145,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.github.fge</groupId>
+      <groupId>com.github.java-json-tools</groupId>
       <artifactId>json-schema-validator</artifactId>
       <version>${json-schema-validator.version}</version>
-    </dependency>
-
-    <!-- Specific version of gson due to conflict with jclouds-core in s3proxy -->
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.5</version>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -166,16 +158,21 @@
     </dependency>
 
     <dependency>
-      <groupId>org.gaul</groupId>
-      <artifactId>s3proxy</artifactId>
-      <version>${s3proxy.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>io.github.lukehutch</groupId>
       <artifactId>fast-classpath-scanner</artifactId>
       <version>${fast-classpath-scanner.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>${google.gson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>ST4</artifactId>
+      <version>${stringtemplate.version}</version>
     </dependency>
 
     <dependency>
@@ -185,11 +182,11 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.antlr/stringtemplate -->
     <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>ST4</artifactId>
-      <version>${stringtemplate.version}</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>bender-shaded</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

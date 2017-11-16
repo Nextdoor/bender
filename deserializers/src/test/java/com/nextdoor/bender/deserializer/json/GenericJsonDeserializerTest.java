@@ -290,4 +290,46 @@ public class GenericJsonDeserializerTest {
     assertTrue(obj.has("a_num"));
     assertEquals(123, obj.get("a_num").getAsInt());
   }
+
+  @Test
+  public void testSetField() throws UnsupportedEncodingException, IOException {
+    DeserializedEvent devent = getEvent("basic.json");
+
+    /*
+     * Verify payload type
+     */
+    assertNotNull(devent.getPayload());
+    assertEquals(devent.getPayload().getClass(), JsonObject.class);
+
+    devent.setField("$.new_field", "foo");
+
+    /*
+     * Verify payload data
+     */
+    JsonObject obj = (JsonObject) devent.getPayload();
+
+    assertTrue(obj.has("a_string"));
+    assertTrue(obj.get("a_string").isJsonPrimitive());
+    assertTrue(obj.get("a_string").getAsJsonPrimitive().isString());
+    assertEquals("foo", obj.get("a_string").getAsString());
+
+    assertTrue(obj.has("a_bool"));
+    assertTrue(obj.get("a_bool").isJsonPrimitive());
+    assertTrue(obj.get("a_bool").getAsJsonPrimitive().isBoolean());
+    assertEquals(true, obj.get("a_bool").getAsBoolean());
+
+    assertTrue(obj.has("a_number"));
+    assertTrue(obj.get("a_number").isJsonPrimitive());
+    assertTrue(obj.get("a_number").getAsJsonPrimitive().isNumber());
+    assertEquals(1, obj.get("a_number").getAsInt());
+
+    assertTrue(obj.has("an_obj"));
+    assertTrue(obj.get("an_obj").isJsonObject());
+    assertTrue(obj.get("an_obj").getAsJsonObject().has("foo"));
+
+    assertTrue(obj.has("new_field"));
+    assertTrue(obj.get("new_field").isJsonPrimitive());
+    assertTrue(obj.get("new_field").getAsJsonPrimitive().isString());
+    assertEquals("foo", obj.get("new_field").getAsString());
+  }
 }
