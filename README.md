@@ -2,9 +2,19 @@
 
 ![Bender - Serverless ETL Framework](docs/bender-logo.png)
 This project provides an extendable Java framework for creating serverless ETL
-functions on [AWS Lambda](https://aws.amazon.com/lambda/). Bender Core handles
+functions on [AWS Lambda](https://aws.amazon.com/lambda/). Bende handles
 the complex plumbing and provides the interfaces necessary to build modules for
 all aspects of the ETL process.
+
+An example of what you can do is enrich your log data by appending GeoIP information. For example:
+
+```
+input: {"ip": "8.8.8.8"}
+output: {"ip": "8.8.8.8", "geo_ip": {"location": {"lat": 37.751, "lon": -97.822}}}
+```
+
+This enables you to create dashboards like these in [Kibana](https://www.elastic.co/guide/en/elasticsearch/reference/5.4/geo-point.html):
+![Kibana GeoIP](docs/geoip.jpg)
 
 ### Configuration
 
@@ -44,11 +54,12 @@ encouraged.
 
 ##### Operations
 Data sometimes needs to be transformed, fixed, sanitized, or enriched.
-Operations allow for these types of data manipulation. Included JSON mutators:
+Operations allow for these types of data manipulation.
 
-* Root node promoter (in the case you have nested data)
-* Array Dropping
-* Array Splitting (turning a single event into multiple)
+* Geo IP lookup
+* JSON Root node promoter (in the case you have nested data)
+* JSON Array Dropping
+* JSON Array Splitting (turning a single event into multiple)
 * Appending value type information to key names (helps with writing data to
   ElasticSearch)
 
