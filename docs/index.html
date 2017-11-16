@@ -1773,6 +1773,8 @@ function sourceButton(element) {
             <div class="box-description desc"><p>Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example </p>
 <p> input = {"ip": "8.8.8.8"} </p>
 <p> output = {"ip": "8.8.8.8", "geo_ip": {"location": {"lat": 37.751, "lon": -97.822}}}</p>
+<p>Note 1: This operation requires the MaxMind GeoLite2 City Database. It is available at <a href="https://dev.maxmind.com/geoip/geoip2/geolite2/">https://dev.maxmind.com/geoip/geoip2/geolite2/</a>. After you download the database, extract the tarball and uploaded the .mmdb file to an S3 bucket accessible by your lambda function.</p>
+<p>Note 2: If your ip address field contains a comma separated list of ip addresses (ie forwarded web requests) the first address in the list is used. This is typically the source address.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -1855,7 +1857,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>S3 path to the GeoLite2 database file. Prefix with s3://</p>
+                <div class="signature-description desc"><p>S3 path to the GeoLite2 City database file. Prefix with s3://</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -1918,7 +1920,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"8.8.8.8\"} \n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}",
+  "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"8.8.8.8\"} \n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}\n\n\n\nNote 1: This operation requires the MaxMind GeoLite2 City Database. It is available at https://dev.maxmind.com/geoip/geoip2/geolite2/. After you download the database, extract the tarball and uploaded the .mmdb file to an S3 bucket accessible by your lambda function.\n\nNote 2: If your ip address field contains a comma separated list of ip addresses (ie forwarded web requests) the first address in the list is used. This is typically the source address.",
   "properties": {
     "type": {
       "type": "string",
@@ -1938,7 +1940,7 @@ function sourceButton(element) {
     },
     "geo_lite_db": {
       "type": "string",
-      "description": "S3 path to the GeoLite2 database file. Prefix with s3://"
+      "description": "S3 path to the GeoLite2 City database file. Prefix with s3://"
     },
     "geo_properties": {
       "type": "array",
@@ -7136,7 +7138,7 @@ function sourceButton(element) {
     "GeoIpOperationConfig": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"8.8.8.8\"} \n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}",
+      "description": "Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example \n\n input = {\"ip\": \"8.8.8.8\"} \n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}\n\n\n\nNote 1: This operation requires the MaxMind GeoLite2 City Database. It is available at https://dev.maxmind.com/geoip/geoip2/geolite2/. After you download the database, extract the tarball and uploaded the .mmdb file to an S3 bucket accessible by your lambda function.\n\nNote 2: If your ip address field contains a comma separated list of ip addresses (ie forwarded web requests) the first address in the list is used. This is typically the source address.",
       "properties": {
         "type": {
           "type": "string",
@@ -7156,7 +7158,7 @@ function sourceButton(element) {
         },
         "geo_lite_db": {
           "type": "string",
-          "description": "S3 path to the GeoLite2 database file. Prefix with s3://"
+          "description": "S3 path to the GeoLite2 City database file. Prefix with s3://"
         },
         "geo_properties": {
           "type": "array",

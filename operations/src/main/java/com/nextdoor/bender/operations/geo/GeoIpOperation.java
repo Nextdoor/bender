@@ -20,6 +20,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
@@ -47,13 +48,33 @@ public class GeoIpOperation implements Operation {
 
   @Override
   public InternalEvent perform(InternalEvent ievent) {
+    String ipStr = null;
 
-    String ipStr = ievent.getEventObj().getField(this.pathToIpAddress);
+    /*
+     * Get field containing an IP address
+     */
+    try {
+      ipStr = ievent.getEventObj().getField(this.pathToIpAddress);
+    } catch (NoSuchElementException e) {
+      if (!this.required) {
+        return ievent;
+      }
+      throw new OperationException("ip address field " + this.pathToIpAddress + " does not exist");
+    }
+
     if (ipStr == null) {
       if (!this.required) {
         return ievent;
       }
       throw new OperationException("ip address field " + this.pathToIpAddress + " was null");
+    }
+
+    /*
+     * Sometimes the field contains comma separated ip addresses (ie forwarded web requests).
+     * In this case pick the first value in the list which is typically the user.
+     */
+    if (!ipStr.isEmpty() && ipStr.contains(",")) {
+      ipStr = ipStr.split(",")[0];
     }
 
     InetAddress ipAddress = null;

@@ -16,6 +16,8 @@
 package com.nextdoor.bender.operations.geo;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -32,7 +35,6 @@ import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.OperationException;
-import com.nextdoor.bender.operations.geo.GeoIpOperation;
 import com.nextdoor.bender.operations.geo.GeoIpOperationConfig.GeoProperty;
 
 public class GeoIpOperationTest {
@@ -148,6 +150,19 @@ public class GeoIpOperationTest {
     op.perform(ievent);
   }
 
+  @Test(expected = OperationException.class)
+  public void testMissingField() throws Throwable {
+    GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
+
+    DummpyEvent devent = spy(new DummpyEvent());
+    when(devent.getField("ip_address")).thenThrow(new NoSuchElementException(""));
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    op.perform(ievent);
+  }
+
   @Test
   public void testNullIp() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), false);
@@ -214,6 +229,31 @@ public class GeoIpOperationTest {
     expectedGeo.put("subdivision_iso_code", "ENG");
     expectedGeo.put("city_name", "Rivendell");
     expectedGeo.put("postal_code", "1234");
+    expected.put("geo_ip", expectedGeo);
+
+    assertEquals(expected, ievent.getEventObj().getPayload());
+  }
+
+  @Test
+  public void testIpList() throws Throwable {
+    GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
+
+    DummpyEvent devent = new DummpyEvent();
+    devent.setField("ip_address", "5.5.5.5, 10.10.10.10");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    op.perform(ievent);
+
+    HashMap<String, Object> expected = new HashMap<String, Object>();
+    expected.put("ip_address", "5.5.5.5, 10.10.10.10");
+    HashMap<String, Object> expectedLoc = new HashMap<String, Object>();
+    expectedLoc.put("lat", new Double("51.75"));
+    expectedLoc.put("lon", new Double("2.25"));
+
+    Map<String, Object> expectedGeo = new HashMap<String, Object>();
+    expectedGeo.put("location", expectedLoc);
     expected.put("geo_ip", expectedGeo);
 
     assertEquals(expected, ievent.getEventObj().getPayload());
