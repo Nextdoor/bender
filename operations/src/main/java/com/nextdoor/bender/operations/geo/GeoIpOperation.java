@@ -161,8 +161,6 @@ public class GeoIpOperation implements Operation {
           geo.put("postal_code", response.getPostal().getCode());
           break;
         case LOCATION:
-          HashMap<String, Object> location = new HashMap<String, Object>(2);
-
           if (response.getLocation() == null) {
             if (!this.required) {
               return ievent;
@@ -180,6 +178,7 @@ public class GeoIpOperation implements Operation {
             throw new OperationException("error getting lat/lon");
           }
 
+          HashMap<String, Object> location = new HashMap<String, Object>(2);
           location.put("lat", lat);
           location.put("lon", lon);
           geo.put("location", location);
