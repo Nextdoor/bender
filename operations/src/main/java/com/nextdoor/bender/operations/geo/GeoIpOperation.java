@@ -70,8 +70,8 @@ public class GeoIpOperation implements Operation {
     }
 
     /*
-     * Sometimes the field contains comma separated ip addresses (ie forwarded web requests).
-     * In this case pick the first value in the list which is typically the user.
+     * Sometimes the field contains comma separated ip addresses (ie forwarded web requests). In
+     * this case pick the first value in the list which is typically the user.
      */
     if (!ipStr.isEmpty() && ipStr.contains(",")) {
       ipStr = ipStr.split(",")[0];
@@ -101,27 +101,87 @@ public class GeoIpOperation implements Operation {
     for (GeoProperty property : this.geoProperties) {
       switch (property) {
         case COUNTRY_NAME:
+          if (response.getCountry() == null) {
+            if (!this.required) {
+              return ievent;
+            }
+            throw new OperationException("country returned null");
+          }
+
           geo.put("country_name", response.getCountry().getName());
           break;
         case COUNTRY_ISO_CODE:
+          if (response.getCountry() == null) {
+            if (!this.required) {
+              return ievent;
+            }
+            throw new OperationException("country returned null");
+          }
+
           geo.put("country_iso_code", response.getCountry().getIsoCode());
           break;
         case SUBDIVISION_NAME:
+          if (response.getMostSpecificSubdivision() == null) {
+            if (!this.required) {
+              return ievent;
+            }
+            throw new OperationException("MostSpecificSubdivision returned null");
+          }
+
           geo.put("subdivision_name", response.getMostSpecificSubdivision().getName());
           break;
         case SUBDIVISION_ISO_CODE:
+          if (response.getMostSpecificSubdivision() == null) {
+            if (!this.required) {
+              return ievent;
+            }
+            throw new OperationException("MostSpecificSubdivision returned null");
+          }
+
           geo.put("subdivision_iso_code", response.getMostSpecificSubdivision().getIsoCode());
           break;
         case CITY_NAME:
+          if (response.getCity() == null) {
+            if (!this.required) {
+              return ievent;
+            }
+            throw new OperationException("city returned null");
+          }
+
           geo.put("city_name", response.getCity().getName());
           break;
         case POSTAL_CODE:
+          if (response.getPostal() == null) {
+            if (!this.required) {
+              return ievent;
+            }
+            throw new OperationException("postal returned null");
+          }
+
           geo.put("postal_code", response.getPostal().getCode());
           break;
         case LOCATION:
           HashMap<String, Object> location = new HashMap<String, Object>(2);
-          location.put("lat", new Double(response.getLocation().getLatitude()));
-          location.put("lon", new Double(response.getLocation().getLongitude()));
+
+          if (response.getLocation() == null) {
+            if (!this.required) {
+              return ievent;
+            }
+            throw new OperationException("location returned null");
+          }
+
+          Double lat = response.getLocation().getLatitude();
+          Double lon = response.getLocation().getLongitude();
+
+          if (lat == null || lon == null) {
+            if (!this.required) {
+              return ievent;
+            }
+            throw new OperationException("error getting lat/lon");
+          }
+
+          location.put("lat", lat);
+          location.put("lon", lon);
           geo.put("location", location);
           break;
       }
