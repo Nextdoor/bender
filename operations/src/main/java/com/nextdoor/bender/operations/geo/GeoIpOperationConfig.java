@@ -29,7 +29,14 @@ import com.nextdoor.bender.operation.OperationConfig;
     + "payload that optionally contains country_name, country_iso_code, subdivision_name, "
     + "subdivision_iso_code, city_name, postal_code, and location. For example "
     + "\n\n input = {\"ip\": \"8.8.8.8\"} "
-    + "\n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}")
+    + "\n\n output = {\"ip\": \"8.8.8.8\", \"geo_ip\": {\"location\": {\"lat\": 37.751, \"lon\": -97.822}}}"
+    + "\n\n\n\nNote 1: This operation requires the MaxMind GeoLite2 City Database. "
+    + "It is available at https://dev.maxmind.com/geoip/geoip2/geolite2/. After you download "
+    + "the database, extract the tarball and uploaded the .mmdb file to an S3 bucket accessible "
+    + "by your lambda function."
+    + "\n\nNote 2: If your ip address field contains a comma separated list of ip addresses "
+    + "(ie forwarded web requests) the first address in the list is used. This is typically "
+    + "the source address.")
 public class GeoIpOperationConfig extends OperationConfig {
 
   public static enum GeoProperty {
@@ -45,7 +52,7 @@ public class GeoIpOperationConfig extends OperationConfig {
   @JsonSchemaDefault(value = "geo_ip")
   private String dstFieldName = "geo_ip";
 
-  @JsonSchemaDescription("S3 path to the GeoLite2 database file. Prefix with s3://")
+  @JsonSchemaDescription("S3 path to the GeoLite2 City database file. Prefix with s3://")
   @JsonProperty(required = true)
   private String geoLiteDb;
 

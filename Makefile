@@ -10,7 +10,7 @@ clean:
 	mvn clean
 
 test:
-	mvn test
+	mvn package
 
 javadoc:
 	mvn compile javadoc:aggregate
