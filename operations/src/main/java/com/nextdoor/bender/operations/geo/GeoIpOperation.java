@@ -87,9 +87,16 @@ public class GeoIpOperation implements Operation {
       throw new OperationException(e);
     }
 
+    if (ipAddress == null) {
+      if (!this.required) {
+        return ievent;
+      }
+      throw new OperationException("ip address " + ipStr + " did not resolve");
+    }
+
     CityResponse response = null;
     try {
-      response = databaseReader.city(ipAddress);
+      response = this.databaseReader.city(ipAddress);
     } catch (IOException | GeoIp2Exception e) {
       if (!this.required) {
         return ievent;
