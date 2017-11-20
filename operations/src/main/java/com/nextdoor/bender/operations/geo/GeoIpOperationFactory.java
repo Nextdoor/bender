@@ -25,6 +25,7 @@ import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 import com.nextdoor.bender.config.AbstractConfig;
+import com.nextdoor.bender.config.ConfigurationException;
 import com.nextdoor.bender.operation.OperationFactory;
 
 /**
@@ -60,7 +61,7 @@ public class GeoIpOperationFactory implements OperationFactory {
       this.databaseReader =
           new DatabaseReader.Builder(obj.getObjectContent()).withCache(new CHMCache()).build();
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new ConfigurationException("Unable to read " + this.config.getGeoLiteDb(), e);
     }
   }
 }
