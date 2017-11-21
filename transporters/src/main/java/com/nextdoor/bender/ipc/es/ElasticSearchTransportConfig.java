@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.aws.auth.AuthConfig;
+import com.nextdoor.bender.auth.AuthConfig;
 import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
 
 @JsonTypeName("ElasticSearch")

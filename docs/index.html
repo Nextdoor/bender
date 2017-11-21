@@ -3310,6 +3310,128 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">basic_http_auth</div>
+                <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UserPassAuth</span>
+
+                </div>
+                <div class="signature-description desc"><p>Username and password used for use with http basic auth. If encrypting password with KMS then prefix password field with 'KMS='.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">UserPassAuth</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">UserPassAuth</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">UserPassAuth</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">username</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">password</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "UserPassAuth"
+      ],
+      "default": "UserPassAuth"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    }
+  },
+  "title": "UserPassAuth",
+  "required": [
+    "type",
+    "username",
+    "password"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
 
 
 </div>
@@ -3395,6 +3517,14 @@ function sourceButton(element) {
     "separator": {
       "type": "string",
       "description": "Separator used between serialized records."
+    },
+    "basic_http_auth": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/BasicHttpAuthConfig"
+        }
+      ],
+      "description": "Username and password used for use with http basic auth. If encrypting password with KMS then prefix password field with 'KMS='."
     }
   },
   "title": "HTTP",
@@ -4082,9 +4212,9 @@ function sourceButton(element) {
                 <div class="signature-type">
                             <span class="type-keyword">one of</span>
         <span class="type-keyword"></span>
-                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UserPassAuth</span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UrlSigningAuth</span>
         <span class="type-keyword"></span>
-                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UrlSigningAuth</span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UserPassAuth</span>
 
                 </div>
                 <div class="signature-description desc"><p>Authentication scheme.</p>
@@ -4094,113 +4224,6 @@ function sourceButton(element) {
                 <div class="box-container" boxid="1">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-1">
-        <div class="box-title" ref="">
-            <div class="box-name ">UserPassAuth</div>
-            <div class="box-description desc"></div>
-            <div class="end"></div>
-        </div>
-    </div>
-     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
-    <div class="box-body">
-        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
-        <div>
-            
-        </div>
-        <div class="container ">
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name required">type</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-            <span class="type-keyword">constant</span>
-                <span class="type-enum">UserPassAuth</span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">UserPassAuth</span>
-
-                </div>
-                <div class="signature-description desc"></div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name required">username</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-
-                </div>
-                <div class="signature-description desc"></div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name required">password</div>
-                <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-
-                </div>
-                <div class="signature-description desc"></div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-
-
-</div>
-
-    </div>
-    <div class="source">
-        <pre class="json-schema">{
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "type": {
-      "type": "string",
-      "enum": [
-        "UserPassAuth"
-      ],
-      "default": "UserPassAuth"
-    },
-    "username": {
-      "type": "string"
-    },
-    "password": {
-      "type": "string"
-    }
-  },
-  "title": "UserPassAuth",
-  "required": [
-    "type",
-    "username",
-    "password"
-  ]
-}</pre>
-    </div>
-</div>
-<div class="end"></div>
-
-                </div>
-                <div class="box-container" boxid="2">
-                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-2">
         <div class="box-title" ref="">
             <div class="box-name ">UrlSigningAuth</div>
             <div class="box-description desc"></div>
@@ -4345,6 +4368,113 @@ function sourceButton(element) {
     "type",
     "region",
     "service"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">UserPassAuth</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">UserPassAuth</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">UserPassAuth</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">username</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">password</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "UserPassAuth"
+      ],
+      "default": "UserPassAuth"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    }
+  },
+  "title": "UserPassAuth",
+  "required": [
+    "type",
+    "username",
+    "password"
   ]
 }</pre>
     </div>
@@ -4530,10 +4660,10 @@ function sourceButton(element) {
     "auth_config": {
       "oneOf": [
         {
-          "$ref": "#/definitions/UserPassAuthConfig"
+          "$ref": "#/definitions/UrlSigningAuthConfig"
         },
         {
-          "$ref": "#/definitions/UrlSigningAuthConfig"
+          "$ref": "#/definitions/BasicHttpAuthConfig"
         }
       ],
       "description": "Authentication scheme."
@@ -7501,6 +7631,14 @@ function sourceButton(element) {
         "separator": {
           "type": "string",
           "description": "Separator used between serialized records."
+        },
+        "basic_http_auth": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/BasicHttpAuthConfig"
+            }
+          ],
+          "description": "Username and password used for use with http basic auth. If encrypting password with KMS then prefix password field with 'KMS='."
         }
       },
       "title": "HTTP",
@@ -7508,6 +7646,31 @@ function sourceButton(element) {
         "type",
         "hostname",
         "path"
+      ]
+    },
+    "BasicHttpAuthConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "UserPassAuth"
+          ],
+          "default": "UserPassAuth"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "UserPassAuth",
+      "required": [
+        "type",
+        "username",
+        "password"
       ]
     },
     "FileTransportConfig": {
@@ -7684,10 +7847,10 @@ function sourceButton(element) {
         "auth_config": {
           "oneOf": [
             {
-              "$ref": "#/definitions/UserPassAuthConfig"
+              "$ref": "#/definitions/UrlSigningAuthConfig"
             },
             {
-              "$ref": "#/definitions/UrlSigningAuthConfig"
+              "$ref": "#/definitions/BasicHttpAuthConfig"
             }
           ],
           "description": "Authentication scheme."
@@ -7721,31 +7884,6 @@ function sourceButton(element) {
         "hostname",
         "index",
         "document_type"
-      ]
-    },
-    "UserPassAuthConfig": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "UserPassAuth"
-          ],
-          "default": "UserPassAuth"
-        },
-        "username": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      },
-      "title": "UserPassAuth",
-      "required": [
-        "type",
-        "username",
-        "password"
       ]
     },
     "UrlSigningAuthConfig": {

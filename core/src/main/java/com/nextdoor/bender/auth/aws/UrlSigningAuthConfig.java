@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.aws.auth;
+package com.nextdoor.bender.auth.aws;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -22,6 +22,7 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.nextdoor.bender.auth.AuthConfig;
 
 import vc.inreach.aws.request.AWSSigner;
 

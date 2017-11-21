@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.aws.auth;
+package com.nextdoor.bender.auth;
 
 import com.nextdoor.bender.config.AbstractConfig;
 
