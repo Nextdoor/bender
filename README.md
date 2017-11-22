@@ -2,7 +2,7 @@
 
 ![Bender - Serverless ETL Framework](docs/bender-logo.png)
 This project provides an extendable Java framework for creating serverless ETL
-functions on [AWS Lambda](https://aws.amazon.com/lambda/). Bende handles
+functions on [AWS Lambda](https://aws.amazon.com/lambda/). Bender handles
 the complex plumbing and provides the interfaces necessary to build modules for
 all aspects of the ETL process.
 
