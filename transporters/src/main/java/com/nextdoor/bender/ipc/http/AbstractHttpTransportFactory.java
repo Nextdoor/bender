@@ -32,7 +32,6 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 
 import com.nextdoor.bender.config.AbstractConfig;

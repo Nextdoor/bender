@@ -15,6 +15,14 @@
 
 package com.nextdoor.bender.ipc.http;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpHeaders;
+
+import com.nextdoor.bender.auth.BasicHttpAuthConfig;
+import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
 
@@ -29,5 +37,22 @@ public class HttpTransportFactory extends BaseHttpTransportFactory {
   protected TransportSerializer getSerializer() {
     HttpTransportConfig config = (HttpTransportConfig) super.config;
     return new GenericTransportSerializer(config.getSeparator());
+  }
+
+  @Override
+  public void setConf(AbstractConfig config) {
+    HttpTransportConfig httpConfig = (HttpTransportConfig) config;
+
+    BasicHttpAuthConfig auth = (BasicHttpAuthConfig) httpConfig.getBasicHttpAuth();
+    if (auth != null) {
+      Map<String, String> headers = new HashMap<String, String>(httpConfig.getHttpHeaders());
+      byte[] encodedAuth =
+          Base64.encodeBase64((auth.getUsername() + ":" + auth.getPassword()).getBytes());
+
+      headers.put(HttpHeaders.AUTHORIZATION, "Basic " + new String(encodedAuth));
+      httpConfig.setHttpHeaders(headers);
+    }
+
+    super.setConf(config);
   }
 }

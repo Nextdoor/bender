@@ -17,6 +17,7 @@ package com.nextdoor.bender.ipc.http;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.constraints.Max;
@@ -83,7 +84,7 @@ public abstract class AbstractHttpTransportConfig extends TransportConfig {
   @JsonSchemaDescription("HTTP headers to include. If header value starts with KMS= it will be decrypted.")
   @JsonSchemaDefault(value = "{}")
   @JsonProperty(required = false)
-  private Map<String,String> httpHeaders = Collections.emptyMap();
+  private Map<String,String> httpHeaders = new HashMap<String,String>(0);
 
   public Boolean isUseSSL() {
     return useSSL;

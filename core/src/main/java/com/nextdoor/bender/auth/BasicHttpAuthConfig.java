@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.aws.auth;
+package com.nextdoor.bender.auth;
 
 import java.io.UnsupportedEncodingException;
 
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("UserPassAuth")
-public class UserPassAuthConfig extends AuthConfig<UserPassAuthConfig> {
+public class BasicHttpAuthConfig extends HttpAuthConfig<BasicHttpAuthConfig> {
   @JsonProperty(required = true)
   private String username;
 

@@ -25,8 +25,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 
-import com.nextdoor.bender.aws.auth.UrlSigningAuthConfig;
-import com.nextdoor.bender.aws.auth.UserPassAuthConfig;
+import com.nextdoor.bender.auth.BasicHttpAuthConfig;
+import com.nextdoor.bender.auth.aws.UrlSigningAuthConfig;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
@@ -68,8 +68,8 @@ public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory 
     ElasticSearchTransportConfig config = (ElasticSearchTransportConfig) super.config;
 
     if (config.getAuthConfig() != null) {
-      if (config.getAuthConfig() instanceof UserPassAuthConfig) {
-        cb = addUserPassAuth(cb, (UserPassAuthConfig) config.getAuthConfig());
+      if (config.getAuthConfig() instanceof BasicHttpAuthConfig) {
+        cb = addUserPassAuth(cb, (BasicHttpAuthConfig) config.getAuthConfig());
       } else if (config.getAuthConfig() instanceof UrlSigningAuthConfig) {
         cb = addSigningAuth(cb, (UrlSigningAuthConfig) config.getAuthConfig());
       }
@@ -82,7 +82,7 @@ public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory 
     return cb.build();
   }
 
-  private HttpClientBuilder addUserPassAuth(HttpClientBuilder cb, UserPassAuthConfig auth) {
+  private HttpClientBuilder addUserPassAuth(HttpClientBuilder cb, BasicHttpAuthConfig auth) {
     /*
      * Send auth via headers as the credentials provider method of auth does not work when using
      * SSL.
