@@ -53,6 +53,7 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaTitle;
 import com.nextdoor.bender.auth.AuthConfig;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
+import com.nextdoor.bender.config.value.ValueConfig;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.handler.HandlerConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
@@ -124,6 +125,7 @@ public class BenderConfig {
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(TransportConfig.class)));
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(ReporterConfig.class)));
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(AuthConfig.class)));
+      subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(ValueConfig.class)));
 
       /*
        * Sort the subtypes so that the order is deterministic. Without this locally generated

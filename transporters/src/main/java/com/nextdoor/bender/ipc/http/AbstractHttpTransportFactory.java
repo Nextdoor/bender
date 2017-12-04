@@ -74,7 +74,7 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
   }
 
   protected Map<String, String> getHeaders() {
-    return this.config.getHttpHeaders();
+    return this.config.getHttpStringHeaders();
   }
 
   /**

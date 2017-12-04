@@ -15,8 +15,6 @@
 
 package com.nextdoor.bender.ipc.http;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,9 +24,9 @@ import javax.validation.constraints.Min;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-
+import com.nextdoor.bender.config.value.StringValueConfig;
+import com.nextdoor.bender.config.value.ValueConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
-import com.nextdoor.bender.utils.Passwords;
 
 public abstract class AbstractHttpTransportConfig extends TransportConfig {
 
@@ -81,10 +79,10 @@ public abstract class AbstractHttpTransportConfig extends TransportConfig {
   @Max(300000)
   private Integer timeout = 40000;
 
-  @JsonSchemaDescription("HTTP headers to include. If header value starts with KMS= it will be decrypted.")
+  @JsonSchemaDescription("HTTP headers to include.")
   @JsonSchemaDefault(value = "{}")
   @JsonProperty(required = false)
-  private Map<String,String> httpHeaders = new HashMap<String,String>(0);
+  private Map<String, ValueConfig<?>> httpHeaders = new HashMap<String, ValueConfig<?>>(0);
 
   public Boolean isUseSSL() {
     return useSSL;
@@ -150,20 +148,24 @@ public abstract class AbstractHttpTransportConfig extends TransportConfig {
     this.port = port;
   }
 
-  public Map<String,String> getHttpHeaders() {
-    if (this.httpHeaders != null) {
-      this.httpHeaders.replaceAll((k, v) -> {
-        try {
-          return Passwords.getPassword(v);
-        } catch (UnsupportedEncodingException e) {
-          return v;
-        }
-      });
-    }
+  public Map<String, String> getHttpStringHeaders() {
+    Map<String, String> stringHeaders = new HashMap<String, String>(this.httpHeaders.size());
+    this.httpHeaders.forEach((k, v) -> {
+      stringHeaders.put(k, v.getValue());
+    });
+
+    return stringHeaders;
+  }
+
+  public Map<String, ValueConfig<?>> getHttpHeaders() {
     return this.httpHeaders;
   }
 
-  public void setHttpHeaders(Map<String,String> httpHeaders) {
+  public void setHttpHeaders(Map<String, ValueConfig<?>> httpHeaders) {
     this.httpHeaders = httpHeaders;
+  }
+
+  public void addHttpHeader(String key, String value) {
+    this.httpHeaders.put(key, new StringValueConfig(value));
   }
 }

@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.auth.HttpAuthConfig;
-import com.nextdoor.bender.auth.BasicHttpAuthConfig;
 
 @JsonTypeName("HTTP")
 public class HttpTransportConfig extends AbstractHttpTransportConfig {
@@ -31,8 +30,7 @@ public class HttpTransportConfig extends AbstractHttpTransportConfig {
   @JsonProperty(required = false)
   private Character separator = '\n';
 
-  @JsonSchemaDescription("Username and password used for use with http basic auth. If encrypting "
-      + "password with KMS then prefix password field with 'KMS='.")
+  @JsonSchemaDescription("Username and password used for use with http basic auth.")
   @JsonProperty(required = false)
   private HttpAuthConfig<?> basicHttpAuth = null;
 

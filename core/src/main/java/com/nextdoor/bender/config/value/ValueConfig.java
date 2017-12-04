@@ -13,33 +13,25 @@
  *
  */
 
-package com.nextdoor.bender.auth;
+package com.nextdoor.bender.config.value;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.nextdoor.bender.config.value.ValueConfig;
+import com.nextdoor.bender.config.AbstractConfig;
 
-@JsonTypeName("UserPassAuth")
-public class BasicHttpAuthConfig extends HttpAuthConfig<BasicHttpAuthConfig> {
+public class ValueConfig<T> extends AbstractConfig<T> {
   @JsonProperty(required = true)
-  private String username;
+  protected String value;
 
-  @JsonProperty(required = true)
-  private ValueConfig<?> password;
-
-  public String getUsername() {
-    return username;
+  public String getValue() {
+    return this.value;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setValue(String value) {
+    this.value = value;
   }
 
-  public ValueConfig<?> getPassword() {
-    return password;
-  }
-
-  public void setPassword(ValueConfig password) {
-    this.password = password;
+  @Override
+  public String toString() {
+    return getValue();
   }
 }

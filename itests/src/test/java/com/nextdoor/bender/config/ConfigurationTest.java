@@ -15,10 +15,16 @@
 
 package com.nextdoor.bender.config;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.junit.Test;
+
+import com.nextdoor.bender.ipc.http.HttpTransportConfig;
 
 public class ConfigurationTest {
 
@@ -43,4 +49,14 @@ public class ConfigurationTest {
     }
   }
 
+  @Test
+  public void testHttpHeaderConfig() {
+    BenderConfig config = BenderConfig.load("/com/nextdoor/bender/handler/http_headers.yaml");
+    HttpTransportConfig httpConf = (HttpTransportConfig) config.getTransportConfig();
+
+    Map<String, String> expected = new LinkedHashMap<String, String>();
+    expected.put("foo", "bar");
+
+    assertEquals(expected, httpConf.getHttpStringHeaders());
+  }
 }
