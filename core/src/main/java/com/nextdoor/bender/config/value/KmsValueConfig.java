@@ -22,13 +22,19 @@ import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.config.ConfigurationException;
 import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("KmsValue")
 public class KmsValueConfig extends ValueConfig<KmsValueConfig> {
+  @JsonSchemaDescription("AWS region associated with the KMS key used to encrypt the value.")
   @JsonProperty(required = true)
   private Regions region;
+
+  @JsonSchemaDescription("KMS encrypted value.")
+  @JsonProperty(required = true)
+  protected String value;
 
   @JsonIgnore
   private boolean decrypted = false;
