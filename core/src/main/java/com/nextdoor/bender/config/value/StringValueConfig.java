@@ -13,18 +13,17 @@
  *
  */
 
-package com.nextdoor.bender.utils;
+package com.nextdoor.bender.config.value;
 
-import static org.junit.Assert.assertEquals;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import java.io.UnsupportedEncodingException;
+@JsonTypeName("StringValue")
+public class StringValueConfig extends ValueConfig<StringValueConfig> {
+  public StringValueConfig() {
 
-import org.junit.Test;
+  }
 
-public class PasswordsTest {
-
-  @Test
-  public void testNonKMSPassword() throws UnsupportedEncodingException {
-    assertEquals("foo", Passwords.getPassword("foo"));
+  public StringValueConfig(String value) {
+    this.value = value;
   }
 }

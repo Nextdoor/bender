@@ -15,42 +15,29 @@
 
 package com.nextdoor.bender.ipc.splunk;
 
-import java.io.UnsupportedEncodingException;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.config.value.ValueConfig;
 import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
-import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("Splunk")
 @JsonSchemaDescription("Writes events to a Splunk HEC endpoint.")
 public class SplunkTransportConfig extends AbstractHttpTransportConfig {
 
-  @JsonSchemaDescription("Splunk auth token. If value is kms encrypted prefix with 'KMS='.")
+  @JsonSchemaDescription("Splunk auth token.")
   @JsonProperty(required = true)
-  private String authToken = null;
+  private ValueConfig<?> authToken = null;
 
   @JsonSchemaDescription("Splunk data index.")
   @JsonProperty(required = false)
   private String index = null;
 
-  public void setAuthToken(String authToken) {
+  public void setAuthToken(ValueConfig<?> authToken) {
     this.authToken = authToken;
   }
 
-  public String getAuthToken() {
-    /*
-     * Decrypt token using KMS automatically.
-     */
-    if (this.authToken != null) {
-      try {
-        return Passwords.getPassword(this.authToken);
-      } catch (UnsupportedEncodingException e) {
-        throw new RuntimeException(e);
-      }
-    }
-
+  public ValueConfig<?> getAuthToken() {
     return authToken;
   }
 

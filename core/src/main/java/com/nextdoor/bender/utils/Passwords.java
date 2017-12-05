@@ -21,7 +21,9 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
-import com.amazonaws.services.kms.AWSKMSClient;
+import com.amazonaws.regions.Region;
+import com.amazonaws.services.kms.AWSKMS;
+import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.DecryptResult;
 import com.amazonaws.util.Base64;
@@ -30,8 +32,6 @@ import com.amazonaws.util.Base64;
  * Use AWS KMS to decrypt configuration passwords.
  */
 public class Passwords {
-  public static final AWSKMSClient kmsClient = new AWSKMSClient();
-
   /**
    * Method to determine if function is running part of a unit test.
    *
@@ -50,14 +50,13 @@ public class Passwords {
     return false;
   }
 
-  public static String getPassword(String str) throws UnsupportedEncodingException {
-    /*
-     * If password string doesn't start with "KMS=" then assume the String is the password. Also if
-     * inside unittest then return the ciphertext.
-     */
-    if (!str.startsWith("KMS=") || isJUnitTest()) {
+  public static String decrypt(String str, Region region) throws UnsupportedEncodingException {
+    if (isJUnitTest()) {
       return str;
     }
+
+    AWSKMS kms = AWSKMSClientBuilder.defaultClient();
+    kms.setRegion(region);
 
     /*
      * The KMS ciphertext is base64 encoded and must be decoded before the request is made
@@ -70,7 +69,7 @@ public class Passwords {
      */
     ByteBuffer cipherBuffer = ByteBuffer.wrap(cipherBytes);
     DecryptRequest req = new DecryptRequest().withCiphertextBlob(cipherBuffer);
-    DecryptResult resp = kmsClient.decrypt(req);
+    DecryptResult resp = kms.decrypt(req);
 
     /*
      * Convert the response plaintext bytes to a string

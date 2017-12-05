@@ -1,0 +1,28 @@
+handler:
+  type: DummyHandlerHelper$DummyHandler
+  fail_on_exception: true
+sources:
+- name: Events
+  source_regex: foo
+  deserializer:
+    type: GenericJson
+wrapper:
+  type: KinesisWrapper
+serializer:
+  type: Json
+transport:
+  type: HTTP
+  path: /foo
+  hostname: example.com
+  basic_http_auth:
+    type: UserPassAuth
+    username: auser
+    password:
+      type: StringValue
+      value: bar
+  http_headers:
+    foo:
+      type: StringValue
+      value: bar
+reporters:
+- type: DataDog

@@ -41,6 +41,7 @@ import org.apache.http.entity.ContentType;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.nextdoor.bender.config.BenderConfig;
 import com.nextdoor.bender.ipc.TransportException;
 
 public class HttpTransportTest {

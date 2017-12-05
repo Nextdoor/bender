@@ -15,9 +15,6 @@
 
 package com.nextdoor.bender.ipc.http;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpHeaders;
 
@@ -45,12 +42,10 @@ public class HttpTransportFactory extends BaseHttpTransportFactory {
 
     BasicHttpAuthConfig auth = (BasicHttpAuthConfig) httpConfig.getBasicHttpAuth();
     if (auth != null) {
-      Map<String, String> headers = new HashMap<String, String>(httpConfig.getHttpHeaders());
       byte[] encodedAuth =
           Base64.encodeBase64((auth.getUsername() + ":" + auth.getPassword()).getBytes());
 
-      headers.put(HttpHeaders.AUTHORIZATION, "Basic " + new String(encodedAuth));
-      httpConfig.setHttpHeaders(headers);
+      httpConfig.addHttpHeader(HttpHeaders.AUTHORIZATION, "Basic " + new String(encodedAuth));
     }
 
     super.setConf(config);

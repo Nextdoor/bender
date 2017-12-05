@@ -14,14 +14,12 @@
 
 package com.nextdoor.bender.ipc.scalyr;
 
-import java.io.UnsupportedEncodingException;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.config.value.ValueConfig;
 import com.nextdoor.bender.ipc.http.AbstractHttpTransportConfig;
-import com.nextdoor.bender.utils.Passwords;
 
 @JsonTypeName("Scalyr")
 @JsonSchemaDescription("Writes events to a Scalyr endpoint.")
@@ -32,9 +30,9 @@ public class ScalyrTransportConfig extends AbstractHttpTransportConfig {
   @JsonProperty(required = false)
   private String hostname = "www.scalyr.com";
 
-  @JsonSchemaDescription("Scalyr auth token. If value is kms encrypted prefix with 'KMS='.")
+  @JsonSchemaDescription("Scalyr auth token.")
   @JsonProperty(required = true)
-  private String token = null;
+  private ValueConfig<?> token = null;
 
   @JsonSchemaDescription("Scalyr String Parser.")
   @JsonSchemaDefault(value = "json")
@@ -49,22 +47,11 @@ public class ScalyrTransportConfig extends AbstractHttpTransportConfig {
     this.hostname = hostname;
   }
 
-  public void setToken(String token) {
+  public void setToken(ValueConfig<?> token) {
     this.token = token;
   }
 
-  public String getToken() {
-    /*
-     * Decrypt token using KMS automatically.
-     */
-    if (this.token != null) {
-      try {
-        return Passwords.getPassword(this.token);
-      } catch (UnsupportedEncodingException e) {
-        throw new RuntimeException(e);
-      }
-    }
-
+  public ValueConfig<?> getToken() {
     return token;
   }
 

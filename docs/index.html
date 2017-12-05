@@ -3216,8 +3216,8 @@ function sourceButton(element) {
 
                             <span class="type-keyword">map</span>
         <span class="type-keyword"></span>
-            <span class="signature-type-string">
-                string
+            <span class="signature-type-">
+                
             </span>
             <span class="type-keyword">
                 
@@ -3225,7 +3225,7 @@ function sourceButton(element) {
             <br>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+                <div class="signature-description desc"><p>HTTP headers to include.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -3234,7 +3234,7 @@ function sourceButton(element) {
     <div class="box-header box-1">
         <div class="box-title" ref="">
             
-            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+            <div class="box-description desc"><p>HTTP headers to include.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -3263,9 +3263,16 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": {
-    "type": "string"
+    "oneOf": [
+      {
+        "$ref": "#/definitions/KmsValueConfig"
+      },
+      {
+        "$ref": "#/definitions/StringValueConfig"
+      }
+    ]
   },
-  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+  "description": "HTTP headers to include."
 }</pre>
     </div>
 </div>
@@ -3319,7 +3326,7 @@ function sourceButton(element) {
                 <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UserPassAuth</span>
 
                 </div>
-                <div class="signature-description desc"><p>Username and password used for use with http basic auth. If encrypting password with KMS then prefix password field with 'KMS='.</p>
+                <div class="signature-description desc"><p>Username and password used for use with http basic auth.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -3381,6 +3388,203 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">password</div>
                 <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KmsValue</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">KmsValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">KmsValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">KmsValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>KMS encrypted value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "KmsValue"
+      ],
+      "default": "KmsValue"
+    },
+    "value": {
+      "type": "string",
+      "description": "KMS encrypted value."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "AWS region associated with the KMS key used to encrypt the value."
+    }
+  },
+  "title": "KmsValue",
+  "required": [
+    "type",
+    "value",
+    "region"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">StringValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">StringValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
                                    <span class="signature-type-string">
                string
             </span>
@@ -3407,6 +3611,40 @@ function sourceButton(element) {
     "type": {
       "type": "string",
       "enum": [
+        "StringValue"
+      ],
+      "default": "StringValue"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "title": "StringValue",
+  "required": [
+    "type",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
         "UserPassAuth"
       ],
       "default": "UserPassAuth"
@@ -3415,7 +3653,14 @@ function sourceButton(element) {
       "type": "string"
     },
     "password": {
-      "type": "string"
+      "oneOf": [
+        {
+          "$ref": "#/definitions/KmsValueConfig"
+        },
+        {
+          "$ref": "#/definitions/StringValueConfig"
+        }
+      ]
     }
   },
   "title": "UserPassAuth",
@@ -3424,6 +3669,69 @@ function sourceButton(element) {
     "username",
     "password"
   ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_string_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  }
 }</pre>
     </div>
 </div>
@@ -3506,9 +3814,16 @@ function sourceButton(element) {
     "http_headers": {
       "type": "object",
       "additionalProperties": {
-        "type": "string"
+        "oneOf": [
+          {
+            "$ref": "#/definitions/KmsValueConfig"
+          },
+          {
+            "$ref": "#/definitions/StringValueConfig"
+          }
+        ]
       },
-      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+      "description": "HTTP headers to include."
     },
     "path": {
       "type": "string",
@@ -3524,7 +3839,13 @@ function sourceButton(element) {
           "$ref": "#/definitions/BasicHttpAuthConfig"
         }
       ],
-      "description": "Username and password used for use with http basic auth. If encrypting password with KMS then prefix password field with 'KMS='."
+      "description": "Username and password used for use with http basic auth."
+    },
+    "http_string_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "title": "HTTP",
@@ -4148,8 +4469,8 @@ function sourceButton(element) {
 
                             <span class="type-keyword">map</span>
         <span class="type-keyword"></span>
-            <span class="signature-type-string">
-                string
+            <span class="signature-type-">
+                
             </span>
             <span class="type-keyword">
                 
@@ -4157,7 +4478,7 @@ function sourceButton(element) {
             <br>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+                <div class="signature-description desc"><p>HTTP headers to include.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -4166,7 +4487,7 @@ function sourceButton(element) {
     <div class="box-header box-1">
         <div class="box-title" ref="">
             
-            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+            <div class="box-description desc"><p>HTTP headers to include.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -4195,9 +4516,16 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": {
-    "type": "string"
+    "oneOf": [
+      {
+        "$ref": "#/definitions/KmsValueConfig"
+      },
+      {
+        "$ref": "#/definitions/StringValueConfig"
+      }
+    ]
   },
-  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+  "description": "HTTP headers to include."
 }</pre>
     </div>
 </div>
@@ -4433,6 +4761,203 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">password</div>
                 <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KmsValue</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">KmsValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">KmsValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">KmsValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>KMS encrypted value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "KmsValue"
+      ],
+      "default": "KmsValue"
+    },
+    "value": {
+      "type": "string",
+      "description": "KMS encrypted value."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "AWS region associated with the KMS key used to encrypt the value."
+    }
+  },
+  "title": "KmsValue",
+  "required": [
+    "type",
+    "value",
+    "region"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">StringValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">StringValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
                                    <span class="signature-type-string">
                string
             </span>
@@ -4459,6 +4984,40 @@ function sourceButton(element) {
     "type": {
       "type": "string",
       "enum": [
+        "StringValue"
+      ],
+      "default": "StringValue"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "title": "StringValue",
+  "required": [
+    "type",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
         "UserPassAuth"
       ],
       "default": "UserPassAuth"
@@ -4467,7 +5026,14 @@ function sourceButton(element) {
       "type": "string"
     },
     "password": {
-      "type": "string"
+      "oneOf": [
+        {
+          "$ref": "#/definitions/KmsValueConfig"
+        },
+        {
+          "$ref": "#/definitions/StringValueConfig"
+        }
+      ]
     }
   },
   "title": "UserPassAuth",
@@ -4556,6 +5122,69 @@ function sourceButton(element) {
 </div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_string_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  }
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
         <div class="signature">
@@ -4653,9 +5282,16 @@ function sourceButton(element) {
     "http_headers": {
       "type": "object",
       "additionalProperties": {
-        "type": "string"
+        "oneOf": [
+          {
+            "$ref": "#/definitions/KmsValueConfig"
+          },
+          {
+            "$ref": "#/definitions/StringValueConfig"
+          }
+        ]
       },
-      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+      "description": "HTTP headers to include."
     },
     "auth_config": {
       "oneOf": [
@@ -4684,6 +5320,12 @@ function sourceButton(element) {
     "index_time_format": {
       "type": "string",
       "description": "Java time format to append to index name."
+    },
+    "http_string_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     },
     "use_hashid": {
       "type": "boolean",
@@ -4930,8 +5572,8 @@ function sourceButton(element) {
 
                             <span class="type-keyword">map</span>
         <span class="type-keyword"></span>
-            <span class="signature-type-string">
-                string
+            <span class="signature-type-">
+                
             </span>
             <span class="type-keyword">
                 
@@ -4939,7 +5581,7 @@ function sourceButton(element) {
             <br>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+                <div class="signature-description desc"><p>HTTP headers to include.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -4948,7 +5590,7 @@ function sourceButton(element) {
     <div class="box-header box-1">
         <div class="box-title" ref="">
             
-            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+            <div class="box-description desc"><p>HTTP headers to include.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -4977,9 +5619,16 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": {
-    "type": "string"
+    "oneOf": [
+      {
+        "$ref": "#/definitions/KmsValueConfig"
+      },
+      {
+        "$ref": "#/definitions/StringValueConfig"
+      }
+    ]
   },
-  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+  "description": "HTTP headers to include."
 }</pre>
     </div>
 </div>
@@ -4992,6 +5641,58 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">token</div>
                 <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KmsValue</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"><p>Scalyr auth token.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">KmsValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">KmsValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">KmsValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
                                    <span class="signature-type-string">
                string
             </span>
@@ -5000,10 +5701,189 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Scalyr auth token. If value is kms encrypted prefix with 'KMS='.</p>
+                <div class="signature-description desc"><p>KMS encrypted value.</p>
 </div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "KmsValue"
+      ],
+      "default": "KmsValue"
+    },
+    "value": {
+      "type": "string",
+      "description": "KMS encrypted value."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "AWS region associated with the KMS key used to encrypt the value."
+    }
+  },
+  "title": "KmsValue",
+  "required": [
+    "type",
+    "value",
+    "region"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">StringValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">StringValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "StringValue"
+      ],
+      "default": "StringValue"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "title": "StringValue",
+  "required": [
+    "type",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
         <div class="signature">
@@ -5024,6 +5904,69 @@ function sourceButton(element) {
 </div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_string_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  }
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
 
@@ -5102,18 +6045,38 @@ function sourceButton(element) {
     "http_headers": {
       "type": "object",
       "additionalProperties": {
-        "type": "string"
+        "oneOf": [
+          {
+            "$ref": "#/definitions/KmsValueConfig"
+          },
+          {
+            "$ref": "#/definitions/StringValueConfig"
+          }
+        ]
       },
-      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+      "description": "HTTP headers to include."
     },
     "token": {
-      "type": "string",
-      "description": "Scalyr auth token. If value is kms encrypted prefix with 'KMS='."
+      "oneOf": [
+        {
+          "$ref": "#/definitions/KmsValueConfig"
+        },
+        {
+          "$ref": "#/definitions/StringValueConfig"
+        }
+      ],
+      "description": "Scalyr auth token."
     },
     "parser": {
       "type": "string",
       "default": "json",
       "description": "Scalyr String Parser."
+    },
+    "http_string_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "title": "Scalyr",
@@ -5351,8 +6314,8 @@ function sourceButton(element) {
 
                             <span class="type-keyword">map</span>
         <span class="type-keyword"></span>
-            <span class="signature-type-string">
-                string
+            <span class="signature-type-">
+                
             </span>
             <span class="type-keyword">
                 
@@ -5360,7 +6323,7 @@ function sourceButton(element) {
             <br>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+                <div class="signature-description desc"><p>HTTP headers to include.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -5369,7 +6332,7 @@ function sourceButton(element) {
     <div class="box-header box-1">
         <div class="box-title" ref="">
             
-            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+            <div class="box-description desc"><p>HTTP headers to include.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -5398,9 +6361,16 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": {
-    "type": "string"
+    "oneOf": [
+      {
+        "$ref": "#/definitions/KmsValueConfig"
+      },
+      {
+        "$ref": "#/definitions/StringValueConfig"
+      }
+    ]
   },
-  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+  "description": "HTTP headers to include."
 }</pre>
     </div>
 </div>
@@ -5413,6 +6383,58 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">auth_token</div>
                 <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KmsValue</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"><p>Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">KmsValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">KmsValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">KmsValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
                                    <span class="signature-type-string">
                string
             </span>
@@ -5421,10 +6443,252 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'. If value is kms encrypted prefix with 'KMS='.</p>
+                <div class="signature-description desc"><p>KMS encrypted value.</p>
 </div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "KmsValue"
+      ],
+      "default": "KmsValue"
+    },
+    "value": {
+      "type": "string",
+      "description": "KMS encrypted value."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "AWS region associated with the KMS key used to encrypt the value."
+    }
+  },
+  "title": "KmsValue",
+  "required": [
+    "type",
+    "value",
+    "region"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">StringValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">StringValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "StringValue"
+      ],
+      "default": "StringValue"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "title": "StringValue",
+  "required": [
+    "type",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_string_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  }
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
 
@@ -5502,13 +6766,33 @@ function sourceButton(element) {
     "http_headers": {
       "type": "object",
       "additionalProperties": {
-        "type": "string"
+        "oneOf": [
+          {
+            "$ref": "#/definitions/KmsValueConfig"
+          },
+          {
+            "$ref": "#/definitions/StringValueConfig"
+          }
+        ]
       },
-      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+      "description": "HTTP headers to include."
     },
     "auth_token": {
-      "type": "string",
-      "description": "Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'. If value is kms encrypted prefix with 'KMS='."
+      "oneOf": [
+        {
+          "$ref": "#/definitions/KmsValueConfig"
+        },
+        {
+          "$ref": "#/definitions/StringValueConfig"
+        }
+      ],
+      "description": "Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'."
+    },
+    "http_string_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "title": "SumoLogic",
@@ -5747,8 +7031,8 @@ function sourceButton(element) {
 
                             <span class="type-keyword">map</span>
         <span class="type-keyword"></span>
-            <span class="signature-type-string">
-                string
+            <span class="signature-type-">
+                
             </span>
             <span class="type-keyword">
                 
@@ -5756,7 +7040,7 @@ function sourceButton(element) {
             <br>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+                <div class="signature-description desc"><p>HTTP headers to include.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -5765,7 +7049,7 @@ function sourceButton(element) {
     <div class="box-header box-1">
         <div class="box-title" ref="">
             
-            <div class="box-description desc"><p>HTTP headers to include. If header value starts with KMS= it will be decrypted.</p>
+            <div class="box-description desc"><p>HTTP headers to include.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -5794,9 +7078,16 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": {
-    "type": "string"
+    "oneOf": [
+      {
+        "$ref": "#/definitions/KmsValueConfig"
+      },
+      {
+        "$ref": "#/definitions/StringValueConfig"
+      }
+    ]
   },
-  "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+  "description": "HTTP headers to include."
 }</pre>
     </div>
 </div>
@@ -5809,6 +7100,58 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">auth_token</div>
                 <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KmsValue</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"><p>Splunk auth token.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">KmsValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">KmsValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">KmsValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
                                    <span class="signature-type-string">
                string
             </span>
@@ -5817,10 +7160,189 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Splunk auth token. If value is kms encrypted prefix with 'KMS='.</p>
+                <div class="signature-description desc"><p>KMS encrypted value.</p>
 </div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "KmsValue"
+      ],
+      "default": "KmsValue"
+    },
+    "value": {
+      "type": "string",
+      "description": "KMS encrypted value."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "AWS region associated with the KMS key used to encrypt the value."
+    }
+  },
+  "title": "KmsValue",
+  "required": [
+    "type",
+    "value",
+    "region"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">StringValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">StringValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "StringValue"
+      ],
+      "default": "StringValue"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "title": "StringValue",
+  "required": [
+    "type",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
         <div class="signature">
@@ -5839,6 +7361,69 @@ function sourceButton(element) {
 </div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_string_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  }
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
 
@@ -5916,17 +7501,37 @@ function sourceButton(element) {
     "http_headers": {
       "type": "object",
       "additionalProperties": {
-        "type": "string"
+        "oneOf": [
+          {
+            "$ref": "#/definitions/KmsValueConfig"
+          },
+          {
+            "$ref": "#/definitions/StringValueConfig"
+          }
+        ]
       },
-      "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+      "description": "HTTP headers to include."
     },
     "auth_token": {
-      "type": "string",
-      "description": "Splunk auth token. If value is kms encrypted prefix with 'KMS='."
+      "oneOf": [
+        {
+          "$ref": "#/definitions/KmsValueConfig"
+        },
+        {
+          "$ref": "#/definitions/StringValueConfig"
+        }
+      ],
+      "description": "Splunk auth token."
     },
     "index": {
       "type": "string",
       "description": "Splunk data index."
+    },
+    "http_string_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "title": "Splunk",
@@ -7620,9 +9225,16 @@ function sourceButton(element) {
         "http_headers": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "oneOf": [
+              {
+                "$ref": "#/definitions/KmsValueConfig"
+              },
+              {
+                "$ref": "#/definitions/StringValueConfig"
+              }
+            ]
           },
-          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+          "description": "HTTP headers to include."
         },
         "path": {
           "type": "string",
@@ -7638,7 +9250,13 @@ function sourceButton(element) {
               "$ref": "#/definitions/BasicHttpAuthConfig"
             }
           ],
-          "description": "Username and password used for use with http basic auth. If encrypting password with KMS then prefix password field with 'KMS='."
+          "description": "Username and password used for use with http basic auth."
+        },
+        "http_string_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "title": "HTTP",
@@ -7646,6 +9264,72 @@ function sourceButton(element) {
         "type",
         "hostname",
         "path"
+      ]
+    },
+    "KmsValueConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "KmsValue"
+          ],
+          "default": "KmsValue"
+        },
+        "value": {
+          "type": "string",
+          "description": "KMS encrypted value."
+        },
+        "region": {
+          "type": "string",
+          "enum": [
+            "GovCloud",
+            "US_EAST_1",
+            "US_EAST_2",
+            "US_WEST_1",
+            "US_WEST_2",
+            "EU_WEST_1",
+            "EU_WEST_2",
+            "EU_CENTRAL_1",
+            "AP_SOUTH_1",
+            "AP_SOUTHEAST_1",
+            "AP_SOUTHEAST_2",
+            "AP_NORTHEAST_1",
+            "AP_NORTHEAST_2",
+            "SA_EAST_1",
+            "CN_NORTH_1",
+            "CA_CENTRAL_1"
+          ],
+          "description": "AWS region associated with the KMS key used to encrypt the value."
+        }
+      },
+      "title": "KmsValue",
+      "required": [
+        "type",
+        "value",
+        "region"
+      ]
+    },
+    "StringValueConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "StringValue"
+          ],
+          "default": "StringValue"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "StringValue",
+      "required": [
+        "type",
+        "value"
       ]
     },
     "BasicHttpAuthConfig": {
@@ -7663,7 +9347,14 @@ function sourceButton(element) {
           "type": "string"
         },
         "password": {
-          "type": "string"
+          "oneOf": [
+            {
+              "$ref": "#/definitions/KmsValueConfig"
+            },
+            {
+              "$ref": "#/definitions/StringValueConfig"
+            }
+          ]
         }
       },
       "title": "UserPassAuth",
@@ -7840,9 +9531,16 @@ function sourceButton(element) {
         "http_headers": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "oneOf": [
+              {
+                "$ref": "#/definitions/KmsValueConfig"
+              },
+              {
+                "$ref": "#/definitions/StringValueConfig"
+              }
+            ]
           },
-          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+          "description": "HTTP headers to include."
         },
         "auth_config": {
           "oneOf": [
@@ -7871,6 +9569,12 @@ function sourceButton(element) {
         "index_time_format": {
           "type": "string",
           "description": "Java time format to append to index name."
+        },
+        "http_string_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "use_hashid": {
           "type": "boolean",
@@ -8000,18 +9704,38 @@ function sourceButton(element) {
         "http_headers": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "oneOf": [
+              {
+                "$ref": "#/definitions/KmsValueConfig"
+              },
+              {
+                "$ref": "#/definitions/StringValueConfig"
+              }
+            ]
           },
-          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+          "description": "HTTP headers to include."
         },
         "token": {
-          "type": "string",
-          "description": "Scalyr auth token. If value is kms encrypted prefix with 'KMS='."
+          "oneOf": [
+            {
+              "$ref": "#/definitions/KmsValueConfig"
+            },
+            {
+              "$ref": "#/definitions/StringValueConfig"
+            }
+          ],
+          "description": "Scalyr auth token."
         },
         "parser": {
           "type": "string",
           "default": "json",
           "description": "Scalyr String Parser."
+        },
+        "http_string_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "title": "Scalyr",
@@ -8089,13 +9813,33 @@ function sourceButton(element) {
         "http_headers": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "oneOf": [
+              {
+                "$ref": "#/definitions/KmsValueConfig"
+              },
+              {
+                "$ref": "#/definitions/StringValueConfig"
+              }
+            ]
           },
-          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+          "description": "HTTP headers to include."
         },
         "auth_token": {
-          "type": "string",
-          "description": "Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'. If value is kms encrypted prefix with 'KMS='."
+          "oneOf": [
+            {
+              "$ref": "#/definitions/KmsValueConfig"
+            },
+            {
+              "$ref": "#/definitions/StringValueConfig"
+            }
+          ],
+          "description": "Sumo Logic auth token. This is suffix of the http source url starting after '/receiver/v1/http/'."
+        },
+        "http_string_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "title": "SumoLogic",
@@ -8174,17 +9918,37 @@ function sourceButton(element) {
         "http_headers": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "oneOf": [
+              {
+                "$ref": "#/definitions/KmsValueConfig"
+              },
+              {
+                "$ref": "#/definitions/StringValueConfig"
+              }
+            ]
           },
-          "description": "HTTP headers to include. If header value starts with KMS= it will be decrypted."
+          "description": "HTTP headers to include."
         },
         "auth_token": {
-          "type": "string",
-          "description": "Splunk auth token. If value is kms encrypted prefix with 'KMS='."
+          "oneOf": [
+            {
+              "$ref": "#/definitions/KmsValueConfig"
+            },
+            {
+              "$ref": "#/definitions/StringValueConfig"
+            }
+          ],
+          "description": "Splunk auth token."
         },
         "index": {
           "type": "string",
           "description": "Splunk data index."
+        },
+        "http_string_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "title": "Splunk",

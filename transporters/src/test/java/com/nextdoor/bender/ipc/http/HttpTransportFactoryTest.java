@@ -29,16 +29,17 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.nextdoor.bender.auth.BasicHttpAuthConfig;
+import com.nextdoor.bender.config.value.StringValueConfig;
 
 public class HttpTransportFactoryTest {
   @Test
   public void testBasicAuthHeaders() {
     HttpTransportConfig config = new HttpTransportConfig();
-    config.getHttpHeaders().put("foo", "bar");
+    config.addHttpHeader("foo", "bar");
 
     BasicHttpAuthConfig auth = new BasicHttpAuthConfig();
     auth.setUsername("foo");
-    auth.setPassword("bar");
+    auth.setPassword(new StringValueConfig("bar"));
     config.setBasicHttpAuth(auth);
 
     HttpTransportFactory factory = spy(new HttpTransportFactory());
