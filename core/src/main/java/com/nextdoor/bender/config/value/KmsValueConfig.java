@@ -60,6 +60,10 @@ public class KmsValueConfig extends ValueConfig<KmsValueConfig> {
     return this.value;
   }
 
+  public void setValue(String value) {
+    this.value = value;
+  }
+
   public Regions getRegion() {
     return this.region;
   }
