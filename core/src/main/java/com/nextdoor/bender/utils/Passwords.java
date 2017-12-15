@@ -55,13 +55,12 @@ public class Passwords {
       return str;
     }
 
-    AWSKMS kms = AWSKMSClientBuilder.defaultClient();
-    kms.setRegion(region);
+    AWSKMS kms = AWSKMSClientBuilder.standard().withRegion(region.getName()).build();
 
     /*
      * The KMS ciphertext is base64 encoded and must be decoded before the request is made
      */
-    String cipherString = str.substring(4);
+    String cipherString = str;
     byte[] cipherBytes = Base64.decode(cipherString);
 
     /*
