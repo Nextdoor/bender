@@ -67,7 +67,7 @@ public class ElasticSearchTransport extends HttpTransport {
     }
 
     /*
-     * Convert response text to a POJO. Only tested with ES 2.4.x but seems to work with 5.x
+     * Convert response text to a POJO. Only tested with ES 2.4.x and 5.x.
      */
     Gson gson = new GsonBuilder().create();
     EsResponse esResp = null;

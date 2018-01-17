@@ -36,7 +36,9 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
       init(context);
     }
 
-    this.recordIterator = new KinesisEventIterator(context, event.getRecords());
+    KinesisHandlerConfig handlerConfig = (KinesisHandlerConfig) this.config.getHandlerConfig();
+    this.recordIterator = new KinesisEventIterator(context, event.getRecords(),
+        handlerConfig.getAddShardIdToPartitions());
 
     /*
      * Get processors based on the source stream ARN

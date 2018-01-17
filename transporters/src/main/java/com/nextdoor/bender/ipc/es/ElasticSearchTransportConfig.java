@@ -63,6 +63,28 @@ public class ElasticSearchTransportConfig extends AbstractHttpTransportConfig {
   @JsonProperty(required = false)
   private Boolean useHashId = false;
 
+  @JsonSchemaDescription("Use partitions as a mechanism for routing records to Elasticsearch. "
+      + "Routing allows a document to be written to a specific shard within an index. "
+      + "Using routing can, if configured correctly, dramatically improve read and/or write "
+      + "performance when indexing or searching documents. However, this is largely based "
+      + "on your data, data source, and workload. For more details on routing consult:\n"
+      + "\nhttps://www.elastic.co/blog/customizing-your-document-routing"
+      + "\nhttps://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html"
+      + "\n\n"
+      + "Partition keys and values will be concatenated by \"=\" and separated by \"/\". If"
+      + "your partitions are part1=foo and part2=bar the Elasticsearch \"_routing\" field "
+      + "will have the value \"part1=foo/part2=bar\". "
+      + "\n\n"
+      + "A typical routing strategy is to use the data source context associated with a "
+      + "function's invocation. For instance with Kinesis this can be the shard-id and with S3 "
+      + "the source file. This approach ensures a single function invocation writes to only one "
+      + "shard. However, to avoid hot spots, it's also advised that you have a secondary "
+      + "partitioning key with low cardinality. For example bucketing by 5 minute intervals "
+      + "in addition to using shard-id.")
+  @JsonSchemaDefault(value = "false")
+  @JsonProperty(required = false)
+  private Boolean usePartitionsForRouting = false;
+
   public AuthConfig<?> getAuthConfig() {
     return this.authConfig;
   }
@@ -111,6 +133,16 @@ public class ElasticSearchTransportConfig extends AbstractHttpTransportConfig {
   @JsonProperty("use_hashid")
   public void setUseHashId(Boolean useHashId) {
     this.useHashId = useHashId;
+  }
+
+  @JsonProperty("use_partitions_for_routing")
+  public Boolean isUsePartitionsForRouting() {
+    return this.usePartitionsForRouting;
+  }
+
+  @JsonProperty("use_partitions_for_routing")
+  public void setUsePartitionsForRouting(Boolean usePartitionsForRouting) {
+    this.usePartitionsForRouting = usePartitionsForRouting;
   }
 
   public String getBulkApiPath() {

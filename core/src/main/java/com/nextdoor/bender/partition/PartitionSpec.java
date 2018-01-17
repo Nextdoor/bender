@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -60,14 +63,23 @@ public class PartitionSpec {
 
   private DateTimeFormatter dateTimeFormatter;
 
+  @JsonSchemaDescription("Rounds time down to value prior to formatting. For example 300 would round down to nearest 5 minutes. If set to 0 then rounding is disabled.")
+  @JsonSchemaDefault(value = "0")
+  @JsonProperty(required = false)
+  @Min(0)
+  @Max(86400)
+  private Integer secondsToRound = 0;
+
   public PartitionSpec() {}
 
-  public PartitionSpec(String name, List<String> sources, Interpreter interpreter, String format) {
+  public PartitionSpec(String name, List<String> sources, Interpreter interpreter, String format,
+      int secondsToRound) {
     this.name = name;
     this.sources = sources;
     this.interpreter = interpreter;
     this.format = format;
     setDateTimeFormatter();
+    this.secondsToRound = secondsToRound;
   }
 
   public PartitionSpec(String name, List<String> sources, Interpreter interpreter) {
@@ -175,6 +187,13 @@ public class PartitionSpec {
      * Sanity check
      */
     ts = Time.toMilliseconds(ts);
+
+    /*
+     * Round down
+     */
+    if (this.secondsToRound > 0) {
+      ts = Math.round((double) ts / (this.secondsToRound * 1000)) * (this.secondsToRound * 1000);
+    }
 
     return this.dateTimeFormatter.print(ts);
   }

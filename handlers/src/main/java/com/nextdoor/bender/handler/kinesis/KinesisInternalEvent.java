@@ -15,17 +15,22 @@
 
 package com.nextdoor.bender.handler.kinesis;
 
+import java.util.LinkedHashMap;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent.KinesisEventRecord;
 import com.nextdoor.bender.InternalEvent;
 
 public class KinesisInternalEvent extends InternalEvent {
+  public static final String SHARD_ID = "__shardid__";
   private KinesisEventRecord record;
+  private String shardId;
 
-  public KinesisInternalEvent(KinesisEventRecord record, Context context) {
+  public KinesisInternalEvent(KinesisEventRecord record, Context context, String shardId) {
     super(new String(record.getKinesis().getData().array()), context,
         record.getKinesis().getApproximateArrivalTimestamp().getTime());
     this.record = record;
+    this.shardId = shardId;
   }
 
   public KinesisInternalEvent(String record, long timestamp) {
@@ -34,5 +39,19 @@ public class KinesisInternalEvent extends InternalEvent {
 
   public KinesisEventRecord getRecord() {
     return record;
+  }
+
+  @Override
+  public LinkedHashMap<String, String> getPartitions() {
+    LinkedHashMap<String, String> partitions = super.getPartitions();
+    if (partitions == null) {
+      partitions = new LinkedHashMap<String, String>(1);
+      super.setPartitions(partitions);
+    }
+
+    if (this.shardId != null) {
+      partitions.put(SHARD_ID, shardId);
+    }
+    return partitions;
   }
 }

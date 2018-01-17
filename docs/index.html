@@ -848,7 +848,7 @@ function sourceButton(element) {
     <div class="box-header box-3">
         <div class="box-title" ref="">
             <div class="box-name ">KinesisHandler</div>
-            <div class="box-description desc"><p>For use with Kinesis triggers. Set the function handler to "com.nextdoor.bender.handler.s3.SNSS3Handler::handler". The following IAM permissions are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, kinesis:GetRecords, and kinesis:ListTagsForStream.</p>
+            <div class="box-description desc"><p>For use with Kinesis triggers. Set the function handler to "com.nextdoor.bender.handler.kinesis.KinesisHandler::handler". The following IAM permissions are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, kinesis:GetRecords, and kinesis:ListTagsForStream.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -901,6 +901,43 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">add_kinesis_shard_to_partitions</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Whether to add kinesis shardid to the event partitions list. The key is "<strong>shardid</strong>" and value will look like "shardId-000000000000". Note that partitioning must be either enabled or supported by the transport you use. Not all transporters support partitioning.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">add_shardid_to_partitions</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -910,7 +947,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "For use with Kinesis triggers. Set the function handler to \"com.nextdoor.bender.handler.s3.SNSS3Handler::handler\". The following IAM permissions are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, kinesis:GetRecords, and kinesis:ListTagsForStream.",
+  "description": "For use with Kinesis triggers. Set the function handler to \"com.nextdoor.bender.handler.kinesis.KinesisHandler::handler\". The following IAM permissions are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, kinesis:GetRecords, and kinesis:ListTagsForStream.",
   "properties": {
     "type": {
       "type": "string",
@@ -923,6 +960,14 @@ function sourceButton(element) {
       "type": "boolean",
       "default": true,
       "description": "If an uncaught exception occurs fail the function"
+    },
+    "add_kinesis_shard_to_partitions": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to add kinesis shardid to the event partitions list. The key is \"__shardid__\" and value will look like \"shardId-000000000000\". Note that partitioning must be either enabled or supported by the transport you use. Not all transporters support partitioning."
+    },
+    "add_shardid_to_partitions": {
+      "type": "boolean"
     }
   },
   "title": "KinesisHandler",
@@ -2374,6 +2419,26 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">seconds_to_round</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [0;86400]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">0</span>
+
+                </div>
+                <div class="signature-description desc"><p>Rounds time down to value prior to formatting. For example 300 would round down to nearest 5 minutes. If set to 0 then rounding is disabled.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -2419,6 +2484,13 @@ function sourceButton(element) {
         "NONE"
       ],
       "description": "Basic string formatting."
+    },
+    "seconds_to_round": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 86400,
+      "default": 0,
+      "description": "Rounds time down to value prior to formatting. For example 300 would round down to nearest 5 minutes. If set to 0 then rounding is disabled."
     }
   },
   "required": [
@@ -5207,6 +5279,29 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_partitions_for_routing</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use partitions as a mechanism for routing records to Elasticsearch. Routing allows a document to be written to a specific shard within an index. Using routing can, if configured correctly, dramatically improve read and/or write performance when indexing or searching documents. However, this is largely based on your data, data source, and workload. For more details on routing consult:</p>
+<p><a href="https://www.elastic.co/blog/customizing-your-document-routing">https://www.elastic.co/blog/customizing-your-document-routing</a><br><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html</a></p>
+<p>Partition keys and values will be concatenated by "=" and separated by "/". Ifyour partitions are part1=foo and part2=bar the Elasticsearch "_routing" field will have the value "part1=foo/part2=bar". </p>
+<p>A typical routing strategy is to use the data source context associated with a function's invocation. For instance with Kinesis this can be the shard-id and with S3 the source file. This approach ensures a single function invocation writes to only one shard. However, to avoid hot spots, it's also advised that you have a secondary partitioning key with low cardinality. For example bucketing by 5 minute intervals in addition to using shard-id.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -5331,6 +5426,11 @@ function sourceButton(element) {
       "type": "boolean",
       "default": false,
       "description": "Use hash id generated by Bender as document id."
+    },
+    "use_partitions_for_routing": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use partitions as a mechanism for routing records to Elasticsearch. Routing allows a document to be written to a specific shard within an index. Using routing can, if configured correctly, dramatically improve read and/or write performance when indexing or searching documents. However, this is largely based on your data, data source, and workload. For more details on routing consult:\n\nhttps://www.elastic.co/blog/customizing-your-document-routing\nhttps://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html\n\nPartition keys and values will be concatenated by \"=\" and separated by \"/\". Ifyour partitions are part1=foo and part2=bar the Elasticsearch \"_routing\" field will have the value \"part1=foo/part2=bar\". \n\nA typical routing strategy is to use the data source context associated with a function's invocation. For instance with Kinesis this can be the shard-id and with S3 the source file. This approach ensures a single function invocation writes to only one shard. However, to avoid hot spots, it's also advised that you have a secondary partitioning key with low cardinality. For example bucketing by 5 minute intervals in addition to using shard-id."
     }
   },
   "title": "ElasticSearch",
@@ -8604,7 +8704,7 @@ function sourceButton(element) {
     "KinesisHandlerConfig": {
       "type": "object",
       "additionalProperties": false,
-      "description": "For use with Kinesis triggers. Set the function handler to \"com.nextdoor.bender.handler.s3.SNSS3Handler::handler\". The following IAM permissions are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, kinesis:GetRecords, and kinesis:ListTagsForStream.",
+      "description": "For use with Kinesis triggers. Set the function handler to \"com.nextdoor.bender.handler.kinesis.KinesisHandler::handler\". The following IAM permissions are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, kinesis:GetRecords, and kinesis:ListTagsForStream.",
       "properties": {
         "type": {
           "type": "string",
@@ -8617,6 +8717,14 @@ function sourceButton(element) {
           "type": "boolean",
           "default": true,
           "description": "If an uncaught exception occurs fail the function"
+        },
+        "add_kinesis_shard_to_partitions": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to add kinesis shardid to the event partitions list. The key is \"__shardid__\" and value will look like \"shardId-000000000000\". Note that partitioning must be either enabled or supported by the transport you use. Not all transporters support partitioning."
+        },
+        "add_shardid_to_partitions": {
+          "type": "boolean"
         }
       },
       "title": "KinesisHandler",
@@ -9048,6 +9156,13 @@ function sourceButton(element) {
             "NONE"
           ],
           "description": "Basic string formatting."
+        },
+        "seconds_to_round": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 86400,
+          "default": 0,
+          "description": "Rounds time down to value prior to formatting. For example 300 would round down to nearest 5 minutes. If set to 0 then rounding is disabled."
         }
       },
       "required": [
@@ -9580,6 +9695,11 @@ function sourceButton(element) {
           "type": "boolean",
           "default": false,
           "description": "Use hash id generated by Bender as document id."
+        },
+        "use_partitions_for_routing": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use partitions as a mechanism for routing records to Elasticsearch. Routing allows a document to be written to a specific shard within an index. Using routing can, if configured correctly, dramatically improve read and/or write performance when indexing or searching documents. However, this is largely based on your data, data source, and workload. For more details on routing consult:\n\nhttps://www.elastic.co/blog/customizing-your-document-routing\nhttps://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html\n\nPartition keys and values will be concatenated by \"=\" and separated by \"/\". Ifyour partitions are part1=foo and part2=bar the Elasticsearch \"_routing\" field will have the value \"part1=foo/part2=bar\". \n\nA typical routing strategy is to use the data source context associated with a function's invocation. For instance with Kinesis this can be the shard-id and with S3 the source file. This approach ensures a single function invocation writes to only one shard. However, to avoid hot spots, it's also advised that you have a secondary partitioning key with low cardinality. For example bucketing by 5 minute intervals in addition to using shard-id."
         }
       },
       "title": "ElasticSearch",

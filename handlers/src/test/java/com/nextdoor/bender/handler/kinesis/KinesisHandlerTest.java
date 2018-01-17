@@ -16,6 +16,7 @@
 package com.nextdoor.bender.handler.kinesis;
 
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
+import com.nextdoor.bender.handler.BaseHandler;
 import com.nextdoor.bender.handler.HandlerTest;
 import com.nextdoor.bender.testutils.TestUtils;
 
@@ -34,6 +35,11 @@ public class KinesisHandlerTest extends HandlerTest<KinesisEvent> {
   @Override
   public void setup() {
 
+  }
+
+  @Override
+  public String getConfigFile() {
+    return "/com/nextdoor/bender/handler/config_kinesis.json";
   }
 
   @Override

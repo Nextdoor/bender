@@ -15,15 +15,34 @@
 
 package com.nextdoor.bender.handler.kinesis;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.handler.HandlerConfig;
 
 @JsonTypeName("KinesisHandler")
 @JsonSchemaDescription("For use with Kinesis triggers. Set the function handler to "
-    + "\"com.nextdoor.bender.handler.s3.SNSS3Handler::handler\". The following IAM permissions "
+    + "\"com.nextdoor.bender.handler.kinesis.KinesisHandler::handler\". The following IAM permissions "
     + "are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, "
     + "kinesis:GetRecords, and kinesis:ListTagsForStream.")
 public class KinesisHandlerConfig extends HandlerConfig {
 
+  @JsonSchemaDescription("Whether to add kinesis shardid to the event partitions list. The key "
+      + "is \"__shardid__\" and value will look like \"shardId-000000000000\". Note that "
+      + "partitioning must be either enabled or supported by the transport you use. Not all "
+      + "transporters support partitioning.")
+  @JsonProperty(required = false)
+  @JsonSchemaDefault("false")
+  private Boolean addKinesisShardToPartitions = false;
+
+  @JsonProperty("add_shardid_to_partitions")
+  public Boolean getAddShardIdToPartitions() {
+    return this.addKinesisShardToPartitions;
+  }
+
+  @JsonProperty("add_shardid_to_partitions")
+  public void setAddShardIdToPartitions(Boolean addKinesisShardToPartitions) {
+    this.addKinesisShardToPartitions = addKinesisShardToPartitions;
+  }
 }

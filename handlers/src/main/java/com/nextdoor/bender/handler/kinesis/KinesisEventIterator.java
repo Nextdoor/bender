@@ -30,20 +30,31 @@ import com.nextdoor.bender.InternalEventIterator;
 public class KinesisEventIterator implements InternalEventIterator<InternalEvent> {
   private final Iterator<KinesisEventRecord> iterator;
   private final Context context;
+  private String shardId = null;
 
-  public KinesisEventIterator(Context context, List<KinesisEventRecord> records) {
+  public KinesisEventIterator(Context context, List<KinesisEventRecord> records,
+      Boolean addShardidToPartitions) {
     this.iterator = records.iterator();
     this.context = context;
+
+    /*
+     * All events in a batch will come from the same shard. So we only need to query this once.
+     * 
+     * eventid = shardId:sequenceId
+     */
+    if (addShardidToPartitions) {
+      this.shardId = records.get(0).getEventID().split(":")[0];
+    }
   }
 
   @Override
   public boolean hasNext() {
-    return iterator.hasNext();
+    return this.iterator.hasNext();
   }
 
   @Override
   public InternalEvent next() {
-    return new KinesisInternalEvent(iterator.next(), context);
+    return new KinesisInternalEvent(this.iterator.next(), this.context, this.shardId);
   }
 
   @Override
