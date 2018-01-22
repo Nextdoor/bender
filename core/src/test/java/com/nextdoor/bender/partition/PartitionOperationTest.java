@@ -63,7 +63,7 @@ public class PartitionOperationTest {
   public void testGetEvaluatedPartitionsStatic() {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("foo");
-    PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STATIC, "123");
+    PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STATIC, "123", 0);
     partitionSpecs.add(spec);
 
     PartitionOperation op = new PartitionOperation(partitionSpecs);

@@ -62,7 +62,7 @@ public class PartitionSpecTest {
   @Test
   public void testEmptyDate() {
     PartitionSpec spec = new PartitionSpec("test", Collections.emptyList(), Interpreter.SECONDS,
-        "YYYY-MM-dd HH:mm:ss");
+        "YYYY-MM-dd HH:mm:ss", 0);
     assertEquals(null, spec.interpret(""));
     assertEquals(null, spec.interpret(null));
   }
@@ -70,28 +70,35 @@ public class PartitionSpecTest {
   @Test
   public void testDateFormatterSeconds() {
     PartitionSpec spec = new PartitionSpec("test", Collections.emptyList(), Interpreter.SECONDS,
-        "YYYY-MM-dd HH:mm:ss");
+        "YYYY-MM-dd HH:mm:ss", 0);
     assertEquals("2017-01-19 05:05:59", spec.interpret("1484802359"));
   }
 
   @Test
   public void testDateFormatterMilliseconds() {
     PartitionSpec spec = new PartitionSpec("test", Collections.emptyList(),
-        Interpreter.MILLISECONDS, "YYYY-MM-dd HH:mm:ss");
+        Interpreter.MILLISECONDS, "YYYY-MM-dd HH:mm:ss", 0);
     assertEquals("2017-01-19 05:05:59", spec.interpret("1484802359000"));
+  }
+
+  @Test
+  public void testRoundToSeconds() {
+    PartitionSpec spec = new PartitionSpec("test", Collections.emptyList(),
+        Interpreter.MILLISECONDS, "YYYY-MM-dd HH:mm:ss", 300);
+    assertEquals("2017-01-19 05:05:00", spec.interpret("1484802359000"));
   }
 
   @Test
   public void testStatic() {
     PartitionSpec spec =
-        new PartitionSpec("test", Collections.emptyList(), Interpreter.STATIC, "static");
+        new PartitionSpec("test", Collections.emptyList(), Interpreter.STATIC, "static", 0);
     assertEquals("static", spec.interpret(""));
   }
 
   @Test
   public void testString() {
     PartitionSpec spec =
-        new PartitionSpec("test", Collections.emptyList(), Interpreter.STRING, "string");
+        new PartitionSpec("test", Collections.emptyList(), Interpreter.STRING, "string", 0);
     assertEquals("a_string", spec.interpret("a_string"));
   }
 
@@ -104,7 +111,7 @@ public class PartitionSpecTest {
   @Test(expected = RuntimeException.class)
   public void testInvalidInterpreter() {
     PartitionSpec spec =
-        new PartitionSpec("test", Collections.emptyList(), Interpreter.STATIC, "static");
+        new PartitionSpec("test", Collections.emptyList(), Interpreter.STATIC, "static", 0);
     spec.getFormattedTime("will fail");
   }
 

@@ -53,7 +53,7 @@ public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory 
     ElasticSearchTransportConfig config = (ElasticSearchTransportConfig) super.config;
 
     return new ElasticSearchTransportSerializer(config.isUseHashId(), config.getDocumentType(),
-        config.getIndex(), config.getIndexTimeFormat());
+        config.getIndex(), config.getIndexTimeFormat(), config.isUsePartitionsForRouting());
   }
 
   @Override

@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.ipc.es;
 
+import java.util.stream.Collectors;
+
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -27,16 +29,18 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
   private final String index;
   private final String documentType;
   private final DateTimeFormatter dtFormat;
+  private final boolean usePartitionsForRouting;
 
-  public ElasticSearchTransportSerializer(boolean useHashId, String documentType, String index) {
-    this(useHashId, documentType, index, null);
+  public ElasticSearchTransportSerializer(boolean useHashId, String documentType, String index, boolean usePartitionsForRouting) {
+    this(useHashId, documentType, index, null, usePartitionsForRouting);
   }
 
   public ElasticSearchTransportSerializer(boolean useHashId, String documentType, String index,
-      String indexTimeFormat) {
+      String indexTimeFormat, boolean usePartitionsForRouting) {
     this.useHashId = useHashId;
     this.index = index;
     this.documentType = documentType;
+    this.usePartitionsForRouting = usePartitionsForRouting;
 
     if (indexTimeFormat != null) {
       this.dtFormat = DateTimeFormat.forPattern(indexTimeFormat).withZoneUTC();
@@ -61,6 +65,14 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
       payload.append("\"_id\":");
       payload.append("\"");
       payload.append(ievent.getEventSha1Hash());
+      payload.append("\",");
+    }
+
+    if (this.usePartitionsForRouting) {
+      payload.append("\"_routing\":");
+      payload.append("\"");
+      payload.append(ievent.getPartitions().entrySet().stream().map(s -> s.getKey() + "=" + s.getValue())
+          .collect(Collectors.joining("/")));
       payload.append("\",");
     }
 

@@ -42,12 +42,13 @@ public abstract class HandlerTest<T> {
   @Before
   public void before() {
     DummyTransportHelper.BufferedTransporter.output.clear();
+    BaseHandler.CONFIG_FILE = getConfigFile();
   }
+
+  public abstract String getConfigFile();
 
   @Test
   public void testBasicEndtoEnd() throws Exception {
-    BaseHandler.CONFIG_FILE = "/com/nextdoor/bender/handler/config_unittest.json";
-
     TestContext ctx = new TestContext();
     ctx.setFunctionName("unittest");
     ctx.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test-function:staging");

@@ -146,8 +146,6 @@ public class S3Transport implements PartitionedTransport {
       filename = context.getAwsRequestId();
     }
 
-
-
     String key = parts.entrySet().stream().map(s -> s.getKey() + "=" + s.getValue())
         .collect(Collectors.joining("/"));
 

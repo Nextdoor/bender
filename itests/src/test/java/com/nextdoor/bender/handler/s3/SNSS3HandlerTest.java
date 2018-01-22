@@ -41,6 +41,11 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
   private S3MockClientFactory clientFactory;
   private AmazonS3Client client;
 
+  @Override
+  public String getConfigFile() {
+    return "/com/nextdoor/bender/handler/config_unittest.json";
+  }
+
   @Rule
   public TemporaryFolder tmpFolder = new TemporaryFolder();
 
