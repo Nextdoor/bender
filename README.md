@@ -85,6 +85,7 @@ batches of data to destinations.
 * Splunk
 * Scalyr
 * Sumo Logic
+* Datadog
 
 ##### Reporters
 Monitor the ETL process at each phase within your function and output those
@@ -125,5 +126,5 @@ Features and bug fixes are welcome. Please adhere to the following guidelines:
 - Use Google's Java [style guide](https://github.com/google/styleguide) for
   your IDE.
 - Be conscientious of dependencies you add to Bender Core.
-- Help maintain unit test code coverage by adding tests for each branch in new 
+- Help maintain unit test code coverage by adding tests for each branch in new
   code.

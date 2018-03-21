@@ -2184,7 +2184,7 @@ function sourceButton(element) {
     <div class="box-header box-7">
         <div class="box-title" ref="">
             <div class="box-name ">JsonKeyNameOperation</div>
-            <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo<strong>str": "one", "bar</strong>long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or _<em>float. It also repalces "." with "</em>" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
+            <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo__str": "one", "bar__long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or __float. It also repalces "." with "_" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -3059,6 +3059,8 @@ function sourceButton(element) {
                 <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Splunk</span>
         <span class="type-keyword"></span>
                 <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
+        <span class="type-keyword"></span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Datadog</span>
 
                 </div>
                 <div class="signature-description desc"><p>Transport configuration</p>
@@ -7875,6 +7877,302 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
+                <div class="box-container" boxid="9">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-9">
+        <div class="box-title" ref="">
+            <div class="box-name ">Datadog</div>
+            <div class="box-description desc"><p>Writes events to a Datadog endpoint.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">Datadog</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">Datadog</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">threads</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">5</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of concurrent transporters allowed</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">hostname</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>TCP endpoint hostname.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">port</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;65535]
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>TCP endpoint port.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">max_buffer_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1024;102400]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">10240</span>
+
+                </div>
+                <div class="signature-description desc"><p>Maximum size (in bytes) in memory before triggering a write.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_count</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [0;10]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">0</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of retries to make when a put failure occurs.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_delay</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;60000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">1000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Initial delay between retries. If more than one retries specified exponential backoff is used.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">timeout</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1000;60000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">30000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Socket timeout (in milliseconds) on TCP connection.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">api_key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Datadog API key.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Writes events to a Datadog endpoint.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "Datadog"
+      ],
+      "default": "Datadog"
+    },
+    "threads": {
+      "type": "integer",
+      "default": 5,
+      "description": "Number of concurrent transporters allowed"
+    },
+    "hostname": {
+      "type": "string",
+      "description": "TCP endpoint hostname."
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535,
+      "description": "TCP endpoint port."
+    },
+    "use_ssl": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use SSL connections (certificates are not validated)."
+    },
+    "max_buffer_size": {
+      "type": "integer",
+      "minimum": 1024,
+      "maximum": 102400,
+      "default": 10240,
+      "description": "Maximum size (in bytes) in memory before triggering a write."
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "default": 0,
+      "description": "Number of retries to make when a put failure occurs."
+    },
+    "retry_delay": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 60000,
+      "default": 1000,
+      "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+    },
+    "timeout": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 60000,
+      "default": 30000,
+      "description": "Socket timeout (in milliseconds) on TCP connection."
+    },
+    "api_key": {
+      "type": "string",
+      "description": "Datadog API key."
+    }
+  },
+  "title": "Datadog",
+  "required": [
+    "type",
+    "hostname",
+    "port",
+    "api_key"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
         <div class="signature">
@@ -8629,6 +8927,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/FirehoseTransportConfig"
+        },
+        {
+          "$ref": "#/definitions/DatadogTransportConfig"
         }
       ],
       "description": "Transport configuration"
@@ -10142,6 +10443,79 @@ function sourceButton(element) {
         "stream_name"
       ]
     },
+    "DatadogTransportConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Writes events to a Datadog endpoint.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Datadog"
+          ],
+          "default": "Datadog"
+        },
+        "threads": {
+          "type": "integer",
+          "default": 5,
+          "description": "Number of concurrent transporters allowed"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "TCP endpoint hostname."
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "description": "TCP endpoint port."
+        },
+        "use_ssl": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use SSL connections (certificates are not validated)."
+        },
+        "max_buffer_size": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 102400,
+          "default": 10240,
+          "description": "Maximum size (in bytes) in memory before triggering a write."
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 0,
+          "description": "Number of retries to make when a put failure occurs."
+        },
+        "retry_delay": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000,
+          "default": 1000,
+          "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 60000,
+          "default": 30000,
+          "description": "Socket timeout (in milliseconds) on TCP connection."
+        },
+        "api_key": {
+          "type": "string",
+          "description": "Datadog API key."
+        }
+      },
+      "title": "Datadog",
+      "required": [
+        "type",
+        "hostname",
+        "port",
+        "api_key"
+      ]
+    },
     "CloudwatchReporterConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -10339,6 +10713,9 @@ function sourceButton(element) {
           },
           {
             "$ref": "#/definitions/FirehoseTransportConfig"
+          },
+          {
+            "$ref": "#/definitions/DatadogTransportConfig"
           }
         ],
         "description": "Transport configuration"
@@ -10431,6 +10808,9 @@ function sourceButton(element) {
           },
           {
             "$ref": "#/definitions/FirehoseTransportConfig"
+          },
+          {
+            "$ref": "#/definitions/DatadogTransportConfig"
           }
         ],
         "description": "Transport configuration"
