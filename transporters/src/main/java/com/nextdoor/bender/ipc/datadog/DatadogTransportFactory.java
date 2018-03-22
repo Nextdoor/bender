@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender.ipc.datadog;
 
+import com.nextdoor.bender.config.value.ValueConfig;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.tcp.TcpTransportBuffer;
 import com.nextdoor.bender.ipc.tcp.TcpTransportFactory;
@@ -26,7 +27,7 @@ public class DatadogTransportFactory extends TcpTransportFactory {
 
   @Override
   public TransportBuffer newTransportBuffer() {
-    String apiKey = ((DatadogTransportConfig) getConfig()).getApiKey();
+    ValueConfig<?> apiKey = ((DatadogTransportConfig) getConfig()).getApiKey();
     return new TcpTransportBuffer(getConfig(), new DatadogTransportSerializer(apiKey));
   }
 

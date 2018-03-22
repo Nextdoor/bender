@@ -8075,6 +8075,58 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">api_key</div>
                 <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KmsValue</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"><p>Datadog API key.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">KmsValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">KmsValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">KmsValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
                                    <span class="signature-type-string">
                string
             </span>
@@ -8083,10 +8135,189 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Datadog API key.</p>
+                <div class="signature-description desc"><p>KMS encrypted value.</p>
 </div>
             </div>
             <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "KmsValue"
+      ],
+      "default": "KmsValue"
+    },
+    "value": {
+      "type": "string",
+      "description": "KMS encrypted value."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_CENTRAL_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CA_CENTRAL_1"
+      ],
+      "description": "AWS region associated with the KMS key used to encrypt the value."
+    }
+  },
+  "title": "KmsValue",
+  "required": [
+    "type",
+    "value",
+    "region"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">StringValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">StringValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "StringValue"
+      ],
+      "default": "StringValue"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "title": "StringValue",
+  "required": [
+    "type",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
 
@@ -8156,7 +8387,14 @@ function sourceButton(element) {
       "description": "Socket timeout (in milliseconds) on TCP connection."
     },
     "api_key": {
-      "type": "string",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/KmsValueConfig"
+        },
+        {
+          "$ref": "#/definitions/StringValueConfig"
+        }
+      ],
       "description": "Datadog API key."
     }
   },
@@ -10504,7 +10742,14 @@ function sourceButton(element) {
           "description": "Socket timeout (in milliseconds) on TCP connection."
         },
         "api_key": {
-          "type": "string",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/KmsValueConfig"
+            },
+            {
+              "$ref": "#/definitions/StringValueConfig"
+            }
+          ],
           "description": "Datadog API key."
         }
       },

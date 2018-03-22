@@ -16,13 +16,14 @@
 package com.nextdoor.bender.ipc.datadog;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.config.value.ValueConfig;
 import com.nextdoor.bender.ipc.TransportSerializer;
 
 public class DatadogTransportSerializer implements TransportSerializer {
 
-  private final String apiKey;
+  private final ValueConfig<?> apiKey;
 
-  DatadogTransportSerializer(String apiKey) {
+  DatadogTransportSerializer(ValueConfig<?> apiKey) {
     this.apiKey = apiKey;
   }
 

@@ -18,6 +18,7 @@ package com.nextdoor.bender.ipc.datadog;
 import static org.junit.Assert.assertEquals;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.config.value.StringValueConfig;
 import java.nio.charset.StandardCharsets;
 import org.junit.Test;
 
@@ -25,7 +26,8 @@ public class DatadogTransportSerializerTest {
 
   @Test
   public void shouldSerialize() {
-    DatadogTransportSerializer serializer = new DatadogTransportSerializer("foo");
+    StringValueConfig apiKey = new StringValueConfig("foo");
+    DatadogTransportSerializer serializer = new DatadogTransportSerializer(apiKey);
     InternalEvent record = new InternalEvent("", null, 0);
     record.setEventTime(1521645289128L);
     record.setSerialized("bar");

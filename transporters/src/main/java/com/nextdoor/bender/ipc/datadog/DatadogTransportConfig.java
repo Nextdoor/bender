@@ -18,6 +18,7 @@ package com.nextdoor.bender.ipc.datadog;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.config.value.ValueConfig;
 import com.nextdoor.bender.ipc.tcp.TcpTransportConfig;
 
 @JsonTypeName("Datadog")
@@ -26,9 +27,9 @@ public class DatadogTransportConfig extends TcpTransportConfig {
 
   @JsonSchemaDescription("Datadog API key.")
   @JsonProperty(required = true)
-  private String apiKey;
+  private ValueConfig<?> apiKey;
 
-  public String getApiKey() {
+  public ValueConfig<?> getApiKey() {
     return apiKey;
   }
 
