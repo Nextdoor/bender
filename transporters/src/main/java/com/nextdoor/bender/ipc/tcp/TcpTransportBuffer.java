@@ -27,10 +27,10 @@ public class TcpTransportBuffer implements TransportBuffer, Closeable {
   private final Buffer buffer;
   private final long maxBufferSize;
 
-  public TcpTransportBuffer(TcpTransportConfig config, TransportSerializer serializer) {
+  public TcpTransportBuffer(long maxBufferSize, TransportSerializer serializer) {
     this.serializer = serializer;
     this.buffer = new Buffer();
-    this.maxBufferSize = config.getMaxBufferSize();
+    this.maxBufferSize = maxBufferSize;
   }
 
   @Override

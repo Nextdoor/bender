@@ -25,13 +25,9 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.Socket;
 import java.time.Duration;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-import javax.net.ssl.SSLSocketFactory;
 import okio.Buffer;
-import okio.Okio;
 import okio.Sink;
 import org.apache.log4j.Logger;
 
@@ -45,25 +41,14 @@ public class TcpTransport implements UnpartitionedTransport, Closeable {
   private final Sink sink;
   private final RetryConfig retryConfig;
 
-  TcpTransport(TcpTransportConfig config) throws IOException {
-
-    Socket socket;
-    if (config.getUseSSL()) {
-      socket = SSLSocketFactory.getDefault().createSocket(config.getHostname(), config.getPort());
-    } else {
-      socket = new Socket(config.getHostname(), config.getPort());
-    }
-    socket.setReuseAddress(true);
-    sink = Okio.sink(socket);
-    sink.timeout().timeout(config.getTimeout(), TimeUnit.MILLISECONDS);
-
+  TcpTransport(Sink sink, int retryCount, long retryDelayMs) {
+    this.sink = sink;
     retryConfig = new RetryConfigBuilder()
-        .retryOnSpecificExceptions(IOException.class)
-        .withDelayBetweenTries(Duration.ofMillis(config.getRetryDelay()))
-        .withMaxNumberOfTries(config.getRetryCount())
+        .retryOnSpecificExceptions(TransportException.class)
+        .withDelayBetweenTries(Duration.ofMillis(retryDelayMs))
+        .withMaxNumberOfTries(retryCount + 1)
         .withExponentialBackoff()
         .build();
-
   }
 
   @Override
@@ -71,10 +56,10 @@ public class TcpTransport implements UnpartitionedTransport, Closeable {
 
     Buffer internalBuffer = ((TcpTransportBuffer) buffer).getInternalBuffer();
 
-    Callable<Void> write = () -> {
+    Callable<Boolean> write = () -> {
       try {
         sink.write(internalBuffer, internalBuffer.size());
-        return null;
+        return true;
       } catch (IOException ex) {
         throw new TransportException("Error while sending in tcp transport", ex);
       }

@@ -16,6 +16,7 @@
 package com.nextdoor.bender.ipc.tcp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.eq;
@@ -31,12 +32,9 @@ public class TcpTransportBufferTest {
   @Test
   public void shouldThrowIfBufferSizeOverflow() {
 
-    TcpTransportConfig config = mock(TcpTransportConfig.class);
-    when(config.getMaxBufferSize()).thenReturn(10L);
-
     TransportSerializer serializer = mock(TransportSerializer.class);
 
-    TcpTransportBuffer buffer = new TcpTransportBuffer(config, serializer);
+    TcpTransportBuffer buffer = new TcpTransportBuffer(10L, serializer);
 
     InternalEvent event = new InternalEvent("", null, 0);
     byte[] bytes = "123456789".getBytes();
@@ -50,6 +48,31 @@ public class TcpTransportBufferTest {
       fail("Should throw IllegalStateException");
     } catch (IllegalStateException ex) {
     }
+
+  }
+
+  @Test
+  public void clearShouldEmptyBuffer() {
+
+    TransportSerializer serializer = mock(TransportSerializer.class);
+
+    TcpTransportBuffer buffer = new TcpTransportBuffer(10L, serializer);
+
+    InternalEvent event = new InternalEvent("", null, 0);
+    byte[] bytes = "foo".getBytes();
+    when(serializer.serialize(eq(event))).thenReturn(bytes);
+
+    assertTrue(buffer.add(event));
+    assertEquals(bytes.length, buffer.getInternalBuffer().size());
+    assertFalse(buffer.isEmpty());
+
+    buffer.clear();
+    assertEquals(0L, buffer.getInternalBuffer().size());
+    assertTrue(buffer.isEmpty());
+
+    assertTrue(buffer.add(event));
+    assertEquals(bytes.length, buffer.getInternalBuffer().size());
+    assertFalse(buffer.isEmpty());
 
   }
 

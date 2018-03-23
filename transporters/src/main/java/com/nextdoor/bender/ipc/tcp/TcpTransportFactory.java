@@ -22,6 +22,11 @@ import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
 import java.io.IOException;
+import java.net.Socket;
+import java.util.concurrent.TimeUnit;
+import javax.net.ssl.SSLSocketFactory;
+import okio.Okio;
+import okio.Sink;
 
 /**
  * Creates a {@link TcpTransport} from a {@link TcpTransportConfig}.
@@ -42,7 +47,16 @@ public class TcpTransportFactory implements TransportFactory {
   @Override
   public Transport newInstance() throws TransportFactoryInitException {
     try {
-      return new TcpTransport(config);
+      Socket socket;
+      if (config.getUseSSL()) {
+        socket = SSLSocketFactory.getDefault().createSocket(config.getHostname(), config.getPort());
+      } else {
+        socket = new Socket(config.getHostname(), config.getPort());
+      }
+      socket.setReuseAddress(true);
+      Sink sink = Okio.sink(socket);
+      sink.timeout().timeout(config.getTimeout(), TimeUnit.MILLISECONDS);
+      return new TcpTransport(sink, config.getRetryCount(), config.getRetryDelay());
     } catch (IOException ex) {
       throw new TransportFactoryInitException("Error while creating tcp transport", ex);
     }
@@ -50,7 +64,7 @@ public class TcpTransportFactory implements TransportFactory {
 
   @Override
   public TransportBuffer newTransportBuffer() {
-    return new TcpTransportBuffer(config, new GenericTransportSerializer());
+    return new TcpTransportBuffer(config.getMaxBufferSize(), new GenericTransportSerializer());
   }
 
   @Override

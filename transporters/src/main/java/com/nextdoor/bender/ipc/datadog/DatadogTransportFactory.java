@@ -28,7 +28,7 @@ public class DatadogTransportFactory extends TcpTransportFactory {
   @Override
   public TransportBuffer newTransportBuffer() {
     ValueConfig<?> apiKey = ((DatadogTransportConfig) getConfig()).getApiKey();
-    return new TcpTransportBuffer(getConfig(), new DatadogTransportSerializer(apiKey));
+    return new TcpTransportBuffer(getConfig().getMaxBufferSize(), new DatadogTransportSerializer(apiKey));
   }
 
 }
