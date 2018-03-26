@@ -46,7 +46,7 @@ public abstract class TcpTransportConfig extends TransportConfig {
   @JsonSchemaDefault("10240")
   @JsonProperty(required = false)
   @Min(1024)
-  @Max(102400)
+  @Max(10485760L)
   private Long maxBufferSize = 10240L;
 
   @JsonSchemaDescription("Number of retries to make when a write failure occurs.")
