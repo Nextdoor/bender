@@ -691,6 +691,26 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">log_s3_trigger</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Logs the original S3 notification that triggered the function.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -717,6 +737,11 @@ function sourceButton(element) {
     "sns_notification_arn": {
       "type": "string",
       "description": "SNS Topic to publish function falures to. Do not use this for function retries. Instead use DLQs http://docs.aws.amazon.com/lambda/latest/dg/dlq.html. This requires IAM permission SNS:Publish."
+    },
+    "log_s3_trigger": {
+      "type": "boolean",
+      "default": false,
+      "description": "Logs the original S3 notification that triggered the function."
     }
   },
   "title": "S3Handler",
@@ -805,6 +830,26 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">log_sns_trigger</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Logs the original SNS notification that triggered the function.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -831,6 +876,11 @@ function sourceButton(element) {
     "sns_notification_arn": {
       "type": "string",
       "description": "SNS Topic to publish function falures to. Do not use this for function retries. Instead use DLQs http://docs.aws.amazon.com/lambda/latest/dg/dlq.html. This requires IAM permission SNS:Publish."
+    },
+    "log_sns_trigger": {
+      "type": "boolean",
+      "default": false,
+      "description": "Logs the original SNS notification that triggered the function."
     }
   },
   "title": "SNSS3Handler",
@@ -8764,6 +8814,11 @@ function sourceButton(element) {
         "sns_notification_arn": {
           "type": "string",
           "description": "SNS Topic to publish function falures to. Do not use this for function retries. Instead use DLQs http://docs.aws.amazon.com/lambda/latest/dg/dlq.html. This requires IAM permission SNS:Publish."
+        },
+        "log_s3_trigger": {
+          "type": "boolean",
+          "default": false,
+          "description": "Logs the original S3 notification that triggered the function."
         }
       },
       "title": "S3Handler",
@@ -8791,6 +8846,11 @@ function sourceButton(element) {
         "sns_notification_arn": {
           "type": "string",
           "description": "SNS Topic to publish function falures to. Do not use this for function retries. Instead use DLQs http://docs.aws.amazon.com/lambda/latest/dg/dlq.html. This requires IAM permission SNS:Publish."
+        },
+        "log_sns_trigger": {
+          "type": "boolean",
+          "default": false,
+          "description": "Logs the original SNS notification that triggered the function."
         }
       },
       "title": "SNSS3Handler",

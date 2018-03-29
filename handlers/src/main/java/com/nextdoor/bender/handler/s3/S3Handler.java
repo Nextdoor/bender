@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.s3.event.S3EventNotification;
 import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRecord;
+import com.google.gson.Gson;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
@@ -37,13 +38,21 @@ import com.nextdoor.bender.utils.SourceUtils.SourceNotFoundException;
 public class S3Handler extends BaseHandler<S3EventNotification>
     implements Handler<S3EventNotification> {
   private static final Logger logger = Logger.getLogger(S3Handler.class);
+  private static final Gson gson = new Gson();
   private InternalEventIterator<InternalEvent> recordIterator;
   private Source source;
+  private boolean logTrigger = false;
   protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
 
   public void handler(S3EventNotification event, Context context) throws HandlerException {
     if (!initialized) {
       init(context);
+      S3HandlerConfig handlerConfig = (S3HandlerConfig) this.config.getHandlerConfig();
+      this.logTrigger = handlerConfig.getLogS3Trigger();
+    }
+
+    if (this.logTrigger) {
+      logger.info("trigger: " + gson.toJson(event));
     }
 
     /*

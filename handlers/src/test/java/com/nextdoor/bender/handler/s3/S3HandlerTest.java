@@ -57,7 +57,6 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
   public Handler<S3EventNotification> getHandler() {
     S3Handler handler = new S3Handler();
     handler.s3ClientFactory = this.clientFactory;
-
     return handler;
   }
 

@@ -17,6 +17,7 @@ package com.nextdoor.bender.handler.s3;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.handler.HandlerConfig;
 
@@ -32,11 +33,24 @@ public class S3HandlerConfig extends HandlerConfig {
   @JsonProperty(required = false)
   private String snsNotificationArn = null;
 
+  @JsonSchemaDescription("Logs the original S3 notification that triggered the function.")
+  @JsonProperty(required = false)
+  @JsonSchemaDefault(value = "false")
+  private Boolean logS3Trigger = false;
+
   public String getSnsNotificationArn() {
     return snsNotificationArn;
   }
 
   public void setSnsNotificationArn(String snsNotificationArn) {
     this.snsNotificationArn = snsNotificationArn;
+  }
+
+  public Boolean getLogS3Trigger() {
+    return this.logS3Trigger;
+  }
+
+  public void setLogS3Trigger(Boolean logS3Trigger) {
+    this.logS3Trigger = logS3Trigger;
   }
 }

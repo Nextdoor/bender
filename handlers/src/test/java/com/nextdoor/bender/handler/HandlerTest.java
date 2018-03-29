@@ -24,7 +24,9 @@ import java.io.InputStreamReader;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
 import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.ipc.IpcSenderService;
@@ -32,6 +34,9 @@ import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.testutils.DummyTransportHelper;
 
 public abstract class HandlerTest<T> {
+
+  @Rule
+  public final EnvironmentVariables envVars = new EnvironmentVariables();
 
   public abstract Handler<T> getHandler();
 
@@ -49,6 +54,9 @@ public abstract class HandlerTest<T> {
   public void before() {
     DummyTransportHelper.BufferedTransporter.output.clear();
     BaseHandler.CONFIG_FILE = getConfigFile();
+
+    Handler<T> handler = getHandler();
+    envVars.set("HANDLER", handler.getClass().getSimpleName());
   }
 
   @Test

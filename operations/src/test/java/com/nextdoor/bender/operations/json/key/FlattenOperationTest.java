@@ -34,6 +34,7 @@ public class FlattenOperationTest extends OperationTest {
   @Test
   public void testMutatePayload() throws JsonSyntaxException, IOException, OperationException {
     JsonParser parser = new JsonParser();
+
     JsonElement input = parser.parse(getResourceString("flatten_input.json"));
     String expectedOutput = getResourceString("flatten_output.json");
 
@@ -46,6 +47,6 @@ public class FlattenOperationTest extends OperationTest {
     ievent.setEventObj(devent);
     operation.perform(ievent);
 
-    assertEquals(expectedOutput, input.toString());
+    assertEquals(parser.parse(expectedOutput), input);
   }
 }
