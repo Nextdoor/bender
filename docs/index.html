@@ -1543,13 +1543,15 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GeoIpOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">LowerCaseKeyOperation</span>
+                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FlattenOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
+                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">LowerCaseKeyOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
+                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -2026,6 +2028,98 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-5">
         <div class="box-title" ref="">
+            <div class="box-name ">FlattenOperation</div>
+            <div class="box-description desc"><p>Provided a deeply nested JSON Object, it will flatten out the object into keys with a specific separator (dot by default). For example, if the input is {"foo": {"bar": {"baz": 1}}} the operation will produce {"foo.bar.baz": 1} as the new payload.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">FlattenOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">FlattenOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">separator</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">.</span>
+
+                </div>
+                <div class="signature-description desc"><p>Separator to be used between nested key names (typically a dot(.))</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Provided a deeply nested JSON Object, it will flatten out the object into keys with a specific separator (dot by default). For example, if the input is {\"foo\": {\"bar\": {\"baz\": 1}}} the operation will produce {\"foo.bar.baz\": 1} as the new payload.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "FlattenOperation"
+      ],
+      "default": "FlattenOperation"
+    },
+    "separator": {
+      "type": "string",
+      "default": ".",
+      "description": "Separator to be used between nested key names (typically a dot(.))"
+    }
+  },
+  "title": "FlattenOperation",
+  "required": [
+    "type"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="6">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-6">
+        <div class="box-title" ref="">
             <div class="box-name ">LowerCaseKeyOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will recursively lower case all fields.</p>
 </div>
@@ -2089,9 +2183,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="6">
+                <div class="box-container" boxid="7">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-6">
+    <div class="box-header box-7">
         <div class="box-title" ref="">
             <div class="box-name ">JsonRootNodeOperation</div>
             <div class="box-description desc"><p>Provided a JSON object and a path within the object it will promote the path's element to the root position. For example if the input is {"foo": {"bar": {"baz": 1}}} and specified path $.foo.bar the operation will produce {"baz": 1} as the new payload.</p>
@@ -2179,9 +2273,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="7">
+                <div class="box-container" boxid="8">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-7">
+    <div class="box-header box-8">
         <div class="box-title" ref="">
             <div class="box-name ">JsonKeyNameOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo<strong>str": "one", "bar</strong>long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or _<em>float. It also repalces "." with "</em>" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
@@ -2246,9 +2340,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="8">
+                <div class="box-container" boxid="9">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-8">
+    <div class="box-header box-9">
         <div class="box-title" ref="">
             <div class="box-name ">PartitionOperation</div>
             <div class="box-description desc"><p>Sets the partition information for the Event using fields from the deserialized object. When using JSON use JsonPath format to specify fields. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
@@ -2602,6 +2696,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/GeoIpOperationConfig"
+        },
+        {
+          "$ref": "#/definitions/FlattenOperationConfig"
         },
         {
           "$ref": "#/definitions/LowerCaseKeyOperationConfig"
@@ -8787,6 +8884,9 @@ function sourceButton(element) {
               "$ref": "#/definitions/GeoIpOperationConfig"
             },
             {
+              "$ref": "#/definitions/FlattenOperationConfig"
+            },
+            {
               "$ref": "#/definitions/LowerCaseKeyOperationConfig"
             },
             {
@@ -9031,6 +9131,29 @@ function sourceButton(element) {
         "src_field_name",
         "dst_field_name",
         "geo_lite_db"
+      ]
+    },
+    "FlattenOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Provided a deeply nested JSON Object, it will flatten out the object into keys with a specific separator (dot by default). For example, if the input is {\"foo\": {\"bar\": {\"baz\": 1}}} the operation will produce {\"foo.bar.baz\": 1} as the new payload.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "FlattenOperation"
+          ],
+          "default": "FlattenOperation"
+        },
+        "separator": {
+          "type": "string",
+          "default": ".",
+          "description": "Separator to be used between nested key names (typically a dot(.))"
+        }
+      },
+      "title": "FlattenOperation",
+      "required": [
+        "type"
       ]
     },
     "LowerCaseKeyOperationConfig": {
