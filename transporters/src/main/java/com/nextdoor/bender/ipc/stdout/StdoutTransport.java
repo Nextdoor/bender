@@ -26,5 +26,10 @@ public class StdoutTransport implements UnpartitionedTransport {
   @Override
   public void sendBatch(TransportBuffer buffer) {
     System.out.println(buffer.getInternalBuffer().toString());
+
+    /*
+     * Force a flush as there may not be a newline to trigger the auto flush.
+     */
+    System.out.flush();
   }
 }
