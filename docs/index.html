@@ -7982,7 +7982,7 @@ function sourceButton(element) {
                
             </span>
             <span class="type-keyword">default</span>
-            <span class="type-default">false</span>
+            <span class="type-default">true</span>
 
                 </div>
                 <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
@@ -7999,7 +7999,7 @@ function sourceButton(element) {
                integer
             </span>
             <span class="type-keyword">
-               [1024;102400]
+               [1024;10485760]
             </span>
             <span class="type-keyword">default</span>
             <span class="type-default">10240</span>
@@ -8355,13 +8355,13 @@ function sourceButton(element) {
     },
     "use_ssl": {
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Use SSL connections (certificates are not validated)."
     },
     "max_buffer_size": {
       "type": "integer",
       "minimum": 1024,
-      "maximum": 102400,
+      "maximum": 10485760,
       "default": 10240,
       "description": "Maximum size (in bytes) in memory before triggering a write."
     },
@@ -10710,13 +10710,13 @@ function sourceButton(element) {
         },
         "use_ssl": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Use SSL connections (certificates are not validated)."
         },
         "max_buffer_size": {
           "type": "integer",
           "minimum": 1024,
-          "maximum": 102400,
+          "maximum": 10485760,
           "default": 10240,
           "description": "Maximum size (in bytes) in memory before triggering a write."
         },

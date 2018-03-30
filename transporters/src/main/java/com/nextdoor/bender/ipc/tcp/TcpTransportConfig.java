@@ -38,7 +38,7 @@ public abstract class TcpTransportConfig extends TransportConfig {
   private Integer port;
 
   @JsonSchemaDescription("Use SSL connections (certificates are not validated).")
-  @JsonSchemaDefault(value = "false")
+  @JsonSchemaDefault(value = "true")
   @JsonProperty(required = false)
   private Boolean useSSL = true;
 
