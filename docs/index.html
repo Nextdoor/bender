@@ -2328,7 +2328,7 @@ function sourceButton(element) {
     <div class="box-header box-8">
         <div class="box-title" ref="">
             <div class="box-name ">JsonKeyNameOperation</div>
-            <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo<strong>str": "one", "bar</strong>long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or _<em>float. It also repalces "." with "</em>" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
+            <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo__str": "one", "bar__long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or __float. It also repalces "." with "_" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
 </div>
             <div class="end"></div>
         </div>
