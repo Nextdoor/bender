@@ -1,0 +1,22 @@
+{
+    "num": 123,
+    "string": "foo",
+    "float": 123.45,
+    "bool": false,
+    "null": null,
+    "complex_array": [
+        123,
+        "foo",
+        true,
+        { "nested_obj": { "key": "val" }},
+        null
+    ],
+    "simple_object": {
+        "key": "val"
+    },
+    "more_complex_object": {
+      "parent": {
+          "ha": [ 1, 2, 3 ]
+      }
+    }
+}

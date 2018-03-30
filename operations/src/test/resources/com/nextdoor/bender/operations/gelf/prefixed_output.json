@@ -1,0 +1,1 @@
+{"version":"1.1","host":"localhost","short_message":"foo","full_message":"foo bar","timestamp":1234567.89,"level":1,"facility":"local0","line":12,"file":"foo.py","_extra_str":"extra field","_extra_num":123,"_extra_bool":true}

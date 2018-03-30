@@ -1597,11 +1597,13 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">LowerCaseKeyOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
+                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GelfOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonRootNodeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -2237,6 +2239,251 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-7">
         <div class="box-title" ref="">
+            <div class="box-name ">GelfOperation</div>
+            <div class="box-description desc"><p>Transforms JSON input into a GELF message format (See <a href="http://docs.graylog.org/en/2.4/pages/gelf.html">http://docs.graylog.org/en/2.4/pages/gelf.html</a> details). Note that when selecting source fields use the JsonPath notation <a href="https://github.com/json-path/JsonPath">https://github.com/json-path/JsonPath</a>.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">GelfOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">GelfOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">src_host_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing host string</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">src_short_message_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing short_message string</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">src_full_message_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing fullt_message string</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">src_timestamp_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">src_level_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing syslog level number</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">src_facility_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing syslog facility string</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">src_line_number_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing the line in a file that caused the error (decimal); optional, deprecated. Send as additional field instead.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">src_file_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Field containing the file (with path if you want) that caused the error (string); optional, deprecated. Send as additional field instead.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Transforms JSON input into a GELF message format (See http://docs.graylog.org/en/2.4/pages/gelf.html details). Note that when selecting source fields use the JsonPath notation https://github.com/json-path/JsonPath.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "GelfOperation"
+      ],
+      "default": "GelfOperation"
+    },
+    "src_host_field": {
+      "type": "string",
+      "description": "Field containing host string"
+    },
+    "src_short_message_field": {
+      "type": "string",
+      "description": "Field containing short_message string"
+    },
+    "src_full_message_field": {
+      "type": "string",
+      "description": "Field containing fullt_message string"
+    },
+    "src_timestamp_field": {
+      "type": "string",
+      "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent."
+    },
+    "src_level_field": {
+      "type": "string",
+      "description": "Field containing syslog level number"
+    },
+    "src_facility_field": {
+      "type": "string",
+      "description": "Field containing syslog facility string"
+    },
+    "src_line_number_field": {
+      "type": "string",
+      "description": "Field containing the line in a file that caused the error (decimal); optional, deprecated. Send as additional field instead."
+    },
+    "src_file_field": {
+      "type": "string",
+      "description": "Field containing the file (with path if you want) that caused the error (string); optional, deprecated. Send as additional field instead."
+    }
+  },
+  "title": "GelfOperation",
+  "required": [
+    "type",
+    "src_host_field",
+    "src_short_message_field"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="8">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-8">
+        <div class="box-title" ref="">
             <div class="box-name ">JsonRootNodeOperation</div>
             <div class="box-description desc"><p>Provided a JSON object and a path within the object it will promote the path's element to the root position. For example if the input is {"foo": {"bar": {"baz": 1}}} and specified path $.foo.bar the operation will produce {"baz": 1} as the new payload.</p>
 </div>
@@ -2323,9 +2570,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="8">
+                <div class="box-container" boxid="9">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-8">
+    <div class="box-header box-9">
         <div class="box-title" ref="">
             <div class="box-name ">JsonKeyNameOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo__str": "one", "bar__long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or __float. It also repalces "." with "_" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
@@ -2390,9 +2637,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="9">
+                <div class="box-container" boxid="10">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-9">
+    <div class="box-header box-10">
         <div class="box-title" ref="">
             <div class="box-name ">PartitionOperation</div>
             <div class="box-description desc"><p>Sets the partition information for the Event using fields from the deserialized object. When using JSON use JsonPath format to specify fields. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
@@ -2752,6 +2999,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/LowerCaseKeyOperationConfig"
+        },
+        {
+          "$ref": "#/definitions/GelfOperationConfig"
         },
         {
           "$ref": "#/definitions/JsonRootNodeOperationConfig"
@@ -9489,6 +9739,9 @@ function sourceButton(element) {
               "$ref": "#/definitions/LowerCaseKeyOperationConfig"
             },
             {
+              "$ref": "#/definitions/GelfOperationConfig"
+            },
+            {
               "$ref": "#/definitions/JsonRootNodeOperationConfig"
             },
             {
@@ -9771,6 +10024,58 @@ function sourceButton(element) {
       "title": "LowerCaseKeyOperation",
       "required": [
         "type"
+      ]
+    },
+    "GelfOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Transforms JSON input into a GELF message format (See http://docs.graylog.org/en/2.4/pages/gelf.html details). Note that when selecting source fields use the JsonPath notation https://github.com/json-path/JsonPath.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "GelfOperation"
+          ],
+          "default": "GelfOperation"
+        },
+        "src_host_field": {
+          "type": "string",
+          "description": "Field containing host string"
+        },
+        "src_short_message_field": {
+          "type": "string",
+          "description": "Field containing short_message string"
+        },
+        "src_full_message_field": {
+          "type": "string",
+          "description": "Field containing fullt_message string"
+        },
+        "src_timestamp_field": {
+          "type": "string",
+          "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent."
+        },
+        "src_level_field": {
+          "type": "string",
+          "description": "Field containing syslog level number"
+        },
+        "src_facility_field": {
+          "type": "string",
+          "description": "Field containing syslog facility string"
+        },
+        "src_line_number_field": {
+          "type": "string",
+          "description": "Field containing the line in a file that caused the error (decimal); optional, deprecated. Send as additional field instead."
+        },
+        "src_file_field": {
+          "type": "string",
+          "description": "Field containing the file (with path if you want) that caused the error (string); optional, deprecated. Send as additional field instead."
+        }
+      },
+      "title": "GelfOperation",
+      "required": [
+        "type",
+        "src_host_field",
+        "src_short_message_field"
       ]
     },
     "JsonRootNodeOperationConfig": {
