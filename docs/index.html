@@ -3455,9 +3455,11 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Splunk</span>
         <span class="type-keyword"></span>
-                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
+                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Stdout</span>
         <span class="type-keyword"></span>
-                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Datadog</span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
+        <span class="type-keyword"></span>
+                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Datadog</span>
 
                 </div>
                 <div class="signature-description desc"><p>Transport configuration</p>
@@ -8049,6 +8051,98 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-8">
         <div class="box-title" ref="">
+            <div class="box-name ">Stdout</div>
+            <div class="box-description desc"><p>Writes events out to the console for testing and debugging</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">Stdout</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">Stdout</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">threads</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">5</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of concurrent transporters allowed</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Writes events out to the console for testing and debugging",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "Stdout"
+      ],
+      "default": "Stdout"
+    },
+    "threads": {
+      "type": "integer",
+      "default": 5,
+      "description": "Number of concurrent transporters allowed"
+    }
+  },
+  "title": "Stdout",
+  "required": [
+    "type"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="9">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-9">
+        <div class="box-title" ref="">
             <div class="box-name ">Firehose</div>
             <div class="box-description desc"><p>Transports events to AWS Kinesis Firehose. This transport is agnostic of the data being sent. However there are important limits to consider. The maximum size of a single Firehose record can not exceed 1000kb and the maximum for a batch is 4mb. Events larger than 1000kb will not be split across multiple Records. The transport contains two types of buffers. In BATCH mode it will attempt to write multiple events into a single Firehose Record in order to minimize number of Records sent. In SIMPLE mode each serialized event is putinto a its own Record. Firehose sinks like ElasticSearch require each event be its own Firehose Record.Required IAM permissions are: firehose:DescribeDeliveryStream, firehose:ListDeliveryStreams, firehose:PutRecord, firehose:PutRecordBatch</p>
 </div>
@@ -8274,9 +8368,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="9">
+                <div class="box-container" boxid="10">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-9">
+    <div class="box-header box-10">
         <div class="box-title" ref="">
             <div class="box-name ">Datadog</div>
             <div class="box-description desc"><p>Writes events to a Datadog endpoint.</p>
@@ -9559,6 +9653,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/SplunkTransportConfig"
+        },
+        {
+          "$ref": "#/definitions/StdoutTransportConfig"
         },
         {
           "$ref": "#/definitions/FirehoseTransportConfig"
@@ -11105,6 +11202,29 @@ function sourceButton(element) {
         "auth_token"
       ]
     },
+    "StdoutTransportConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Writes events out to the console for testing and debugging",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Stdout"
+          ],
+          "default": "Stdout"
+        },
+        "threads": {
+          "type": "integer",
+          "default": 5,
+          "description": "Number of concurrent transporters allowed"
+        }
+      },
+      "title": "Stdout",
+      "required": [
+        "type"
+      ]
+    },
     "FirehoseTransportConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -11445,6 +11565,9 @@ function sourceButton(element) {
             "$ref": "#/definitions/SplunkTransportConfig"
           },
           {
+            "$ref": "#/definitions/StdoutTransportConfig"
+          },
+          {
             "$ref": "#/definitions/FirehoseTransportConfig"
           },
           {
@@ -11538,6 +11661,9 @@ function sourceButton(element) {
           },
           {
             "$ref": "#/definitions/SplunkTransportConfig"
+          },
+          {
+            "$ref": "#/definitions/StdoutTransportConfig"
           },
           {
             "$ref": "#/definitions/FirehoseTransportConfig"
