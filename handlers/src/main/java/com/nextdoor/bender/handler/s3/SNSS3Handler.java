@@ -28,6 +28,7 @@ import com.amazonaws.services.lambda.runtime.events.SNSEvent.SNSRecord;
 import com.amazonaws.services.s3.event.S3EventNotification;
 import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRecord;
 import com.amazonaws.services.sns.AmazonSNSClient;
+import com.google.gson.Gson;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
@@ -41,9 +42,11 @@ import com.nextdoor.bender.utils.SourceUtils.SourceNotFoundException;
 
 public class SNSS3Handler extends BaseHandler<SNSEvent> implements Handler<SNSEvent> {
   private static final Logger logger = Logger.getLogger(SNSS3Handler.class);
+  private static final Gson gson = new Gson();
   private InternalEventIterator<InternalEvent> recordIterator;
   private List<String> inputFiles;
   private Source source;
+  private boolean logTrigger = false;
   protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
   protected AmazonSNSClientFactory snsClientFactory = new AmazonSNSClientFactory();
 
@@ -51,9 +54,16 @@ public class SNSS3Handler extends BaseHandler<SNSEvent> implements Handler<SNSEv
   public void handler(SNSEvent event, Context context) throws HandlerException {
     if (!initialized) {
       init(context);
+      SNSS3HandlerConfig handlerConfig = (SNSS3HandlerConfig) this.config.getHandlerConfig();
+      this.logTrigger = handlerConfig.getLogSnsTrigger();
     }
+
     this.source = this.sources.get(0);
     this.inputFiles = new ArrayList<String>(0);
+
+    if (this.logTrigger) {
+      logger.info("trigger: " + gson.toJson(event));
+    }
 
     for (SNSRecord record : event.getRecords()) {
       /*

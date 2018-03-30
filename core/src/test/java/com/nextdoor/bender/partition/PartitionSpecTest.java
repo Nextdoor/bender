@@ -18,6 +18,7 @@ package com.nextdoor.bender.partition;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -25,8 +26,6 @@ import org.junit.Test;
 import com.nextdoor.bender.config.BenderConfig;
 import com.nextdoor.bender.partition.PartitionSpec.Interpreter;
 import com.nextdoor.bender.partition.PartitionSpec.StringFormat;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 public class PartitionSpecTest {
 
