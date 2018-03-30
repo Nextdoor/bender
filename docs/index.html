@@ -2240,7 +2240,7 @@ function sourceButton(element) {
     <div class="box-header box-7">
         <div class="box-title" ref="">
             <div class="box-name ">GelfOperation</div>
-            <div class="box-description desc"><p>Adds GELF message fields to the event from specified source fields. Note that GELF requires custom fields to be prefixed with _ and only allows fields matching "^[\w.-]*$". You must use use a renamer, flattener, and prefixer to achieve this separately from this operation. See <a href="http://docs.graylog.org/en/2.4/pages/gelf.html">http://docs.graylog.org/en/2.4/pages/gelf.html</a> details on the format. If using JSON as your deserializer you must specify source fields with JsonPath notation: <a href="https://github.com/json-path/JsonPath">https://github.com/json-path/JsonPath</a></p>
+            <div class="box-description desc"><p>Transforms JSON input into a GELF message format (See <a href="http://docs.graylog.org/en/2.4/pages/gelf.html">http://docs.graylog.org/en/2.4/pages/gelf.html</a> details). Note that when selecting source fields use the JsonPath notation <a href="https://github.com/json-path/JsonPath">https://github.com/json-path/JsonPath</a>.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -2426,7 +2426,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Adds GELF message fields to the event from specified source fields. Note that GELF requires custom fields to be prefixed with _ and only allows fields matching \"^[\\w\\.\\-]*$\". You must use use a renamer, flattener, and prefixer to achieve this separately from this operation. See http://docs.graylog.org/en/2.4/pages/gelf.html details on the format. If using JSON as your deserializer you must specify source fields with JsonPath notation: https://github.com/json-path/JsonPath",
+  "description": "Transforms JSON input into a GELF message format (See http://docs.graylog.org/en/2.4/pages/gelf.html details). Note that when selecting source fields use the JsonPath notation https://github.com/json-path/JsonPath.",
   "properties": {
     "type": {
       "type": "string",
@@ -10029,7 +10029,7 @@ function sourceButton(element) {
     "GelfOperationConfig": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Adds GELF message fields to the event from specified source fields. Note that GELF requires custom fields to be prefixed with _ and only allows fields matching \"^[\\w\\.\\-]*$\". You must use use a renamer, flattener, and prefixer to achieve this separately from this operation. See http://docs.graylog.org/en/2.4/pages/gelf.html details on the format. If using JSON as your deserializer you must specify source fields with JsonPath notation: https://github.com/json-path/JsonPath",
+      "description": "Transforms JSON input into a GELF message format (See http://docs.graylog.org/en/2.4/pages/gelf.html details). Note that when selecting source fields use the JsonPath notation https://github.com/json-path/JsonPath.",
       "properties": {
         "type": {
           "type": "string",
