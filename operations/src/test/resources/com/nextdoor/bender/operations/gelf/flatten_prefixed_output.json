@@ -1,0 +1,1 @@
+{"_num":123,"_string":"foo","_float":123.45,"_bool":false,"_null":null,"_complex_array.1":123,"_complex_array.2":"foo","_complex_array.3":true,"_complex_array.4.nested_obj.key":"val","_complex_array.5":null,"_simple_object.key":"val","_more_complex_object.parent.ha.1":1,"_more_complex_object.parent.ha.2":2,"_more_complex_object.parent.ha.3":3}

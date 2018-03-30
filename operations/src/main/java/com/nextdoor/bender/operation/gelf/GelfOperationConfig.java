@@ -21,12 +21,9 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("GelfOperation")
-@JsonSchemaDescription("Adds GELF message fields to the event from specified source fields. Note that "
-    + "GELF requires custom fields to be prefixed with _ and only allows fields matching "
-    + "\"^[\\w\\.\\-]*$\". You must use use a renamer, flattener, and prefixer to achieve this "
-    + "separately from this operation. See http://docs.graylog.org/en/2.4/pages/gelf.html details "
-    + "on the format. If using JSON as your deserializer you must specify source fields with JsonPath "
-    + "notation: https://github.com/json-path/JsonPath")
+@JsonSchemaDescription("Transforms JSON input into a GELF message format "
+    + "(See http://docs.graylog.org/en/2.4/pages/gelf.html details). Note that when "
+    + "selecting source fields use the JsonPath notation https://github.com/json-path/JsonPath.")
 public class GelfOperationConfig extends OperationConfig {
   @JsonSchemaDescription("Field containing host string")
   @JsonProperty(required = true)

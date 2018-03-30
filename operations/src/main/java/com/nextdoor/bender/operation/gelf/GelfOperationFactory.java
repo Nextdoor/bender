@@ -19,25 +19,24 @@ import java.util.ArrayList;
 
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.operation.OperationFactory;
-import com.nextdoor.bender.operation.substitution.SubstitutionOperation;
 import com.nextdoor.bender.operation.substitution.SubstitutionSpec;
 import com.nextdoor.bender.operation.substitution.SubstitutionSpec.Interpreter;
 
 /**
- * Create a {@link SubstitutionOperation} with GELF defaults.
+ * Create a {@link GelfOperation} with GELF defaults.
  */
 public class GelfOperationFactory implements OperationFactory {
   private GelfOperationConfig config;
   private ArrayList<SubstitutionSpec> subSpecs;
 
   @Override
-  public SubstitutionOperation newInstance() {
-    return new SubstitutionOperation(this.subSpecs);
+  public GelfOperation newInstance() {
+    return new GelfOperation(this.subSpecs);
   }
 
   @Override
-  public Class<SubstitutionOperation> getChildClass() {
-    return SubstitutionOperation.class;
+  public Class<GelfOperation> getChildClass() {
+    return GelfOperation.class;
   }
 
   @Override

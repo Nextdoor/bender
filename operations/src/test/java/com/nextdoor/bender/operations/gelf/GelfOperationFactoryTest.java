@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.operation.gelf;
+package com.nextdoor.bender.operations.gelf;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,7 +23,9 @@ import java.util.Comparator;
 
 import org.junit.Test;
 
-import com.nextdoor.bender.operation.substitution.SubstitutionOperation;
+import com.nextdoor.bender.operation.gelf.GelfOperation;
+import com.nextdoor.bender.operation.gelf.GelfOperationConfig;
+import com.nextdoor.bender.operation.gelf.GelfOperationFactory;
 import com.nextdoor.bender.operation.substitution.SubstitutionSpec;
 import com.nextdoor.bender.operation.substitution.SubstitutionSpec.Interpreter;
 
@@ -39,7 +41,7 @@ public class GelfOperationFactoryTest {
     GelfOperationFactory factory = new GelfOperationFactory();
     factory.setConf(config);
 
-    SubstitutionOperation op = factory.newInstance();
+    GelfOperation op = factory.newInstance();
     ArrayList<SubstitutionSpec> actual = op.getSubSpecs();
 
     ArrayList<SubstitutionSpec> expected = new ArrayList<SubstitutionSpec>();
