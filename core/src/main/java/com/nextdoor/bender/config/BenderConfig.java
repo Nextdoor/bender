@@ -117,6 +117,7 @@ public class BenderConfig {
     private ArrayList<Class> subtypes = new ArrayList<Class>();
 
     public Subtypes() {
+      logger.debug("Generating BenderConfig object... this can take a little bit");
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(HandlerConfig.class)));
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(DeserializerConfig.class)));
       subtypes.addAll(ImmutableList.copyOf(AbstractConfig.getSubtypes(OperationConfig.class)));
@@ -224,6 +225,7 @@ public class BenderConfig {
 
   public static boolean validate(String data, ObjectMapper objectMapper, BenderSchema benderSchema)
       throws ConfigurationException {
+
     ProcessingReport report;
     try {
       /*
@@ -300,7 +302,7 @@ public class BenderConfig {
     return mapper;
   }
 
-  protected static BenderConfig load(String filename, String data) {
+  public static BenderConfig load(String filename, String data) {
     String swappedData = swapEnvironmentVariables(data);
     /*
      * Configure Mapper and register polymorphic types
