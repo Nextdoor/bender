@@ -235,6 +235,7 @@ public class Bender {
      * Invoke handler
      */
     handler.handler(kevent, ctx);
+    handler.shutdown();
   }
 
   /**

@@ -106,8 +106,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
     String configFile;
 
     /*
-     * TODO: Replace this to always use env vars. Code was written prior to
-     * lambda env vars existing.
+     * TODO: Replace this to always use env vars. Code was written prior to lambda env vars
+     * existing.
      */
     if (System.getenv("BENDER_CONFIG") != null) {
       configFile = System.getenv("BENDER_CONFIG");
@@ -337,7 +337,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
      * Wait for transporters to finish
      */
     try {
-      this.getIpcService().shutdown();
+      this.getIpcService().flush();
     } catch (TransportException e) {
       throw new HandlerException("encounted TransportException while shutting down ipcService", e);
     } catch (InterruptedException e) {
@@ -355,6 +355,15 @@ public abstract class BaseHandler<T> implements Handler<T> {
       if (logger.isTraceEnabled()) {
         getGCStats();
       }
+    }
+  }
+
+  /*
+   * Method that gracefully terminate bender threads. For use via the CLI or local execution.
+   */
+  public void shutdown() {
+    if (this.getIpcService() != null) {
+      this.getIpcService().shutdown();
     }
   }
 

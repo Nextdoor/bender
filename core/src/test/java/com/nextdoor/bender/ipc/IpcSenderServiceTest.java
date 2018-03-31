@@ -180,7 +180,7 @@ public class IpcSenderServiceTest {
     /*
      * Flush anything left in the buffer
      */
-    ipc.shutdown();
+    ipc.flush();
 
     /*
      * Verify expected calls
@@ -219,7 +219,7 @@ public class IpcSenderServiceTest {
       ipc.add(mock(InternalEvent.class));
     }
 
-    ipc.shutdown();
+    ipc.flush();
 
     /*
      * Service should create three runnables and each will fork the stats object and call start,
@@ -261,7 +261,7 @@ public class IpcSenderServiceTest {
     }
 
     try {
-      ipc.shutdown();
+      ipc.flush();
     } catch (TransportException e) {
       // expected
     }
@@ -289,7 +289,7 @@ public class IpcSenderServiceTest {
      * Expect shutdown to throw a TransportException when a child thread also throws as
      * TransportException
      */
-    ipc.shutdown();
+    ipc.flush();
   }
 
   private static class DummyEvent extends InternalEvent {
@@ -360,7 +360,7 @@ public class IpcSenderServiceTest {
     /*
      * Flush anything left in the buffer
      */
-    ipc.shutdown();
+    ipc.flush();
 
     /*
      * Verify expected calls

@@ -149,7 +149,7 @@ public class IpcSenderService extends MonitoredProcess {
    * @throws InterruptedException interrupted while waiting for calls to complete.
    * @throws TransportException not all transports succeeded.
    */
-  synchronized public void shutdown() throws InterruptedException, TransportException {
+  synchronized public void flush() throws InterruptedException, TransportException {
     synchronized (buffers) {
       /*
        * Send what remains in the buffers
@@ -182,6 +182,16 @@ public class IpcSenderService extends MonitoredProcess {
     if (this.hasUnrecoverableException.getAndSet(false)) {
       throw new TransportException("Not all transports succeeded");
     }
+  }
+
+  synchronized public void shutdown() {
+    try {
+      flush();
+    } catch (InterruptedException | TransportException e) {
+      logger.warn("caught error while flushing", e);
+    }
+
+    this.pool.shutdown();
   }
 
   public boolean hasUnrecoverableException() {
