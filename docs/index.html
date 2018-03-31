@@ -8476,7 +8476,27 @@ function sourceButton(element) {
             <span class="type-default">true</span>
 
                 </div>
-                <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
+                <div class="signature-description desc"><p>Use SSL/TLS connections.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">verify_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">true</span>
+
+                </div>
+                <div class="signature-description desc"><p>Verify SSL/TLS certificates.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -8847,7 +8867,12 @@ function sourceButton(element) {
     "use_ssl": {
       "type": "boolean",
       "default": true,
-      "description": "Use SSL connections (certificates are not validated)."
+      "description": "Use SSL/TLS connections."
+    },
+    "verify_ssl": {
+      "type": "boolean",
+      "default": true,
+      "description": "Verify SSL/TLS certificates."
     },
     "max_buffer_size": {
       "type": "integer",
@@ -11319,7 +11344,12 @@ function sourceButton(element) {
         "use_ssl": {
           "type": "boolean",
           "default": true,
-          "description": "Use SSL connections (certificates are not validated)."
+          "description": "Use SSL/TLS connections."
+        },
+        "verify_ssl": {
+          "type": "boolean",
+          "default": true,
+          "description": "Verify SSL/TLS certificates."
         },
         "max_buffer_size": {
           "type": "integer",
