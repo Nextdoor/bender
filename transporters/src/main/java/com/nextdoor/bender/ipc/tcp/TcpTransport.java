@@ -41,7 +41,7 @@ public class TcpTransport implements UnpartitionedTransport, Closeable {
   private final Sink sink;
   private final RetryConfig retryConfig;
 
-  TcpTransport(Sink sink, int retryCount, long retryDelayMs) {
+  public TcpTransport(Sink sink, int retryCount, long retryDelayMs) {
     this.sink = sink;
     retryConfig = new RetryConfigBuilder()
         .retryOnSpecificExceptions(TransportException.class)

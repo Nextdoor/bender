@@ -37,10 +37,15 @@ public abstract class TcpTransportConfig extends TransportConfig {
   @Max(65535)
   private Integer port;
 
-  @JsonSchemaDescription("Use SSL connections (certificates are not validated).")
+  @JsonSchemaDescription("Use SSL/TLS connections.")
   @JsonSchemaDefault(value = "true")
   @JsonProperty(required = false)
   private Boolean useSSL = true;
+
+  @JsonSchemaDescription("Verify SSL/TLS certificates.")
+  @JsonSchemaDefault(value = "true")
+  @JsonProperty(required = false)
+  private Boolean verifySSL = true;
 
   @JsonSchemaDescription("Maximum size (in bytes) in memory before triggering a write.")
   @JsonSchemaDefault("10240")
@@ -80,6 +85,10 @@ public abstract class TcpTransportConfig extends TransportConfig {
 
   public Boolean getUseSSL() {
     return useSSL;
+  }
+
+  public Boolean getVerifySSL() {
+    return verifySSL;
   }
 
   public Long getMaxBufferSize() {

@@ -274,6 +274,11 @@ public class BenderConfig {
 
     Map<String, String> env = System.getenv();
     for (String envName : env.keySet()) {
+      if (envName.contains(".")) {
+        logger.warn("skipping " + envName + " because it contains '.' which is not allowed");
+        continue;
+      }
+
       template.add(envName, env.get(envName));
     }
 
