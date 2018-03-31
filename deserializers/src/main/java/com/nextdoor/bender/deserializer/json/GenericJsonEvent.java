@@ -78,16 +78,11 @@ public class GenericJsonEvent implements DeserializedEvent {
       throw new IllegalArgumentException("payload is null");
     }
 
+    if (!fieldName.startsWith("$.")) {
+      fieldName = "$." + fieldName;
+    }
+
     int lastDot = fieldName.lastIndexOf('.');
-
-    if (lastDot == -1) {
-      throw new IllegalArgumentException("Unable to find '.' in field name denoting path");
-    }
-
-    if (!fieldName.startsWith("$")) {
-      throw new IllegalArgumentException("Field name must be a path and must start with '$'");
-    }
-
     DocumentContext json = JsonPathProvider.parse(this.payload.getAsJsonObject());
     String path = fieldName.substring(0, lastDot);
     String field = fieldName.substring(lastDot + 1);
