@@ -100,7 +100,7 @@ public abstract class HandlerTest<T> {
     fhandler.init(ctx);
 
     IpcSenderService ipcSpy = spy(fhandler.getIpcService());
-    doThrow(new TransportException("expected")).when(ipcSpy).shutdown();
+    doThrow(new TransportException("expected")).when(ipcSpy).flush();
     fhandler.setIpcService(ipcSpy);
 
     T event = getTestEvent();
