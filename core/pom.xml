@@ -61,6 +61,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-lambda-java-log4j</artifactId>
       <version>${aws-lambda-java-log4j.version}</version>

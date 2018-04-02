@@ -94,6 +94,131 @@ metrics for easy consumption in
 * Cloudwatch Metrics
 * Datadog
 
+## Local Development/Testing
+When you are developing your configuration (or a new transport), you may want
+to test the configuration with some local data. This can be done with the CLI
+tool.
+
+The Bender CLI tool operates almost entirely as if it were in Lambda. It mocks
+out the appropriate source of the event (Kinesis, S3, etc) and passes the data
+in to the Handler exactly the way Lambda would.
+
+_(Note, this only supports the KinesisHandler at the moment)_.
+
+### Command Line Arguments
+
+```bash
+$ java -jar bender-cli-1.0.0-SNAPSHOT.jar
+2018-03-30 11:06:27,482 ERROR - Missing required option: s
+usage: BENDER_CONFIG=file://config.yaml java bender-cli-1.0.0-SNAPSHOT.jar
+ -H,--help                        Print this message
+ -h,--handler <arg>               Which Event Handler do you want to simulate?
+                                  Your options are: KinesisHandler.
+                                  Default: KinesisHandler
+    --kinesis_stream_name <arg>   What stream name should we mimic? Default: log-stream (Kinesis
+                                  Handler Only)
+ -s,--source_file <arg>           Reference to the file that you want to process. Usage depends on
+                                  the Handler you chose. If you chose KinesisHandler then this is a
+                                  local file.
+```
+
+### Actual processing of data
+
+You can use the Bender CLI tool to actually process data and push it to your
+destination. This is not the ended production use of the tool, but for validation
+of your configuration this can work very well.
+
+Here is an example of processing some data, and outputting a simple local file
+with the new data.
+
+*`config.yaml`*
+```yaml
+handler:
+  type: KinesisHandler
+  fail_on_exception: true
+  add_shardid_to_partitions: true
+sources:
+- name: Syslog Messages
+  source_regex: arn:aws:kinesis:.*:.*:stream/.*
+  deserializer:
+    type: GenericJson
+    nested_field_configs:
+    - field: MESSAGE
+      prefix_field: MESSAGE_PREFIX
+  operations:
+  - type: TimeOperation
+    time_field: $.EPOCH
+    time_field_type: SECONDS
+  - type: JsonKeyNameOperation
+  - type: JsonDropArraysOperation
+wrapper:
+  type: KinesisWrapper
+serializer:
+  type: Json
+transport:
+  type: File
+  filename: output.json
+```
+
+*`data.json`*
+```json
+{"program":"app","host":"myhost.com","facility":"local0","priority":"info","message":"Some prefix ... {\"type\":\"image\",\"action\":\"pull\",\"time\":1522366659,\"id\":\"image:id\",\"actor\":{\"id\":\"image:id\",\"attributes\":{\"name\":\"image\"}},\"timenano\":1522366659090067620,\"status\":\"pull\"}","epoch":"1522366659.091506"}
+```
+
+*Execution*
+```bash
+$ BENDER_CONFIG=file://config.yaml java -jar bender-cli-1.0.0-SNAPSHOT.jar --source_file data.json
+2018-03-30 11:26:24,278 INFO  - Invoking the Kinesis Handler...
+2018-03-30 11:26:24,950 INFO  - Parsing local0.mini.json...
+2018-03-30 11:26:25,011 INFO  - Processed 1000 records
+2018-03-30 11:26:25,031 INFO  - Bender Initializing (config: file://config.yaml)
+2018-03-30 11:26:25,040 DEBUG - Generating BenderConfig object... this can take a little bit
+2018-03-30 11:26:30,447 INFO  - Using source: Syslog Messages[sourceRegex=arn:aws:kinesis:.*:.*:stream/.*, containsStrings=[], regexPatterns=[]], deserializers=[GenericJsonDeserializer]], operations=[TimeOperation, KeyNameOperation, DropArraysOperation]]
+```
+
+*Output*
+Here's the output of the file.. just the first line:
+```bash
+$ head -1 output.json
+{"partition_key":"1","sequence_number":"744","source_arn":"arn:aws:kinesis:us-east-1:123456789:stream/log-stream","function_name":"cli-main","processing_time":1522434390690,"arrival_time":1522434384946,"processing_delay":67731599,"timestamp":1522366659091,"payload":{"program__str":"app","host__str":"myhost.com","facility__str":"local0","priority__str":"info","message":{"type__str":"image","action__str":"pull","time__long":1522366659,"id__str":"image:id","actor":{"id__str":"image:id","attributes":{"name__str":"image"}},"timenano__long":1522366659090067620,"status__str":"pull"},"message_prefix__str":"Some prefix ... "  ,"epoch__str":"1522366659.091506"}}
+```
+
+Here is the output in a slightly more readable format:
+```json
+{
+  "partition_key": "1",
+  "sequence_number": "744",
+  "source_arn": "arn:aws:kinesis:us-east-1:123456789:stream/log-stream",
+  "function_name": "cli-main",
+  "processing_t  ime": 1522434390690,
+  "arrival_time": 1522434384946,
+  "processing_delay": 67731599,
+  "timestamp": 1522366659091,
+  "payload": {
+    "program__str": "app",
+    "host__str": "myhost.com",
+    "facility__str": "local0",
+    "priority__str": "info",
+    "message": {
+      "type__str": "image",
+      "action__str": "pull",
+      "time__long": 1522366659,
+      "id__str": "image:id",
+      "actor": {
+        "id__str": "image:id",
+        "attributes": {
+          "name__str": "image"
+        }
+      },
+      "timenano__long": 1522366659090067700,
+      "status__str": "pull"
+    },
+    "message_prefix__str": "Some prefix ... ",
+    "epoch__str": "1522366659.091506"
+  }
+}
+```
+
 ## Deployment
 
 The easiest way to deploy your function is to use

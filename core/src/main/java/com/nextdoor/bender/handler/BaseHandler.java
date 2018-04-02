@@ -15,6 +15,9 @@
 
 package com.nextdoor.bender.handler;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
@@ -30,6 +33,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -119,10 +123,14 @@ public abstract class BaseHandler<T> implements Handler<T> {
     try {
       if (configFile.startsWith("s3://")) {
         config = BenderConfig.load(s3ClientFactory, new AmazonS3URI(configFile));
+      } else if (configFile.startsWith("file://")) {
+        File file = new File(configFile.replaceFirst("file://", ""));
+        String string = FileUtils.readFileToString(file);
+        config = BenderConfig.load(configFile, string);
       } else {
         config = BenderConfig.load(configFile);
       }
-    } catch (ConfigurationException e) {
+    } catch (ConfigurationException | IOException e) {
       throw new HandlerException("Error loading configuration: " + e.getMessage(), e);
     }
 
