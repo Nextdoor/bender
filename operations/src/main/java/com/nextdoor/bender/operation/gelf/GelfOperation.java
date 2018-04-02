@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.Operation;
@@ -30,6 +31,7 @@ import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.json.key.FlattenOperation;
 import com.nextdoor.bender.operation.substitution.SubstitutionOperation;
 import com.nextdoor.bender.operation.substitution.SubstitutionSpec;
+import com.nextdoor.bender.time.TimeOperation;
 
 public class GelfOperation implements Operation {
 
@@ -85,6 +87,49 @@ public class GelfOperation implements Operation {
     return ievent;
   }
 
+  /**
+   * Parses through the internal JSON Deserialized Event and optionally adds a "timestamp" key.
+   *
+   * If the "timestamp" key already exists, this method does nothing and bails out. If there
+   * is no "timestamp" key, and either the EventTime or ArrivalTime of the {@link InternalEvent}
+   * have been set (presumably by the {@link TimeOperation}), then these are used to set the
+   * "timestamp" key in the object.
+   *
+   * @param ievent
+   * @return {@link InternalEvent}
+   */
+  protected InternalEvent setTimestamp(InternalEvent ievent) {
+    DeserializedEvent devent;
+    if ((devent = ievent.getEventObj()) == null) {
+      return null;
+    }
+
+    Object payload = devent.getPayload();
+
+    if (payload == null) {
+      return null;
+    }
+
+    JsonObject obj = (JsonObject) payload;
+
+    if (obj.has("timestamp")) {
+      return ievent;
+    }
+
+    double timestamp;
+    if (ievent.getEventTime() > 1) {
+      timestamp = ievent.getEventTime() / 1000.0;
+    } else if (ievent.getArrivalTime() > 1) {
+      timestamp = ievent.getArrivalTime() / 1000.0;
+    } else {
+      return ievent;
+    }
+
+    obj.add("timestamp", new JsonPrimitive(timestamp));
+
+    return ievent;
+  }
+
   public InternalEvent perform(InternalEvent ievent) {
     /*
      * Substitute
@@ -100,6 +145,11 @@ public class GelfOperation implements Operation {
      * Prefix
      */
     ievent = prefix(ievent);
+
+    /*
+     * Rewrite the timestamp field from the Internal Event time
+     */
+    ievent = setTimestamp(ievent);
 
     return ievent;
   }
