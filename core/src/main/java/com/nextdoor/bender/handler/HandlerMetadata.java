@@ -36,6 +36,10 @@ public class HandlerMetadata {
         this.payload = new HashMap<String, Object>();
     }
 
+    public Map<String, Object> getPayload() {
+      return payload;
+    }
+
     public String getField(String fieldName) throws NoSuchElementException {
       if (this.payload == null) {
           throw new NoSuchElementException(fieldName + " is not in payload because payload is null");
@@ -58,7 +62,16 @@ public class HandlerMetadata {
       return l;
     }
 
-    public void setImmutable() {
+  /**
+   * This is a poor-mans immutable object. This method will flip the internal immutable bit,
+   * which will disallow new fields to be added to the payload object. This does not. however,
+   * prevent users from using getField() to pull down a mutable object and then modify it.
+   *
+   * For now, the objects submitted here are generally Strings/Ints, so they're Immutable
+   * anyways. However in the future if someone were to submit a mutable object, it could be
+   * modified by some bad code.
+   */
+  public void setImmutable() {
         immutable = true;
     }
 }

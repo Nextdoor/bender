@@ -15,10 +15,17 @@
 
 package com.nextdoor.bender.handler.kinesis;
 
+import static org.junit.Assert.assertEquals;
+
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
+import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.handler.BaseHandler;
+import com.nextdoor.bender.handler.HandlerMetadata;
 import com.nextdoor.bender.handler.HandlerTest;
 import com.nextdoor.bender.testutils.TestUtils;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.Test;
 
 public class KinesisHandlerTest extends HandlerTest<KinesisEvent> {
 
@@ -35,6 +42,38 @@ public class KinesisHandlerTest extends HandlerTest<KinesisEvent> {
   @Override
   public void setup() {
 
+  }
+
+  @Test
+  public void testPrepareMetadata() throws Exception {
+    KinesisHandler handler = new KinesisHandler();
+    KinesisEvent event = getTestEvent();
+    TestContext ctx = new TestContext();
+    ctx.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    ctx.setFunctionName("test");
+
+    handler.handler(event, ctx);
+
+    List<String> expectedMetadataFields = Arrays
+        .asList("sequenceNumber", "sourceArn", "partitionKey", "functionVersion", "functionName",
+            "arrivalTime", "eventSource", "processingTime");
+    assertEquals(expectedMetadataFields, handler.getMetadata().getFields());
+
+    /**
+     * Test the KinesisHandler bits were properly set
+     */
+    assertEquals("1", handler.getMetadata().getField("partitionKey"));
+    assertEquals("2", handler.getMetadata().getField("sequenceNumber"));
+    assertEquals("arn:aws:kinesis:us-east-1:1234:stream/test-events-stream",
+        handler.getMetadata().getField("sourceArn"));
+    assertEquals("Wed Nov 09 16:29:50 PST 2016", handler.getMetadata().getField("arrivalTime"));
+
+    /**
+     * Test that the BaseHandler bits were also set..
+     */
+    assertEquals("test", handler.getMetadata().getField("functionName"));
+    assertEquals("aws:kinesis", handler.getMetadata().getField("eventSource"));
+    assertEquals(null, handler.getMetadata().getField("functionVersion"));
   }
 
   @Override

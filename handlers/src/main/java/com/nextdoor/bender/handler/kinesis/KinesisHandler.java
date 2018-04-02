@@ -96,7 +96,6 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
     metadata.setField("sequenceNumber", firstRecord.getKinesis().getSequenceNumber());
     metadata.setField("arrivalTime", firstRecord.getKinesis()
         .getApproximateArrivalTimestamp());
-    metadata.setField("eventSource", firstRecord.getEventSource());
     metadata.setField("sourceArn", firstRecord.getEventSourceARN());
     //this.timestamp = internal.getEventTime();
     //this.processingDelay = processingTime - timestamp;

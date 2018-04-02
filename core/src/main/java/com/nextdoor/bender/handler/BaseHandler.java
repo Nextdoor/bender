@@ -232,6 +232,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
     metadata.setField("functionName", context.getFunctionName());
     metadata.setField("functionVersion", context.getFunctionVersion());
     metadata.setField("processingTime", System.currentTimeMillis());
+    metadata.setField("eventSource", this.getSourceName());
 
     /**
      * Mark the Metadata object as immutable at this point. Future setField operations will fail.
@@ -438,10 +439,9 @@ public abstract class BaseHandler<T> implements Handler<T> {
   }
 
   /**
-   * Returns back an immutable version of the Metadata object - used to allow inspection of the
-   * metadata by other classes, and ultimately to be referred to in each InternalEvent.
-   *
-   * TODO: Make it immutable
+   * Returns back a reference to the {@Link HandlerMetadata} object. Used by other classes to get
+   * data about the function invocation and possibly make mutation or payload decisions based on
+   * this data.
    *
    * @return {@Link HandlerMetadata}
    */
