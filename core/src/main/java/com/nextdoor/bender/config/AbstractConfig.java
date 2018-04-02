@@ -15,17 +15,10 @@
 
 package com.nextdoor.bender.config;
 
-import java.lang.reflect.Modifier;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
-
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
-    property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public abstract class AbstractConfig<T> {
   private String type;
 
@@ -37,23 +30,5 @@ public abstract class AbstractConfig<T> {
   @JsonProperty("type")
   public void getType(String type) {
     this.type = type;
-  }
-
-  public static Class<?>[] getSubtypes(Class clazz) {
-    Set<Class<? extends AbstractConfig>> classSet = new HashSet();
-    FastClasspathScanner s = new FastClasspathScanner();
-    s.scan().getNamesOfSubclassesOf(clazz).forEach(c -> {
-      try {
-        classSet.add((Class<? extends AbstractConfig>) Class.forName(c));
-      } catch (ClassNotFoundException e) {
-      }
-    });
-
-    /*
-     * Remove abstract classes as they are not allowed in the mapper
-     */
-    classSet.removeIf(p -> Modifier.isAbstract(p.getModifiers()) == true);
-
-    return classSet.toArray(new Class<?>[classSet.size()]);
   }
 }
