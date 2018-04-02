@@ -36,7 +36,7 @@ public interface Handler<T> {
   public Source getSource();
 
   /**
-   * @return name of the source that triggerd the function.
+   * @return name of the source that triggered the function.
    */
   public String getSourceName();
 

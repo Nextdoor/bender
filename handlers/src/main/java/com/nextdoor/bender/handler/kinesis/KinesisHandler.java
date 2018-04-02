@@ -30,11 +30,18 @@ import com.nextdoor.bender.utils.SourceUtils;
 public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler<KinesisEvent> {
   private InternalEventIterator<InternalEvent> recordIterator = null;
   private Source source = null;
+  private KinesisEvent event = null;
 
   public void handler(KinesisEvent event, Context context) throws HandlerException {
     if (!initialized) {
       init(context);
     }
+
+    /**
+     * Expose the KinesisEvent to the overall class so that when getInternalMetadata() is called,
+     * it has access to some of the data and can populate things properly.
+     */
+    this.event = event;
 
     KinesisHandlerConfig handlerConfig = (KinesisHandlerConfig) this.config.getHandlerConfig();
     this.recordIterator = new KinesisEventIterator(context, event.getRecords(),
@@ -69,5 +76,29 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
   @Override
   public InternalEventIterator<InternalEvent> getInternalEventIterator() {
     return this.recordIterator;
+  }
+
+  @Override
+  public void prepareMetadata() {
+    /**
+     * Instantiate the HandlerMetadata object
+     */
+    super.prepareMetadata();
+
+    /**
+     * Access this.event, which is exposed to us during the run of handler() above. Use the first
+     * record from the event to populate some metadata about the run.
+     */
+    KinesisEventRecord firstRecord = event.getRecords().get(0);
+    this.source = SourceUtils.getSource(firstRecord.getEventSourceARN(), sources);
+
+    metadata.setField("partitionKey", firstRecord.getKinesis().getPartitionKey());
+    metadata.setField("sequenceNumber", firstRecord.getKinesis().getSequenceNumber());
+    metadata.setField("arrivalTime", firstRecord.getKinesis()
+        .getApproximateArrivalTimestamp());
+    metadata.setField("eventSource", firstRecord.getEventSource());
+    metadata.setField("sourceArn", firstRecord.getEventSourceARN());
+    //this.timestamp = internal.getEventTime();
+    //this.processingDelay = processingTime - timestamp;
   }
 }

@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -150,7 +151,15 @@ public class BaseHandlerTest {
 
     TestContext context = new TestContext();
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    context.setFunctionName("test");
     handler.handler(events, context);
+
+    /**
+     * Verify that the metadata context is populated with something.
+     */
+    List<String> expectedMetadataFields = Arrays.asList("functionVersion", "functionName", "processingTime");
+    assertEquals(expectedMetadataFields, handler.getMetadata().getFields());
+    assertEquals("test", handler.getMetadata().getField("functionName"));
 
     /*
      * Verify Events made it all the way through

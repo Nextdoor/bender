@@ -69,6 +69,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
   protected BenderConfig config = null;
   protected Monitor monitor;
   protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
+  protected HandlerMetadata metadata = null;
 
   /**
    * Loads @{link com.nextdoor.bender.config.Configuration} from a resource file and initializes
@@ -219,6 +220,24 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
     Iterator<InternalEvent> events = this.getInternalEventIterator();
 
+    /**
+     * Prepare our metadata object - this method may be overridden by extensions of the
+     * BaseHandler to provide additional Source-specific Metadata.
+     */
+    prepareMetadata();
+
+    /**
+     * Populate the Metadata object with some of the Lambda Context settings
+     */
+    metadata.setField("functionName", context.getFunctionName());
+    metadata.setField("functionVersion", context.getFunctionVersion());
+    metadata.setField("processingTime", System.currentTimeMillis());
+
+    /**
+     * Mark the Metadata object as immutable at this point. Future setField operations will fail.
+     */
+    metadata.setImmutable();
+
     /*
      * For logging purposes log when the function started running
      */
@@ -246,6 +265,11 @@ public abstract class BaseHandler<T> implements Handler<T> {
         ievent -> {
           eventCount.incrementAndGet();
           String eventStr = ievent.getEventString();
+
+          /**
+           * Add the HandlerMetadata reference in case any of the future operations need it
+           */
+          ievent.setMetadata(metadata);
 
           /*
            * Apply String contains filters before deserialization
@@ -403,6 +427,26 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
     lastGcCount = currentGcCount;
     lastGcDuration = currentGcDuration;
+  }
+
+  /**
+   * Creates a fresh {@Link HandlerMetadata} object for this {@Link BaseHandler} object and
+   * returns it back to the caller.
+   */
+  protected void prepareMetadata() {
+    metadata = new HandlerMetadata();
+  }
+
+  /**
+   * Returns back an immutable version of the Metadata object - used to allow inspection of the
+   * metadata by other classes, and ultimately to be referred to in each InternalEvent.
+   *
+   * TODO: Make it immutable
+   *
+   * @return {@Link HandlerMetadata}
+   */
+  public HandlerMetadata getMetadata() {
+    return metadata;
   }
 
   public IpcSenderService getIpcService() {
