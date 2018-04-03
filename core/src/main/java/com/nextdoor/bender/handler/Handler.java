@@ -53,7 +53,7 @@ public interface Handler<T> {
 
 
   /**
-   * @return return a populated {@Link HandlerMetadata} object
+   * @return return a populated {@link HandlerMetadata} object
    */
   public HandlerMetadata getHandlerMetadata();
 }

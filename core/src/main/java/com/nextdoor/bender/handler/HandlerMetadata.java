@@ -19,10 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
- * The {@link HandlerMetadata} object is a simple Key/Value map that is used by {@Link
+ * The {@link HandlerMetadata} object is a simple Key/Value map that is used by {@link
  * BaseHandler} to store information about how and when the function was invoked. This data is
  * either thrown away at the end of the execution, or is used later by our
  * {@link com.nextdoor.bender.wrapper.Wrapper} and
@@ -46,7 +45,7 @@ public class HandlerMetadata {
     return o != null ? o.toString() : null;
   }
 
-  public void setField(String fieldName, Object value) throws NotImplementedException {
+  public void setField(String fieldName, Object value) {
     if (immutable) {
         throw new RuntimeException(this + " object has been marked immutable!");
     }

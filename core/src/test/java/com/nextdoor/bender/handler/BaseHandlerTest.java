@@ -206,9 +206,10 @@ public class BaseHandlerTest {
     verify(spyIpc, times(2)).add(captor.capture());
     captor.getAllValues().get(0).getMetadata();
 
-    assertEquals(handler.getHandlerMetadata(), captor.getAllValues().get(0).getMetadata());
-    assertEquals(handler.getHandlerMetadata(), captor.getAllValues().get(1).getMetadata());
-
+    assertEquals(handler.getHandlerMetadata().toString(),
+        captor.getAllValues().get(0).getMetadata().toString());
+    assertEquals(handler.getHandlerMetadata().toString(),
+        captor.getAllValues().get(1).getMetadata().toString());
   }
 
   @Test
