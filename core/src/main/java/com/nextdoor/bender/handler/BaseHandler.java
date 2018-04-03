@@ -228,6 +228,25 @@ public abstract class BaseHandler<T> implements Handler<T> {
     Iterator<InternalEvent> events = this.getInternalEventIterator();
 
     /*
+     * Prepare our metadata object - this method may be overridden by extensions of the
+     * BaseHandler to provide additional Source-specific Metadata.
+     */
+    HandlerMetadata metadata = getHandlerMetadata();
+
+    /*
+     * Populate the Metadata object with some of the Lambda Context settings
+     */
+    metadata.setField("functionName", context.getFunctionName());
+    metadata.setField("functionVersion", context.getFunctionVersion());
+    metadata.setField("processingTime", System.currentTimeMillis());
+    metadata.setField("eventSource", this.getSourceName());
+
+    /*
+     * Mark the Metadata object as immutable at this point. Future setField operations will fail.
+     */
+    metadata.setImmutable();
+
+    /*
      * For logging purposes log when the function started running
      */
     this.monitor.invokeTimeNow();
@@ -254,6 +273,11 @@ public abstract class BaseHandler<T> implements Handler<T> {
         ievent -> {
           eventCount.incrementAndGet();
           String eventStr = ievent.getEventString();
+
+          /**
+           * Add the HandlerMetadata reference in case any of the future operations need it
+           */
+          ievent.setMetadata(metadata);
 
           /*
            * Apply String contains filters before deserialization

@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender;
 
+import com.nextdoor.bender.handler.HandlerMetadata;
 import java.util.LinkedHashMap;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -31,6 +32,7 @@ public class InternalEvent {
   private final String eventSha1Hash;
   private final long arrivalTime;
   protected DeserializedEvent eventObj;
+  protected HandlerMetadata metadata;
   private String serialized;
   private LinkedHashMap<String, String> partitions;
   private long eventTime;
@@ -125,5 +127,12 @@ public class InternalEvent {
 
   public void setEventTime(long eventTime) {
     this.eventTime = eventTime;
+  }
+
+  public void setMetadata(HandlerMetadata metadata) {
+    this.metadata = metadata;
+  }
+  public HandlerMetadata getMetadata() {
+    return metadata;
   }
 }

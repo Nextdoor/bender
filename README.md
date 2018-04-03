@@ -160,6 +160,12 @@ transport:
   filename: output.json
 ```
 
+*`data.json`*
+```json
+{"program":"app","host":"myhost.com","facility":"local0","priority":"info","message":"Some prefix ... {\"type\":\"image\",\"action\":\"pull\",\"time\":1522366659,\"id\":\"image:id\",\"actor\":{\"id\":\"image:id\",\"attributes\":{\"name\":\"image\"}},\"timenano\":1522366659090067620,\"status\":\"pull\"}","epoch":"1522366659.091506"}
+```
+
+>>>>>>> origin/metadata
 *Execution*
 ```bash
 $ BENDER_CONFIG=file://config.yaml java -jar bender-cli-1.0.0-SNAPSHOT.jar --source_file data.json
@@ -175,7 +181,7 @@ $ BENDER_CONFIG=file://config.yaml java -jar bender-cli-1.0.0-SNAPSHOT.jar --sou
 Here's the output of the file.. just the first line:
 ```bash
 $ head -1 output.json
-{"partition_key":"1","sequence_number":"744","source_arn":"arn:aws:kinesis:us-east-1:123456789:stream/log-stream","function_name":"cli-main","processing_t  ime":1522434390690,"arrival_time":1522434384946,"processing_delay":67731599,"timestamp":1522366659091,"payload":{"program__str":"app","host__str":"myhost.com","facility__str":"local0","priority__str":"info","message":{"type__str":"image","action__str":"pull","time__long":1522366659,"id__str":"image:id","actor":{"id__str":"image:id","attributes":{"name__str":"image"}},"timenano__long":1522366659090067620,"status__str":"pull"},"message_prefix__str":"Some prefix ... "  ,"epoch__str":"1522366659.091506"}}
+{"partition_key":"1","sequence_number":"744","source_arn":"arn:aws:kinesis:us-east-1:123456789:stream/log-stream","function_name":"cli-main","processing_time":1522434390690,"arrival_time":1522434384946,"processing_delay":67731599,"timestamp":1522366659091,"payload":{"program__str":"app","host__str":"myhost.com","facility__str":"local0","priority__str":"info","message":{"type__str":"image","action__str":"pull","time__long":1522366659,"id__str":"image:id","actor":{"id__str":"image:id","attributes":{"name__str":"image"}},"timenano__long":1522366659090067620,"status__str":"pull"},"message_prefix__str":"Some prefix ... "  ,"epoch__str":"1522366659.091506"}}
 ```
 
 Here is the output in a slightly more readable format:

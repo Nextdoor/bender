@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,6 +55,7 @@ import com.nextdoor.bender.serializer.SerializationException;
 import com.nextdoor.bender.serializer.Serializer;
 import com.nextdoor.bender.testutils.DummyTransportHelper.ArrayTransportBuffer;
 import com.nextdoor.bender.testutils.DummyTransportHelper.BufferedTransporter;
+import org.mockito.ArgumentCaptor;
 
 public class BaseHandlerTest {
 
@@ -94,6 +96,11 @@ public class BaseHandlerTest {
   public static class DummyHandler extends BaseHandler<List<DummyEvent>> {
     private DummyEventIterator eventIterator;
 
+    /*
+     * Created outside of getHandlerMetadata() for the purpose of test validation only
+     */
+    private HandlerMetadata metadata = new HandlerMetadata();
+
     @Override
     public void handler(List<DummyEvent> events, Context context) throws HandlerException {
       if (!initialized) {
@@ -124,6 +131,11 @@ public class BaseHandlerTest {
     public InternalEventIterator<InternalEvent> getInternalEventIterator() {
       return this.eventIterator;
     }
+
+    @Override
+    public HandlerMetadata getHandlerMetadata() {
+      return metadata;
+    }
   }
 
   @Before
@@ -150,7 +162,16 @@ public class BaseHandlerTest {
 
     TestContext context = new TestContext();
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    context.setFunctionName("test");
     handler.handler(events, context);
+
+    /*
+     * Verify that the metadata context is populated with something.
+     */
+    List<String> expectedMetadataFields = Arrays.asList("functionVersion", "functionName",
+        "eventSource", "processingTime");
+    assertEquals(expectedMetadataFields, handler.getHandlerMetadata().getFields());
+    assertEquals("test", handler.getHandlerMetadata().getField("functionName"));
 
     /*
      * Verify Events made it all the way through
@@ -158,6 +179,33 @@ public class BaseHandlerTest {
     assertEquals(2, BufferedTransporter.output.size());
     assertEquals("foo", BufferedTransporter.output.get(0));
     assertEquals("bar", BufferedTransporter.output.get(1));
+  }
+
+  @Test
+  public void testIeventGetsMetadata() throws Throwable {
+    BaseHandler.CONFIG_FILE = "/config/handler_config.json";
+
+    List<DummyEvent> events = new ArrayList<DummyEvent>(2);
+    events.add(new DummyEvent("foo", 0));
+    events.add(new DummyEvent("bar", 0));
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.init(context);
+    IpcSenderService spyIpc = spy(handler.getIpcService());
+
+    ArgumentCaptor<InternalEvent> captor = ArgumentCaptor.forClass(InternalEvent.class);
+    TransportFactory tf = spy(handler.getIpcService().getTransportFactory());
+    BufferedTransporter mockTransport = mock(BufferedTransporter.class);
+    when(tf.newInstance()).thenReturn(mockTransport);
+    spyIpc.setTransportFactory(tf);
+
+    handler.setIpcService(spyIpc);
+
+    handler.handler(events, context);
+
+    verify(spyIpc, times(2)).add(captor.capture());
+    captor.getAllValues().get(0).getMetadata();
   }
 
   @Test
