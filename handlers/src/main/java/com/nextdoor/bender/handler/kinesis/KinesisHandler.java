@@ -25,6 +25,7 @@ import com.nextdoor.bender.config.Source;
 import com.nextdoor.bender.handler.BaseHandler;
 import com.nextdoor.bender.handler.Handler;
 import com.nextdoor.bender.handler.HandlerException;
+import com.nextdoor.bender.handler.HandlerMetadata;
 import com.nextdoor.bender.utils.SourceUtils;
 
 public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler<KinesisEvent> {
@@ -79,11 +80,8 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
   }
 
   @Override
-  public void prepareMetadata() {
-    /**
-     * Instantiate the HandlerMetadata object
-     */
-    super.prepareMetadata();
+  public HandlerMetadata getHandlerMetadata() {
+    HandlerMetadata metadata = new HandlerMetadata();
 
     /**
      * Access this.event, which is exposed to us during the run of handler() above. Use the first
@@ -95,9 +93,15 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
     metadata.setField("partitionKey", firstRecord.getKinesis().getPartitionKey());
     metadata.setField("sequenceNumber", firstRecord.getKinesis().getSequenceNumber());
     metadata.setField("arrivalTime", firstRecord.getKinesis()
-        .getApproximateArrivalTimestamp());
+        .getApproximateArrivalTimestamp().getTime());
     metadata.setField("sourceArn", firstRecord.getEventSourceARN());
+
+    /*
+     * TODO: Figure this one out
+     */
     //this.timestamp = internal.getEventTime();
     //this.processingDelay = processingTime - timestamp;
+
+    return metadata;
   }
 }

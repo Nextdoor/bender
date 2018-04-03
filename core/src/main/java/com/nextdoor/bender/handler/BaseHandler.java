@@ -73,7 +73,6 @@ public abstract class BaseHandler<T> implements Handler<T> {
   protected BenderConfig config = null;
   protected Monitor monitor;
   protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
-  protected HandlerMetadata metadata = null;
 
   /**
    * Loads @{link com.nextdoor.bender.config.Configuration} from a resource file and initializes
@@ -232,7 +231,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
      * Prepare our metadata object - this method may be overridden by extensions of the
      * BaseHandler to provide additional Source-specific Metadata.
      */
-    prepareMetadata();
+    HandlerMetadata metadata = getHandlerMetadata();
 
     /**
      * Populate the Metadata object with some of the Lambda Context settings
@@ -436,25 +435,6 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
     lastGcCount = currentGcCount;
     lastGcDuration = currentGcDuration;
-  }
-
-  /**
-   * Creates a fresh {@Link HandlerMetadata} object for this {@Link BaseHandler} object and
-   * returns it back to the caller.
-   */
-  protected void prepareMetadata() {
-    metadata = new HandlerMetadata();
-  }
-
-  /**
-   * Returns back a reference to the {@Link HandlerMetadata} object. Used by other classes to get
-   * data about the function invocation and possibly make mutation or payload decisions based on
-   * this data.
-   *
-   * @return {@Link HandlerMetadata}
-   */
-  public HandlerMetadata getMetadata() {
-    return metadata;
   }
 
   public IpcSenderService getIpcService() {

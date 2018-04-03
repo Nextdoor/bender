@@ -95,6 +95,11 @@ public class BaseHandlerTest {
   public static class DummyHandler extends BaseHandler<List<DummyEvent>> {
     private DummyEventIterator eventIterator;
 
+    /*
+     * Created outside of getHandlerMetadata() for the purpose of test validation only
+     */
+    private HandlerMetadata metadata = new HandlerMetadata();
+
     @Override
     public void handler(List<DummyEvent> events, Context context) throws HandlerException {
       if (!initialized) {
@@ -124,6 +129,11 @@ public class BaseHandlerTest {
     @Override
     public InternalEventIterator<InternalEvent> getInternalEventIterator() {
       return this.eventIterator;
+    }
+
+    @Override
+    public HandlerMetadata getHandlerMetadata() {
+      return metadata;
     }
   }
 
@@ -157,9 +167,10 @@ public class BaseHandlerTest {
     /**
      * Verify that the metadata context is populated with something.
      */
-    List<String> expectedMetadataFields = Arrays.asList("functionVersion", "functionName", "processingTime");
-    assertEquals(expectedMetadataFields, handler.getMetadata().getFields());
-    assertEquals("test", handler.getMetadata().getField("functionName"));
+    List<String> expectedMetadataFields = Arrays.asList("functionVersion", "functionName",
+        "eventSource", "processingTime");
+    assertEquals(expectedMetadataFields, handler.getHandlerMetadata().getFields());
+    assertEquals("test", handler.getHandlerMetadata().getField("functionName"));
 
     /*
      * Verify Events made it all the way through

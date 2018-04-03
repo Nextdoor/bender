@@ -16,9 +16,12 @@
 
 package com.nextdoor.bender.handler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.*;
 
 /**
  * The {@link HandlerMetadata} object is a simple Key/Value map that is used by {@Link
@@ -40,7 +43,7 @@ public class HandlerMetadata {
       return payload;
     }
 
-    public String getField(String fieldName) throws NoSuchElementException {
+    public Object getField(String fieldName) throws NoSuchElementException {
       if (this.payload == null) {
           throw new NoSuchElementException(fieldName + " is not in payload because payload is null");
       }

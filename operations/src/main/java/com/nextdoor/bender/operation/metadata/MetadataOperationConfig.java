@@ -28,9 +28,12 @@ import com.nextdoor.bender.operation.OperationConfig;
     + "triggered")
 public class MetadataOperationConfig extends OperationConfig {
 
-  @JsonSchemaDescription("The name of the root-level key that you want to add to your object.")
-  @JsonSchemaDefault(value = "metadata")
-  private String fieldName = "metadata";
+  @JsonSchemaDescription("The name of the root-level key that you want to add to your object. "
+      + "If you customize this, you must understand the type of object that you are working "
+      + "with. If it is a GenericJsonEvent (default) you need to prefix the field name with "
+      + "`$.` to denote that the field is at the root level of the object.")
+  @JsonSchemaDefault(value = "$.bender_metadata")
+  private String fieldName = "$.bender_metadata";
 
   @Override
   public Class<MetadataOperationFactory> getFactoryClass() {

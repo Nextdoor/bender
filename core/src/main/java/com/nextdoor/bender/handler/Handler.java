@@ -51,4 +51,10 @@ public interface Handler<T> {
    *         data.
    */
   public InternalEventIterator<InternalEvent> getInternalEventIterator();
+
+
+  /**
+   * @return return a populated {@Link HandlerMetadata} object
+   */
+  public HandlerMetadata getHandlerMetadata();
 }

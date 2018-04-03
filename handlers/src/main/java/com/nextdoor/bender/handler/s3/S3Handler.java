@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender.handler.s3;
 
+import com.nextdoor.bender.handler.HandlerMetadata;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +44,14 @@ public class S3Handler extends BaseHandler<S3EventNotification>
   private Source source;
   private boolean logTrigger = false;
   protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
+  private S3EventNotification event = null;
 
   public void handler(S3EventNotification event, Context context) throws HandlerException {
+    /*
+     * Store the event for getHandlerMetadata()
+     */
+    this.event = event;
+
     if (!initialized) {
       init(context);
       S3HandlerConfig handlerConfig = (S3HandlerConfig) this.config.getHandlerConfig();
@@ -108,5 +115,27 @@ public class S3Handler extends BaseHandler<S3EventNotification>
   @Override
   public InternalEventIterator<InternalEvent> getInternalEventIterator() {
     return this.recordIterator;
+  }
+
+  @Override
+  public HandlerMetadata getHandlerMetadata() {
+    HandlerMetadata metadata = new HandlerMetadata();
+
+    S3EventNotificationRecord firstRecord = event.getRecords().get(0);
+
+    metadata.setField("s3Bucket", firstRecord.getS3().getBucket().getName());
+    metadata.setField("s3Key", firstRecord.getS3().getObject().getKey());
+    metadata.setField("s3KeyVersion", firstRecord.getS3().getObject().getVersionId());
+
+    /*
+     * TODO: Figure this one out
+     */
+    //this.sha1Hash = internal.getEventSha1Hash();
+    //metadata.setField("sha1hash", firstRecord.getEventSourceARN());
+    //this.timestamp = internal.getEventTime();
+    //this.processingDelay = processingTime - timestamp;
+
+    return metadata;
+
   }
 }
