@@ -71,23 +71,7 @@ public class GelfOperationTest extends OperationTest {
 
     assertTrue(devent.payload.toString().contains("\"timestamp\":1.522686301055E9"));
   }
-  @Test
-  public void testArrivalTimestamp() throws JsonSyntaxException,  IOException {
-    JsonParser parser = new JsonParser();
 
-    JsonElement input = parser.parse(getResourceString("prefixed_input.json"));
-
-    DummpyEvent devent = new DummpyEvent();
-    devent.payload = input.getAsJsonObject();
-
-    GelfOperation op = new GelfOperation(new ArrayList<>());
-
-    InternalEvent ievent = new InternalEvent("", null, 1234567890123L);
-    ievent.setEventObj(devent);
-    op.perform(ievent);
-
-    assertTrue(devent.payload.toString().contains("\"timestamp\":1.234567890123E9"));
-  }
   @Test
   public void testFlattenPrefix()
       throws JsonSyntaxException, UnsupportedEncodingException, IOException {
