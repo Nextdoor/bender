@@ -4,13 +4,12 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
- *
+ * Copyright 2018 Nextdoor.com, Inc
  */
 
 package com.nextdoor.bender.handler;
@@ -228,6 +227,25 @@ public abstract class BaseHandler<T> implements Handler<T> {
     Iterator<InternalEvent> events = this.getInternalEventIterator();
 
     /*
+     * Prepare our metadata object - this method may be overridden by extensions of the
+     * BaseHandler to provide additional Source-specific Metadata.
+     */
+    HandlerMetadata metadata = getHandlerMetadata();
+
+    /*
+     * Populate the Metadata object with some of the Lambda Context settings
+     */
+    metadata.setField("functionName", context.getFunctionName());
+    metadata.setField("functionVersion", context.getFunctionVersion());
+    metadata.setField("processingTime", System.currentTimeMillis());
+    metadata.setField("eventSource", this.getSourceName());
+
+    /*
+     * Mark the Metadata object as immutable at this point. Future setField operations will fail.
+     */
+    metadata.setImmutable();
+
+    /*
      * For logging purposes log when the function started running
      */
     this.monitor.invokeTimeNow();
@@ -254,6 +272,11 @@ public abstract class BaseHandler<T> implements Handler<T> {
         ievent -> {
           eventCount.incrementAndGet();
           String eventStr = ievent.getEventString();
+
+          /**
+           * Add the HandlerMetadata reference in case any of the future operations need it
+           */
+          ievent.setMetadata(metadata);
 
           /*
            * Apply String contains filters before deserialization

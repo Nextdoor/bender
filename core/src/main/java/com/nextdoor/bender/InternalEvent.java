@@ -4,17 +4,17 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
- *
+ * Copyright 2018 Nextdoor.com, Inc
  */
 
 package com.nextdoor.bender;
 
+import com.nextdoor.bender.handler.HandlerMetadata;
 import java.util.LinkedHashMap;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -31,6 +31,7 @@ public class InternalEvent {
   private final String eventSha1Hash;
   private final long arrivalTime;
   protected DeserializedEvent eventObj;
+  protected HandlerMetadata metadata;
   private String serialized;
   private LinkedHashMap<String, String> partitions;
   private long eventTime;
@@ -125,5 +126,12 @@ public class InternalEvent {
 
   public void setEventTime(long eventTime) {
     this.eventTime = eventTime;
+  }
+
+  public void setMetadata(HandlerMetadata metadata) {
+    this.metadata = metadata;
+  }
+  public HandlerMetadata getMetadata() {
+    return metadata;
   }
 }

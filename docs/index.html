@@ -1604,6 +1604,8 @@ function sourceButton(element) {
                 <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
         <span class="type-keyword"></span>
                 <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">MetadataOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -2932,6 +2934,96 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
+                <div class="box-container" boxid="11">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-11">
+        <div class="box-title" ref="">
+            <div class="box-name ">MetadataOperation</div>
+            <div class="box-description desc"><p>Creates a new key inside your payload with the Bender runtime metadata for an invocation of the code. This typically includes data about the source handler (ie, KinesisHandler, S3Handler, etc) and metadata about how and when the function was triggered</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">MetadataOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">MetadataOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">field_name</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>The name of the root-level key that you want to add to your object. If you customize this, you must understand the type of object that you are working with.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Creates a new key inside your payload with the Bender runtime metadata for an invocation of the code. This typically includes data about the source handler (ie, KinesisHandler, S3Handler, etc) and metadata about how and when the function was triggered",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "MetadataOperation"
+      ],
+      "default": "MetadataOperation"
+    },
+    "field_name": {
+      "type": "string",
+      "description": "The name of the root-level key that you want to add to your object. If you customize this, you must understand the type of object that you are working with."
+    }
+  },
+  "title": "MetadataOperation",
+  "required": [
+    "type",
+    "field_name"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
 
@@ -3011,6 +3103,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/PartitionOperationConfig"
+        },
+        {
+          "$ref": "#/definitions/MetadataOperationConfig"
         }
       ]
     }
@@ -9846,6 +9941,9 @@ function sourceButton(element) {
             },
             {
               "$ref": "#/definitions/PartitionOperationConfig"
+            },
+            {
+              "$ref": "#/definitions/MetadataOperationConfig"
             }
           ]
         }
@@ -10292,6 +10390,29 @@ function sourceButton(element) {
       "required": [
         "name",
         "interpreter"
+      ]
+    },
+    "MetadataOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Creates a new key inside your payload with the Bender runtime metadata for an invocation of the code. This typically includes data about the source handler (ie, KinesisHandler, S3Handler, etc) and metadata about how and when the function was triggered",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "MetadataOperation"
+          ],
+          "default": "MetadataOperation"
+        },
+        "field_name": {
+          "type": "string",
+          "description": "The name of the root-level key that you want to add to your object. If you customize this, you must understand the type of object that you are working with."
+        }
+      },
+      "title": "MetadataOperation",
+      "required": [
+        "type",
+        "field_name"
       ]
     },
     "KinesisWrapperConfig": {

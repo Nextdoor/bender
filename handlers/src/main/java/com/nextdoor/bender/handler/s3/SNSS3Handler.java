@@ -4,17 +4,17 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
- *
+ * Copyright 2018 Nextdoor.com, Inc
  */
 
 package com.nextdoor.bender.handler.s3;
 
+import com.nextdoor.bender.handler.HandlerMetadata;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +49,15 @@ public class SNSS3Handler extends BaseHandler<SNSEvent> implements Handler<SNSEv
   private boolean logTrigger = false;
   protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
   protected AmazonSNSClientFactory snsClientFactory = new AmazonSNSClientFactory();
+  private SNSEvent event = null;
 
   @Override
   public void handler(SNSEvent event, Context context) throws HandlerException {
+    /*
+     * Store the event for getHandlerMetadata()
+     */
+    this.event = event;
+
     if (!initialized) {
       init(context);
       SNSS3HandlerConfig handlerConfig = (SNSS3HandlerConfig) this.config.getHandlerConfig();
@@ -145,5 +151,20 @@ public class SNSS3Handler extends BaseHandler<SNSEvent> implements Handler<SNSEv
   @Override
   public InternalEventIterator<InternalEvent> getInternalEventIterator() {
     return this.recordIterator;
+  }
+
+  @Override
+  public HandlerMetadata getHandlerMetadata() {
+    HandlerMetadata metadata = new HandlerMetadata();
+
+    /*
+     * TODO: Figure out what metadata I can get here..
+     */
+    //metadata.setField("sha1hash", firstRecord.getEventSourceARN());
+    //this.timestamp = internal.getEventTime();
+    //this.processingDelay = processingTime - timestamp;
+
+    return metadata;
+
   }
 }
