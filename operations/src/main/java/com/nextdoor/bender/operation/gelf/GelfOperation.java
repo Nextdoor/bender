@@ -119,8 +119,6 @@ public class GelfOperation implements Operation {
     double timestamp;
     if (ievent.getEventTime() > 1) {
       timestamp = ievent.getEventTime() / 1000.0;
-    } else if (ievent.getArrivalTime() > 1) {
-      timestamp = ievent.getArrivalTime() / 1000.0;
     } else {
       return ievent;
     }
