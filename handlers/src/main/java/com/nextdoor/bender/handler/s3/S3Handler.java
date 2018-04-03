@@ -4,13 +4,12 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
- *
+ * Copyright 2018 Nextdoor.com, Inc
  */
 
 package com.nextdoor.bender.handler.s3;
@@ -126,15 +125,10 @@ public class S3Handler extends BaseHandler<S3EventNotification>
     metadata.setField("s3Bucket", firstRecord.getS3().getBucket().getName());
     metadata.setField("s3Key", firstRecord.getS3().getObject().getKey());
     metadata.setField("s3KeyVersion", firstRecord.getS3().getObject().getVersionId());
+    metadata.setField("arrivalTime", firstRecord.getEventTime().toDate());
 
-    /*
-     * TODO: Figure this one out
-     */
-    //this.sha1Hash = internal.getEventSha1Hash();
+    //this.sha1Hsh = internal.getEventSha1Hash();
     //metadata.setField("sha1hash", firstRecord.getEventSourceARN());
-    //this.timestamp = internal.getEventTime();
-    //this.processingDelay = processingTime - timestamp;
-
     return metadata;
 
   }

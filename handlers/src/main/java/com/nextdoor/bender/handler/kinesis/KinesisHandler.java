@@ -4,13 +4,12 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
- *
+ * Copyright 2018 Nextdoor.com, Inc
  */
 
 package com.nextdoor.bender.handler.kinesis;
@@ -95,12 +94,6 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
     metadata.setField("arrivalTime", firstRecord.getKinesis()
         .getApproximateArrivalTimestamp().getTime());
     metadata.setField("sourceArn", firstRecord.getEventSourceARN());
-
-    /*
-     * TODO: Figure this one out
-     */
-    //this.timestamp = internal.getEventTime();
-    //this.processingDelay = processingTime - timestamp;
 
     return metadata;
   }
