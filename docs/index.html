@@ -2983,10 +2983,10 @@ function sourceButton(element) {
                
             </span>
             <span class="type-keyword">default</span>
-            <span class="type-default">metadata</span>
+            <span class="type-default">$.bender_metadata</span>
 
                 </div>
-                <div class="signature-description desc"><p>The name of the root-level key that you want to add to your object.</p>
+                <div class="signature-description desc"><p>The name of the root-level key that you want to add to your object. If you customize this, you must understand the type of object that you are working with. If it is a GenericJsonEvent (default) you need to prefix the field name with <code>$.</code> to denote that the field is at the root level of the object.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -3012,8 +3012,8 @@ function sourceButton(element) {
     },
     "field_name": {
       "type": "string",
-      "default": "metadata",
-      "description": "The name of the root-level key that you want to add to your object."
+      "default": "$.bender_metadata",
+      "description": "The name of the root-level key that you want to add to your object. If you customize this, you must understand the type of object that you are working with. If it is a GenericJsonEvent (default) you need to prefix the field name with `$.` to denote that the field is at the root level of the object."
     }
   },
   "title": "MetadataOperation",
@@ -10408,8 +10408,8 @@ function sourceButton(element) {
         },
         "field_name": {
           "type": "string",
-          "default": "metadata",
-          "description": "The name of the root-level key that you want to add to your object."
+          "default": "$.bender_metadata",
+          "description": "The name of the root-level key that you want to add to your object. If you customize this, you must understand the type of object that you are working with. If it is a GenericJsonEvent (default) you need to prefix the field name with `$.` to denote that the field is at the root level of the object."
         }
       },
       "title": "MetadataOperation",

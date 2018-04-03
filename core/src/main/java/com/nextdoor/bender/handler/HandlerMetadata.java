@@ -65,7 +65,7 @@ public class HandlerMetadata {
       return l;
     }
 
-  /**
+  /*
    * This is a poor-mans immutable object. This method will flip the internal immutable bit,
    * which will disallow new fields to be added to the payload object. This does not. however,
    * prevent users from using getField() to pull down a mutable object and then modify it.
