@@ -27,6 +27,8 @@ import java.util.NoSuchElementException;
 import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.LambdaContext;
+import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 
 public class SubstitutionOperationTest {
@@ -155,6 +157,60 @@ public class SubstitutionOperationTest {
     Map<String, Object> expected = new HashMap<String, Object>() {
       {
         put("eventSha1Hash", "da39a3ee5e6b4b0d3255bfef95601890afd80709");
+      }
+    };
+
+    assertEquals(expected, devent.getField("foo"));
+  }
+
+  @Test
+  public void testExcludesContext() {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    subSpecs.add(
+        new ContextSubSpecConfig("foo", Collections.emptyList(), Arrays.asList("functionName")));
+
+    DummpyEvent devent = new DummpyEvent();
+    TestContext ctx = new TestContext();
+    ctx.setFunctionName("fun name");
+    ctx.setInvokedFunctionArn("some arn");
+
+    InternalEvent ievent = new InternalEvent("", new LambdaContext(ctx), 10);
+    ievent.setEventObj(devent);
+    ievent.setEventTime(20);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    Map<String, Object> expected = new HashMap<String, Object>() {
+      {
+        put("invokedFunctionArn", "some arn");
+      }
+    };
+
+    assertEquals(expected, devent.getField("foo"));
+  }
+
+  @Test
+  public void testIncludesContext() {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    subSpecs.add(
+        new ContextSubSpecConfig("foo", Arrays.asList("functionName"), Collections.emptyList()));
+
+    DummpyEvent devent = new DummpyEvent();
+    TestContext ctx = new TestContext();
+    ctx.setFunctionName("fun name");
+    ctx.setInvokedFunctionArn("some arn");
+
+    InternalEvent ievent = new InternalEvent("", new LambdaContext(ctx), 10);
+    ievent.setEventObj(devent);
+    ievent.setEventTime(20);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    Map<String, Object> expected = new HashMap<String, Object>() {
+      {
+        put("functionName", "fun name");
       }
     };
 

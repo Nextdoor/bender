@@ -29,7 +29,7 @@ import com.nextdoor.bender.deserializer.DeserializedEvent;
  */
 public class InternalEvent {
   private final String eventString;
-  private final Context context;
+  private final LambdaContext context;
   private final String eventSha1Hash;
   private final long arrivalTime;
   protected DeserializedEvent eventObj;
@@ -43,7 +43,7 @@ public class InternalEvent {
    * @param context lambda context of the function.
    * @param arrivalTime epoch time in MS when the event arrived.
    */
-  public InternalEvent(String eventString, Context context, long arrivalTime) {
+  public InternalEvent(String eventString, LambdaContext context, long arrivalTime) {
     this.eventString = eventString;
     this.context = context;
     this.eventSha1Hash = DigestUtils.sha1Hex(this.eventString);
@@ -103,7 +103,7 @@ public class InternalEvent {
    * @return context that the lambda function is called with in the
    *         {@link com.nextdoor.bender.handler.Handler#handler(Object, Context)}.
    */
-  public Context getCtx() {
+  public LambdaContext getCtx() {
     return this.context;
   }
 

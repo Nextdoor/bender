@@ -15,10 +15,14 @@
 
 package com.nextdoor.bender.operation.substitution;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import com.amazonaws.services.lambda.runtime.Client;
+import com.amazonaws.services.lambda.runtime.ClientContext;
+import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.Operation;
@@ -53,7 +57,7 @@ public class SubstitutionOperation implements Operation {
 
         List<String> includes = m.getIncludes();
         List<String> excludes = m.getExcludes();
-        Map<String, Object> metadata = ievent.getEventMetadata();
+        Map<String, Object> metadata = new HashMap<String, Object>(ievent.getEventMetadata());
 
         if (!includes.isEmpty()) {
           metadata.keySet().retainAll(includes);
@@ -63,7 +67,23 @@ public class SubstitutionOperation implements Operation {
           metadata.remove(exclude);
         });
 
-        devent.setField(subSpec.getKey(), ievent.getEventMetadata());
+        devent.setField(subSpec.getKey(), metadata);
+      } else if (subSpec instanceof ContextSubSpecConfig) {
+        ContextSubSpecConfig c = (ContextSubSpecConfig) subSpec;
+
+        List<String> includes = c.getIncludes();
+        List<String> excludes = c.getExcludes();
+        Map<String, String> contexts = ievent.getCtx().getContextAsMap();
+
+        if (!includes.isEmpty()) {
+          contexts.keySet().retainAll(includes);
+        }
+
+        excludes.forEach(exclude -> {
+          contexts.remove(exclude);
+        });
+
+        devent.setField(subSpec.getKey(), contexts);
       }
     }
 

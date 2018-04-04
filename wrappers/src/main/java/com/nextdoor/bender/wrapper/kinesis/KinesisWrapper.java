@@ -48,8 +48,8 @@ public class KinesisWrapper implements Wrapper {
     this.sequenceNumber = record.getSequenceNumber();
     this.eventSource = eventRecord.getEventSource();
     this.sourceArn = eventRecord.getEventSourceARN();
-    this.functionName = internal.getCtx().getFunctionName();
-    this.functionVersion = internal.getCtx().getFunctionVersion();
+    this.functionName = internal.getCtx().getContext().getFunctionName();
+    this.functionVersion = internal.getCtx().getContext().getFunctionVersion();
     this.processingTime = System.currentTimeMillis();
     this.arrivalTime = record.getApproximateArrivalTimestamp().getTime();
     this.timestamp = internal.getEventTime();

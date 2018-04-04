@@ -17,16 +17,16 @@ package com.nextdoor.bender.handler.kinesis;
 
 import java.util.LinkedHashMap;
 
-import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent.KinesisEventRecord;
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.LambdaContext;
 
 public class KinesisInternalEvent extends InternalEvent {
   public static final String SHARD_ID = "__shardid__";
   private KinesisEventRecord record;
   private String shardId;
 
-  public KinesisInternalEvent(KinesisEventRecord record, Context context, String shardId) {
+  public KinesisInternalEvent(KinesisEventRecord record, LambdaContext context, String shardId) {
     super(new String(record.getKinesis().getData().array()), context,
         record.getKinesis().getApproximateArrivalTimestamp().getTime());
 

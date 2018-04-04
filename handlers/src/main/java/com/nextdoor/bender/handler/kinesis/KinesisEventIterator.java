@@ -19,20 +19,20 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent.KinesisEventRecord;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
+import com.nextdoor.bender.LambdaContext;
 
 /**
  * Wraps KinesisEventRecords with an iterator that constructs {@link KinesisInternalEvent}s.
  */
 public class KinesisEventIterator implements InternalEventIterator<InternalEvent> {
   private final Iterator<KinesisEventRecord> iterator;
-  private final Context context;
+  private final LambdaContext context;
   private String shardId = null;
 
-  public KinesisEventIterator(Context context, List<KinesisEventRecord> records,
+  public KinesisEventIterator(LambdaContext context, List<KinesisEventRecord> records,
       Boolean addShardidToPartitions) {
     this.iterator = records.iterator();
     this.context = context;

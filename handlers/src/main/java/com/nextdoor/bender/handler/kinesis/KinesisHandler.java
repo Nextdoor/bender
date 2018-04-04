@@ -21,6 +21,7 @@ import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent.KinesisEventRecord;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
+import com.nextdoor.bender.LambdaContext;
 import com.nextdoor.bender.config.Source;
 import com.nextdoor.bender.handler.BaseHandler;
 import com.nextdoor.bender.handler.Handler;
@@ -37,7 +38,7 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
     }
 
     KinesisHandlerConfig handlerConfig = (KinesisHandlerConfig) this.config.getHandlerConfig();
-    this.recordIterator = new KinesisEventIterator(context, event.getRecords(),
+    this.recordIterator = new KinesisEventIterator(new LambdaContext(context), event.getRecords(),
         handlerConfig.getAddShardIdToPartitions());
 
     /*

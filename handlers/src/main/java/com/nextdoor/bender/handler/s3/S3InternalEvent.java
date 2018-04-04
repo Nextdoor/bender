@@ -19,8 +19,8 @@ import java.util.LinkedHashMap;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.LambdaContext;
 
 /**
  * InternalEvent that contains meta information about the S3 file that the event came from as well
@@ -33,7 +33,7 @@ public class S3InternalEvent extends InternalEvent {
   private final String s3KeyVersion;
 
 
-  public S3InternalEvent(String eventString, Context context, long arrivalTime, String s3Key,
+  public S3InternalEvent(String eventString, LambdaContext context, long arrivalTime, String s3Key,
       String s3Bucket, String s3KeyVersion) {
     super(eventString, context, arrivalTime);
     this.s3Key = s3Key;
