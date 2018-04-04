@@ -49,13 +49,8 @@ public class GeoIpOperationTest {
     }
 
     @Override
-    public String getField(String fieldName) {
-      Object o = payload.get(fieldName);
-      if (o == null) {
-        return null;
-      }
-
-      return o.toString();
+    public Object getField(String fieldName) {
+      return payload.getOrDefault(fieldName, null);
     }
 
     @Override
@@ -66,6 +61,17 @@ public class GeoIpOperationTest {
     @Override
     public void setField(String fieldName, Object value) {
       payload.put(fieldName, value);
+    }
+
+    @Override
+    public String getFieldAsString(String fieldName) throws NoSuchElementException {
+      Object o = getField(fieldName);
+
+      if (o == null) {
+        return null;
+      }
+
+      return payload.get(fieldName).toString();
     }
   }
 

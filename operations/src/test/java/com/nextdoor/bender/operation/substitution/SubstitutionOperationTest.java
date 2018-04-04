@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -51,6 +52,11 @@ public class SubstitutionOperationTest {
     @Override
     public void setField(String fieldName, Object value) {
       payload.put(fieldName, value);
+    }
+
+    @Override
+    public String getFieldAsString(String fieldName) throws NoSuchElementException {
+      return payload.get(fieldName).toString();
     }
   }
 

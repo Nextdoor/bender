@@ -88,4 +88,15 @@ public class GenericJsonEvent implements DeserializedEvent {
     String field = fieldName.substring(lastDot + 1);
     json.put(path, field, value);
   }
+
+  @Override
+  public String getFieldAsString(String fieldName) throws NoSuchElementException {
+    JsonPrimitive field = (JsonPrimitive) getField(fieldName);
+
+    if (field == null) {
+      return null;
+    }
+
+    return field.getAsString();
+  }
 }

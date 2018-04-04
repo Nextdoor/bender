@@ -48,13 +48,13 @@ public class GeoIpOperation implements Operation {
 
   @Override
   public InternalEvent perform(InternalEvent ievent) {
-    Object ipObj = null;
+    String ipStr = null;
 
     /*
      * Get field containing an IP address
      */
     try {
-      ipObj = ievent.getEventObj().getField(this.pathToIpAddress);
+      ipStr = ievent.getEventObj().getFieldAsString(this.pathToIpAddress);
     } catch (NoSuchElementException e) {
       if (!this.required) {
         return ievent;
@@ -62,7 +62,7 @@ public class GeoIpOperation implements Operation {
       throw new OperationException("ip address field " + this.pathToIpAddress + " does not exist");
     }
 
-    if (ipObj == null) {
+    if (ipStr == null) {
       if (!this.required) {
         return ievent;
       }
@@ -73,13 +73,6 @@ public class GeoIpOperation implements Operation {
      * Sometimes the field contains comma separated ip addresses (ie forwarded web requests). In
      * this case pick the first value in the list which is typically the user.
      */
-    String ipStr = null;
-    if (ipObj instanceof String) {
-      ipStr = (String) ipObj;
-    } else {
-      ipStr = ipObj.toString();
-    }
-
     if (!ipStr.isEmpty() && ipStr.contains(",")) {
       ipStr = ipStr.split(",")[0];
     }

@@ -48,7 +48,7 @@ public class PartitionOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
     ievent.setEventObj(devent);
-    doReturn("baz").when(devent).getField("foo");
+    doReturn("baz").when(devent).getFieldAsString("foo");
 
     op.perform(ievent);
 
@@ -91,7 +91,7 @@ public class PartitionOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
     ievent.setEventObj(devent);
-    doReturn(null).doReturn("5").when(devent).getField(any());
+    doReturn(null).doReturn("5").when(devent).getFieldAsString(any());
 
     op.perform(ievent);
 
@@ -113,7 +113,7 @@ public class PartitionOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyDeserializedEvent devent = spy(new DummyDeserializedEvent("baz"));
     ievent.setEventObj(devent);
-    doReturn(null).doReturn(null).when(devent).getField(any());
+    doReturn(null).doReturn(null).when(devent).getFieldAsString(any());
 
     op.perform(ievent);
 
@@ -136,7 +136,7 @@ public class PartitionOperationTest {
     DummyDeserializedEvent devent = spy(new DummyDeserializedEvent("baz"));
     ievent.setEventObj(devent);
 
-    doThrow(new NoSuchElementException()).when(devent).getField(any());
+    doThrow(new NoSuchElementException()).when(devent).getFieldAsString(any());
 
     op.perform(ievent);
 
@@ -158,7 +158,7 @@ public class PartitionOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
     ievent.setEventObj(devent);
-    doReturn("baz").when(devent).getField("foo");
+    doReturn("baz").when(devent).getFieldAsString("foo");
 
     DummyOperationFactory opFact = new DummyOperationFactory(op);
     OperationProcessor opProc = new OperationProcessor(opFact);

@@ -40,7 +40,7 @@ public class DummyDeserializerHelper {
     }
 
     @Override
-    public String getField(String fieldName) throws NoSuchElementException {
+    public Object getField(String fieldName) throws NoSuchElementException {
       return payload;
     }
 
@@ -53,6 +53,11 @@ public class DummyDeserializerHelper {
     public void setField(String fieldName, Object value)
         throws NotImplementedException {
       throw new NotImplementedException("setField not supported by DummyDeserializedEvent");
+    }
+
+    @Override
+    public String getFieldAsString(String fieldName) throws NoSuchElementException {
+      return (String) payload;
     }
   }
 

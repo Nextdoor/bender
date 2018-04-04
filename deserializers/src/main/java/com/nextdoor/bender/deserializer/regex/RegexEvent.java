@@ -42,14 +42,12 @@ public class RegexEvent implements DeserializedEvent {
   }
 
   @Override
-  public String getField(String fieldName) throws NoSuchElementException {
+  public Object getField(String fieldName) throws NoSuchElementException {
     if (this.payload == null) {
       throw new NoSuchElementException(fieldName + " is not in payload because payload is null");
     }
 
-    Object o = this.payload.getOrDefault(fieldName, null);
-
-    return o != null ? o.toString() : null;
+    return this.payload.getOrDefault(fieldName, null);
   }
 
   @Override
@@ -59,5 +57,20 @@ public class RegexEvent implements DeserializedEvent {
     }
 
     this.payload.put(fieldName, value);
+  }
+
+  @Override
+  public String getFieldAsString(String fieldName) throws NoSuchElementException {
+    Object o = getField(fieldName);
+
+    if (o == null) {
+      return null;
+    }
+
+    if (o instanceof String) {
+      return (String) o;
+    } else {
+      return o.toString();
+    }
   }
 }

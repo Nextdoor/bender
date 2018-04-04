@@ -38,10 +38,20 @@ public interface DeserializedEvent {
    * Retrieves a field from the deserialized object.
    *
    * @param fieldName field to lookup.
-   * @return String value of the field.
+   * @return Value of the field.
    * @throws NoSuchElementException when the field does not exist.
    */
   public Object getField(String fieldName) throws NoSuchElementException;
+
+  /**
+   * Retrieves a field from the deserialized object as a String. Note this may rely on
+   * the object's implementation of toString().
+   *
+   * @param fieldName field to lookup.
+   * @return String value of the field.
+   * @throws NoSuchElementException when the field does not exist.
+   */
+  public String getFieldAsString(String fieldName) throws NoSuchElementException;
 
   /**
    * Sets a field in the deserialized object.
