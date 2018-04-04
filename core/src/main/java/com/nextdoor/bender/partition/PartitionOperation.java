@@ -49,8 +49,13 @@ public class PartitionOperation implements Operation {
       String key = null;
       for (String source : spec.getSources()) {
         try {
-          key = devent.getField(source);
-          if (key != null) {
+          Object o = devent.getField(source);
+          if (o != null) {
+            if (o instanceof String) {
+              key = (String) o;
+            } else {
+              key = o.toString();
+            }
             break;
           }
         } catch (NoSuchElementException e) {

@@ -15,7 +15,8 @@
 
 package com.nextdoor.bender.operation.substitution;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.nextdoor.bender.InternalEvent;
@@ -23,9 +24,9 @@ import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.Operation;
 
 public class SubstitutionOperation implements Operation {
-  private final ArrayList<SubstitutionSpec> subSpecs;
+  private final List<SubSpecConfig<?>> subSpecs;
 
-  public SubstitutionOperation(ArrayList<SubstitutionSpec> subSpecs) {
+  public SubstitutionOperation(List<SubSpecConfig<?>> subSpecs) {
     this.subSpecs = subSpecs;
   }
 
@@ -38,25 +39,38 @@ public class SubstitutionOperation implements Operation {
       return ievent;
     }
 
-    for (SubstitutionSpec subSpec : subSpecs) {
-      switch (subSpec.getInterpreter()) {
-        case STATIC:
-          devent.setField(subSpec.getKey(), subSpec.getValue());
-          break;
-        case FIELD:
-          try {
-            devent.setField(subSpec.getKey(), devent.getField(subSpec.getValue()));
-          } catch (NoSuchElementException e) {
-            break;
-          }
-          break;
+    for (SubSpecConfig<?> subSpec : subSpecs) {
+      if (subSpec instanceof FieldSubSpecConfig) {
+        try {
+          devent.setField(subSpec.getKey(),
+              devent.getField(((FieldSubSpecConfig) subSpec).getSourceField()));
+        } catch (NoSuchElementException e) {
+        }
+      } else if (subSpec instanceof StaticSubSpecConfig) {
+        devent.setField(subSpec.getKey(), ((StaticSubSpecConfig) subSpec).getValue());
+      } else if (subSpec instanceof MetadataSubSpecConfig) {
+        MetadataSubSpecConfig m = (MetadataSubSpecConfig) subSpec;
+
+        List<String> includes = m.getIncludes();
+        List<String> excludes = m.getExcludes();
+        Map<String, Object> metadata = ievent.getEventMetadata();
+
+        if (!includes.isEmpty()) {
+          metadata.keySet().retainAll(includes);
+        }
+
+        excludes.forEach(exclude -> {
+          metadata.remove(exclude);
+        });
+
+        devent.setField(subSpec.getKey(), ievent.getEventMetadata());
       }
     }
 
     return ievent;
   }
 
-  public ArrayList<SubstitutionSpec> getSubSpecs() {
+  public List<SubSpecConfig<?>> getSubSpecs() {
     return this.subSpecs;
   }
 }

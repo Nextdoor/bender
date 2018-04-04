@@ -15,7 +15,9 @@
 
 package com.nextdoor.bender;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -34,6 +36,7 @@ public class InternalEvent {
   private String serialized;
   private LinkedHashMap<String, String> partitions;
   private long eventTime;
+  private final Map<String, Object> metadata = new HashMap<String, Object>(6);
 
   /**
    * @param eventString the raw string data of the event.
@@ -46,6 +49,25 @@ public class InternalEvent {
     this.eventSha1Hash = DigestUtils.sha1Hex(this.eventString);
     this.arrivalTime = arrivalTime;
     this.eventTime = arrivalTime;
+
+    this.metadata.put("eventEpochMs", new Long(this.getEventTime()));
+    this.metadata.put("arrivalEpochMs", new Long(this.arrivalTime));
+    this.metadata.put("eventSha1Hash", this.getEventSha1Hash());
+  }
+
+  /**
+   * @return Metadata about the InternalEvent. This is typically information that comes from the
+   *         Lambda Event that invoked the function.
+   */
+  public Map<String, Object> getEventMetadata() {
+    return this.metadata;
+  }
+
+  /**
+   * Allows classes that extend InternalEvent to add their own metadata.
+   */
+  protected void addMetadata(String key, Object value) {
+    this.metadata.put(key, value);
   }
 
   /**
@@ -67,7 +89,7 @@ public class InternalEvent {
    *         {@link com.nextdoor.bender.deserializer.Deserializer}.
    */
   public DeserializedEvent getEventObj() {
-    return eventObj;
+    return this.eventObj;
   }
 
   /**
@@ -83,7 +105,7 @@ public class InternalEvent {
    *         {@link com.nextdoor.bender.handler.Handler#handler(Object, Context)}.
    */
   public Context getCtx() {
-    return context;
+    return this.context;
   }
 
   /**
@@ -125,5 +147,7 @@ public class InternalEvent {
 
   public void setEventTime(long eventTime) {
     this.eventTime = eventTime;
+    this.addMetadata("eventEpochMs", new Long(eventTime));
+    this.addMetadata("sourceLagMs", new Long(System.currentTimeMillis() - this.getEventTime()));
   }
 }

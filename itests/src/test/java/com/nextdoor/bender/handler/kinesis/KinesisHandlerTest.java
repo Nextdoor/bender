@@ -43,6 +43,6 @@ public class KinesisHandlerTest extends HandlerTest<KinesisEvent> {
 
   @Override
   public String getConfigFile() {
-    return "/com/nextdoor/bender/handler/config_kinesis.json";
+    return "/com/nextdoor/bender/handler/config_kinesis.yaml";
   }
 }

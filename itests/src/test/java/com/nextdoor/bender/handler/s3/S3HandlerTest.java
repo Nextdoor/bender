@@ -41,7 +41,7 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
 
   @Override
   public String getConfigFile() {
-    return "/com/nextdoor/bender/handler/config_unittest.json";
+    return "/com/nextdoor/bender/handler/config_unittest.yaml";
   }
 
   @Rule

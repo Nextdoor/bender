@@ -20,14 +20,16 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import org.junit.Test;
 
 import com.nextdoor.bender.operation.gelf.GelfOperation;
 import com.nextdoor.bender.operation.gelf.GelfOperationConfig;
 import com.nextdoor.bender.operation.gelf.GelfOperationFactory;
-import com.nextdoor.bender.operation.substitution.SubstitutionSpec;
-import com.nextdoor.bender.operation.substitution.SubstitutionSpec.Interpreter;
+import com.nextdoor.bender.operation.substitution.FieldSubSpecConfig;
+import com.nextdoor.bender.operation.substitution.StaticSubSpecConfig;
+import com.nextdoor.bender.operation.substitution.SubSpecConfig;
 
 public class GelfOperationFactoryTest {
 
@@ -42,13 +44,13 @@ public class GelfOperationFactoryTest {
     factory.setConf(config);
 
     GelfOperation op = factory.newInstance();
-    ArrayList<SubstitutionSpec> actual = op.getSubSpecs();
+    List<SubSpecConfig<?>> actual = op.getSubSpecs();
 
-    ArrayList<SubstitutionSpec> expected = new ArrayList<SubstitutionSpec>();
-    expected.add(new SubstitutionSpec("host", "foo_host", Interpreter.FIELD));
-    expected.add(new SubstitutionSpec("file", "filename", Interpreter.FIELD));
-    expected.add(new SubstitutionSpec("short_message", "foo_short_message", Interpreter.FIELD));
-    expected.add(new SubstitutionSpec("version", "1.1", Interpreter.STATIC));
+    ArrayList<SubSpecConfig<?>> expected = new ArrayList<SubSpecConfig<?>>();
+    expected.add(new FieldSubSpecConfig("host", "foo_host"));
+    expected.add(new FieldSubSpecConfig("file", "filename"));
+    expected.add(new FieldSubSpecConfig("short_message", "foo_short_message"));
+    expected.add(new StaticSubSpecConfig("version", "1.1"));
 
     Collections.sort(expected, Comparator.comparingInt(Object::hashCode));
     Collections.sort(actual, Comparator.comparingInt(Object::hashCode));

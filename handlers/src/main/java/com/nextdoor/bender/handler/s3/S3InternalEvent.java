@@ -39,6 +39,10 @@ public class S3InternalEvent extends InternalEvent {
     this.s3Key = s3Key;
     this.s3Bucket = s3Bucket;
     this.s3KeyVersion = s3KeyVersion;
+
+    super.addMetadata("s3Key", s3Key);
+    super.addMetadata("s3Bucket", s3Bucket);
+    super.addMetadata("s3KeyVersion", s3KeyVersion);
   }
 
   @Override

@@ -29,6 +29,14 @@ public class KinesisInternalEvent extends InternalEvent {
   public KinesisInternalEvent(KinesisEventRecord record, Context context, String shardId) {
     super(new String(record.getKinesis().getData().array()), context,
         record.getKinesis().getApproximateArrivalTimestamp().getTime());
+
+    super.addMetadata("eventSource", record.getEventSource());
+    super.addMetadata("eventSourceArn", record.getEventSourceARN());
+    super.addMetadata("eventID", record.getEventID());
+    super.addMetadata("awsRegion", record.getAwsRegion());
+    super.addMetadata("partitionKey", record.getKinesis().getPartitionKey());
+    super.addMetadata("sequenceNumber", record.getKinesis().getSequenceNumber());
+
     this.record = record;
     this.shardId = shardId;
   }

@@ -48,7 +48,7 @@ public class GenericJsonEvent implements DeserializedEvent {
   }
 
   @Override
-  public String getField(String field) {
+  public Object getField(String field) {
     if (this.payload == null) {
       throw new NoSuchElementException(field + " is not in payload because payload is null");
     }

@@ -41,7 +41,7 @@ public interface DeserializedEvent {
    * @return String value of the field.
    * @throws NoSuchElementException when the field does not exist.
    */
-  public String getField(String fieldName) throws NoSuchElementException;
+  public Object getField(String fieldName) throws NoSuchElementException;
 
   /**
    * Sets a field in the deserialized object.

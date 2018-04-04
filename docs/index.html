@@ -1603,7 +1603,9 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
+                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">SubstitutionOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">PartitionOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -2641,6 +2643,482 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-10">
         <div class="box-title" ref="">
+            <div class="box-name ">SubstitutionOperation</div>
+            <div class="box-description desc"><p>This operation allows substituting event fields with different sources such as other fields, static values, or metadata.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">SubstitutionOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">SubstitutionOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">substitutions</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+
+                            <span class="type-keyword">any of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">MetadataSubstitution</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StaticSubstitution</span>
+        <span class="type-keyword"></span>
+                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FieldSubstitution</span>
+
+                </div>
+                <div class="signature-description desc"><p>List of substitutions to perform.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">MetadataSubstitution</div>
+            <div class="box-description desc"><p>Substitutes event field value for list of event metadata proprties.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">MetadataSubstitution</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">MetadataSubstitution</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Name of the new field</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">includes</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>List of metadata fields to add. If non-specified then all are added.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">excludes</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>List of metadata fields to exclude. If non-specified then none are excluded.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Substitutes event field value for list of event metadata proprties.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "MetadataSubstitution"
+      ],
+      "default": "MetadataSubstitution"
+    },
+    "key": {
+      "type": "string",
+      "description": "Name of the new field"
+    },
+    "includes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of metadata fields to add. If non-specified then all are added."
+    },
+    "excludes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of metadata fields to exclude. If non-specified then none are excluded."
+    }
+  },
+  "title": "MetadataSubstitution",
+  "required": [
+    "type",
+    "key"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">StaticSubstitution</div>
+            <div class="box-description desc"><p>Substitutes event field value for a static value.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">StaticSubstitution</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">StaticSubstitution</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Name of the new field</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Value of the new field.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Substitutes event field value for a static value.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "StaticSubstitution"
+      ],
+      "default": "StaticSubstitution"
+    },
+    "key": {
+      "type": "string",
+      "description": "Name of the new field"
+    },
+    "value": {
+      "type": "string",
+      "description": "Value of the new field."
+    }
+  },
+  "title": "StaticSubstitution",
+  "required": [
+    "type",
+    "key",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="3">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-3">
+        <div class="box-title" ref="">
+            <div class="box-name ">FieldSubstitution</div>
+            <div class="box-description desc"><p>Substitutes event field value for another event field value. Note the source field and destination field can be the same.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">FieldSubstitution</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">FieldSubstitution</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Name of the new field</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">source_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Source field to pull value from.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Substitutes event field value for another event field value. Note the source field and destination field can be the same.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "FieldSubstitution"
+      ],
+      "default": "FieldSubstitution"
+    },
+    "key": {
+      "type": "string",
+      "description": "Name of the new field"
+    },
+    "source_field": {
+      "type": "string",
+      "description": "Source field to pull value from."
+    }
+  },
+  "title": "FieldSubstitution",
+  "required": [
+    "type",
+    "key",
+    "source_field"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "This operation allows substituting event fields with different sources such as other fields, static values, or metadata.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "SubstitutionOperation"
+      ],
+      "default": "SubstitutionOperation"
+    },
+    "substitutions": {
+      "type": "array",
+      "description": "List of substitutions to perform.",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/MetadataSubSpecConfig"
+        },
+        {
+          "$ref": "#/definitions/StaticSubSpecConfig"
+        },
+        {
+          "$ref": "#/definitions/FieldSubSpecConfig"
+        }
+      ]
+    }
+  },
+  "title": "SubstitutionOperation",
+  "required": [
+    "type",
+    "substitutions"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="11">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-11">
+        <div class="box-title" ref="">
             <div class="box-name ">PartitionOperation</div>
             <div class="box-description desc"><p>Sets the partition information for the Event using fields from the deserialized object. When using JSON use JsonPath format to specify fields. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
 </div>
@@ -3008,6 +3486,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/KeyNameOperationConfig"
+        },
+        {
+          "$ref": "#/definitions/SubstitutionOperationConfig"
         },
         {
           "$ref": "#/definitions/PartitionOperationConfig"
@@ -10173,6 +10654,9 @@ function sourceButton(element) {
               "$ref": "#/definitions/KeyNameOperationConfig"
             },
             {
+              "$ref": "#/definitions/SubstitutionOperationConfig"
+            },
+            {
               "$ref": "#/definitions/PartitionOperationConfig"
             }
           ]
@@ -10542,6 +11026,133 @@ function sourceButton(element) {
       "title": "JsonKeyNameOperation",
       "required": [
         "type"
+      ]
+    },
+    "SubstitutionOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "This operation allows substituting event fields with different sources such as other fields, static values, or metadata.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "SubstitutionOperation"
+          ],
+          "default": "SubstitutionOperation"
+        },
+        "substitutions": {
+          "type": "array",
+          "description": "List of substitutions to perform.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MetadataSubSpecConfig"
+            },
+            {
+              "$ref": "#/definitions/StaticSubSpecConfig"
+            },
+            {
+              "$ref": "#/definitions/FieldSubSpecConfig"
+            }
+          ]
+        }
+      },
+      "title": "SubstitutionOperation",
+      "required": [
+        "type",
+        "substitutions"
+      ]
+    },
+    "MetadataSubSpecConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Substitutes event field value for list of event metadata proprties.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "MetadataSubstitution"
+          ],
+          "default": "MetadataSubstitution"
+        },
+        "key": {
+          "type": "string",
+          "description": "Name of the new field"
+        },
+        "includes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of metadata fields to add. If non-specified then all are added."
+        },
+        "excludes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of metadata fields to exclude. If non-specified then none are excluded."
+        }
+      },
+      "title": "MetadataSubstitution",
+      "required": [
+        "type",
+        "key"
+      ]
+    },
+    "StaticSubSpecConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Substitutes event field value for a static value.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "StaticSubstitution"
+          ],
+          "default": "StaticSubstitution"
+        },
+        "key": {
+          "type": "string",
+          "description": "Name of the new field"
+        },
+        "value": {
+          "type": "string",
+          "description": "Value of the new field."
+        }
+      },
+      "title": "StaticSubstitution",
+      "required": [
+        "type",
+        "key",
+        "value"
+      ]
+    },
+    "FieldSubSpecConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Substitutes event field value for another event field value. Note the source field and destination field can be the same.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "FieldSubstitution"
+          ],
+          "default": "FieldSubstitution"
+        },
+        "key": {
+          "type": "string",
+          "description": "Name of the new field"
+        },
+        "source_field": {
+          "type": "string",
+          "description": "Source field to pull value from."
+        }
+      },
+      "title": "FieldSubstitution",
+      "required": [
+        "type",
+        "key",
+        "source_field"
       ]
     },
     "PartitionOperationConfig": {

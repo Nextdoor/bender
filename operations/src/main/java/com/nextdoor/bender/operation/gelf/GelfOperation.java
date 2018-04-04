@@ -18,6 +18,7 @@ package com.nextdoor.bender.operation.gelf;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -30,8 +31,7 @@ import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.json.key.FlattenOperation;
 import com.nextdoor.bender.operation.substitution.SubstitutionOperation;
-import com.nextdoor.bender.operation.substitution.SubstitutionSpec;
-import com.nextdoor.bender.time.TimeOperation;
+import com.nextdoor.bender.operation.substitution.SubSpecConfig;
 
 public class GelfOperation implements Operation {
 
@@ -42,7 +42,7 @@ public class GelfOperation implements Operation {
       "short_message", "full_message", "timestamp", "level", "facility", "line", "file"));
 
 
-  public GelfOperation(ArrayList<SubstitutionSpec> subSpecs) {
+  public GelfOperation(ArrayList<SubSpecConfig<?>> subSpecs) {
     this.subOp = new SubstitutionOperation(subSpecs);
     this.flattenOp = new FlattenOperation(".");
   }
@@ -152,7 +152,7 @@ public class GelfOperation implements Operation {
     return ievent;
   }
 
-  public ArrayList<SubstitutionSpec> getSubSpecs() {
+  public List<SubSpecConfig<?>> getSubSpecs() {
     return this.subOp.getSubSpecs();
   }
 }
