@@ -50,7 +50,6 @@ public class InternalEvent {
     this.arrivalTime = arrivalTime;
     this.eventTime = arrivalTime;
 
-    this.metadata.put("eventEpochMs", new Long(this.getEventTime()));
     this.metadata.put("arrivalEpochMs", new Long(this.arrivalTime));
     this.metadata.put("eventSha1Hash", this.getEventSha1Hash());
   }
