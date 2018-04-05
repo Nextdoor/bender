@@ -55,17 +55,16 @@ public class TimeOperation implements Operation {
 
   @Override
   public InternalEvent perform(InternalEvent ievent) {
-    Object o = ievent.getEventObj().getField(timeField);
+    String field = ievent.getEventObj().getFieldAsString(timeField);
 
     /*
      * Filter out events without a time field
      */
-    if (o == null) {
+    if (field == null) {
       throw new OperationException(
           "time field " + timeField + " returned null from " + ievent.getEventString());
     }
 
-    String field = o.toString();
     ievent.setEventTime(getTimestamp(field, timeFieldType));
 
     return ievent;
