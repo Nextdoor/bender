@@ -2321,7 +2321,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Field containing fullt_message string</p>
+                <div class="signature-description desc"><p>Field containing full_message string</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -2339,7 +2339,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent.</p>
+                <div class="signature-description desc"><p>Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -2445,11 +2445,11 @@ function sourceButton(element) {
     },
     "src_full_message_field": {
       "type": "string",
-      "description": "Field containing fullt_message string"
+      "description": "Field containing full_message string"
     },
     "src_timestamp_field": {
       "type": "string",
-      "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent."
+      "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior."
     },
     "src_level_field": {
       "type": "string",
@@ -10473,11 +10473,11 @@ function sourceButton(element) {
         },
         "src_full_message_field": {
           "type": "string",
-          "description": "Field containing fullt_message string"
+          "description": "Field containing full_message string"
         },
         "src_timestamp_field": {
           "type": "string",
-          "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent."
+          "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior."
         },
         "src_level_field": {
           "type": "string",

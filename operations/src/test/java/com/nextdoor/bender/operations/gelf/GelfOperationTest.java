@@ -16,6 +16,7 @@
 package com.nextdoor.bender.operations.gelf;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -31,8 +32,9 @@ import com.nextdoor.bender.operation.gelf.GelfOperation;
 import com.nextdoor.bender.operations.json.OperationTest;
 
 public class GelfOperationTest extends OperationTest {
+
   @Test
-  public void testPrefixing()
+  public void testPrefixingNoCustomTimestamp()
       throws JsonSyntaxException, UnsupportedEncodingException, IOException {
     JsonParser parser = new JsonParser();
 
@@ -48,7 +50,26 @@ public class GelfOperationTest extends OperationTest {
     ievent.setEventObj(devent);
     op.perform(ievent);
 
-    assertEquals(parser.parse(expectedOutput), input);
+    assertEquals(parser.parse(expectedOutput), devent.payload);
+  }
+
+  @Test
+  public void testEventTimestamp() throws JsonSyntaxException,  IOException {
+    JsonParser parser = new JsonParser();
+
+    JsonElement input = parser.parse(getResourceString("prefixed_input.json"));
+
+    DummpyEvent devent = new DummpyEvent();
+    devent.payload = input.getAsJsonObject();
+
+    GelfOperation op = new GelfOperation(new ArrayList<>());
+
+    InternalEvent ievent = new InternalEvent("", null, 1234567890123L);
+    ievent.setEventObj(devent);
+    ievent.setEventTime(1522686301055L);
+    op.perform(ievent);
+
+    assertTrue(devent.payload.toString().contains("\"timestamp\":1.522686301055E9"));
   }
 
   @Test
@@ -68,6 +89,6 @@ public class GelfOperationTest extends OperationTest {
     ievent.setEventObj(devent);
     op.perform(ievent);
 
-    assertEquals(parser.parse(expectedOutput), input);
+    assertEquals(parser.parse(expectedOutput), devent.payload);
   }
 }

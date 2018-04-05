@@ -15,6 +15,7 @@
 package com.nextdoor.bender.ipc.gelf;
 
 import com.nextdoor.bender.ipc.TransportBuffer;
+import com.nextdoor.bender.ipc.generic.GenericTransportSerializer;
 import com.nextdoor.bender.ipc.tcp.TcpTransportBuffer;
 import com.nextdoor.bender.ipc.tcp.TcpTransportFactory;
 
@@ -25,7 +26,7 @@ public class GelfTransportFactory extends TcpTransportFactory {
 
   @Override
   public TransportBuffer newTransportBuffer() {
-    return new TcpTransportBuffer(getConfig().getMaxBufferSize(), new GelfTransportSerializer());
+    return new TcpTransportBuffer(getConfig().getMaxBufferSize(), new GenericTransportSerializer('\0'));
   }
 
 }
