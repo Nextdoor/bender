@@ -18,6 +18,7 @@ package com.nextdoor.bender.operations.gelf;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,9 +37,9 @@ public class GelfOperationFactoryTest {
   @Test
   public void foo() {
     GelfOperationConfig config = new GelfOperationConfig();
-    config.setSrcHostField("foo_host");
-    config.setSrcShortMessageField("foo_short_message");
-    config.setSrcFileField("filename");
+    config.setSrcHostField(Arrays.asList("foo_host"));
+    config.setSrcShortMessageField(Arrays.asList("foo_short_message"));
+    config.setSrcFileField(Arrays.asList("filename"));
 
     GelfOperationFactory factory = new GelfOperationFactory();
     factory.setConf(config);
@@ -47,9 +48,9 @@ public class GelfOperationFactoryTest {
     List<SubSpecConfig<?>> actual = op.getSubSpecs();
 
     ArrayList<SubSpecConfig<?>> expected = new ArrayList<SubSpecConfig<?>>();
-    expected.add(new FieldSubSpecConfig("host", "foo_host"));
-    expected.add(new FieldSubSpecConfig("file", "filename"));
-    expected.add(new FieldSubSpecConfig("short_message", "foo_short_message"));
+    expected.add(new FieldSubSpecConfig("host", Arrays.asList("foo_host")));
+    expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename")));
+    expected.add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message")));
     expected.add(new StaticSubSpecConfig("version", "1.1"));
 
     Collections.sort(expected, Comparator.comparingInt(Object::hashCode));
