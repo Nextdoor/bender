@@ -21,13 +21,20 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
+import com.google.common.graph.ElementOrder.Type;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.internal.LinkedTreeMap;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.testutils.TestUtils;
@@ -243,7 +250,7 @@ public class GenericJsonDeserializerTest {
     assertEquals(null, event.getField("$.an_obj.baz"));
   }
 
-  @Test(expected = NoSuchElementException.class)
+  @Test
   public void testGetNestedObjField() throws UnsupportedEncodingException, IOException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
@@ -251,7 +258,15 @@ public class GenericJsonDeserializerTest {
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
-    event.getField("$.an_obj");
+    Map<String, String> expected = new HashMap<String, String>();
+    expected.put("foo", "bar");
+    Object o = event.getField("$.an_obj");
+    assertTrue(o instanceof JsonObject);
+
+    JsonObject actual = (JsonObject) o;
+    Gson gson = new Gson();
+
+    assertEquals(expected, gson.fromJson(actual, LinkedTreeMap.class));
   }
 
   @Test
@@ -331,5 +346,41 @@ public class GenericJsonDeserializerTest {
     assertTrue(obj.get("new_field").isJsonPrimitive());
     assertTrue(obj.get("new_field").getAsJsonPrimitive().isString());
     assertEquals("foo", obj.get("new_field").getAsString());
+  }
+
+
+  @Test
+  public void testSetObjectArray() throws UnsupportedEncodingException, IOException {
+    DeserializedEvent devent = getEvent("basic.json");
+
+    /*
+     * Verify payload type
+     */
+    assertNotNull(devent.getPayload());
+    assertEquals(devent.getPayload().getClass(), JsonObject.class);
+
+    List<Object> list = new ArrayList<Object>();
+    list.add("foo");
+    list.add(new Long(1));
+    devent.setField("$.new_field", list);
+
+    /*
+     * Verify payload data
+     */
+    JsonObject obj = (JsonObject) devent.getPayload();
+
+    assertTrue(obj.has("new_field"));
+    assertTrue(obj.get("new_field").isJsonArray());
+    assertEquals(2, obj.get("new_field").getAsJsonArray().size());
+
+    assertTrue(obj.get("new_field").getAsJsonArray().get(0).isJsonPrimitive());
+    assertTrue(obj.get("new_field").getAsJsonArray().get(0).getAsJsonPrimitive().isString());
+    assertEquals("foo",
+        obj.get("new_field").getAsJsonArray().get(0).getAsJsonPrimitive().getAsString());
+
+    assertTrue(obj.get("new_field").getAsJsonArray().get(1).isJsonPrimitive());
+    assertTrue(obj.get("new_field").getAsJsonArray().get(1).getAsJsonPrimitive().isNumber());
+    assertEquals(new Long(1),
+        obj.get("new_field").getAsJsonArray().get(1).getAsJsonPrimitive().getAsNumber());
   }
 }

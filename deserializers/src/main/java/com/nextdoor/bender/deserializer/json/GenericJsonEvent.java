@@ -57,14 +57,17 @@ public class GenericJsonEvent implements DeserializedEvent {
     Object obj = JsonPathProvider.read(json, field);
 
     if (obj == null) {
+      // TODO: this should really throw NoSuchElementException
       return null;
     }
 
-    if (!(obj instanceof JsonPrimitive)) {
-      throw new NoSuchElementException(field + " is not a primitive type");
+    if (obj instanceof JsonPrimitive) {
+      if (((JsonPrimitive) obj).isString()) {
+        return ((JsonPrimitive) obj).getAsString();
+      }
     }
 
-    return ((JsonPrimitive) obj).getAsString();
+    return obj;
   }
 
   @Override
@@ -91,12 +94,18 @@ public class GenericJsonEvent implements DeserializedEvent {
 
   @Override
   public String getFieldAsString(String fieldName) throws NoSuchElementException {
-    JsonPrimitive field = (JsonPrimitive) getField(fieldName);
+    Object obj = getField(fieldName);
 
-    if (field == null) {
+    if (obj == null) {
       return null;
     }
 
-    return field.getAsString();
+    if (obj instanceof String) {
+      return (String) obj;
+    } else if (obj instanceof JsonElement) {
+      return ((JsonElement) obj).getAsString();
+    }
+
+    return obj.toString();
   }
 }
