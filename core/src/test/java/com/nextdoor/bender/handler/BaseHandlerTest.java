@@ -238,7 +238,7 @@ public class BaseHandlerTest {
     IpcSenderService spy = spy(handler.getIpcService());
     handler.setIpcService(spy);
 
-    doThrow(new TransportException("expected")).when(spy).shutdown();
+    doThrow(new TransportException("expected")).when(spy).flush();
 
     try {
       handler.handler(events, context);
@@ -261,7 +261,7 @@ public class BaseHandlerTest {
     IpcSenderService spy = spy(handler.getIpcService());
     handler.setIpcService(spy);
 
-    doThrow(new InterruptedException("expected")).when(spy).shutdown();
+    doThrow(new InterruptedException("expected")).when(spy).flush();
 
     try {
       handler.handler(events, context);

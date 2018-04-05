@@ -2321,7 +2321,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Field containing fullt_message string</p>
+                <div class="signature-description desc"><p>Field containing full_message string</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -2339,7 +2339,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent.</p>
+                <div class="signature-description desc"><p>Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -2445,11 +2445,11 @@ function sourceButton(element) {
     },
     "src_full_message_field": {
       "type": "string",
-      "description": "Field containing fullt_message string"
+      "description": "Field containing full_message string"
     },
     "src_timestamp_field": {
       "type": "string",
-      "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent."
+      "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior."
     },
     "src_level_field": {
       "type": "string",
@@ -3453,13 +3453,15 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">SumoLogic</span>
         <span class="type-keyword"></span>
-                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Splunk</span>
+                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Gelf</span>
         <span class="type-keyword"></span>
-                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Stdout</span>
+                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Splunk</span>
         <span class="type-keyword"></span>
-                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Stdout</span>
         <span class="type-keyword"></span>
-                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Datadog</span>
+                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
+        <span class="type-keyword"></span>
+                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Datadog</span>
 
                 </div>
                 <div class="signature-description desc"><p>Transport configuration</p>
@@ -7312,6 +7314,304 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-7">
         <div class="box-title" ref="">
+            <div class="box-name ">Gelf</div>
+            <div class="box-description desc"><p>Writes logs into a Graylog TCP GELF Input</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">Gelf</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">Gelf</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">threads</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">5</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of concurrent transporters allowed</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">hostname</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>TCP endpoint hostname.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">port</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;65535]
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>TCP endpoint port.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">true</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use SSL/TLS connections.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">verify_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">true</span>
+
+                </div>
+                <div class="signature-description desc"><p>Verify SSL/TLS certificates.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">max_buffer_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1024;10485760]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">10240</span>
+
+                </div>
+                <div class="signature-description desc"><p>Maximum size (in bytes) in memory before triggering a write.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_count</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [0;10]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">0</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of retries to make when a write failure occurs.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_delay</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;60000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">1000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Initial delay between retries. If more than one retries specified exponential backoff is used.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">timeout</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1000;60000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">30000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Socket timeout (in milliseconds) on TCP connection.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Writes logs into a Graylog TCP GELF Input",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "Gelf"
+      ],
+      "default": "Gelf"
+    },
+    "threads": {
+      "type": "integer",
+      "default": 5,
+      "description": "Number of concurrent transporters allowed"
+    },
+    "hostname": {
+      "type": "string",
+      "description": "TCP endpoint hostname."
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535,
+      "description": "TCP endpoint port."
+    },
+    "use_ssl": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use SSL/TLS connections."
+    },
+    "verify_ssl": {
+      "type": "boolean",
+      "default": true,
+      "description": "Verify SSL/TLS certificates."
+    },
+    "max_buffer_size": {
+      "type": "integer",
+      "minimum": 1024,
+      "maximum": 10485760,
+      "default": 10240,
+      "description": "Maximum size (in bytes) in memory before triggering a write."
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "default": 0,
+      "description": "Number of retries to make when a write failure occurs."
+    },
+    "retry_delay": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 60000,
+      "default": 1000,
+      "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+    },
+    "timeout": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 60000,
+      "default": 30000,
+      "description": "Socket timeout (in milliseconds) on TCP connection."
+    }
+  },
+  "title": "Gelf",
+  "required": [
+    "type",
+    "hostname",
+    "port"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="8">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-8">
+        <div class="box-title" ref="">
             <div class="box-name ">Splunk</div>
             <div class="box-description desc"><p>Writes events to a Splunk HEC endpoint.</p>
 </div>
@@ -8047,9 +8347,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="8">
+                <div class="box-container" boxid="9">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-8">
+    <div class="box-header box-9">
         <div class="box-title" ref="">
             <div class="box-name ">Stdout</div>
             <div class="box-description desc"><p>Writes events out to the console for testing and debugging</p>
@@ -8139,9 +8439,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="9">
+                <div class="box-container" boxid="10">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-9">
+    <div class="box-header box-10">
         <div class="box-title" ref="">
             <div class="box-name ">Firehose</div>
             <div class="box-description desc"><p>Transports events to AWS Kinesis Firehose. This transport is agnostic of the data being sent. However there are important limits to consider. The maximum size of a single Firehose record can not exceed 1000kb and the maximum for a batch is 4mb. Events larger than 1000kb will not be split across multiple Records. The transport contains two types of buffers. In BATCH mode it will attempt to write multiple events into a single Firehose Record in order to minimize number of Records sent. In SIMPLE mode each serialized event is putinto a its own Record. Firehose sinks like ElasticSearch require each event be its own Firehose Record.Required IAM permissions are: firehose:DescribeDeliveryStream, firehose:ListDeliveryStreams, firehose:PutRecord, firehose:PutRecordBatch</p>
@@ -8368,9 +8668,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="10">
+                <div class="box-container" boxid="11">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-10">
+    <div class="box-header box-11">
         <div class="box-title" ref="">
             <div class="box-name ">Datadog</div>
             <div class="box-description desc"><p>Writes events to a Datadog endpoint.</p>
@@ -8476,7 +8776,27 @@ function sourceButton(element) {
             <span class="type-default">true</span>
 
                 </div>
-                <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
+                <div class="signature-description desc"><p>Use SSL/TLS connections.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">verify_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">true</span>
+
+                </div>
+                <div class="signature-description desc"><p>Verify SSL/TLS certificates.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -8847,7 +9167,12 @@ function sourceButton(element) {
     "use_ssl": {
       "type": "boolean",
       "default": true,
-      "description": "Use SSL connections (certificates are not validated)."
+      "description": "Use SSL/TLS connections."
+    },
+    "verify_ssl": {
+      "type": "boolean",
+      "default": true,
+      "description": "Verify SSL/TLS certificates."
     },
     "max_buffer_size": {
       "type": "integer",
@@ -9652,6 +9977,9 @@ function sourceButton(element) {
           "$ref": "#/definitions/SumoLogicTransportConfig"
         },
         {
+          "$ref": "#/definitions/GelfTransportConfig"
+        },
+        {
           "$ref": "#/definitions/SplunkTransportConfig"
         },
         {
@@ -10145,11 +10473,11 @@ function sourceButton(element) {
         },
         "src_full_message_field": {
           "type": "string",
-          "description": "Field containing fullt_message string"
+          "description": "Field containing full_message string"
         },
         "src_timestamp_field": {
           "type": "string",
-          "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Will be set to the current timestamp (now) by the server if absent."
+          "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior."
         },
         "src_level_field": {
           "type": "string",
@@ -11093,6 +11421,79 @@ function sourceButton(element) {
         "auth_token"
       ]
     },
+    "GelfTransportConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Writes logs into a Graylog TCP GELF Input",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Gelf"
+          ],
+          "default": "Gelf"
+        },
+        "threads": {
+          "type": "integer",
+          "default": 5,
+          "description": "Number of concurrent transporters allowed"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "TCP endpoint hostname."
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "description": "TCP endpoint port."
+        },
+        "use_ssl": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use SSL/TLS connections."
+        },
+        "verify_ssl": {
+          "type": "boolean",
+          "default": true,
+          "description": "Verify SSL/TLS certificates."
+        },
+        "max_buffer_size": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 10485760,
+          "default": 10240,
+          "description": "Maximum size (in bytes) in memory before triggering a write."
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 0,
+          "description": "Number of retries to make when a write failure occurs."
+        },
+        "retry_delay": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000,
+          "default": 1000,
+          "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 60000,
+          "default": 30000,
+          "description": "Socket timeout (in milliseconds) on TCP connection."
+        }
+      },
+      "title": "Gelf",
+      "required": [
+        "type",
+        "hostname",
+        "port"
+      ]
+    },
     "SplunkTransportConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -11319,7 +11720,12 @@ function sourceButton(element) {
         "use_ssl": {
           "type": "boolean",
           "default": true,
-          "description": "Use SSL connections (certificates are not validated)."
+          "description": "Use SSL/TLS connections."
+        },
+        "verify_ssl": {
+          "type": "boolean",
+          "default": true,
+          "description": "Verify SSL/TLS certificates."
         },
         "max_buffer_size": {
           "type": "integer",
@@ -11562,6 +11968,9 @@ function sourceButton(element) {
             "$ref": "#/definitions/SumoLogicTransportConfig"
           },
           {
+            "$ref": "#/definitions/GelfTransportConfig"
+          },
+          {
             "$ref": "#/definitions/SplunkTransportConfig"
           },
           {
@@ -11658,6 +12067,9 @@ function sourceButton(element) {
           },
           {
             "$ref": "#/definitions/SumoLogicTransportConfig"
+          },
+          {
+            "$ref": "#/definitions/GelfTransportConfig"
           },
           {
             "$ref": "#/definitions/SplunkTransportConfig"

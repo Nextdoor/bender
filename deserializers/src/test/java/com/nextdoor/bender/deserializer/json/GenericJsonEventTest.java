@@ -57,16 +57,12 @@ public class GenericJsonEventTest {
     assertEquals("bar", payload.get("a").getAsString());
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testInvalidPath() {
-    GenericJsonEvent event = getEmptyEvent();
-    event.setField("$notapath", "bar");
-  }
-
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testInvalidRootPath() {
     GenericJsonEvent event = getEmptyEvent();
-    event.setField("not.apath", "bar");
+    event.setField("foo", "bar");
+
+    assertEquals("bar", event.getField("$.foo"));
   }
 
   @Test

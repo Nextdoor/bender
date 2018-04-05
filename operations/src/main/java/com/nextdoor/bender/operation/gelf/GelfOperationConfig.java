@@ -33,12 +33,15 @@ public class GelfOperationConfig extends OperationConfig {
   @JsonProperty(required = true)
   private String srcShortMessageField;
 
-  @JsonSchemaDescription("Field containing fullt_message string")
+  @JsonSchemaDescription("Field containing full_message string")
   @JsonProperty(required = false)
   private String srcFullMessageField;
 
-  @JsonSchemaDescription("Field containing epoch timestamp in seconds with optional ms as decimal. Will "
-      + "be set to the current timestamp (now) by the server if absent.")
+  @JsonSchemaDescription("Field containing epoch timestamp in seconds with optional ms as decimal. Source "
+      + "field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use "
+      + "the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will "
+      + "automatically use that to set the timestamp field properly. Use this setting only to override that "
+      + "behavior.")
   @JsonProperty(required = false)
   private String srcTimestampField;
 
