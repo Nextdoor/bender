@@ -53,7 +53,7 @@ public class StaticSubSpecConfig extends SubSpecConfig<StaticSubSpecConfig> {
 
     StaticSubSpecConfig other = (StaticSubSpecConfig) o;
 
-    if (this.value != other.getValue()) {
+    if (!this.value.equals(other.getValue())) {
       return false;
     }
 

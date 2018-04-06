@@ -57,7 +57,7 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
 
     FieldSubSpecConfig other = (FieldSubSpecConfig) o;
 
-    if (this.sourceField != other.getSourceFields()) {
+    if (!this.sourceField.equals(other.getSourceFields())) {
       return false;
     }
 
@@ -67,5 +67,10 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), this.sourceField);
+  }
+
+  @Override
+  public String toString() {
+    return super.getKey() + ":" + this.getSourceFields();
   }
 }

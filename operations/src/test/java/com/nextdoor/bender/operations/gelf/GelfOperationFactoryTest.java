@@ -38,7 +38,7 @@ public class GelfOperationFactoryTest {
   public void foo() {
     GelfOperationConfig config = new GelfOperationConfig();
     config.setSrcHostField(Arrays.asList("foo_host"));
-    config.setSrcShortMessageField(Arrays.asList("foo_short_message"));
+    config.setSrcShortMessageField(Arrays.asList("foo_short_message", "bar"));
     config.setSrcFileField(Arrays.asList("filename"));
 
     GelfOperationFactory factory = new GelfOperationFactory();
@@ -50,7 +50,8 @@ public class GelfOperationFactoryTest {
     ArrayList<SubSpecConfig<?>> expected = new ArrayList<SubSpecConfig<?>>();
     expected.add(new FieldSubSpecConfig("host", Arrays.asList("foo_host")));
     expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename")));
-    expected.add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message")));
+    expected
+        .add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message", "bar")));
     expected.add(new StaticSubSpecConfig("version", "1.1"));
 
     Collections.sort(expected, Comparator.comparingInt(Object::hashCode));
