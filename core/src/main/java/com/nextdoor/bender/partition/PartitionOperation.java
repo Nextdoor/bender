@@ -49,7 +49,7 @@ public class PartitionOperation implements Operation {
       String key = null;
       for (String source : spec.getSources()) {
         try {
-          key = devent.getField(source);
+          key = devent.getFieldAsString(source);
           if (key != null) {
             break;
           }

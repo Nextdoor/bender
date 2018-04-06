@@ -27,6 +27,7 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRe
 import com.google.gson.Gson;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
+import com.nextdoor.bender.LambdaContext;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 import com.nextdoor.bender.config.Source;
 import com.nextdoor.bender.handler.BaseHandler;
@@ -76,7 +77,8 @@ public class S3Handler extends BaseHandler<S3EventNotification>
       return;
     }
 
-    this.recordIterator = new S3EventIterator(context, toProcess, s3ClientFactory);
+    this.recordIterator =
+        new S3EventIterator(new LambdaContext(context), toProcess, s3ClientFactory);
 
     super.process(context);
   }

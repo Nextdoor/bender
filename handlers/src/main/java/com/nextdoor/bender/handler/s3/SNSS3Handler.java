@@ -31,6 +31,7 @@ import com.amazonaws.services.sns.AmazonSNSClient;
 import com.google.gson.Gson;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
+import com.nextdoor.bender.LambdaContext;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 import com.nextdoor.bender.aws.AmazonSNSClientFactory;
 import com.nextdoor.bender.config.Source;
@@ -97,7 +98,8 @@ public class SNSS3Handler extends BaseHandler<SNSEvent> implements Handler<SNSEv
         return m.getS3().getObject().getKey();
       }).collect(Collectors.toList()));
 
-      this.recordIterator = new S3EventIterator(context, toProcess, s3ClientFactory);
+      this.recordIterator =
+          new S3EventIterator(new LambdaContext(context), toProcess, s3ClientFactory);
 
       super.process(context);
     }

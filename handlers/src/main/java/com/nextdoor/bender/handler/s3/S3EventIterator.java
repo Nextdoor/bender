@@ -30,7 +30,6 @@ import java.util.zip.GZIPInputStream;
 
 import org.apache.log4j.Logger;
 
-import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.event.S3EventNotification.S3Entity;
 import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRecord;
@@ -44,6 +43,7 @@ import com.evanlennick.retry4j.exception.RetriesExhaustedException;
 import com.evanlennick.retry4j.exception.UnexpectedException;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
+import com.nextdoor.bender.LambdaContext;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 
 /**
@@ -58,7 +58,7 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
   private static final Logger logger = Logger.getLogger(S3EventIterator.class);
   private final AmazonS3Client client;
   private final List<S3EventNotificationRecord> records;
-  private final Context context;
+  private final LambdaContext context;
   private long arrivalTime;
   private int currentIndex = 0;
   private Iterator<String> lineIterator;
@@ -66,7 +66,7 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
   private S3Entity currentS3Entity;
   private RetryConfig config;
 
-  public S3EventIterator(Context context, List<S3EventNotificationRecord> records,
+  public S3EventIterator(LambdaContext context, List<S3EventNotificationRecord> records,
       AmazonS3ClientFactory s3ClientFactory) {
     this.records = records;
     this.context = context;

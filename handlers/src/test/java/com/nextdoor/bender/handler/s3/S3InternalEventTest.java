@@ -23,6 +23,7 @@ import java.util.Map;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 
+import com.nextdoor.bender.LambdaContext;
 import com.nextdoor.bender.aws.TestContext;
 
 public class S3InternalEventTest {
@@ -31,7 +32,8 @@ public class S3InternalEventTest {
   public void testAppendFilename() {
     TestContext context = new TestContext();
     context.setAwsRequestId("req_id");
-    S3InternalEvent ievent = new S3InternalEvent("foo", context, 0, "file", "bucket", "v1");
+    S3InternalEvent ievent =
+        new S3InternalEvent("foo", new LambdaContext(context), 0, "file", "bucket", "v1");
 
     ievent.setEventObj(null);
 

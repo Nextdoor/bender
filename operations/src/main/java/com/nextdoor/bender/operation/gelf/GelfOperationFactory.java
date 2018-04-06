@@ -19,15 +19,16 @@ import java.util.ArrayList;
 
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.operation.OperationFactory;
-import com.nextdoor.bender.operation.substitution.SubstitutionSpec;
-import com.nextdoor.bender.operation.substitution.SubstitutionSpec.Interpreter;
+import com.nextdoor.bender.operation.substitution.FieldSubSpecConfig;
+import com.nextdoor.bender.operation.substitution.StaticSubSpecConfig;
+import com.nextdoor.bender.operation.substitution.SubSpecConfig;
 
 /**
  * Create a {@link GelfOperation} with GELF defaults.
  */
 public class GelfOperationFactory implements OperationFactory {
   private GelfOperationConfig config;
-  private ArrayList<SubstitutionSpec> subSpecs;
+  private ArrayList<SubSpecConfig<?>> subSpecs;
 
   @Override
   public GelfOperation newInstance() {
@@ -43,48 +44,42 @@ public class GelfOperationFactory implements OperationFactory {
   public void setConf(AbstractConfig config) {
     this.config = (GelfOperationConfig) config;
 
-    ArrayList<SubstitutionSpec> subSpecs = new ArrayList<SubstitutionSpec>();
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
     this.subSpecs = subSpecs;
 
-    subSpecs.add(new SubstitutionSpec("version", "1.1", Interpreter.STATIC));
+    subSpecs.add(new StaticSubSpecConfig("version", "1.1"));
 
     if (this.config.getSrcHostField() != null) {
-      subSpecs.add(new SubstitutionSpec("host", this.config.getSrcHostField(), Interpreter.FIELD));
+      subSpecs.add(new FieldSubSpecConfig("host", this.config.getSrcHostField()));
     }
 
     if (this.config.getSrcShortMessageField() != null) {
-      subSpecs.add(new SubstitutionSpec("short_message", this.config.getSrcShortMessageField(),
-          Interpreter.FIELD));
+      subSpecs.add(new FieldSubSpecConfig("short_message", this.config.getSrcShortMessageField()));
     }
 
     if (this.config.getSrcFullMessageField() != null) {
-      subSpecs.add(new SubstitutionSpec("full_message", this.config.getSrcFullMessageField(),
-          Interpreter.FIELD));
+      subSpecs.add(new FieldSubSpecConfig("full_message", this.config.getSrcFullMessageField()));
     }
 
     if (this.config.getSrcTimestampField() != null) {
-      subSpecs.add(
-          new SubstitutionSpec("timestamp", this.config.getSrcTimestampField(), Interpreter.FIELD));
+      subSpecs.add(new FieldSubSpecConfig("timestamp", this.config.getSrcTimestampField()));
     }
 
     if (this.config.getSrcLevelField() != null) {
-      subSpecs
-          .add(new SubstitutionSpec("level", this.config.getSrcLevelField(), Interpreter.FIELD));
+      subSpecs.add(new FieldSubSpecConfig("level", this.config.getSrcLevelField()));
     }
 
 
     if (this.config.getSrcFacilityField() != null) {
-      subSpecs.add(
-          new SubstitutionSpec("facility", this.config.getSrcFacilityField(), Interpreter.FIELD));
+      subSpecs.add(new FieldSubSpecConfig("facility", this.config.getSrcFacilityField()));
     }
 
     if (this.config.getSrcLineNumberField() != null) {
-      subSpecs.add(
-          new SubstitutionSpec("line", this.config.getSrcLineNumberField(), Interpreter.FIELD));
+      subSpecs.add(new FieldSubSpecConfig("line", this.config.getSrcLineNumberField()));
     }
 
     if (this.config.getSrcFileField() != null) {
-      subSpecs.add(new SubstitutionSpec("file", this.config.getSrcFileField(), Interpreter.FIELD));
+      subSpecs.add(new FieldSubSpecConfig("file", this.config.getSrcFileField()));
     }
   }
 }

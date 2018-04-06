@@ -54,7 +54,7 @@ public class GeoIpOperation implements Operation {
      * Get field containing an IP address
      */
     try {
-      ipStr = ievent.getEventObj().getField(this.pathToIpAddress);
+      ipStr = ievent.getEventObj().getFieldAsString(this.pathToIpAddress);
     } catch (NoSuchElementException e) {
       if (!this.required) {
         return ievent;

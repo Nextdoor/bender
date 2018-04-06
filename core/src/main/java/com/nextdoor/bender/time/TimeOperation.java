@@ -55,7 +55,7 @@ public class TimeOperation implements Operation {
 
   @Override
   public InternalEvent perform(InternalEvent ievent) {
-    String field = ievent.getEventObj().getField(timeField);
+    String field = ievent.getEventObj().getFieldAsString(timeField);
 
     /*
      * Filter out events without a time field

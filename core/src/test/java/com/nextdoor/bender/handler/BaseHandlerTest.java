@@ -38,6 +38,7 @@ import org.junit.Test;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
+import com.nextdoor.bender.LambdaContext;
 import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.config.Source;
 import com.nextdoor.bender.deserializer.DeserializationException;
@@ -69,9 +70,9 @@ public class BaseHandlerTest {
 
   public static class DummyEventIterator implements InternalEventIterator<InternalEvent> {
     private final Iterator<DummyEvent> events;
-    private final Context context;
+    private final LambdaContext context;
 
-    public DummyEventIterator(List<DummyEvent> events, Context context) {
+    public DummyEventIterator(List<DummyEvent> events, LambdaContext context) {
       this.events = events.iterator();
       this.context = context;
     }
@@ -100,7 +101,7 @@ public class BaseHandlerTest {
         init(context);
       }
 
-      this.eventIterator = new DummyEventIterator(events, context);
+      this.eventIterator = new DummyEventIterator(events, new LambdaContext(context));
 
       this.process(context);
     }

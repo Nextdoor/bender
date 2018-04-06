@@ -118,15 +118,7 @@ public class BenderConfig {
 
     private static final ArrayList<Class> abstractConfigClasses = new ArrayList<Class>() {
       {
-        add(HandlerConfig.class);
-        add(DeserializerConfig.class);
-        add(OperationConfig.class);
-        add(WrapperConfig.class);
-        add(SerializerConfig.class);
-        add(TransportConfig.class);
-        add(ReporterConfig.class);
-        add(AuthConfig.class);
-        add(ValueConfig.class);
+        add(AbstractConfig.class);
       }
     };
 

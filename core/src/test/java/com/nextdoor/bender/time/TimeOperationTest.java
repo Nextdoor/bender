@@ -34,7 +34,7 @@ public class TimeOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
     ievent.setEventObj(devent);
-    doReturn("1504728473").when(devent).getField("foo");
+    doReturn("1504728473").when(devent).getFieldAsString("foo");
 
     TimeOperation op = new TimeOperation("foo", TimeFieldType.SECONDS);
     op.perform(ievent);
@@ -47,7 +47,7 @@ public class TimeOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
     ievent.setEventObj(devent);
-    doReturn("-1").when(devent).getField("foo");
+    doReturn("-1").when(devent).getFieldAsString("foo");
 
     TimeOperation op = new TimeOperation("foo", TimeFieldType.SECONDS);
     op.perform(ievent);
@@ -58,7 +58,7 @@ public class TimeOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
     ievent.setEventObj(devent);
-    doReturn(null).when(devent).getField("foo");
+    doReturn(null).when(devent).getFieldAsString("foo");
 
     TimeOperation op = new TimeOperation("foo", TimeFieldType.SECONDS);
     op.perform(ievent);

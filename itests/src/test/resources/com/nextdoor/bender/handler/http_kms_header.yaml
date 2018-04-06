@@ -1,0 +1,30 @@
+handler:
+  type: DummyHandlerHelper$DummyHandler
+  fail_on_exception: true
+sources:
+- name: Events
+  source_regex: foo
+  deserializer:
+    type: GenericJson
+wrapper:
+  type: KinesisWrapper
+serializer:
+  type: Json
+transport:
+  type: HTTP
+  path: /foo
+  hostname: example.com
+  basic_http_auth:
+    type: UserPassAuth
+    username: auser
+    password:
+      type: KmsValue
+      value: AQICAHjngsqHoIQ4VEAkDwmgr7XfTt7cMU6qzT3junBU8kSsfwEOkjJfTotA+UnKCvVL1HVpAAAAYTBfBgkqhkiG9w0BBwagUjBQAgEAMEsGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM3JvLqPdiMoDOwOK4AgEQgB5KCQe17C/iPJRpARpLKbdZ9rm6qJ4b76cHhM5YG0I=
+      region: US_EAST_1
+  http_headers:
+    foo:
+      type: KmsValue
+      value: AQICAHjngsqHoIQ4VEAkDwmgr7XfTt7cMU6qzT3junBU8kSsfwEOkjJfTotA+UnKCvVL1HVpAAAAYTBfBgkqhkiG9w0BBwagUjBQAgEAMEsGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM3JvLqPdiMoDOwOK4AgEQgB5KCQe17C/iPJRpARpLKbdZ9rm6qJ4b76cHhM5YG0I=
+      region: US_EAST_1
+reporters:
+- type: DataDog

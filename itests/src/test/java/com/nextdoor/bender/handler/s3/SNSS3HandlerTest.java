@@ -43,7 +43,7 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
 
   @Override
   public String getConfigFile() {
-    return "/com/nextdoor/bender/handler/config_unittest.json";
+    return "/com/nextdoor/bender/handler/config_unittest.yaml";
   }
 
   @Rule

@@ -46,6 +46,11 @@ public class OperationTest {
     public void setField(String fieldName, Object value) {
 
     }
+
+    @Override
+    public String getFieldAsString(String fieldName) {
+      return null;
+    }
   }
 
   protected String getResourceString(String resource)

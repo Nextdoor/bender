@@ -43,8 +43,8 @@ public class S3Wrapper implements Wrapper {
     this.s3Key = s3Event.getS3Key();
     this.s3Bucket = s3Event.getS3Bucket();
     this.s3KeyVersion = s3Event.getS3KeyVersion();
-    this.functionName = internal.getCtx().getFunctionName();
-    this.functionVersion = internal.getCtx().getFunctionVersion();
+    this.functionName = internal.getCtx().getContext().getFunctionName();
+    this.functionVersion = internal.getCtx().getContext().getFunctionVersion();
     this.processingTime = System.currentTimeMillis();
     this.timestamp = internal.getEventTime();
     this.processingDelay = processingTime - timestamp;
