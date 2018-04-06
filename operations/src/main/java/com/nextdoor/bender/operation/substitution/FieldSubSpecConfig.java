@@ -31,9 +31,9 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
     this.sourceField = sourceField;
   }
 
-  @JsonSchemaDescription("Source fields to pull value from. If multiple are specified first non-null "
-      + "one is used. If multiple fields are provided the first non-null valued one is used. Note "
-      + "that if no fields are found the value will be set to null.")
+  @JsonSchemaDescription("Source fields to pull value from. If multiple fields are provided the "
+      + "first non-null valued one is used. Note that if no fields are found the value will "
+      + "be set to null.")
   @JsonProperty(required = true)
   private List<String> sourceField;
 
