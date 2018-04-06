@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender.operation.substitution;
 
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,20 +26,22 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 @JsonSchemaDescription("Substitutes event field value for another event field value. Note the source "
     + "field and destination field can be the same.")
 public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
-  public FieldSubSpecConfig(String key, String sourceField) {
+  public FieldSubSpecConfig(String key, List<String> sourceField) {
     super(key);
     this.sourceField = sourceField;
   }
 
-  @JsonSchemaDescription("Source field to pull value from.")
+  @JsonSchemaDescription("Source fields to pull value from. If multiple fields are provided the "
+      + "first non-null valued one is used. Note that if no fields are found the value will "
+      + "be set to null.")
   @JsonProperty(required = true)
-  private String sourceField;
+  private List<String> sourceField;
 
-  public void setSourceField(String sourceField) {
+  public void setSourceFields(List<String> sourceField) {
     this.sourceField = sourceField;
   }
 
-  public String getSourceField() {
+  public List<String> getSourceFields() {
     return this.sourceField;
   }
 
@@ -54,7 +57,7 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
 
     FieldSubSpecConfig other = (FieldSubSpecConfig) o;
 
-    if (this.sourceField != other.getSourceField()) {
+    if (!this.sourceField.equals(other.getSourceFields())) {
       return false;
     }
 
@@ -64,5 +67,10 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), this.sourceField);
+  }
+
+  @Override
+  public String toString() {
+    return super.getKey() + ":" + this.getSourceFields();
   }
 }

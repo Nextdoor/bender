@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.operation.gelf;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
@@ -27,15 +29,15 @@ import com.nextdoor.bender.operation.OperationConfig;
 public class GelfOperationConfig extends OperationConfig {
   @JsonSchemaDescription("Field containing host string")
   @JsonProperty(required = true)
-  private String srcHostField;
+  private List<String> srcHostField;
 
   @JsonSchemaDescription("Field containing short_message string")
   @JsonProperty(required = true)
-  private String srcShortMessageField;
+  private List<String> srcShortMessageField;
 
   @JsonSchemaDescription("Field containing full_message string")
   @JsonProperty(required = false)
-  private String srcFullMessageField;
+  private List<String> srcFullMessageField;
 
   @JsonSchemaDescription("Field containing epoch timestamp in seconds with optional ms as decimal. Source "
       + "field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use "
@@ -43,88 +45,87 @@ public class GelfOperationConfig extends OperationConfig {
       + "automatically use that to set the timestamp field properly. Use this setting only to override that "
       + "behavior.")
   @JsonProperty(required = false)
-  private String srcTimestampField;
+  private List<String> srcTimestampField;
 
   @JsonSchemaDescription("Field containing syslog level number")
   @JsonProperty(required = false)
-  private String srcLevelField;
+  private List<String> srcLevelField;
 
   @JsonSchemaDescription("Field containing syslog facility string")
   @JsonProperty(required = false)
-  private String srcFacilityField;
+  private List<String> srcFacilityField;
 
   @JsonSchemaDescription("Field containing the line in a file that caused the error (decimal); optional, "
       + "deprecated. Send as additional field instead.")
   @JsonProperty(required = false)
-  private String srcLineNumberField;
+  private List<String> srcLineNumberField;
 
   @JsonSchemaDescription("Field containing the file (with path if you want) that caused the error "
       + "(string); optional, deprecated. Send as additional field instead.")
   @JsonProperty(required = false)
-  private String srcFileField;
+  private List<String> srcFileField;
 
-  public String getSrcHostField() {
+  public List<String> getSrcHostField() {
     return this.srcHostField;
   }
 
-  public void setSrcHostField(String srcHostField) {
+  public void setSrcHostField(List<String> srcHostField) {
     this.srcHostField = srcHostField;
   }
 
-  public String getSrcShortMessageField() {
+  public List<String> getSrcShortMessageField() {
     return this.srcShortMessageField;
   }
 
-  public void setSrcShortMessageField(String srcShortMessageField) {
+  public void setSrcShortMessageField(List<String> srcShortMessageField) {
     this.srcShortMessageField = srcShortMessageField;
   }
 
-
-  public String getSrcFullMessageField() {
+  public List<String> getSrcFullMessageField() {
     return this.srcFullMessageField;
   }
 
-  public void setSrcFullMessageField(String srcFullMessageField) {
+  public void setSrcFullMessageField(List<String> srcFullMessageField) {
     this.srcFullMessageField = srcFullMessageField;
   }
 
-  public String getSrcTimestampField() {
+  public List<String> getSrcTimestampField() {
     return this.srcTimestampField;
   }
 
-  public void setSrcTimestampField(String srcTimestampField) {
+  public void setSrcTimestampField(List<String> srcTimestampField) {
     this.srcTimestampField = srcTimestampField;
   }
 
-  public String getSrcLevelField() {
+  public List<String> getSrcLevelField() {
     return this.srcLevelField;
   }
 
-  public void setSrcLevelField(String srcLevelField) {
+  public void setSrcLevelField(List<String> srcLevelField) {
     this.srcLevelField = srcLevelField;
   }
 
-  public String getSrcFacilityField() {
+  public List<String> getSrcFacilityField() {
     return this.srcFacilityField;
   }
 
-  public void setSrcFacilityField(String srcFacilityField) {
+  public void setSrcFacilityField(List<String> srcFacilityField) {
     this.srcFacilityField = srcFacilityField;
   }
 
-  public String getSrcLineNumberField() {
+  public List<String> getSrcLineNumberField() {
     return this.srcLineNumberField;
   }
 
-  public void setSrcLineNumberField(String srcLineNumberField) {
+  public void setSrcLineNumberField(List<String> srcLineNumberField) {
     this.srcLineNumberField = srcLineNumberField;
   }
 
-  public String getSrcFileField() {
+  public List<String> getSrcFileField() {
     return this.srcFileField;
   }
 
-  public void setSrcFileField(String srcFileField) {
+  public void setSrcFileField(List<String> srcFileField) {
     this.srcFileField = srcFileField;
   }
 

@@ -20,9 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import com.amazonaws.services.lambda.runtime.Client;
-import com.amazonaws.services.lambda.runtime.ClientContext;
-import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.Operation;
@@ -45,11 +42,21 @@ public class SubstitutionOperation implements Operation {
 
     for (SubSpecConfig<?> subSpec : subSpecs) {
       if (subSpec instanceof FieldSubSpecConfig) {
-        try {
-          devent.setField(subSpec.getKey(),
-              devent.getField(((FieldSubSpecConfig) subSpec).getSourceField()));
-        } catch (NoSuchElementException e) {
+        Object sourceValue = null;
+
+        /*
+         * Pick first non null source field value
+         */
+        for (String sourceField : ((FieldSubSpecConfig) subSpec).getSourceFields()) {
+          try {
+            if ((sourceValue = devent.getField(sourceField)) != null) {
+              break;
+            }
+          } catch (NoSuchElementException e) {
+          }
         }
+
+        devent.setField(subSpec.getKey(), sourceValue);
       } else if (subSpec instanceof StaticSubSpecConfig) {
         devent.setField(subSpec.getKey(), ((StaticSubSpecConfig) subSpec).getValue());
       } else if (subSpec instanceof MetadataSubSpecConfig) {

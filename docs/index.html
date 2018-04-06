@@ -2279,12 +2279,15 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">src_host_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
                 <div class="signature-description desc"><p>Field containing host string</p>
@@ -2297,12 +2300,15 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">src_short_message_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
                 <div class="signature-description desc"><p>Field containing short_message string</p>
@@ -2315,12 +2321,15 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">src_full_message_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
                 <div class="signature-description desc"><p>Field containing full_message string</p>
@@ -2333,12 +2342,15 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">src_timestamp_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
                 <div class="signature-description desc"><p>Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior.</p>
@@ -2351,12 +2363,15 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">src_level_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
                 <div class="signature-description desc"><p>Field containing syslog level number</p>
@@ -2369,12 +2384,15 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">src_facility_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
                 <div class="signature-description desc"><p>Field containing syslog facility string</p>
@@ -2387,12 +2405,15 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">src_line_number_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
                 <div class="signature-description desc"><p>Field containing the line in a file that caused the error (decimal); optional, deprecated. Send as additional field instead.</p>
@@ -2405,12 +2426,15 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">src_file_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
                 <div class="signature-description desc"><p>Field containing the file (with path if you want) that caused the error (string); optional, deprecated. Send as additional field instead.</p>
@@ -2438,35 +2462,59 @@ function sourceButton(element) {
       "default": "GelfOperation"
     },
     "src_host_field": {
-      "type": "string",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Field containing host string"
     },
     "src_short_message_field": {
-      "type": "string",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Field containing short_message string"
     },
     "src_full_message_field": {
-      "type": "string",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Field containing full_message string"
     },
     "src_timestamp_field": {
-      "type": "string",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior."
     },
     "src_level_field": {
-      "type": "string",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Field containing syslog level number"
     },
     "src_facility_field": {
-      "type": "string",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Field containing syslog facility string"
     },
     "src_line_number_field": {
-      "type": "string",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Field containing the line in a file that caused the error (decimal); optional, deprecated. Send as additional field instead."
     },
     "src_file_field": {
-      "type": "string",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Field containing the file (with path if you want) that caused the error (string); optional, deprecated. Send as additional field instead."
     }
   },
@@ -3163,16 +3211,39 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name required">source_field</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
             </span>
             <span class="type-keyword">
-               
+                
             </span>
+            <br>
 
                 </div>
-                <div class="signature-description desc"><p>Source field to pull value from.</p>
+                <div class="signature-description desc"><p>Source fields to pull value from. If multiple fields are provided the first non-null valued one is used. Note that if no fields are found the value will be set to null.</p>
 </div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">source_fields</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
             </div>
             <div class="signature-box-container">
             </div>
@@ -3200,8 +3271,17 @@ function sourceButton(element) {
       "description": "Name of the new field"
     },
     "source_field": {
-      "type": "string",
-      "description": "Source field to pull value from."
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Source fields to pull value from. If multiple fields are provided the first non-null valued one is used. Note that if no fields are found the value will be set to null."
+    },
+    "source_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "title": "FieldSubstitution",
@@ -11099,35 +11179,59 @@ function sourceButton(element) {
           "default": "GelfOperation"
         },
         "src_host_field": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Field containing host string"
         },
         "src_short_message_field": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Field containing short_message string"
         },
         "src_full_message_field": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Field containing full_message string"
         },
         "src_timestamp_field": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Field containing epoch timestamp in seconds with optional ms as decimal. Source field must be in numeric form (not a string) or Graylog will reject the input. Alternatively, use the TimeOperation to detect your timestamp field and properly parse it, and the GelfOperation will automatically use that to set the timestamp field properly. Use this setting only to override that behavior."
         },
         "src_level_field": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Field containing syslog level number"
         },
         "src_facility_field": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Field containing syslog facility string"
         },
         "src_line_number_field": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Field containing the line in a file that caused the error (decimal); optional, deprecated. Send as additional field instead."
         },
         "src_file_field": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "Field containing the file (with path if you want) that caused the error (string); optional, deprecated. Send as additional field instead."
         }
       },
@@ -11335,8 +11439,17 @@ function sourceButton(element) {
           "description": "Name of the new field"
         },
         "source_field": {
-          "type": "string",
-          "description": "Source field to pull value from."
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Source fields to pull value from. If multiple fields are provided the first non-null valued one is used. Note that if no fields are found the value will be set to null."
+        },
+        "source_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "FieldSubstitution",

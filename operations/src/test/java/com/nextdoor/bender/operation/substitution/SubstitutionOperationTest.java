@@ -66,7 +66,7 @@ public class SubstitutionOperationTest {
   @Test
   public void testKnownField() {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
-    subSpecs.add(new FieldSubSpecConfig("bar", "foo"));
+    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo")));
 
     DummpyEvent devent = new DummpyEvent();
     devent.setField("foo", "1234");
@@ -84,7 +84,7 @@ public class SubstitutionOperationTest {
   @Test
   public void testUnknownField() {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
-    subSpecs.add(new FieldSubSpecConfig("bar", "foo"));
+    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo")));
 
     DummpyEvent devent = new DummpyEvent();
 
@@ -95,6 +95,24 @@ public class SubstitutionOperationTest {
     op.perform(ievent);
 
     assertEquals(null, devent.getField("bar"));
+  }
+
+  @Test
+  public void testFieldList() {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo0","foo1", "foo2")));
+
+    DummpyEvent devent = new DummpyEvent();
+    devent.setField("foo2", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    assertEquals("1234", devent.getField("bar"));
+    assertEquals("1234", devent.getField("foo2"));
   }
 
   @Test

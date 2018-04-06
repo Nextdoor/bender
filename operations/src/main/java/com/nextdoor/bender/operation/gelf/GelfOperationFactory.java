@@ -69,7 +69,6 @@ public class GelfOperationFactory implements OperationFactory {
       subSpecs.add(new FieldSubSpecConfig("level", this.config.getSrcLevelField()));
     }
 
-
     if (this.config.getSrcFacilityField() != null) {
       subSpecs.add(new FieldSubSpecConfig("facility", this.config.getSrcFacilityField()));
     }
