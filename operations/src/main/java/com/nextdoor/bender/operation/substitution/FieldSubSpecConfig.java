@@ -26,6 +26,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 @JsonSchemaDescription("Substitutes event field value for another event field value. Note the source "
     + "field and destination field can be the same.")
 public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
+  public FieldSubSpecConfig() {}
+
   public FieldSubSpecConfig(String key, List<String> sourceField) {
     super(key);
     this.sourceField = sourceField;
