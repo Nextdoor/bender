@@ -51,7 +51,7 @@ public class ElasticSearchTansportSerializerTest {
   @Test
   public void testSerialize() throws UnsupportedEncodingException, IOException {
     ElasticSearchTransportSerializer serializer =
-        new ElasticSearchTransportSerializer(false, "event", "log", false);
+        new ElasticSearchTransportSerializer(false, "event", "log", false, "_routing");
     InternalEvent record = new DummyEvent("foo", 0);
     record.setSerialized("foo");
 
@@ -67,7 +67,7 @@ public class ElasticSearchTansportSerializerTest {
   @Test
   public void testSerializeWithHash() throws UnsupportedEncodingException, IOException {
     ElasticSearchTransportSerializer serializer =
-        new ElasticSearchTransportSerializer(true, "event", "log", false);
+        new ElasticSearchTransportSerializer(true, "event", "log", false, "_routing");
     InternalEvent record = new DummyEvent("foo", 0);
     record.setSerialized("foo");
 
@@ -83,7 +83,8 @@ public class ElasticSearchTansportSerializerTest {
   @Test
   public void testSerializeDateIndexName() throws UnsupportedEncodingException, IOException {
     ElasticSearchTransportSerializer serializer =
-        new ElasticSearchTransportSerializer(false, "event", "log-", "yyyy-MM-dd", false);
+        new ElasticSearchTransportSerializer(false, "event", "log-", "yyyy-MM-dd", false,
+            "_routing");
 
     KinesisEvent kevent = TestUtils.createEvent(this.getClass(), "basic_event.json");
     String payload = new String(kevent.getRecords().get(0).getKinesis().getData().array());
@@ -97,7 +98,7 @@ public class ElasticSearchTansportSerializerTest {
   @Test
   public void testPartitionRouting() throws UnsupportedEncodingException, IOException {
     ElasticSearchTransportSerializer serializer =
-        new ElasticSearchTransportSerializer(true, "event", "log", true);
+        new ElasticSearchTransportSerializer(true, "event", "log", true, "_routing");
     InternalEvent record = new DummyEvent("foo", 0);
     record.setSerialized("foo");
     record.getPartitions().put("test_key", "test_value");

@@ -30,17 +30,20 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
   private final String documentType;
   private final DateTimeFormatter dtFormat;
   private final boolean usePartitionsForRouting;
+  private final String routingFieldName;
 
-  public ElasticSearchTransportSerializer(boolean useHashId, String documentType, String index, boolean usePartitionsForRouting) {
-    this(useHashId, documentType, index, null, usePartitionsForRouting);
+  public ElasticSearchTransportSerializer(boolean useHashId, String documentType, String index,
+      boolean usePartitionsForRouting, String routingFieldName) {
+    this(useHashId, documentType, index, null, usePartitionsForRouting, routingFieldName);
   }
 
   public ElasticSearchTransportSerializer(boolean useHashId, String documentType, String index,
-      String indexTimeFormat, boolean usePartitionsForRouting) {
+      String indexTimeFormat, boolean usePartitionsForRouting, String routingFieldName) {
     this.useHashId = useHashId;
     this.index = index;
     this.documentType = documentType;
     this.usePartitionsForRouting = usePartitionsForRouting;
+    this.routingFieldName = routingFieldName;
 
     if (indexTimeFormat != null) {
       this.dtFormat = DateTimeFormat.forPattern(indexTimeFormat).withZoneUTC();
@@ -69,7 +72,7 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
     }
 
     if (this.usePartitionsForRouting) {
-      payload.append("\"_routing\":");
+      payload.append("\"" + this.routingFieldName + "\":");
       payload.append("\"");
       payload.append(ievent.getPartitions().entrySet().stream().map(s -> s.getKey() + "=" + s.getValue())
           .collect(Collectors.joining("/")));

@@ -85,6 +85,12 @@ public class ElasticSearchTransportConfig extends AbstractHttpTransportConfig {
   @JsonProperty(required = false)
   private Boolean usePartitionsForRouting = false;
 
+  @JsonSchemaDescription("Name of the routing field. ElasticSearch 6+ changed the field name "
+      + "from `_routing` to `routing`.")
+  @JsonSchemaDefault(value = "_routing")
+  @JsonProperty(required = false)
+  private String routingFieldName = "_routing";
+
   public AuthConfig<?> getAuthConfig() {
     return this.authConfig;
   }
@@ -152,6 +158,10 @@ public class ElasticSearchTransportConfig extends AbstractHttpTransportConfig {
   public void setBulkApiPath(String bulkApiPath) {
     this.bulkApiPath = bulkApiPath;
   }
+
+  public String getRoutingFieldName() { return this.routingFieldName; }
+
+  public void setRoutingFieldName() { this.routingFieldName = routingFieldName; }
 
   @Override
   public Class<?> getFactoryClass() {
