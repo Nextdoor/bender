@@ -6313,6 +6313,26 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
+                <div class="property-name ">routing_field_name</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">_routing</span>
+
+                </div>
+                <div class="signature-description desc"><p>Name of the routing field. ElasticSearch 6+ changed the field name from <code>_routing</code> to <code>routing</code>.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
                 <div class="property-name ">http_string_headers</div>
                 <div class="signature-type">
                                         <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
@@ -6530,6 +6550,11 @@ function sourceButton(element) {
     "index_time_format": {
       "type": "string",
       "description": "Java time format to append to index name."
+    },
+    "routing_field_name": {
+      "type": "string",
+      "default": "_routing",
+      "description": "Name of the routing field. ElasticSearch 6+ changed the field name from `_routing` to `routing`."
     },
     "http_string_headers": {
       "type": "object",
@@ -12051,6 +12076,11 @@ function sourceButton(element) {
         "index_time_format": {
           "type": "string",
           "description": "Java time format to append to index name."
+        },
+        "routing_field_name": {
+          "type": "string",
+          "default": "_routing",
+          "description": "Name of the routing field. ElasticSearch 6+ changed the field name from `_routing` to `routing`."
         },
         "http_string_headers": {
           "type": "object",
