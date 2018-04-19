@@ -14,6 +14,13 @@
 
 package com.nextdoor.bender;
 
+import com.amazonaws.services.s3.AmazonS3URI;
+import com.amazonaws.services.s3.event.S3EventNotification;
+import com.amazonaws.services.s3.event.S3EventNotification.S3BucketEntity;
+import com.amazonaws.services.s3.event.S3EventNotification.S3Entity;
+import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRecord;
+import com.amazonaws.services.s3.event.S3EventNotification.S3ObjectEntity;
+import com.nextdoor.bender.handler.s3.S3Handler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.ByteBuffer;
@@ -41,6 +48,7 @@ import com.amazonaws.services.lambda.runtime.events.KinesisEvent.Record;
 import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.handler.HandlerException;
 import com.nextdoor.bender.handler.kinesis.KinesisHandler;
+import org.joda.time.DateTime;
 
 public class Bender {
   private static final Logger logger = Logger.getLogger(Bender.class);
@@ -50,6 +58,7 @@ public class Bender {
    * Short Handler Names used on the CLI to invoke a particular handler type
    */
   private static final String KINESIS = "kinesishandler";
+  private static final String S3 = "s3handler";
 
   /*
    * Defaults for the handler invocations...
@@ -77,12 +86,14 @@ public class Bender {
     Option help = Option.builder("H").longOpt("help").desc("Print this message").build();
     Option handler = Option.builder("h").longOpt("handler").hasArg()
         .desc("Which Event Handler do you want to simulate? \n"
-            + "Your options are: KinesisHandler. \n" + "Default: KinesisHandler")
+            + "Your options are: KinesisHandler, S3Handler. \n" + "Default: KinesisHandler")
         .build();
     Option source_file = Option.builder("s").longOpt("source_file").required().hasArg()
         .desc("Reference to the file that you want to process. Usage depends "
             + "on the Handler you chose. If you chose KinesisHandler "
-            + "then this is a local file.")
+            + "then this is a local file (file://path/to/file). If you chose "
+            + "S3Handler, then this is the path to the file in S3 that you want to process "
+            + "(s3://bucket/file...)")
         .build();
     Option kinesis_stream_name = Option.builder().longOpt("kinesis_stream_name").hasArg()
         .desc("What stream name should we mimic? " + "Default: " + KINESIS_STREAM_NAME
@@ -144,13 +155,14 @@ public class Bender {
 
       switch (handler_value.toLowerCase()) {
 
-        /*
-         * Note: We only support Kinesis right now. Will add support for S3/S3SNS down the road.
-         */
         case KINESIS:
           invokeKinesisHandler(
               cmd.getOptionValue(kinesis_stream_name.getLongOpt(), KINESIS_STREAM_NAME),
               cmd.getOptionValue(source_file.getLongOpt()));
+          break;
+
+        case S3:
+          invokeS3Handler(cmd.getOptionValue(source_file.getLongOpt()));
           break;
 
         /*
@@ -166,6 +178,72 @@ public class Bender {
       logger.error("Error executing handler: " + e);
       System.exit(1);
     }
+  }
+
+  protected static void invokeS3Handler(String source_file) throws HandlerException {
+    /*
+     * https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html
+     * https://docs.aws.amazon.com/AmazonS3/latest/dev/notification-content-structure.html
+     */
+    String awsRegion = "us-east-1";
+    String eventName = "s3:ObjectCreated:Put";
+    String eventSource = "aws:s3";
+    String eventVersion = "2.0";
+    String s3ConfigurationId = "cli-id";
+    String s3SchemaVersion = "1.0";
+
+    S3BucketEntity s3BucketEntity = null;
+    S3ObjectEntity s3ObjectEntity = null;
+
+    /*
+     * Make sure the URL was submitted properly
+     *
+     * Split the s3://bucket/object path into an S3BucketEntity and S3ObjectEntity object
+     */
+    try {
+      AmazonS3URI s3URI = new AmazonS3URI(source_file);
+      s3BucketEntity = new S3BucketEntity(s3URI.getBucket(), null, null);
+      s3ObjectEntity = new S3ObjectEntity(s3URI.getKey(), 1L, null, null);
+    } catch (IllegalArgumentException e) {
+      logger.error(
+          "Invalid source_file URL supplied (" + source_file + "): " + e);
+      System.exit(1);
+    }
+
+    /*
+     * Override the AWS Region if its supplied
+     */
+    if (System.getenv("AWS_REGION") != null) {
+      awsRegion = System.getenv("AWS_REGION");
+    }
+
+    /*
+     * Set the arrival timestamp as the function run time.
+     */
+    DateTime eventTime = new DateTime().toDateTime();
+
+    /*
+     * Generate our context/handler objects.. we'll be populating them shortly.
+     */
+    TestContext ctx = getContext();
+    S3Handler handler = new S3Handler();
+
+    /*
+     * Create a S3EventNotification event
+     */
+    S3Entity s3Entity = new S3Entity(s3ConfigurationId, s3BucketEntity, s3ObjectEntity,
+        s3SchemaVersion);
+    S3EventNotificationRecord rec = new S3EventNotificationRecord(awsRegion, eventName, eventSource,
+        eventTime.toString(), eventVersion, null, null, s3Entity, null);
+    List<S3EventNotificationRecord> notifications = new ArrayList<S3EventNotificationRecord>(2);
+    notifications.add(rec);
+    S3EventNotification s3event = new S3EventNotification(notifications);
+
+    /*
+     * Invoke handler
+     */
+    handler.handler(s3event, ctx);
+    handler.shutdown();
   }
 
   protected static void invokeKinesisHandler(String stream_name, String source_file)
