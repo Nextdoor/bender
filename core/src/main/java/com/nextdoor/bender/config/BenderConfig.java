@@ -51,14 +51,10 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaTitle;
-import com.nextdoor.bender.auth.AuthConfig;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
-import com.nextdoor.bender.config.value.ValueConfig;
-import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.handler.HandlerConfig;
 import com.nextdoor.bender.ipc.TransportConfig;
 import com.nextdoor.bender.monitoring.ReporterConfig;
-import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.serializer.SerializerConfig;
 import com.nextdoor.bender.wrapper.WrapperConfig;
 
@@ -312,16 +308,13 @@ public class BenderConfig {
     return mapper;
   }
 
-  public static BenderConfig load(String filename, String data) {
+  public static BenderConfig load(String filename, String data, ObjectMapper mapper,
+      boolean validate) {
     String swappedData = swapEnvironmentVariables(data);
-    /*
-     * Configure Mapper and register polymorphic types
-     */
-    ObjectMapper mapper = BenderConfig.getObjectMapper(filename);
-    mapper.setPropertyNamingStrategy(
-        PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
-    BenderConfig.validate(swappedData, mapper);
+    if (validate) {
+      BenderConfig.validate(swappedData, mapper);
+    }
 
     BenderConfig config = null;
     try {
@@ -331,6 +324,17 @@ public class BenderConfig {
     }
 
     return config;
+  }
+
+  public static BenderConfig load(String filename, String data) {
+    /*
+     * Configure Mapper and register polymorphic types
+     */
+    ObjectMapper mapper = BenderConfig.getObjectMapper(filename);
+    mapper.setPropertyNamingStrategy(
+        PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+
+    return BenderConfig.load(filename, data, mapper, true);
   }
 
   public static BenderConfig load(AmazonS3ClientFactory s3ClientFactory, AmazonS3URI s3Uri) {
