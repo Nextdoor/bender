@@ -1,0 +1,10 @@
+{
+  "num": 123,
+  "string": "foo",
+  "float": 123.45,
+  "bool": false,
+  "simple_object": {
+    "key": "val"
+  }
+}
+ 
