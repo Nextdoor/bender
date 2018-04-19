@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
+import com.google.gson.JsonPrimitive;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.regex.ReFieldConfig.ReFieldType;
@@ -88,17 +89,17 @@ public class RegexDeserializerTest {
     assertEquals("2017-06-15T04:55:00.142369Z", event.getField("timestamp"));
     assertEquals("app/foo/1234", event.getField("elb"));
     assertEquals("127.12.12.12", event.getField("client_ip"));
-    assertEquals(1337, event.getField("client_port"));
+    assertEquals(new JsonPrimitive(1337), event.getField("client_port"));
     assertEquals("127.13.13.13", event.getField("target_ip"));
-    assertEquals(7331, event.getField("target_port"));
-    assertEquals(new Float(1.001), event.getField("request_processing_time"));
+    assertEquals(new JsonPrimitive(7331), event.getField("target_port"));
+    assertEquals(new JsonPrimitive(new Float(1.001)), event.getField("request_processing_time"));
     assertEquals("1.001", event.getFieldAsString("request_processing_time"));
-    assertEquals(new Float(2.002), event.getField("target_processing_time"));
-    assertEquals(new Float(3.003), event.getField("response_processing_time"));
-    assertEquals(201, event.getField("elb_status_code"));
-    assertEquals(200, event.getField("target_status_code"));
-    assertEquals(687, event.getField("received_bytes"));
-    assertEquals(461, event.getField("sent_bytes"));
+    assertEquals(new JsonPrimitive(new Float(2.002)), event.getField("target_processing_time"));
+    assertEquals(new JsonPrimitive(new Float(3.003)), event.getField("response_processing_time"));
+    assertEquals(new JsonPrimitive(201), event.getField("elb_status_code"));
+    assertEquals(new JsonPrimitive(200), event.getField("target_status_code"));
+    assertEquals(new JsonPrimitive(687), event.getField("received_bytes"));
+    assertEquals(new JsonPrimitive(461), event.getField("sent_bytes"));
     assertEquals("GET", event.getField("request_verb"));
     assertEquals("https://foo.com:443/bar/123?baz=1", event.getField("url"));
     assertEquals("HTTP/1.1", event.getField("protocol"));
