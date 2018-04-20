@@ -71,7 +71,7 @@ public class ElasticSearchTransportSerializer implements TransportSerializer {
       payload.append("\",");
     }
 
-    if (this.usePartitionsForRouting) {
+    if (this.usePartitionsForRouting && ievent.getPartitions() != null) {
       payload.append("\"" + this.routingFieldName + "\":");
       payload.append("\"");
       payload.append(ievent.getPartitions().entrySet().stream().map(s -> s.getKey() + "=" + s.getValue())
