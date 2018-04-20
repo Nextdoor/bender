@@ -16,6 +16,7 @@
 package com.nextdoor.bender.operation.json.array;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -37,6 +38,8 @@ public class ArraySplitOperation implements MultiplexOperation {
 
       Object payload = ievent.getEventObj().getPayload();
 
+      LinkedHashMap<String, String> partitions = ievent.getPartitions();
+
       if (payload == null) {
         throw new OperationException("Deserialized object is null");
       }
@@ -54,6 +57,21 @@ public class ArraySplitOperation implements MultiplexOperation {
               new InternalEvent(elm.toString(), ievent.getCtx(), ievent.getArrivalTime());
           DeserializedEvent newDeserEvent = new GenericJsonEvent(elm.getAsJsonObject());
           newEvent.setEventObj(newDeserEvent);
+
+          /*
+           * Deep clone the partitions
+           */
+          if (partitions != null) {
+            LinkedHashMap<String, String> newPartitions =
+                new LinkedHashMap<String, String>(partitions.size());
+
+            partitions.entrySet().forEach(kv -> {
+              newPartitions.put(new String(kv.getKey()), new String(kv.getValue()));
+            });
+
+            newEvent.setPartitions(newPartitions);
+          }
+
           output.add(newEvent);
         } catch (Exception e) {
           throw new OperationException(e);

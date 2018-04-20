@@ -24,6 +24,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 @JsonTypeName("StaticSubstitution")
 @JsonSchemaDescription("Substitutes event field value for a static value.")
 public class StaticSubSpecConfig extends SubSpecConfig<StaticSubSpecConfig> {
+  public StaticSubSpecConfig() {}
+
   public StaticSubSpecConfig(String key, String value) {
     super(key);
     this.value = value;
