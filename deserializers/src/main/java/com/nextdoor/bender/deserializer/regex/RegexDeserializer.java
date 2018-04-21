@@ -15,18 +15,17 @@
 
 package com.nextdoor.bender.deserializer.regex;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+import com.google.gson.JsonObject;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
-import com.nextdoor.bender.deserializer.regex.ReFieldConfig.ReFieldType;
+import com.nextdoor.bender.deserializer.json.GenericJsonEvent;
 
 public class RegexDeserializer extends Deserializer {
   private final Pattern pattern;
@@ -35,19 +34,6 @@ public class RegexDeserializer extends Deserializer {
   public RegexDeserializer(final Pattern pattern, final List<ReFieldConfig> fields) {
     this.pattern = pattern;
     this.fields = fields;
-  }
-
-  public static Object parse(String field, ReFieldType type) {
-    switch (type) {
-      case BOOLEAN:
-        return Boolean.parseBoolean(field);
-      case NUMBER:
-        return NumberUtils.createNumber(field);
-      case STRING:
-        return field;
-      default:
-        return field;
-    }
   }
 
   @Override
@@ -59,14 +45,29 @@ public class RegexDeserializer extends Deserializer {
     }
 
     int groups = m.groupCount();
-    Map<String, Object> mapping = new HashMap<>(groups);
+
+    JsonObject obj = new JsonObject();
     for (int i = 0; i < groups && i < fields.size(); i++) {
       String str = m.group(i + 1);
       ReFieldConfig field = this.fields.get(i);
-      mapping.put(field.getName(), parse(str, field.getType()));
+
+      switch (field.getType()) {
+        case BOOLEAN:
+          obj.addProperty(field.getName(), Boolean.parseBoolean(str));
+          break;
+        case NUMBER:
+          obj.addProperty(field.getName(), NumberUtils.createNumber(str));
+          break;
+        case STRING:
+          obj.addProperty(field.getName(), str);
+          break;
+        default:
+          obj.addProperty(field.getName(), str);
+          break;
+      }
     }
 
-    return new RegexEvent(mapping);
+    return new GenericJsonEvent(obj);
   }
 
   @Override
