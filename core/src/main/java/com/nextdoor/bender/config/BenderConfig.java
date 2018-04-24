@@ -73,7 +73,9 @@ import com.nextdoor.bender.wrapper.WrapperConfig;
     + "<br><br><h3>Variable Substitution</h3><br>"
     + "Your configuration file can contain variables which are substituted for lambda function \n"
     + "environment variables. In your configuration wrap the environment with &lt;&gt; tags. \n"
-    + "For example: <br>" + "<pre>{\"foo\": &lt;BAR&gt;}</pre>")
+    + "For example: <br>" + "<pre>{\"foo\": &lt;BAR&gt;}</pre>\n\n"
+    + "Note that if BENDER_SKIP_VALIDATE=true env var is set then Bender will not validate the configuration at runtime.\n"
+    + "Use this if you validate the configuration files with the CLI tool prior to deployment.")
 public class BenderConfig {
   private static final Logger logger = Logger.getLogger(BenderConfig.class);
   public static final BenderSchema schema = new BenderSchema("/schema/default.json");
@@ -334,7 +336,16 @@ public class BenderConfig {
     mapper.setPropertyNamingStrategy(
         PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
-    return BenderConfig.load(filename, data, mapper, true);
+    /*
+     * Optionally don't validate the config. Assume user has already
+     * done this.
+     */
+    String v = System.getenv("BENDER_SKIP_VALIDATE");
+    if (v != null && v.equals("true")) {
+      return BenderConfig.load(filename, data, mapper, false);
+    } else {
+      return BenderConfig.load(filename, data, mapper, true);
+    }
   }
 
   public static BenderConfig load(AmazonS3ClientFactory s3ClientFactory, AmazonS3URI s3Uri) {
