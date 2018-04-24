@@ -68,7 +68,7 @@
         <executions>
           <execution>
             <id>aggregate-download-licenses</id>
-            <phase>prepare-package</phase>
+            <phase>generate-resources</phase>
             <goals>
               <goal>aggregate-download-licenses</goal>
             </goals>

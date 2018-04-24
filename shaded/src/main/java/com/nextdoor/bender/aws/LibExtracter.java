@@ -33,8 +33,6 @@ import java.util.zip.ZipFile;
 
 /**
  * Mostly copy paste from https://stackoverflow.com/a/600198/384973
- * 
- * "lib/bender-shaded-s3proxy-1.0.0-SNAPSHOT.jar"
  */
 public class LibExtracter {
   public static String extract(String libJar) throws URISyntaxException, ZipException, IOException {

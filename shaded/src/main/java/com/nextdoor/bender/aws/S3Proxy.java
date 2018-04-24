@@ -1,8 +1,27 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * Copyright 2018 Nextdoor.com, Inc
+ *
+ */
+
 package com.nextdoor.bender.aws;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.zeroturnaround.exec.InvalidExitValueException;
 import org.zeroturnaround.exec.ProcessExecutor;
@@ -11,29 +30,56 @@ import org.zeroturnaround.process.PidProcess;
 import org.zeroturnaround.process.Processes;
 import org.zeroturnaround.process.UnixProcess;
 
+/**
+ * Launches s3proxy in a separate JVM and creates shutdown hooks to gracefully kill the process.
+ */
 public class S3Proxy {
-  private final String s3ProxyJar;
+  private static String s3ProxyJar;
   private PidProcess s3ProxyProcess;
 
-  public S3Proxy() {
+  static {
+    /*
+     * Find bender project version
+     */
+    final Properties properties = new Properties();
     try {
-      s3ProxyJar = LibExtracter.extract("lib/bender-shaded-s3proxy-1.0.0-SNAPSHOT.jar");
+      properties.load(S3Proxy.class.getResourceAsStream("/project.properties"));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    String version = properties.getProperty("version");
+
+    /*
+     * Copy s3proxy shaded jar out of lib directory in this jar.
+     */
+    try {
+      s3ProxyJar = LibExtracter.extract("lib/bender-shaded-s3proxy-" + version + ".jar");
     } catch (URISyntaxException | IOException e) {
       throw new RuntimeException(e);
     }
   }
 
+  public S3Proxy() {}
+
   public void start()
       throws IOException, InterruptedException, InvalidExitValueException, TimeoutException {
     /*
-     * Start s3proxy in a separate jvm
+     * Start s3proxy in a separate JVM
      */
+    CountDownLatch ready = new CountDownLatch(1);
     Process process =
         new ProcessExecutor().command("java", "-cp", s3ProxyJar, "com.nextdoor.bender.aws.Start")
             .redirectOutput(new LogOutputStream() {
               @Override
               protected void processLine(String line) {
                 System.out.println(line);
+
+                /*
+                 * Read output and set ready once s3proxy is fully started.
+                 */
+                if (line.contains("org.eclipse.jetty.server.Server - Started")) {
+                  ready.countDown();
+                }
               }
             }).start().getProcess();
     this.s3ProxyProcess = Processes.newPidProcess(process);
@@ -55,15 +101,12 @@ public class S3Proxy {
     });
     t.start();
 
-    Thread.sleep(1000);
-
     /*
      * JVM Shutdown handler
      */
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override
       public void run() {
-        System.out.println("shtudown hook");
         try {
           ((UnixProcess) s3ProxyProcess).kill("TERM");
         } catch (IOException | InterruptedException e) {
@@ -71,6 +114,11 @@ public class S3Proxy {
         }
       }
     });
+
+    /*
+     * Wait until s3proxy is ready before returning.
+     */
+    ready.await(5, TimeUnit.SECONDS);
   }
 
   public void stop() throws IOException, InterruptedException, TimeoutException {
@@ -79,7 +127,7 @@ public class S3Proxy {
     }
 
     try {
-      ((UnixProcess) s3ProxyProcess).kill("TERM");
+      ((UnixProcess) this.s3ProxyProcess).kill("TERM");
     } catch (IOException | InterruptedException e) {
       return;
     }
