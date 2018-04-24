@@ -21,7 +21,6 @@ import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.zeroturnaround.exec.InvalidExitValueException;
 import org.zeroturnaround.exec.ProcessExecutor;
@@ -61,15 +60,15 @@ public class S3Proxy {
 
   public S3Proxy() {}
 
-  public void start()
+  public void start(int port, String username, String pass)
       throws IOException, InterruptedException, InvalidExitValueException, TimeoutException {
     /*
      * Start s3proxy in a separate JVM
      */
     CountDownLatch ready = new CountDownLatch(1);
     Process process =
-        new ProcessExecutor().command("java", "-cp", s3ProxyJar, "com.nextdoor.bender.aws.Start")
-            .redirectOutput(new LogOutputStream() {
+        new ProcessExecutor().command("java", "-cp", s3ProxyJar, "com.nextdoor.bender.s3proxy.Start",
+            "" + port, username, pass).redirectOutput(new LogOutputStream() {
               @Override
               protected void processLine(String line) {
                 System.out.println(line);

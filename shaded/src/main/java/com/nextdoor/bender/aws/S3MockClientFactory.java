@@ -30,18 +30,20 @@ public class S3MockClientFactory extends AmazonS3ClientFactory {
   private AmazonS3Client client;
   private S3Proxy s3 = new S3Proxy();
 
-  private static String ENDPOINT = "http://127.0.0.1:8085";
-
   public S3MockClientFactory() {
+    this(8085, "x", "x");
+  }
+
+  public S3MockClientFactory(int port, String username, String pass) {
     try {
-      this.s3.start();
+      this.s3.start(port, username, pass);
     } catch (IOException | InterruptedException | InvalidExitValueException | TimeoutException e) {
       throw new RuntimeException(e);
     }
 
-    BasicAWSCredentials awsCredentials = new BasicAWSCredentials("x", "x");
+    BasicAWSCredentials awsCredentials = new BasicAWSCredentials(username, pass);
     this.client = new AmazonS3Client(awsCredentials, new ClientConfiguration());
-    this.client.setEndpoint(ENDPOINT);
+    this.client.setEndpoint("http://127.0.0.1:" + port);
     this.client.createBucket(S3_BUCKET);
   }
 
