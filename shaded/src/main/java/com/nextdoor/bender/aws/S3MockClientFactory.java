@@ -9,22 +9,16 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
 package com.nextdoor.bender.aws;
 
-import java.net.URI;
-import java.util.Properties;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
-import org.gaul.s3proxy.AuthenticationType;
-import org.gaul.s3proxy.S3Proxy;
-import org.gaul.s3proxy.S3Proxy.Builder;
-import org.jclouds.ContextBuilder;
-import org.jclouds.blobstore.BlobStore;
-import org.jclouds.blobstore.BlobStoreContext;
-import org.junit.rules.TemporaryFolder;
+import org.zeroturnaround.exec.InvalidExitValueException;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -34,32 +28,20 @@ import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 public class S3MockClientFactory extends AmazonS3ClientFactory {
   private static final String S3_BUCKET = "testbucket";
   private AmazonS3Client client;
-  private S3Proxy s3Proxy;
+  private S3Proxy s3 = new S3Proxy();
 
-  public S3MockClientFactory(TemporaryFolder tmpFolder) throws Exception {
-    String endpoint = "http://127.0.0.1:8085";
-    URI uri = URI.create(endpoint);
-    Properties properties = new Properties();
-    properties.setProperty("s3proxy.authorization", "none");
-    properties.setProperty("s3proxy.endpoint", endpoint);
-    properties.setProperty("jclouds.provider", "filesystem");
-    properties.setProperty("jclouds.filesystem.basedir", tmpFolder.getRoot().getPath());
+  private static String ENDPOINT = "http://127.0.0.1:8085";
 
-    Builder s3Builder = S3Proxy.builder().awsAuthentication(AuthenticationType.NONE, "x", "x")
-        .endpoint(uri).keyStore("", "");
-
-    ContextBuilder builder =
-        ContextBuilder.newBuilder("filesystem").credentials("x", "x").overrides(properties);
-    BlobStoreContext context = builder.build(BlobStoreContext.class);
-    BlobStore blobStore = context.getBlobStore();
-
-    this.s3Proxy = s3Builder.blobStore(blobStore).build();
-    this.s3Proxy.start();
+  public S3MockClientFactory() {
+    try {
+      this.s3.start();
+    } catch (IOException | InterruptedException | InvalidExitValueException | TimeoutException e) {
+      throw new RuntimeException(e);
+    }
 
     BasicAWSCredentials awsCredentials = new BasicAWSCredentials("x", "x");
-
     this.client = new AmazonS3Client(awsCredentials, new ClientConfiguration());
-    this.client.setEndpoint(endpoint);
+    this.client.setEndpoint(ENDPOINT);
     this.client.createBucket(S3_BUCKET);
   }
 
@@ -69,11 +51,10 @@ public class S3MockClientFactory extends AmazonS3ClientFactory {
   }
 
   public void shutdown() {
-    if (this.s3Proxy != null) {
-      try {
-        this.s3Proxy.stop();
-      } catch (Exception e) {
-      }
+    try {
+      this.s3.stop();
+    } catch (IOException | InterruptedException | TimeoutException e) {
+      return;
     }
   }
 }

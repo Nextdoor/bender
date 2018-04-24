@@ -62,9 +62,6 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
     return "/com/nextdoor/bender/handler/config_unittest.json";
   }
 
-  @Rule
-  public TemporaryFolder tmpFolder = new TemporaryFolder();
-
   @Override
   public Handler<SNSEvent> getHandler() {
     SNSS3Handler handler = new SNSS3Handler();
@@ -129,7 +126,7 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
      */
     S3MockClientFactory f;
     try {
-      f = new S3MockClientFactory(tmpFolder);
+      f = new S3MockClientFactory();
     } catch (Exception e) {
       throw new RuntimeException("unable to start s3proxy", e);
     }
