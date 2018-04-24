@@ -72,11 +72,12 @@
     <module>wrappers</module>
     <module>serializers</module>
     <module>itests</module>
-    <module>packaging</module>
-    <module>cli</module>
     <module>common</module>
     <module>shaded</module>
-    <module>s3proxy</module>
+    <module>shaded-s3proxy</module>
+    <module>lambda</module>
+    <module>packaging</module>
+    <module>cli</module>
   </modules>
 
   <properties>
