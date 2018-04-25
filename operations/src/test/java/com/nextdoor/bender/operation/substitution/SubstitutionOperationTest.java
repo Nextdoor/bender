@@ -22,24 +22,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.LambdaContext;
 import com.nextdoor.bender.aws.TestContext;
-import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyMapEvent;
 
 public class SubstitutionOperationTest {
 
-
-
   @Test
   public void testKnownField() {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
-    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo")));
+    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo"), false));
 
     DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("foo", "1234");
@@ -55,9 +51,27 @@ public class SubstitutionOperationTest {
   }
 
   @Test
+  public void testRemoveField() {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo"), true));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    assertEquals("1234", devent.getField("bar"));
+    assertEquals(null, devent.getField("foo"));
+  }
+
+  @Test
   public void testUnknownField() {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
-    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo")));
+    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo"), false));
 
     DummpyMapEvent devent = new DummpyMapEvent();
 
@@ -73,7 +87,7 @@ public class SubstitutionOperationTest {
   @Test
   public void testFieldList() {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
-    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo0","foo1", "foo2")));
+    subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo0", "foo1", "foo2"), false));
 
     DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("foo2", "1234");

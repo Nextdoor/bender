@@ -31,66 +31,101 @@ public class SubstitutionOperation implements Operation {
     this.subSpecs = subSpecs;
   }
 
+  /**
+   * Perform a field substitution from one field to another. By default this is a copy operation but
+   * turns into move if RemoveSourceField is specified.
+   * 
+   * @param devent
+   * @param config
+   */
+  private void performFieldSub(DeserializedEvent devent, FieldSubSpecConfig config) {
+    Object sourceValue = null;
+
+    /*
+     * Pick first non null source field value
+     */
+    for (String sourceField : config.getSourceFields()) {
+      try {
+        if (!config.getRemoveSourceField()) {
+          sourceValue = devent.getField(sourceField);
+        } else {
+          sourceValue = devent.removeField(sourceField);
+        }
+
+        if (sourceValue != null) {
+          break;
+        }
+      } catch (NoSuchElementException e) {
+      }
+    }
+
+    devent.setField(config.getKey(), sourceValue);
+  }
+
+  /**
+   * Performs a field substitution with metadata as the source.
+   * 
+   * @param devent
+   * @param ievent
+   * @param config
+   */
+  private void performMetadataSub(DeserializedEvent devent, InternalEvent ievent,
+      MetadataSubSpecConfig config) {
+    List<String> includes = config.getIncludes();
+    List<String> excludes = config.getExcludes();
+    Map<String, Object> metadata = new HashMap<String, Object>(ievent.getEventMetadata());
+
+    if (!includes.isEmpty()) {
+      metadata.keySet().retainAll(includes);
+    }
+
+    excludes.forEach(exclude -> {
+      metadata.remove(exclude);
+    });
+
+    devent.setField(config.getKey(), metadata);
+  }
+
+  /**
+   * Performs a field substitution with the lambda invocation context as the source.
+   * 
+   * @param devent
+   * @param ievent
+   * @param config
+   */
+  private void performContextSub(DeserializedEvent devent, InternalEvent ievent,
+      ContextSubSpecConfig config) {
+    List<String> includes = config.getIncludes();
+    List<String> excludes = config.getExcludes();
+    Map<String, String> contexts = ievent.getCtx().getContextAsMap();
+
+    if (!includes.isEmpty()) {
+      contexts.keySet().retainAll(includes);
+    }
+
+    excludes.forEach(exclude -> {
+      contexts.remove(exclude);
+    });
+
+    devent.setField(config.getKey(), contexts);
+  }
+
   @Override
   public InternalEvent perform(InternalEvent ievent) {
-
     DeserializedEvent devent = ievent.getEventObj();
-
     if (devent == null || devent.getPayload() == null) {
       return ievent;
     }
 
     for (SubSpecConfig<?> subSpec : subSpecs) {
       if (subSpec instanceof FieldSubSpecConfig) {
-        Object sourceValue = null;
-
-        /*
-         * Pick first non null source field value
-         */
-        for (String sourceField : ((FieldSubSpecConfig) subSpec).getSourceFields()) {
-          try {
-            if ((sourceValue = devent.getField(sourceField)) != null) {
-              break;
-            }
-          } catch (NoSuchElementException e) {
-          }
-        }
-
-        devent.setField(subSpec.getKey(), sourceValue);
+        performFieldSub(devent, (FieldSubSpecConfig) subSpec);
       } else if (subSpec instanceof StaticSubSpecConfig) {
         devent.setField(subSpec.getKey(), ((StaticSubSpecConfig) subSpec).getValue());
       } else if (subSpec instanceof MetadataSubSpecConfig) {
-        MetadataSubSpecConfig m = (MetadataSubSpecConfig) subSpec;
-
-        List<String> includes = m.getIncludes();
-        List<String> excludes = m.getExcludes();
-        Map<String, Object> metadata = new HashMap<String, Object>(ievent.getEventMetadata());
-
-        if (!includes.isEmpty()) {
-          metadata.keySet().retainAll(includes);
-        }
-
-        excludes.forEach(exclude -> {
-          metadata.remove(exclude);
-        });
-
-        devent.setField(subSpec.getKey(), metadata);
+        performMetadataSub(devent, ievent, (MetadataSubSpecConfig) subSpec);
       } else if (subSpec instanceof ContextSubSpecConfig) {
-        ContextSubSpecConfig c = (ContextSubSpecConfig) subSpec;
-
-        List<String> includes = c.getIncludes();
-        List<String> excludes = c.getExcludes();
-        Map<String, String> contexts = ievent.getCtx().getContextAsMap();
-
-        if (!includes.isEmpty()) {
-          contexts.keySet().retainAll(includes);
-        }
-
-        excludes.forEach(exclude -> {
-          contexts.remove(exclude);
-        });
-
-        devent.setField(subSpec.getKey(), contexts);
+        performContextSub(devent, ievent, (ContextSubSpecConfig) subSpec);
       }
     }
 

@@ -48,10 +48,10 @@ public class GelfOperationFactoryTest {
     List<SubSpecConfig<?>> actual = op.getSubSpecs();
 
     ArrayList<SubSpecConfig<?>> expected = new ArrayList<SubSpecConfig<?>>();
-    expected.add(new FieldSubSpecConfig("host", Arrays.asList("foo_host")));
-    expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename")));
+    expected.add(new FieldSubSpecConfig("host", Arrays.asList("foo_host"), false));
+    expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename"), false));
     expected
-        .add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message", "bar")));
+        .add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message", "bar"), false));
     expected.add(new StaticSubSpecConfig("version", "1.1"));
 
     Collections.sort(expected, Comparator.comparingInt(Object::hashCode));
