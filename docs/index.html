@@ -2315,6 +2315,26 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
+                <div class="property-name ">remove_source_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Removes the source field when performing the substitution. Effectively making this a move operation.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
                 <div class="property-name ">source_fields</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
@@ -2361,6 +2381,11 @@ function sourceButton(element) {
         "type": "string"
       },
       "description": "Source fields to pull value from. If multiple fields are provided the first non-null valued one is used. Note that if no fields are found the value will be set to null."
+    },
+    "remove_source_field": {
+      "type": "boolean",
+      "default": false,
+      "description": "Removes the source field when performing the substitution. Effectively making this a move operation."
     },
     "source_fields": {
       "type": "array",
@@ -11378,6 +11403,11 @@ function sourceButton(element) {
             "type": "string"
           },
           "description": "Source fields to pull value from. If multiple fields are provided the first non-null valued one is used. Note that if no fields are found the value will be set to null."
+        },
+        "remove_source_field": {
+          "type": "boolean",
+          "default": false,
+          "description": "Removes the source field when performing the substitution. Effectively making this a move operation."
         },
         "source_fields": {
           "type": "array",
