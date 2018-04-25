@@ -26,7 +26,6 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 
 @JsonTypeName("MetadataSubstitution")
 @JsonSchemaDescription("Substitutes event field value for list of event metadata proprties.")
-
 public class MetadataSubSpecConfig extends SubSpecConfig<MetadataSubSpecConfig> {
   public MetadataSubSpecConfig() {}
   
