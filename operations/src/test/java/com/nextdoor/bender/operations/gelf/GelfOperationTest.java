@@ -30,6 +30,7 @@ import com.google.gson.JsonSyntaxException;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.operation.gelf.GelfOperation;
 import com.nextdoor.bender.operations.json.OperationTest;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyEvent;
 
 public class GelfOperationTest extends OperationTest {
 

@@ -36,44 +36,10 @@ import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operations.geo.GeoIpOperationConfig.GeoProperty;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyMapEvent;
 
 public class GeoIpOperationTest {
   GeoIpOperation op;
-
-  public static class DummpyEvent implements DeserializedEvent {
-    public Map<String, Object> payload = new HashMap<String, Object>();
-
-    @Override
-    public Object getPayload() {
-      return payload;
-    }
-
-    @Override
-    public Object getField(String fieldName) {
-      return payload.getOrDefault(fieldName, null);
-    }
-
-    @Override
-    public void setPayload(Object object) {
-      this.payload = (Map<String, Object>) object;
-    }
-
-    @Override
-    public void setField(String fieldName, Object value) {
-      payload.put(fieldName, value);
-    }
-
-    @Override
-    public String getFieldAsString(String fieldName) throws NoSuchElementException {
-      Object o = getField(fieldName);
-
-      if (o == null) {
-        return null;
-      }
-
-      return payload.get(fieldName).toString();
-    }
-  }
 
   public GeoIpOperation setup(List<GeoProperty> geoProperties, boolean required)
       throws IOException {
@@ -86,7 +52,7 @@ public class GeoIpOperationTest {
   public void testUnkownIpPass() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), false);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", "10.0.0.1");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -99,7 +65,7 @@ public class GeoIpOperationTest {
   public void testUnkownIpRequired() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", "10.0.0.1");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -116,7 +82,7 @@ public class GeoIpOperationTest {
   public void testInvalidIp() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), false);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", "noanip");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -130,7 +96,7 @@ public class GeoIpOperationTest {
   public void testInvalidIpRequired() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", "noanip");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -147,7 +113,7 @@ public class GeoIpOperationTest {
   public void testNullIpRequired() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", null);
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -160,7 +126,7 @@ public class GeoIpOperationTest {
   public void testMissingField() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
 
-    DummpyEvent devent = spy(new DummpyEvent());
+    DummpyMapEvent devent = spy(new DummpyMapEvent());
     when(devent.getField("ip_address")).thenThrow(new NoSuchElementException(""));
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -173,7 +139,7 @@ public class GeoIpOperationTest {
   public void testNullIp() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), false);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", null);
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -186,7 +152,7 @@ public class GeoIpOperationTest {
   public void testKnownIpLocation() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", "5.5.5.5");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -213,7 +179,7 @@ public class GeoIpOperationTest {
         GeoProperty.SUBDIVISION_NAME, GeoProperty.SUBDIVISION_ISO_CODE, GeoProperty.CITY_NAME,
         GeoProperty.POSTAL_CODE, GeoProperty.LOCATION), true);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", "5.5.5.5");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -244,7 +210,7 @@ public class GeoIpOperationTest {
   public void testIpList() throws Throwable {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", "5.5.5.5, 10.10.10.10");
 
     InternalEvent ievent = new InternalEvent("", null, 0);

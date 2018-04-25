@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.testutils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -27,6 +29,80 @@ import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.deserializer.DeserializerFactory;
 
 public class DummyDeserializerHelper {
+  public static class DummpyMapEvent implements DeserializedEvent {
+    public Map<String, Object> payload = new HashMap<String, Object>();
+
+    @Override
+    public Object getPayload() {
+      return payload;
+    }
+
+    @Override
+    public Object getField(String fieldName) {
+      return payload.get(fieldName);
+    }
+
+    @Override
+    public void setPayload(Object object) {
+      this.payload = (Map<String, Object>) object;
+    }
+
+    @Override
+    public void setField(String fieldName, Object value) {
+      payload.put(fieldName, value);
+    }
+
+    @Override
+    public String getFieldAsString(String fieldName) throws NoSuchElementException {
+      Object o = getField(fieldName);
+
+      if (o == null) {
+        return null;
+      }
+
+      return payload.get(fieldName).toString();
+    }
+
+    @Override
+    public Object removeField(String fieldName) throws IllegalArgumentException {
+      return payload.remove(fieldName);
+    }
+  }
+
+  public static class DummpyEvent implements DeserializedEvent {
+    public Object payload;
+
+    @Override
+    public Object getPayload() {
+      return payload;
+    }
+
+    @Override
+    public String getField(String fieldName) {
+      return null;
+    }
+
+    @Override
+    public void setPayload(Object object) {
+      this.payload = object;
+    }
+
+    @Override
+    public void setField(String fieldName, Object value) {
+
+    }
+
+    @Override
+    public String getFieldAsString(String fieldName) {
+      return null;
+    }
+
+    @Override
+    public Object removeField(String fieldName) throws IllegalArgumentException {
+      return null;
+    }
+  }
+
   public static class DummyDeserializedEvent implements DeserializedEvent {
     public String payload;
 
@@ -50,14 +126,18 @@ public class DummyDeserializerHelper {
     }
 
     @Override
-    public void setField(String fieldName, Object value)
-        throws NotImplementedException {
+    public void setField(String fieldName, Object value) throws NotImplementedException {
       throw new NotImplementedException("setField not supported by DummyDeserializedEvent");
     }
 
     @Override
     public String getFieldAsString(String fieldName) throws NoSuchElementException {
       return (String) payload;
+    }
+
+    @Override
+    public Object removeField(String fieldName) throws IllegalArgumentException {
+      return null;
     }
   }
 

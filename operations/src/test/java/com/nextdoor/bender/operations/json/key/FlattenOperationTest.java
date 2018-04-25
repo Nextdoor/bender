@@ -23,6 +23,8 @@ import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.json.key.FlattenOperation;
 import com.nextdoor.bender.operations.json.OperationTest;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyEvent;
+
 import org.junit.Test;
 
 import java.io.IOException;

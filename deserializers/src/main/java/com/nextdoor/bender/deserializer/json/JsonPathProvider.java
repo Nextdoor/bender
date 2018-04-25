@@ -62,12 +62,16 @@ public class JsonPathProvider {
   public static DocumentContext parse(String json) {
     return JsonPath.parse(json);
   }
-  
+
   public static DocumentContext parse(Object json) {
     return JsonPath.parse(json);
   }
 
   public static <T> T read(Object json, String jsonPath, Predicate... filters) {
     return JsonPath.read(json, jsonPath, filters);
+  }
+
+  public static void delete(Object json, String jsonPath) {
+    JsonPath.parse(json).delete(jsonPath);
   }
 }

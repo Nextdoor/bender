@@ -29,6 +29,7 @@ import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.operation.json.key.JsonRootNodeOperation;
 import com.nextdoor.bender.operation.json.key.JsonRootNodeOperationFactory;
 import com.nextdoor.bender.operations.json.OperationTest;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyEvent;
 
 public class JsonRootNodeMutatorTest extends OperationTest {
   @Test

@@ -103,6 +103,13 @@
     </dependency>
 
     <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-rules</artifactId>
+      <version>${system-rules.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>bender-shaded</artifactId>
       <version>${project.version}</version>

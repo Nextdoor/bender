@@ -30,37 +30,10 @@ import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.LambdaContext;
 import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyMapEvent;
 
 public class SubstitutionOperationTest {
 
-  public static class DummpyEvent implements DeserializedEvent {
-    public Map<String, Object> payload = new HashMap<String, Object>();
-
-    @Override
-    public Object getPayload() {
-      return payload;
-    }
-
-    @Override
-    public Object getField(String fieldName) {
-      return payload.get(fieldName);
-    }
-
-    @Override
-    public void setPayload(Object object) {
-      this.payload = (Map<String, Object>) object;
-    }
-
-    @Override
-    public void setField(String fieldName, Object value) {
-      payload.put(fieldName, value);
-    }
-
-    @Override
-    public String getFieldAsString(String fieldName) throws NoSuchElementException {
-      return payload.get(fieldName).toString();
-    }
-  }
 
 
   @Test
@@ -68,7 +41,7 @@ public class SubstitutionOperationTest {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
     subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo")));
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("foo", "1234");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -86,7 +59,7 @@ public class SubstitutionOperationTest {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
     subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo")));
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
 
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
@@ -102,7 +75,7 @@ public class SubstitutionOperationTest {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
     subSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo0","foo1", "foo2")));
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("foo2", "1234");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
@@ -120,7 +93,7 @@ public class SubstitutionOperationTest {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
     subSpecs.add(new StaticSubSpecConfig("foo", "1234"));
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
 
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
@@ -137,7 +110,7 @@ public class SubstitutionOperationTest {
     subSpecs.add(
         new MetadataSubSpecConfig("foo", Collections.emptyList(), Arrays.asList("sourceLagMs")));
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
 
     InternalEvent ievent = new InternalEvent("", null, 10);
     ievent.setEventObj(devent);
@@ -163,7 +136,7 @@ public class SubstitutionOperationTest {
     subSpecs.add(
         new MetadataSubSpecConfig("foo", Arrays.asList("eventSha1Hash"), Collections.emptyList()));
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
 
     InternalEvent ievent = new InternalEvent("", null, 10);
     ievent.setEventObj(devent);
@@ -187,7 +160,7 @@ public class SubstitutionOperationTest {
     subSpecs.add(
         new ContextSubSpecConfig("foo", Collections.emptyList(), Arrays.asList("functionName")));
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     TestContext ctx = new TestContext();
     ctx.setFunctionName("fun name");
     ctx.setInvokedFunctionArn("some arn");
@@ -214,7 +187,7 @@ public class SubstitutionOperationTest {
     subSpecs.add(
         new ContextSubSpecConfig("foo", Arrays.asList("functionName"), Collections.emptyList()));
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     TestContext ctx = new TestContext();
     ctx.setFunctionName("fun name");
     ctx.setInvokedFunctionArn("some arn");
