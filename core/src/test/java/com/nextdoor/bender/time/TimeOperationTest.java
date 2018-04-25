@@ -24,7 +24,7 @@ import static org.mockito.Mockito.spy;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.operation.OperationException;
-import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyDeserializedEvent;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyStringEvent;
 import com.nextdoor.bender.time.TimeOperationConfig.TimeFieldType;
 
 public class TimeOperationTest {
@@ -32,7 +32,7 @@ public class TimeOperationTest {
   @Test
   public void testValidTime() {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
-    DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
+    DummyStringEvent devent = spy(new DummyStringEvent(""));
     ievent.setEventObj(devent);
     doReturn("1504728473").when(devent).getFieldAsString("foo");
 
@@ -45,7 +45,7 @@ public class TimeOperationTest {
   @Test(expected = OperationException.class)
   public void testInvalidTime() {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
-    DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
+    DummyStringEvent devent = spy(new DummyStringEvent(""));
     ievent.setEventObj(devent);
     doReturn("-1").when(devent).getFieldAsString("foo");
 
@@ -56,7 +56,7 @@ public class TimeOperationTest {
   @Test(expected = OperationException.class)
   public void testNullField() {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
-    DummyDeserializedEvent devent = spy(new DummyDeserializedEvent(""));
+    DummyStringEvent devent = spy(new DummyStringEvent(""));
     ievent.setEventObj(devent);
     doReturn(null).when(devent).getFieldAsString("foo");
 

@@ -60,7 +60,7 @@ public class OperationProcessorTest {
     processor.setErrorCountStat(errorStat);
 
     InternalEvent ievent = new InternalEvent("foo", null, 1);
-    ievent.setEventObj(new DummyDeserializerHelper.DummyDeserializedEvent("test"));
+    ievent.setEventObj(new DummyDeserializerHelper.DummyStringEvent("test"));
     Stream<InternalEvent> stream = processor.perform(Stream.of(ievent));
     List<InternalEvent> output = stream.collect(Collectors.toList());
 
@@ -171,7 +171,7 @@ public class OperationProcessorTest {
      */
     DummyOperation op = spy(new DummyOperation());
     InternalEvent retEvent = new InternalEvent("foo", null, 1);
-    retEvent.setEventObj(new DummyDeserializerHelper.DummyDeserializedEvent(null));
+    retEvent.setEventObj(new DummyDeserializerHelper.DummyStringEvent(null));
 
     when(op.perform(any(InternalEvent.class))).thenReturn(retEvent);
     DummyOperationFactory operationFactory = new DummyOperationFactory(op);

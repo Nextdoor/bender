@@ -103,10 +103,10 @@ public class DummyDeserializerHelper {
     }
   }
 
-  public static class DummyDeserializedEvent implements DeserializedEvent {
+  public static class DummyStringEvent implements DeserializedEvent {
     public String payload;
 
-    public DummyDeserializedEvent(String payload) {
+    public DummyStringEvent(String payload) {
       this.payload = payload;
     }
 
@@ -171,7 +171,7 @@ public class DummyDeserializerHelper {
 
     @Override
     public DeserializedEvent deserialize(String raw) {
-      return new DummyDeserializedEvent(raw);
+      return new DummyStringEvent(raw);
     }
 
     @Override
