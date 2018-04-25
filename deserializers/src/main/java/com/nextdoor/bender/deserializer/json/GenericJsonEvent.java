@@ -112,7 +112,9 @@ public class GenericJsonEvent implements DeserializedEvent {
   @Override
   public Object removeField(String fieldName) throws IllegalArgumentException {
     if (this.payload == null) {
-      throw new NoSuchElementException(fieldName + " is not in payload because payload is null");
+      // TODO: this should really throw NoSuchElementException
+      // throw new NoSuchElementException(fieldName + " is not in payload because payload is null");
+      return null;
     }
 
     JsonObject json = this.payload.getAsJsonObject();

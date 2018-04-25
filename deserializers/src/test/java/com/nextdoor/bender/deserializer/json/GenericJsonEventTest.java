@@ -99,4 +99,16 @@ public class GenericJsonEventTest {
     assertEquals("qux", payload.get("baz").getAsString());
     assertEquals("b", payload.get("a").getAsString());
   }
+
+  @Test
+  public void testRemoveMissingField() {
+    GenericJsonEvent event = getEmptyEvent();
+    JsonObject payload = (JsonObject) event.getPayload();
+
+    Object obj = event.removeField("$.foo");
+
+    assertEquals(1, payload.size());
+    assertEquals(null, obj);
+    assertEquals("b", payload.get("a").getAsString());
+  }
 }
