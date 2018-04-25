@@ -221,4 +221,76 @@ public class SubstitutionOperationTest {
 
     assertEquals(expected, devent.getField("foo"));
   }
+
+  @Test
+  public void testBasicNested() {
+    ArrayList<SubSpecConfig<?>> nestedSubSpecs = new ArrayList<SubSpecConfig<?>>();
+    nestedSubSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo0", "foo1", "foo2"), false));
+    nestedSubSpecs.add(new StaticSubSpecConfig("static", "value"));
+
+
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    subSpecs.add(new NestedSubSpecConfig("a", nestedSubSpecs));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo2", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    Map<String, Object> expectedNested = new HashMap<String, Object>() {
+      {
+        put("bar", "1234");
+        put("static", "value");
+      }
+    };
+
+    assertEquals(expectedNested, devent.getField("a"));
+    assertEquals("1234", devent.getField("foo2"));
+  }
+
+  @Test
+  public void testNestedNested() {
+    /*
+     * Expected output {a={b={bar=1234, static=value}}, foo2=1234}
+     */
+    ArrayList<SubSpecConfig<?>> nest2SubSpecs = new ArrayList<SubSpecConfig<?>>();
+    nest2SubSpecs.add(new FieldSubSpecConfig("bar", Arrays.asList("foo0", "foo1", "foo2"), false));
+    nest2SubSpecs.add(new StaticSubSpecConfig("static", "value"));
+
+    ArrayList<SubSpecConfig<?>> nest1SubSpecs = new ArrayList<SubSpecConfig<?>>();
+    nest1SubSpecs.add(new NestedSubSpecConfig("b", nest2SubSpecs));
+
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    subSpecs.add(new NestedSubSpecConfig("a", nest1SubSpecs));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo2", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+
+    Map<String, Object> expectedNest2 = new HashMap<String, Object>() {
+      {
+        put("bar", "1234");
+        put("static", "value");
+      }
+    };
+
+    Map<String, Object> expectedNest1 = new HashMap<String, Object>() {
+      {
+        put("b", expectedNest2);
+      }
+    };
+
+    assertEquals(expectedNest1, devent.getField("a"));
+    assertEquals("1234", devent.getField("foo2"));
+  }
 }
