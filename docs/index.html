@@ -1824,11 +1824,13 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">ContextSubstitution</span>
         <span class="type-keyword"></span>
-                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StaticSubstitution</span>
+                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">RegexSubstitution</span>
         <span class="type-keyword"></span>
-                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">NestedSubstitution</span>
+                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StaticSubstitution</span>
         <span class="type-keyword"></span>
-                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FieldSubstitution</span>
+                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">NestedSubstitution</span>
+        <span class="type-keyword"></span>
+                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FieldSubstitution</span>
 
                 </div>
                 <div class="signature-description desc"><p>List of substitutions to perform.</p>
@@ -2131,6 +2133,312 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-3">
         <div class="box-title" ref="">
+            <div class="box-name ">RegexSubstitution</div>
+            <div class="box-description desc"><p>Substitutes event field value for another event field value. Note the source field and destination field can be the same.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">RegexSubstitution</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">RegexSubstitution</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">pattern</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Regex pattern with match groups. See <a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">source_field</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>Source fields to pull value from and apply regex to. If multiple fields are provided the first non-null valued one is used.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">fields</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">RegexSubField</span>
+
+                </div>
+                <div class="signature-description desc"><p>List of fields to create from matching regex groups.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">RegexSubField</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">regex_group_name</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Regex group name identifying the field.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">STRING</span>
+                <span class="type-enum">NUMBER</span>
+                <span class="type-enum">BOOLEAN</span>
+
+                </div>
+                <div class="signature-description desc"><p>Data type of match group field. If type coercion does not succeed then field is ignored.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Name or path of the new field.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "regex_group_name": {
+      "type": "string",
+      "description": "Regex group name identifying the field."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "STRING",
+        "NUMBER",
+        "BOOLEAN"
+      ],
+      "description": "Data type of match group field. If type coercion does not succeed then field is ignored."
+    },
+    "key": {
+      "type": "string",
+      "description": "Name or path of the new field."
+    }
+  },
+  "required": [
+    "regex_group_name",
+    "type",
+    "key"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">remove_source_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Removes the source field after applying this substitution.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">source_fields</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Substitutes event field value for another event field value. Note the source field and destination field can be the same.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "RegexSubstitution"
+      ],
+      "default": "RegexSubstitution"
+    },
+    "pattern": {
+      "type": "string",
+      "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
+    },
+    "source_field": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Source fields to pull value from and apply regex to. If multiple fields are provided the first non-null valued one is used."
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/RegexSubField"
+      },
+      "description": "List of fields to create from matching regex groups."
+    },
+    "remove_source_field": {
+      "type": "boolean",
+      "default": false,
+      "description": "Removes the source field after applying this substitution."
+    },
+    "source_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "title": "RegexSubstitution",
+  "required": [
+    "type",
+    "pattern",
+    "source_field",
+    "fields"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="4">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-4">
+        <div class="box-title" ref="">
             <div class="box-name ">StaticSubstitution</div>
             <div class="box-description desc"><p>Substitutes event field value for a static value.</p>
 </div>
@@ -2240,9 +2548,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="4">
+                <div class="box-container" boxid="5">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-4">
+    <div class="box-header box-5">
         <div class="box-title" ref="">
             <div class="box-name ">NestedSubstitution</div>
             <div class="box-description desc"><p>The nested substitution helps build a Map object containing the result of other substitution.</p>
@@ -2308,11 +2616,13 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">ContextSubstitution</span>
         <span class="type-keyword"></span>
-                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StaticSubstitution</span>
+                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">RegexSubstitution</span>
         <span class="type-keyword"></span>
-                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">NestedSubstitution</span>
+                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StaticSubstitution</span>
         <span class="type-keyword"></span>
-                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FieldSubstitution</span>
+                <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">NestedSubstitution</span>
+        <span class="type-keyword"></span>
+                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FieldSubstitution</span>
 
                 </div>
                 <div class="signature-description desc"><p>List of substitutions that will build up the final Map object.</p>
@@ -2615,6 +2925,312 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-3">
         <div class="box-title" ref="">
+            <div class="box-name ">RegexSubstitution</div>
+            <div class="box-description desc"><p>Substitutes event field value for another event field value. Note the source field and destination field can be the same.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">RegexSubstitution</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">RegexSubstitution</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">pattern</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Regex pattern with match groups. See <a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">source_field</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>Source fields to pull value from and apply regex to. If multiple fields are provided the first non-null valued one is used.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">fields</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">RegexSubField</span>
+
+                </div>
+                <div class="signature-description desc"><p>List of fields to create from matching regex groups.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">RegexSubField</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">regex_group_name</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Regex group name identifying the field.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">STRING</span>
+                <span class="type-enum">NUMBER</span>
+                <span class="type-enum">BOOLEAN</span>
+
+                </div>
+                <div class="signature-description desc"><p>Data type of match group field. If type coercion does not succeed then field is ignored.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Name or path of the new field.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "regex_group_name": {
+      "type": "string",
+      "description": "Regex group name identifying the field."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "STRING",
+        "NUMBER",
+        "BOOLEAN"
+      ],
+      "description": "Data type of match group field. If type coercion does not succeed then field is ignored."
+    },
+    "key": {
+      "type": "string",
+      "description": "Name or path of the new field."
+    }
+  },
+  "required": [
+    "regex_group_name",
+    "type",
+    "key"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">remove_source_field</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Removes the source field after applying this substitution.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">source_fields</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Substitutes event field value for another event field value. Note the source field and destination field can be the same.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "RegexSubstitution"
+      ],
+      "default": "RegexSubstitution"
+    },
+    "pattern": {
+      "type": "string",
+      "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
+    },
+    "source_field": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Source fields to pull value from and apply regex to. If multiple fields are provided the first non-null valued one is used."
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/RegexSubField"
+      },
+      "description": "List of fields to create from matching regex groups."
+    },
+    "remove_source_field": {
+      "type": "boolean",
+      "default": false,
+      "description": "Removes the source field after applying this substitution."
+    },
+    "source_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "title": "RegexSubstitution",
+  "required": [
+    "type",
+    "pattern",
+    "source_field",
+    "fields"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="4">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-4">
+        <div class="box-title" ref="">
             <div class="box-name ">StaticSubstitution</div>
             <div class="box-description desc"><p>Substitutes event field value for a static value.</p>
 </div>
@@ -2724,7 +3340,7 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="4">
+                <div class="box-container" boxid="5">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-">
         <div class="box-title" ref="">
@@ -2755,9 +3371,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="5">
+                <div class="box-container" boxid="6">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-5">
+    <div class="box-header box-6">
         <div class="box-title" ref="">
             <div class="box-name ">FieldSubstitution</div>
             <div class="box-description desc"><p>Substitutes event field value for another event field value. Note the source field and destination field can be the same.</p>
@@ -2960,6 +3576,9 @@ function sourceButton(element) {
           "$ref": "#/definitions/ContextSubSpecConfig"
         },
         {
+          "$ref": "#/definitions/RegexSubSpecConfig"
+        },
+        {
           "$ref": "#/definitions/StaticSubSpecConfig"
         },
         {
@@ -2982,9 +3601,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="5">
+                <div class="box-container" boxid="6">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-5">
+    <div class="box-header box-6">
         <div class="box-title" ref="">
             <div class="box-name ">FieldSubstitution</div>
             <div class="box-description desc"><p>Substitutes event field value for another event field value. Note the source field and destination field can be the same.</p>
@@ -3181,6 +3800,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/ContextSubSpecConfig"
+        },
+        {
+          "$ref": "#/definitions/RegexSubSpecConfig"
         },
         {
           "$ref": "#/definitions/StaticSubSpecConfig"
@@ -12143,6 +12765,9 @@ function sourceButton(element) {
               "$ref": "#/definitions/ContextSubSpecConfig"
             },
             {
+              "$ref": "#/definitions/RegexSubSpecConfig"
+            },
+            {
               "$ref": "#/definitions/StaticSubSpecConfig"
             },
             {
@@ -12234,6 +12859,84 @@ function sourceButton(element) {
         "key"
       ]
     },
+    "RegexSubSpecConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Substitutes event field value for another event field value. Note the source field and destination field can be the same.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "RegexSubstitution"
+          ],
+          "default": "RegexSubstitution"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
+        },
+        "source_field": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Source fields to pull value from and apply regex to. If multiple fields are provided the first non-null valued one is used."
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RegexSubField"
+          },
+          "description": "List of fields to create from matching regex groups."
+        },
+        "remove_source_field": {
+          "type": "boolean",
+          "default": false,
+          "description": "Removes the source field after applying this substitution."
+        },
+        "source_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "RegexSubstitution",
+      "required": [
+        "type",
+        "pattern",
+        "source_field",
+        "fields"
+      ]
+    },
+    "RegexSubField": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "regex_group_name": {
+          "type": "string",
+          "description": "Regex group name identifying the field."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "STRING",
+            "NUMBER",
+            "BOOLEAN"
+          ],
+          "description": "Data type of match group field. If type coercion does not succeed then field is ignored."
+        },
+        "key": {
+          "type": "string",
+          "description": "Name or path of the new field."
+        }
+      },
+      "required": [
+        "regex_group_name",
+        "type",
+        "key"
+      ]
+    },
     "StaticSubSpecConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -12287,6 +12990,9 @@ function sourceButton(element) {
             },
             {
               "$ref": "#/definitions/ContextSubSpecConfig"
+            },
+            {
+              "$ref": "#/definitions/RegexSubSpecConfig"
             },
             {
               "$ref": "#/definitions/StaticSubSpecConfig"

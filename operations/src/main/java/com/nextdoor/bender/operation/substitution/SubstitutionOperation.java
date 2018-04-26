@@ -15,14 +15,20 @@
 
 package com.nextdoor.bender.operation.substitution;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.substitution.RegexSubSpecConfig.RegexSubField;
 
 public class SubstitutionOperation implements Operation {
   private final List<SubSpecConfig<?>> subSpecs;
@@ -107,6 +113,88 @@ public class SubstitutionOperation implements Operation {
   }
 
   /**
+   * Matches a regex against a field and extracts matching groups.
+   * 
+   * @param ievent
+   * @param devent
+   * @param config
+   * @return
+   */
+  private Map<String, Object> getRegexMatches(InternalEvent ievent, DeserializedEvent devent,
+      RegexSubSpecConfig config) {
+    String foundSourceField = null;
+    Pattern pattern = config.getRegex();
+    Matcher matcher = null;
+
+    for (String sourceField : config.getSourceFields()) {
+      try {
+        String sourceValue = devent.getFieldAsString(sourceField);
+
+        if (sourceValue == null) {
+          continue;
+        }
+
+        matcher = pattern.matcher(sourceValue);
+
+        if (matcher.find()) {
+          /*
+           * Keep track of the field name that we use so it can be removed later.
+           */
+          foundSourceField = sourceField;
+          break;
+        }
+
+      } catch (NoSuchElementException e) {
+      }
+    }
+
+    if (foundSourceField == null) {
+      return Collections.emptyMap();
+    }
+
+    /*
+     * Go through each match group in the field config and attempt to add that match group from the
+     * regex match. If field type coercion does not succeed then field is skipped.
+     */
+    Map<String, Object> matchedGroups = new HashMap<String, Object>(matcher.groupCount());
+    for (RegexSubField field : config.getFields()) {
+      String matchStrVal = matcher.group(field.getRegexGroupName());
+
+      if (matchStrVal == null) {
+        continue;
+      }
+
+      switch (field.getType()) {
+        case BOOLEAN:
+          matchedGroups.put(field.getKey(), Boolean.parseBoolean(matchStrVal));
+          break;
+        case NUMBER:
+          try {
+            matchedGroups.put(field.getKey(), NumberUtils.createNumber(matchStrVal));
+          } catch (NumberFormatException e) {
+            continue;
+          }
+          break;
+        case STRING:
+          matchedGroups.put(field.getKey(), matchStrVal);
+          break;
+        default:
+          matchedGroups.put(field.getKey(), matchStrVal);
+          break;
+      }
+    }
+
+    /*
+     * Remove source field
+     */
+    if (config.getRemoveSourceField()) {
+      devent.removeField(foundSourceField);
+    }
+
+    return matchedGroups;
+  }
+
+  /**
    * Creates a Map object from other substitutions.
    * 
    * @param ievent
@@ -119,7 +207,11 @@ public class SubstitutionOperation implements Operation {
     Map<String, Object> map = new HashMap<String, Object>(subSpecs.size());
 
     for (SubSpecConfig<?> subSpec : subSpecs) {
-      map.put(subSpec.getKey(), getValue(ievent, devent, subSpec));
+      if (subSpec instanceof RegexSubSpecConfig) {
+        map.putAll((Map<String, Object>) getValue(ievent, devent, subSpec));
+      } else {
+        map.put(subSpec.getKey(), getValue(ievent, devent, subSpec));
+      }
     }
 
     return map;
@@ -138,6 +230,8 @@ public class SubstitutionOperation implements Operation {
       value = getContext(ievent, (ContextSubSpecConfig) subSpec);
     } else if (subSpec instanceof NestedSubSpecConfig) {
       value = getNested(ievent, devent, ((NestedSubSpecConfig) subSpec).getSubstitutions());
+    } else if (subSpec instanceof RegexSubSpecConfig) {
+      value = getRegexMatches(ievent, devent, (RegexSubSpecConfig) subSpec);
     }
 
     return value;
@@ -151,7 +245,15 @@ public class SubstitutionOperation implements Operation {
     }
 
     for (SubSpecConfig<?> subSpec : subSpecs) {
-      devent.setField(subSpec.getKey(), getValue(ievent, devent, subSpec));
+      Object value = getValue(ievent, devent, subSpec);
+
+      if (subSpec instanceof RegexSubSpecConfig) {
+        ((Map<String, Object>) value).forEach((k, v) -> {
+          devent.setField(k, v);
+        });
+      } else {
+        devent.setField(subSpec.getKey(), value);
+      }
     }
 
     return ievent;
