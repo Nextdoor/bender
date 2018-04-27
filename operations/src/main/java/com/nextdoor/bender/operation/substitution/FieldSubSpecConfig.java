@@ -45,7 +45,7 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
       + "making this a move operation.")
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
-  private Boolean removeSourceField;
+  private Boolean removeSourceField = false;
 
   public void setSourceFields(List<String> sourceField) {
     this.sourceField = sourceField;
