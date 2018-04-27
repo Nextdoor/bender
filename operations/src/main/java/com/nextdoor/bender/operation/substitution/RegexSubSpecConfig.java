@@ -110,7 +110,7 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
   @JsonSchemaDescription("Removes the source field after applying this substitution.")
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
-  private Boolean removeSourceField;
+  private Boolean removeSourceField = false;
 
   @JsonIgnore
   private Pattern regex;
