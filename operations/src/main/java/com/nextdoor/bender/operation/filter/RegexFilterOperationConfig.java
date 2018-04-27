@@ -20,10 +20,19 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
-@JsonTypeName("FilterOperation")
-@JsonSchemaDescription("Provided an event, it will remove the event from the stream "
-    + "depending on whether or not it contains a specified field matching a specified regex.")
-public class FilterOperationConfig extends OperationConfig {
+@JsonTypeName("RegexFilterOperation")
+@JsonSchemaDescription("This operation is used to remove certain events from the stream before "
+    + "continuing on to the destination. Each event is assessed by applying a JsonPath to its "
+    + "payload and matching the value against a regex Pattern. If exclude is true, events that "
+    + "match this criteria will be filtered out. If exclude is false, any events not matching this "
+    + "criteria will be filtered out. For example, say these two events are in the stream: "
+    + "{\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"bar\\\"} and "
+    + "{\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"baz\\\"}. With config  values: "
+    + "regex = \\\"(bar)\\\", path = \\\"$.type\\\", and exclude = true, after filtering, the "
+    + "stream will only hold {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"baz\\\"}. If instead, "
+    + "exclude = false, the stream would only hold "
+    + "{\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"bar\\\"} after filtering.")
+public class RegexFilterOperationConfig extends OperationConfig {
 
   @JsonSchemaDescription("Regex to be matched against JSON objects. See "
       + "https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html")
@@ -37,9 +46,8 @@ public class FilterOperationConfig extends OperationConfig {
 
   @JsonSchemaDescription("If true, matches will be filtered out. If false, non-matches will be "
       + "filtered out.")
-  @JsonProperty(required = false)
-  @JsonSchemaDefault(value = "false")
-  private Boolean match = false;
+  @JsonSchemaDefault(value = "true")
+  private Boolean exclude = true;
 
   public String getRegex() {
     return regex;
@@ -57,16 +65,16 @@ public class FilterOperationConfig extends OperationConfig {
     this.path = path;
   }
 
-  public Boolean getMatch() {
-    return match;
+  public Boolean getExclude() {
+    return this.exclude;
   }
 
-  public void setMatch(Boolean match) {
-    this.match = match;
+  public void setExclude(Boolean exclude) {
+    this.exclude = exclude;
   }
 
   @Override
-  public Class<FilterOperationFactory> getFactoryClass() {
-    return FilterOperationFactory.class;
+  public Class<RegexFilterOperationFactory> getFactoryClass() {
+    return RegexFilterOperationFactory.class;
   }
 }

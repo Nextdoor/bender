@@ -17,8 +17,10 @@ package com.nextdoor.bender.deserializer.json;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -137,5 +139,37 @@ public class GenericJsonEventTest {
     assertEquals(1, payload.size());
     assertEquals(null, obj);
     assertEquals("b", payload.get("a").getAsString());
+  }
+
+  public void testGetInvalidPath() {
+    GenericJsonEvent event = getEmptyEvent();
+    String invalidPath = "[$.";
+    event.setField("$.foo", new HashMap<String, Object>());
+    event.setField("$.foo.bar", "baz");
+    String expectedErrorMessage = "Field cannot be found because " + invalidPath
+        + " is an invalid path";
+
+    try {
+      event.getField(invalidPath);
+      fail();
+    } catch(NoSuchElementException e) {
+      assertEquals(e.getMessage(), expectedErrorMessage);
+    }
+  }
+
+  @Test
+  public void testGetMissingField() {
+    GenericJsonEvent event = getEmptyEvent();
+    String missingField = "$.cookie";
+    event.setField("$.foo", new HashMap<String, Object>());
+    event.setField("$.foo.bar", "baz");
+    String expectedErrorMessage = missingField + " is not in payload.";
+
+    try {
+      event.getField(missingField);
+      fail();
+    } catch(NoSuchElementException e) {
+      assertEquals(e.getMessage(), expectedErrorMessage);
+    }
   }
 }

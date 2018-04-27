@@ -17,9 +17,7 @@ package com.nextdoor.bender.operation.filter;
 
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
-import com.jayway.jsonpath.InvalidPathException;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.Operation;
@@ -32,19 +30,19 @@ import com.nextdoor.bender.operation.OperationException;
  * Each event is assessed by applying the path {@link com.jayway.jsonpath.JsonPath} to its payload
  * {@link com.google.gson.JsonObject} and matching the value against a regex {@link Pattern}.
  *
- * The match {@link Boolean} is used to determine which events to filter out.
- * If match is true, events with matching values are filtered out.
- * If match is false, events without matching values are filtered out.
+ * The exclude {@link Boolean} is used to determine which events to filter out.
+ * If exclude is true, events with matching values are filtered out.
+ * If exclude is false, events without matching values are filtered out.
  */
-public class FilterOperation implements Operation {
-  private final String regex;
+public class RegexFilterOperation implements Operation {
+  private final Pattern pattern;
   private final String path;
-  private final Boolean match;
+  private final Boolean exclude;
 
-  public FilterOperation(String regex, String path, Boolean match) {
-    this.regex = regex;
+  public RegexFilterOperation(Pattern pattern, String path, Boolean exclude) {
+    this.pattern = pattern;
     this.path = path;
-    this.match = match;
+    this.exclude = exclude;
   }
 
   /**
@@ -56,16 +54,12 @@ public class FilterOperation implements Operation {
     boolean found;
     try {
       String field = devent.getFieldAsString(path);
-      found = (field != null) && Pattern.matches(regex, field);
-    } catch (InvalidPathException e) {
-      throw new OperationException("Invalid JsonPath");
-    } catch (PatternSyntaxException e) {
-      throw new OperationException("Invalid regex");
+      found = this.pattern.matcher(field).matches();
     } catch (NoSuchElementException e) {
       found = false;
     }
 
-    return match == found;
+    return exclude == found;
   }
 
   @Override

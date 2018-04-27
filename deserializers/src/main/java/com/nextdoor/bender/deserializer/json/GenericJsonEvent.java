@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.DocumentContext;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 
@@ -54,11 +55,16 @@ public class GenericJsonEvent implements DeserializedEvent {
     }
 
     JsonObject json = this.payload.getAsJsonObject();
-    Object obj = JsonPathProvider.read(json, field);
+    Object obj;
+    try {
+      obj = JsonPathProvider.read(json, field);
+    } catch(InvalidPathException e) {
+      throw new NoSuchElementException("Field cannot be found because " + field
+          + " is an invalid path");
+    }
 
     if (obj == null) {
-      // TODO: this should really throw NoSuchElementException
-      return null;
+      throw new NoSuchElementException(field + " is not in payload.");
     }
 
     if (obj instanceof JsonPrimitive) {

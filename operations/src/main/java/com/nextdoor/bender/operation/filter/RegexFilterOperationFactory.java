@@ -15,30 +15,34 @@
 
 package com.nextdoor.bender.operation.filter;
 
+import java.util.regex.Pattern;
+
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationFactory;
 
 /**
- * Create a {@link FilterOperation}.
+ * Create a {@link RegexFilterOperation}.
  */
-public class FilterOperationFactory implements OperationFactory {
+public class RegexFilterOperationFactory implements OperationFactory {
 
-  private FilterOperationConfig config;
+  private RegexFilterOperationConfig config;
+  private Pattern pattern;
 
   @Override
   public Operation newInstance() {
-    return new FilterOperation(
-        this.config.getRegex(), this.config.getPath(), this.config.getMatch());
+    return new RegexFilterOperation(
+        this.pattern, this.config.getPath(), this.config.getExclude());
   }
 
   @Override
   public Class getChildClass() {
-    return FilterOperation.class;
+    return RegexFilterOperation.class;
   }
 
   @Override
   public void setConf(AbstractConfig config) {
-    this.config = (FilterOperationConfig) config;
+    this.config = (RegexFilterOperationConfig) config;
+    this.pattern = Pattern.compile(this.config.getRegex());
   }
 }

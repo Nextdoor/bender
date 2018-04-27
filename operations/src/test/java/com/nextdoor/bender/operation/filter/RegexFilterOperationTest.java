@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ import com.nextdoor.bender.deserializer.json.GenericJsonEvent;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operations.json.OperationTest;
 
-public class FilterOperationTest extends OperationTest {
+public class RegexFilterOperationTest extends OperationTest {
 
   @Test
   public void testFilterMatches() throws IOException {
@@ -43,15 +44,15 @@ public class FilterOperationTest extends OperationTest {
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
 
-    String regexMatch = "(val)";
-    String regexFail = "(fail)";
     String path = "$.simple_object.key";
+    Pattern patternMatch = Pattern.compile("(val)");
+    Pattern patternFail = Pattern.compile("(fail)");
     Boolean match = true;
 
     assertNotNull(devent.getFieldAsString(path));
 
-    FilterOperation opMatch = new FilterOperation(regexMatch, path, match);
-    FilterOperation opFail = new FilterOperation(regexFail, path, match);
+    RegexFilterOperation opMatch = new RegexFilterOperation(patternMatch, path, match);
+    RegexFilterOperation opFail = new RegexFilterOperation(patternFail, path, match);
 
     assertTrue(opMatch.filterEvent(ievent.getEventObj()));
     assertNull(opMatch.perform(ievent));
@@ -68,15 +69,15 @@ public class FilterOperationTest extends OperationTest {
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
 
-    String regexMatch = "(val)";
-    String regexFail = "(fail)";
     String path = "$.simple_object.key";
+    Pattern patternMatch = Pattern.compile("(val)");
+    Pattern patternFail = Pattern.compile("(fail)");
     Boolean match = false;
 
     assertNotNull(devent.getFieldAsString(path));
 
-    FilterOperation opMatch = new FilterOperation(regexMatch, path, match);
-    FilterOperation opFail = new FilterOperation(regexFail, path, match);
+    RegexFilterOperation opMatch = new RegexFilterOperation(patternMatch, path, match);
+    RegexFilterOperation opFail = new RegexFilterOperation(patternFail, path, match);
 
     assertFalse(opMatch.filterEvent(ievent.getEventObj()));
     assertNotNull(opMatch.perform(ievent));
@@ -86,7 +87,7 @@ public class FilterOperationTest extends OperationTest {
   }
 
   @Test
-  public void testInvalidRegex() throws IOException {
+  public void testFieldDoesNotExist() throws IOException {
     JsonParser parser = new JsonParser();
     JsonElement input = parser.parse(getResourceString("filter_input.json"));
     GenericJsonEvent devent = new GenericJsonEvent(input.getAsJsonObject());
@@ -94,18 +95,33 @@ public class FilterOperationTest extends OperationTest {
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
 
-    String regex = "(val";
-    String path = "$.simple_object.key";
+    String path = "$.cookie";
+    Pattern pattern = Pattern.compile("(val)");
     Boolean match = false;
-    String expectedErrorMessage = "Invalid regex";
 
-    assertNotNull(devent.getFieldAsString(path));
+    RegexFilterOperation op = new RegexFilterOperation(pattern, path, match);
+    boolean filter = op.filterEvent(ievent.getEventObj());
+    InternalEvent result = op.perform(ievent);
 
-    FilterOperation op = new FilterOperation(regex, path, match);
+    assertTrue(filter);
+    assertNull(result);
+  }
+
+  @Test
+  public void testNullDeserializedEvent() {
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(null);
+
+    String path = "$.simple_object.key";
+    Pattern pattern = Pattern.compile("(val)");
+    Boolean match = false;
+    String expectedErrorMessage = "Deserialized object is null";
+
+    RegexFilterOperation op = new RegexFilterOperation(pattern, path, match);
     try {
-      op.filterEvent(ievent.getEventObj());
+      op.perform(ievent);
       fail();
-    } catch (OperationException e) {
+    } catch(OperationException e) {
       assertEquals(e.getMessage(), expectedErrorMessage);
     }
   }
@@ -119,58 +135,15 @@ public class FilterOperationTest extends OperationTest {
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);
 
-    String regex = "(val)";
+    Pattern pattern = Pattern.compile("(val)");
     String path = "[]";
     Boolean match = false;
-    String expectedErrorMessage = "Invalid JsonPath";
 
-    FilterOperation op = new FilterOperation(regex, path, match);
-    try {
-      op.filterEvent(ievent.getEventObj());
-      fail();
-    } catch (OperationException e) {
-      assertEquals(expectedErrorMessage, e.getMessage());
-    }
-  }
-
-  @Test
-  public void testFieldDoesNotExist() throws IOException {
-    JsonParser parser = new JsonParser();
-    JsonElement input = parser.parse(getResourceString("filter_input.json"));
-    GenericJsonEvent devent = new GenericJsonEvent(input.getAsJsonObject());
-
-    InternalEvent ievent = new InternalEvent("", null, 0);
-    ievent.setEventObj(devent);
-
-    String regex = "(val)";
-    String path = "$.cookie";
-    Boolean match = false;
-
-    FilterOperation op = new FilterOperation(regex, path, match);
+    RegexFilterOperation op = new RegexFilterOperation(pattern, path, match);
     boolean filter = op.filterEvent(ievent.getEventObj());
     InternalEvent result = op.perform(ievent);
 
-    assertNull(devent.getFieldAsString(path));
     assertTrue(filter);
     assertNull(result);
-  }
-
-  @Test
-  public void testNullDeserializedEvent() {
-    InternalEvent ievent = new InternalEvent("", null, 0);
-    ievent.setEventObj(null);
-
-    String regex = "(val)";
-    String path = "$.simple_object.key";
-    Boolean match = false;
-    String expectedErrorMessage = "Deserialized object is null";
-
-    FilterOperation op = new FilterOperation(regex, path, match);
-    try {
-      op.perform(ievent);
-      fail();
-    } catch(OperationException e) {
-      assertEquals(e.getMessage(), expectedErrorMessage);
-    }
   }
 }
