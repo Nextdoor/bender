@@ -54,6 +54,26 @@ public class InternalEvent {
     this.metadata.put("eventSha1Hash", this.getEventSha1Hash());
   }
 
+  private InternalEvent(InternalEvent other) {
+    this.eventString = new String(other.getEventString());
+    this.context = other.context;
+    this.eventSha1Hash = other.getEventSha1Hash();
+    this.arrivalTime = other.getArrivalTime();
+    this.eventTime = other.getEventTime();
+    this.metadata.putAll(other.metadata);
+    this.serialized = other.getSerialized();
+
+    if (other.getPartitions() == null) {
+      this.partitions = null;
+    } else {
+      this.partitions = new LinkedHashMap<String, String>(other.getPartitions());
+    }
+
+    if (other.getEventObj() != null) {
+      this.eventObj = other.getEventObj().copy();
+    }
+  }
+
   /**
    * @return Metadata about the InternalEvent. This is typically information that comes from the
    *         Lambda Event that invoked the function.
@@ -148,5 +168,9 @@ public class InternalEvent {
     this.eventTime = eventTime;
     this.addMetadata("eventEpochMs", new Long(eventTime));
     this.addMetadata("sourceLagMs", new Long(System.currentTimeMillis() - this.getEventTime()));
+  }
+
+  public InternalEvent copy() {
+    return new InternalEvent(this);
   }
 }

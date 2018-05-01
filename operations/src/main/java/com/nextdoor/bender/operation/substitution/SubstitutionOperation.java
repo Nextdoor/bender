@@ -62,6 +62,7 @@ public class SubstitutionOperation implements Operation {
     return new ImmutablePair<String, Object>(foundSourceFieldName, sourceValue);
   }
 
+
   /**
    * Matches a regex against a field and extracts matching groups.
    * 
@@ -383,7 +384,7 @@ public class SubstitutionOperation implements Operation {
     }
 
     return ievent;
-  }
+}
 
   public List<SubSpecConfig<?>> getSubSpecs() {
     return this.subSpecs;

@@ -17,6 +17,6 @@ package com.nextdoor.bender.operation;
 
 import com.nextdoor.bender.InternalEvent;
 
-public interface Operation extends BaseOperation {
+public interface Operation extends EventOperation {
   InternalEvent perform(InternalEvent ievent);
 }

@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.testutils;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.config.AbstractConfig;
@@ -22,47 +24,49 @@ import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.operation.OperationFactory;
 
-public class DummyOperationHelper {
-  public static class DummyNullOperation implements Operation {
-    @Override
-    public InternalEvent perform(InternalEvent event) {
-      return null;
-    }
-  }
+public class DummyThrottleOperationHelper {
+  public static class DummyThrottleOperation implements Operation {
 
-  public static class DummyOperation implements Operation {
+    public AtomicInteger counter = new AtomicInteger(0);
+
     @Override
     public InternalEvent perform(InternalEvent event) {
+      if (this.counter.getAndIncrement() % 100 == 0) {
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
+      }
       return event;
     }
   }
 
-  @JsonTypeName("DummyOperationHelper$DummyOperationConfig")
-  public static class DummyOperationConfig extends OperationConfig {
+  @JsonTypeName("DummyThrottleOperationHelper$DummyThrottleOperationConfig")
+  public static class DummyThrottleOperationConfig extends OperationConfig {
 
     @Override
-    public Class<DummyOperationFactory> getFactoryClass() {
-      return DummyOperationFactory.class;
+    public Class<DummyThrottleOperationFactory> getFactoryClass() {
+      return DummyThrottleOperationFactory.class;
     }
   }
 
-  public static class DummyOperationFactory implements OperationFactory {
+  public static class DummyThrottleOperationFactory implements OperationFactory {
     public Operation op;
 
-    public DummyOperationFactory() {}
+    public DummyThrottleOperationFactory() {}
 
-    public DummyOperationFactory(Operation op) {
+    public DummyThrottleOperationFactory(Operation op) {
       this.op = op;
     }
 
     @Override
     public Operation newInstance() {
-      return this.op == null ? new DummyOperation() : this.op;
+      return this.op == null ? new DummyThrottleOperation() : this.op;
     }
 
     @Override
-    public Class<DummyOperation> getChildClass() {
-      return DummyOperation.class;
+    public Class<DummyThrottleOperation> getChildClass() {
+      return DummyThrottleOperation.class;
     }
 
     @Override

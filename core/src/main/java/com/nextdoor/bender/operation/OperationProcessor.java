@@ -37,14 +37,14 @@ public class OperationProcessor extends MonitoredProcess {
    * this method itself does not evaluate records and is only called once per function invocation to
    * setup the stream pipeline.
    * 
-   * @param stream
+   * @param input
    * @return new stream with operation map/flatmap added
    */
-  public Stream<InternalEvent> perform(Stream<InternalEvent> stream) {
+  public Stream<InternalEvent> perform(Stream<InternalEvent> input) {
     Stream<InternalEvent> output = null;
 
     if (this.op instanceof Operation) {
-      output = stream.map(ievent -> {
+      output = input.map(ievent -> {
         this.getRuntimeStat().start();
         try {
           InternalEvent i = ((Operation) op).perform(ievent);
@@ -63,7 +63,7 @@ public class OperationProcessor extends MonitoredProcess {
        * MultiplexOperations require the use of flatmap which allows a single stream item to produce
        * multiple results.
        */
-      output = stream.flatMap(ievent -> {
+      output = input.flatMap(ievent -> {
         this.getRuntimeStat().start();
         try {
           Stream<InternalEvent> s = ((MultiplexOperation) op).perform(ievent).stream();
@@ -77,6 +77,9 @@ public class OperationProcessor extends MonitoredProcess {
           this.getRuntimeStat().stop();
         }
       });
+    } else if (this.op instanceof StreamOperation) {
+      StreamOperation forkOp = (StreamOperation) this.op;
+      output = forkOp.getOutputStream(input);
     } else {
       throw new OperationException("Invalid type of operation");
     }
@@ -107,7 +110,7 @@ public class OperationProcessor extends MonitoredProcess {
     return this.op;
   }
 
-  public void setOperation(BaseOperation operation) {
+  public void setOperation(EventOperation operation) {
     this.op = operation;
   }
 }
