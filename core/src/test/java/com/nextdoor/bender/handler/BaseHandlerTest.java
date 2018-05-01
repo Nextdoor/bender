@@ -79,7 +79,7 @@ public class BaseHandlerTest {
 
     @Override
     public boolean hasNext() {
-      return events.hasNext();
+      return this.events.hasNext();
     }
 
     @Override
