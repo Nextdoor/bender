@@ -31,6 +31,7 @@ import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
+import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyStringEvent;
 import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperationFactory;
@@ -102,7 +103,7 @@ public class PartitionOperationTest {
     assertEquals(expected, actual);
   }
 
-  @Test
+  @Test(expected = OperationException.class)
   public void testGetEvaluatedPartitionsStringMultipleFieldsNull() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("one", "two");
@@ -115,16 +116,15 @@ public class PartitionOperationTest {
     ievent.setEventObj(devent);
     doThrow(FieldNotFoundException.class).doThrow(FieldNotFoundException.class).when(devent).getFieldAsString(any());
 
-    op.perform(ievent);
-
-    LinkedHashMap<String, String> actual = ievent.getPartitions();
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", null);
-
-    assertEquals(expected, actual);
+    try {
+      op.perform(ievent);
+    } catch (OperationException e) {
+      assertEquals("unable to find value for partition foo", e.getMessage());
+      throw e;
+    }
   }
 
-  @Test
+  @Test(expected = OperationException.class)
   public void testGetEvaluatedPartitionsFieldNotFoundException() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("one");
@@ -138,13 +138,12 @@ public class PartitionOperationTest {
 
     doThrow(FieldNotFoundException.class).when(devent).getFieldAsString(any());
 
-    op.perform(ievent);
-
-    LinkedHashMap<String, String> actual = ievent.getPartitions();
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", null);
-
-    assertEquals(expected, actual);
+    try {
+      op.perform(ievent);
+    } catch (OperationException e) {
+      assertEquals("unable to find value for partition foo", e.getMessage());
+      throw e;
+    }
   }
 
   @Test

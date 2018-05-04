@@ -22,6 +22,7 @@ import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationException;
 
 public class PartitionOperation implements Operation {
   private final List<PartitionSpec> partitionSpecs;
@@ -58,7 +59,11 @@ public class PartitionOperation implements Operation {
         }
       }
 
-      partitions.put(spec.getName(), spec.interpret(key));
+      if (key != null) {
+        partitions.put(spec.getName(), spec.interpret(key));
+      } else {
+        throw new OperationException("unable to find value for partition " + spec.getName());
+      }
     }
 
     return partitions;

@@ -60,7 +60,8 @@ public class TimeOperation implements Operation {
     try {
       field = ievent.getEventObj().getFieldAsString(timeField);
     } catch (FieldNotFoundException e) {
-      throw new OperationException("time field " + timeField + " does not exist in " + ievent.getEventString()); 
+      throw new OperationException(
+          "time field " + timeField + " does not exist in " + ievent.getEventString());
     }
 
     ievent.setEventTime(getTimestamp(field, timeFieldType));
