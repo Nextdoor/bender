@@ -20,18 +20,47 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>bender</artifactId>
     <groupId>com.nextdoor.bender</groupId>
+    <artifactId>bender</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>Bender Shaded</name>
-  <artifactId>bender-shaded</artifactId>
+  <name>Bender Lambda</name>
+  <artifactId>bender-lambda</artifactId>
   <packaging>jar</packaging>
 
+  <profiles>
+    <profile>
+      <id>apex</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <finalName>apex</finalName>
+      </build>
+    </profile>
+  </profiles>
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <includeDependencySources>true</includeDependencySources>
+              <dependencySourceIncludes>
+                <dependencySourceInclude>com.nextdoor.bender:*</dependencySourceInclude>
+              </dependencySourceIncludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -59,7 +88,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <classpathPrefix>lib</classpathPrefix>
+              <classpathPrefix>lib/</classpathPrefix>
             </manifest>
             <manifestEntries>
               <Class-Path>lib/</Class-Path>
@@ -67,38 +96,36 @@
           </archive>
         </configuration>
       </plugin>
-    </plugins>
 
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${maven-shade-plugin.version}</version>
+        <configuration>
+          <createSourcesJar>true</createSourcesJar>
+          <artifactSet>
+            <includes>
+              <include>com.nextdoor.bender:*</include>
+            </includes>
+          </artifactSet>
+
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>bender-common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.zeroturnaround</groupId>
-      <artifactId>zt-exec</artifactId>
-      <version>${zt-exec.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.zeroturnaround</groupId>
-      <artifactId>zt-process-killer</artifactId>
-      <version>${zt-process-killer.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>bender-shaded-s3proxy</artifactId>
+      <artifactId>bender-packaging</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

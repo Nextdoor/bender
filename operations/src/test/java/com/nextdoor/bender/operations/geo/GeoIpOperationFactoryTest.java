@@ -24,9 +24,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -43,9 +41,6 @@ public class GeoIpOperationFactoryTest {
   private GeoIpOperationFactory opFactory;
   private static final String BUCKET = "mybucket";
 
-  @Rule
-  public TemporaryFolder tmpFolder = new TemporaryFolder();
-
   @Before
   public void setup() {
     /*
@@ -53,7 +48,7 @@ public class GeoIpOperationFactoryTest {
      */
     S3MockClientFactory f;
     try {
-      f = new S3MockClientFactory(tmpFolder);
+      f = new S3MockClientFactory();
     } catch (Exception e) {
       throw new RuntimeException("unable to start s3proxy", e);
     }

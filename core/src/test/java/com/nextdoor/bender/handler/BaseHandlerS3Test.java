@@ -29,7 +29,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
-import org.junit.rules.TemporaryFolder;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.nextdoor.bender.aws.S3MockClientFactory;
@@ -43,9 +42,6 @@ public class BaseHandlerS3Test {
   private S3MockClientFactory clientFactory;
 
   @Rule
-  public TemporaryFolder tmpFolder = new TemporaryFolder();
-
-  @Rule
   public final EnvironmentVariables envVars = new EnvironmentVariables();
 
   @Before
@@ -55,7 +51,7 @@ public class BaseHandlerS3Test {
      */
     S3MockClientFactory f;
     try {
-      f = new S3MockClientFactory(tmpFolder);
+      f = new S3MockClientFactory();
     } catch (Exception e) {
       throw new RuntimeException("unable to start s3proxy", e);
     }

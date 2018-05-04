@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
 
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent.SNSRecord;
@@ -45,9 +43,6 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
   public String getConfigFile() {
     return "/com/nextdoor/bender/handler/config_unittest.yaml";
   }
-
-  @Rule
-  public TemporaryFolder tmpFolder = new TemporaryFolder();
 
   @Override
   public Handler<SNSEvent> getHandler() {
@@ -108,7 +103,7 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
      */
     S3MockClientFactory f;
     try {
-      f = new S3MockClientFactory(tmpFolder);
+      f = new S3MockClientFactory();
     } catch (Exception e) {
       throw new RuntimeException("unable to start s3proxy", e);
     }

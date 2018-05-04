@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.event.S3EventNotification;
@@ -49,9 +47,6 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
   public String getConfigFile() {
     return "/com/nextdoor/bender/handler/config_unittest.json";
   }
-
-  @Rule
-  public TemporaryFolder tmpFolder = new TemporaryFolder();
 
   @Override
   public Handler<S3EventNotification> getHandler() {
@@ -128,7 +123,7 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
      */
     S3MockClientFactory f;
     try {
-      f = new S3MockClientFactory(tmpFolder);
+      f = new S3MockClientFactory();
     } catch (Exception e) {
       throw new RuntimeException("unable to start s3proxy", e);
     }

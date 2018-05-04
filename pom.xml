@@ -72,10 +72,12 @@
     <module>wrappers</module>
     <module>serializers</module>
     <module>itests</module>
-    <module>packaging</module>
-    <module>cli</module>
     <module>common</module>
     <module>shaded</module>
+    <module>shaded-s3proxy</module>
+    <module>lambda</module>
+    <module>packaging</module>
+    <module>cli</module>
   </modules>
 
   <properties>
@@ -124,6 +126,8 @@
     <s3proxy.version>1.5.3</s3proxy.version>
     <system-rules.version>1.16.0</system-rules.version>
     <stringtemplate.version>4.0.8</stringtemplate.version>
+    <zt-exec.version>1.10</zt-exec.version>
+    <zt-process-killer.version>1.8</zt-process-killer.version>
   </properties>
 
   <build>
