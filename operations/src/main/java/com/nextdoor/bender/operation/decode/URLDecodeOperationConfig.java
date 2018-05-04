@@ -28,7 +28,7 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("UrlDecodeOperation")
-@JsonSchemaDescription("Performs a url decode on the specified fields.")
+@JsonSchemaDescription("Performs a URL decode on the specified fields.")
 public class URLDecodeOperationConfig extends OperationConfig {
 
   @JsonSchemaDescription("fields")
@@ -36,7 +36,7 @@ public class URLDecodeOperationConfig extends OperationConfig {
   @JsonProperty(required = true)
   private List<String> fields = Collections.emptyList();
 
-  @JsonSchemaDescription("Number of times to perform url decode on field. This is helpful "
+  @JsonSchemaDescription("Number of times to perform URL decode on field. This is helpful "
       + "if a field is encoded multiple times.")
   @JsonProperty(required = false)
   @JsonSchemaDefault(value = "1")
