@@ -15,11 +15,11 @@
 
 package com.nextdoor.bender.operation.filter;
 
-import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationException;
 
@@ -55,7 +55,7 @@ public class RegexFilterOperation implements Operation {
     try {
       String field = devent.getFieldAsString(path);
       found = this.pattern.matcher(field).matches();
-    } catch (NoSuchElementException e) {
+    } catch (FieldNotFoundException e) {
       found = false;
     }
 

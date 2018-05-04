@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyStringEvent;
 import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperationFactory;
@@ -38,7 +38,7 @@ import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperationFactory;
 public class PartitionOperationTest {
 
   @Test
-  public void testGetEvaluatedPartitionsString() {
+  public void testGetEvaluatedPartitionsString() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("foo");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
@@ -81,7 +81,7 @@ public class PartitionOperationTest {
   }
 
   @Test
-  public void testGetEvaluatedPartitionsStringMultipleFields() {
+  public void testGetEvaluatedPartitionsStringMultipleFields() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("one", "two");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
@@ -91,7 +91,7 @@ public class PartitionOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyStringEvent devent = spy(new DummyStringEvent(""));
     ievent.setEventObj(devent);
-    doReturn(null).doReturn("5").when(devent).getFieldAsString(any());
+    doThrow(FieldNotFoundException.class).doReturn("5").when(devent).getFieldAsString(any());
 
     op.perform(ievent);
 
@@ -103,7 +103,7 @@ public class PartitionOperationTest {
   }
 
   @Test
-  public void testGetEvaluatedPartitionsStringMultipleFieldsNull() {
+  public void testGetEvaluatedPartitionsStringMultipleFieldsNull() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("one", "two");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
@@ -113,7 +113,7 @@ public class PartitionOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyStringEvent devent = spy(new DummyStringEvent("baz"));
     ievent.setEventObj(devent);
-    doReturn(null).doReturn(null).when(devent).getFieldAsString(any());
+    doThrow(FieldNotFoundException.class).doThrow(FieldNotFoundException.class).when(devent).getFieldAsString(any());
 
     op.perform(ievent);
 
@@ -125,7 +125,7 @@ public class PartitionOperationTest {
   }
 
   @Test
-  public void testGetEvaluatedPartitionsNoSuchElementException() {
+  public void testGetEvaluatedPartitionsFieldNotFoundException() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("one");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
@@ -136,7 +136,7 @@ public class PartitionOperationTest {
     DummyStringEvent devent = spy(new DummyStringEvent("baz"));
     ievent.setEventObj(devent);
 
-    doThrow(new NoSuchElementException()).when(devent).getFieldAsString(any());
+    doThrow(FieldNotFoundException.class).when(devent).getFieldAsString(any());
 
     op.perform(ievent);
 
@@ -148,7 +148,7 @@ public class PartitionOperationTest {
   }
 
   @Test
-  public void testOperationThroughProcessor() {
+  public void testOperationThroughProcessor() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("foo");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);

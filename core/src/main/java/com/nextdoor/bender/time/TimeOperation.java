@@ -16,6 +16,7 @@
 package com.nextdoor.bender.time;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.time.TimeOperationConfig.TimeFieldType;
@@ -55,14 +56,11 @@ public class TimeOperation implements Operation {
 
   @Override
   public InternalEvent perform(InternalEvent ievent) {
-    String field = ievent.getEventObj().getFieldAsString(timeField);
-
-    /*
-     * Filter out events without a time field
-     */
-    if (field == null) {
-      throw new OperationException(
-          "time field " + timeField + " returned null from " + ievent.getEventString());
+    String field;
+    try {
+      field = ievent.getEventObj().getFieldAsString(timeField);
+    } catch (FieldNotFoundException e) {
+      throw new OperationException("time field " + timeField + " does not exist in " + ievent.getEventString()); 
     }
 
     ievent.setEventTime(getTimestamp(field, timeFieldType));

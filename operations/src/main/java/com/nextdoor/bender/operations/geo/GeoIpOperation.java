@@ -20,12 +20,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
-
+import org.apache.commons.lang3.NotImplementedException;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operations.geo.GeoIpOperationConfig.GeoProperty;
@@ -55,7 +55,7 @@ public class GeoIpOperation implements Operation {
      */
     try {
       ipStr = ievent.getEventObj().getFieldAsString(this.pathToIpAddress);
-    } catch (NoSuchElementException e) {
+    } catch (FieldNotFoundException e) {
       if (!this.required) {
         return ievent;
       }
@@ -193,7 +193,11 @@ public class GeoIpOperation implements Operation {
       }
     }
 
-    ievent.getEventObj().setField(this.destFieldName, geo);
+    try {
+      ievent.getEventObj().setField(this.destFieldName, geo);
+    } catch (FieldNotFoundException e) {
+      throw new OperationException(e);
+    }
 
     return ievent;
   }

@@ -19,14 +19,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.math.NumberUtils;
-
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.Operation;
 import com.nextdoor.bender.operation.substitution.RegexSubSpecConfig.RegexSubField;
 
@@ -57,11 +55,12 @@ public class SubstitutionOperation implements Operation {
         } else {
           sourceValue = devent.removeField(sourceField);
         }
+      } catch (FieldNotFoundException e) {
+        continue;
+      }
 
-        if (sourceValue != null) {
-          break;
-        }
-      } catch (NoSuchElementException e) {
+      if (sourceValue != null) {
+        break;
       }
     }
 
@@ -127,24 +126,21 @@ public class SubstitutionOperation implements Operation {
     Matcher matcher = null;
 
     for (String sourceField : config.getSourceFields()) {
+      String sourceValue;
       try {
-        String sourceValue = devent.getFieldAsString(sourceField);
+        sourceValue = devent.getFieldAsString(sourceField);
+      } catch (FieldNotFoundException e) {
+        continue;
+      }
 
-        if (sourceValue == null) {
-          continue;
-        }
+      matcher = pattern.matcher(sourceValue);
 
-        matcher = pattern.matcher(sourceValue);
-
-        if (matcher.find()) {
-          /*
-           * Keep track of the field name that we use so it can be removed later.
-           */
-          foundSourceField = sourceField;
-          break;
-        }
-
-      } catch (NoSuchElementException e) {
+      if (matcher.find()) {
+        /*
+         * Keep track of the field name that we use so it can be removed later.
+         */
+        foundSourceField = sourceField;
+        break;
       }
     }
 
@@ -188,7 +184,10 @@ public class SubstitutionOperation implements Operation {
      * Remove source field
      */
     if (config.getRemoveSourceField()) {
-      devent.removeField(foundSourceField);
+      try {
+        devent.removeField(foundSourceField);
+      } catch (FieldNotFoundException e) {
+      }
     }
 
     return matchedGroups;
@@ -249,10 +248,17 @@ public class SubstitutionOperation implements Operation {
 
       if (subSpec instanceof RegexSubSpecConfig) {
         ((Map<String, Object>) value).forEach((k, v) -> {
-          devent.setField(k, v);
+          try {
+            devent.setField(k, v);
+          } catch (FieldNotFoundException e) {
+          }
         });
       } else {
-        devent.setField(subSpec.getKey(), value);
+        try {
+          devent.setField(subSpec.getKey(), value);
+        } catch (FieldNotFoundException e) {
+          continue;
+        }
       }
     }
 

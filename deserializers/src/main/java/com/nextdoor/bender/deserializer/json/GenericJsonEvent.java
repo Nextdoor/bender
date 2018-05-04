@@ -15,20 +15,19 @@
 
 package com.nextdoor.bender.deserializer.json;
 
-import java.util.NoSuchElementException;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.DocumentContext;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 
 /**
  * Basic wrapper around an arbitrary JSON object.
  */
 public class GenericJsonEvent implements DeserializedEvent {
-  private JsonElement payload;
+  private JsonObject payload;
 
   public GenericJsonEvent(JsonObject payload) {
     this.payload = payload;
@@ -49,9 +48,9 @@ public class GenericJsonEvent implements DeserializedEvent {
   }
 
   @Override
-  public Object getField(String field) {
+  public Object getField(String field) throws FieldNotFoundException {
     if (this.payload == null) {
-      throw new NoSuchElementException(field + " is not in payload because payload is null");
+      throw new FieldNotFoundException(field + " is not in payload because payload is null");
     }
 
     JsonObject json = this.payload.getAsJsonObject();
@@ -59,12 +58,12 @@ public class GenericJsonEvent implements DeserializedEvent {
     try {
       obj = JsonPathProvider.read(json, field);
     } catch(InvalidPathException e) {
-      throw new NoSuchElementException("Field cannot be found because " + field
+      throw new FieldNotFoundException("Field cannot be found because " + field
           + " is an invalid path");
     }
 
     if (obj == null) {
-      throw new NoSuchElementException(field + " is not in payload.");
+      throw new FieldNotFoundException(field + " is not in payload.");
     }
 
     if (obj instanceof JsonPrimitive) {
@@ -78,13 +77,13 @@ public class GenericJsonEvent implements DeserializedEvent {
 
   @Override
   public void setPayload(Object object) {
-    this.payload = (JsonElement) object;
+    this.payload = (JsonObject) object;
   }
 
   @Override
-  public void setField(String fieldName, Object value) throws IllegalArgumentException {
+  public void setField(String fieldName, Object value) throws FieldNotFoundException {
     if (this.payload == null) {
-      throw new IllegalArgumentException("payload is null");
+      throw new FieldNotFoundException("payload is null");
     }
 
     if (!fieldName.startsWith("$.")) {
@@ -99,7 +98,7 @@ public class GenericJsonEvent implements DeserializedEvent {
   }
 
   @Override
-  public String getFieldAsString(String fieldName) throws NoSuchElementException {
+  public String getFieldAsString(String fieldName) throws FieldNotFoundException {
     Object obj = getField(fieldName);
 
     if (obj == null) {
@@ -118,11 +117,9 @@ public class GenericJsonEvent implements DeserializedEvent {
   }
 
   @Override
-  public Object removeField(String fieldName) throws IllegalArgumentException {
+  public Object removeField(String fieldName) throws FieldNotFoundException {
     if (this.payload == null) {
-      // TODO: this should really throw NoSuchElementException
-      // throw new NoSuchElementException(fieldName + " is not in payload because payload is null");
-      return null;
+      throw new FieldNotFoundException(fieldName + " is not in payload because payload is null");
     }
 
     JsonObject json = this.payload.getAsJsonObject();

@@ -17,10 +17,10 @@ package com.nextdoor.bender.partition;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.Operation;
 
 public class PartitionOperation implements Operation {
@@ -53,7 +53,7 @@ public class PartitionOperation implements Operation {
           if (key != null) {
             break;
           }
-        } catch (NoSuchElementException e) {
+        } catch (FieldNotFoundException e) {
           continue;
         }
       }
