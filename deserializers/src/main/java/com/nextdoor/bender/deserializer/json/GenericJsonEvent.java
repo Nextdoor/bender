@@ -102,8 +102,10 @@ public class GenericJsonEvent implements DeserializedEvent {
 
     if (obj instanceof String) {
       return (String) obj;
+    } else if (obj instanceof JsonPrimitive) {
+      return ((JsonPrimitive) obj).getAsString();
     } else if (obj instanceof JsonElement) {
-      return ((JsonElement) obj).getAsString();
+      return obj.toString();
     }
 
     return obj.toString();

@@ -38,6 +38,33 @@ public class GenericJsonEventTest {
   }
 
   @Test
+  public void testGetAsStringFromString() {
+    GenericJsonEvent event = getEmptyEvent();
+    event.setField("$.foo", "bar");
+    event.setField("$.meaningoflife", 42);
+    assertEquals("bar", event.getFieldAsString("$.foo"));
+    assertEquals("42", event.getFieldAsString("$.meaningoflife"));
+  }
+
+  @Test
+  public void testGetAsStringFromArray() {
+    GenericJsonEvent event = getEmptyEvent();
+    JsonParser parser = new JsonParser();
+    JsonElement elm = parser.parse("[\"foo\", \"bar\"]");
+    event.setField("$.foo", elm.getAsJsonArray());
+    assertEquals("[\"foo\",\"bar\"]", event.getFieldAsString("$.foo"));
+  }
+
+  @Test
+  public void testGetAsStringFromObj() {
+    GenericJsonEvent event = getEmptyEvent();
+    JsonParser parser = new JsonParser();
+    JsonElement elm = parser.parse("{\"key\": [\"foo\", \"bar\"]}");
+    event.setField("$.foo", elm.getAsJsonObject());
+    assertEquals("{\"key\":[\"foo\",\"bar\"]}", event.getFieldAsString("$.foo"));
+  }
+
+  @Test
   public void testSetField() {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.foo", "bar");
