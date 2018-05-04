@@ -15,7 +15,6 @@
 
 package com.nextdoor.bender.deserializer.json;
 
-import com.google.gson.JsonArray;
 import java.util.NoSuchElementException;
 
 import com.google.gson.JsonElement;
@@ -103,6 +102,8 @@ public class GenericJsonEvent implements DeserializedEvent {
 
     if (obj instanceof String) {
       return (String) obj;
+    } else if (obj instanceof JsonPrimitive) {
+      return ((JsonPrimitive) obj).getAsString();
     } else if (obj instanceof JsonElement) {
       return obj.toString();
     }

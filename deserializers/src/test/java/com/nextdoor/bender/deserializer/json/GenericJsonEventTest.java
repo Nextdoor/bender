@@ -41,7 +41,9 @@ public class GenericJsonEventTest {
   public void testGetAsStringFromString() {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.foo", "bar");
+    event.setField("$.meaningoflife", 42);
     assertEquals("bar", event.getFieldAsString("$.foo"));
+    assertEquals("42", event.getFieldAsString("$.meaningoflife"));
   }
 
   @Test
