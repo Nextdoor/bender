@@ -1596,19 +1596,21 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="5" class="box-5 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonArraySplitOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonDropArraysOperation</span>
+                <span boxid="6" class="box-6 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UrlDecodeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">TimeOperation</span>
+                <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonDropArraysOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GeoIpOperation</span>
+                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">TimeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FlattenOperation</span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GeoIpOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KeyNameReplacementOperation</span>
+                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FlattenOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GelfOperation</span>
+                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KeyNameReplacementOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="12" class="box-12 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+                <span boxid="12" class="box-12 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GelfOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="13" class="box-13 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -2822,6 +2824,129 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-6">
         <div class="box-title" ref="">
+            <div class="box-name ">UrlDecodeOperation</div>
+            <div class="box-description desc"><p>Performs a URL decode on the specified fields.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">UrlDecodeOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">UrlDecodeOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">fields</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>fields</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">times</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;65535]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">1</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of times to perform URL decode on field. This is helpful if a field is encoded multiple times.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Performs a URL decode on the specified fields.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "UrlDecodeOperation"
+      ],
+      "default": "UrlDecodeOperation"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "fields"
+    },
+    "times": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535,
+      "default": 1,
+      "description": "Number of times to perform URL decode on field. This is helpful if a field is encoded multiple times."
+    }
+  },
+  "title": "UrlDecodeOperation",
+  "required": [
+    "type",
+    "fields"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="7">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-7">
+        <div class="box-title" ref="">
             <div class="box-name ">JsonDropArraysOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will remove any keys which have array values. This is helpful for use with ElasticSearch which indexes arrays in a particular manner not conducive to exploration. See: <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/complex-core-fields.html">https://www.elastic.co/guide/en/elasticsearch/guide/current/complex-core-fields.html</a></p>
 </div>
@@ -2885,9 +3010,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="7">
+                <div class="box-container" boxid="8">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-7">
+    <div class="box-header box-8">
         <div class="box-title" ref="">
             <div class="box-name ">TimeOperation</div>
             <div class="box-description desc"><p>Sets the Event timestamp using the provided field in the deserialized object. When using JSON use JsonPath format to specify field. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
@@ -3005,9 +3130,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="8">
+                <div class="box-container" boxid="9">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-8">
+    <div class="box-header box-9">
         <div class="box-title" ref="">
             <div class="box-name ">GeoIpOperation</div>
             <div class="box-description desc"><p>Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example </p>
@@ -3217,9 +3342,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="9">
+                <div class="box-container" boxid="10">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-9">
+    <div class="box-header box-10">
         <div class="box-title" ref="">
             <div class="box-name ">FlattenOperation</div>
             <div class="box-description desc"><p>Provided a deeply nested JSON Object, it will flatten out the object into keys with a specific separator (dot by default). For example, if the input is {"foo": {"bar": {"baz": 1}}} the operation will produce {"foo.bar.baz": 1} as the new payload.</p>
@@ -3309,9 +3434,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="10">
+                <div class="box-container" boxid="11">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-10">
+    <div class="box-header box-11">
         <div class="box-title" ref="">
             <div class="box-name ">KeyNameReplacementOperation</div>
             <div class="box-description desc"><p>Uses a regex to find matching parts of a key name and replaces with value or drops the key/value if a match is found. This is typically used to sanitize key names.</p>
@@ -3449,9 +3574,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="11">
+                <div class="box-container" boxid="12">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-11">
+    <div class="box-header box-12">
         <div class="box-title" ref="">
             <div class="box-name ">GelfOperation</div>
             <div class="box-description desc"><p>Transforms JSON input into a GELF message format (See <a href="http://docs.graylog.org/en/2.4/pages/gelf.html">http://docs.graylog.org/en/2.4/pages/gelf.html</a> details). Note that when selecting source fields use the JsonPath notation <a href="https://github.com/json-path/JsonPath">https://github.com/json-path/JsonPath</a>.</p>
@@ -3742,9 +3867,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="12">
+                <div class="box-container" boxid="13">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-12">
+    <div class="box-header box-13">
         <div class="box-title" ref="">
             <div class="box-name ">JsonKeyNameOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo__str": "one", "bar__long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or __float. It also repalces "." with "_" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
@@ -3873,6 +3998,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/ArraySplitOperationConfig"
+        },
+        {
+          "$ref": "#/definitions/URLDecodeOperationConfig"
         },
         {
           "$ref": "#/definitions/DropArraysOperationConfig"
@@ -11069,6 +11197,9 @@ function sourceButton(element) {
               "$ref": "#/definitions/ArraySplitOperationConfig"
             },
             {
+              "$ref": "#/definitions/URLDecodeOperationConfig"
+            },
+            {
               "$ref": "#/definitions/DropArraysOperationConfig"
             },
             {
@@ -11517,6 +11648,39 @@ function sourceButton(element) {
       "title": "JsonArraySplitOperation",
       "required": [
         "type"
+      ]
+    },
+    "URLDecodeOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Performs a URL decode on the specified fields.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "UrlDecodeOperation"
+          ],
+          "default": "UrlDecodeOperation"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "fields"
+        },
+        "times": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 1,
+          "description": "Number of times to perform URL decode on field. This is helpful if a field is encoded multiple times."
+        }
+      },
+      "title": "UrlDecodeOperation",
+      "required": [
+        "type",
+        "fields"
       ]
     },
     "DropArraysOperationConfig": {
