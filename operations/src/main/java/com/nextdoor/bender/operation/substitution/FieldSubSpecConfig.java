@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 
 @JsonTypeName("FieldSubstitution")
@@ -28,9 +29,10 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
   public FieldSubSpecConfig() {}
 
-  public FieldSubSpecConfig(String key, List<String> sourceField) {
+  public FieldSubSpecConfig(String key, List<String> sourceField, boolean removeSourceField) {
     super(key);
     this.sourceField = sourceField;
+    this.removeSourceField = removeSourceField;
   }
 
   @JsonSchemaDescription("Source fields to pull value from. If multiple fields are provided the "
@@ -39,12 +41,26 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
   @JsonProperty(required = true)
   private List<String> sourceField;
 
+  @JsonSchemaDescription("Removes the source field when performing the substitution. Effectively "
+      + "making this a move operation.")
+  @JsonSchemaDefault(value = "false")
+  @JsonProperty(required = false)
+  private Boolean removeSourceField = false;
+
   public void setSourceFields(List<String> sourceField) {
     this.sourceField = sourceField;
   }
 
   public List<String> getSourceFields() {
     return this.sourceField;
+  }
+
+  public Boolean getRemoveSourceField() {
+    return this.removeSourceField;
+  }
+
+  public void setRemoveSourceField(Boolean removeSourceField) {
+    this.removeSourceField = removeSourceField;
   }
 
   @Override

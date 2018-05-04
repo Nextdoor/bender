@@ -45,7 +45,6 @@ public class GenericJsonEventTest {
 
     assertEquals("bar", payload.get("foo").getAsString());
     assertEquals("b", payload.get("a").getAsString());
-
   }
 
   @Test
@@ -84,5 +83,32 @@ public class GenericJsonEventTest {
     assertTrue(payload.get("foo") instanceof JsonObject);
     assertTrue(payload.get("foo").getAsJsonObject().get("bar") instanceof JsonPrimitive);
     assertEquals("baz", payload.get("foo").getAsJsonObject().get("bar").getAsString());
+  }
+
+  @Test
+  public void testRemoveField() {
+    GenericJsonEvent event = getEmptyEvent();
+    event.setField("$.foo", "bar");
+    event.setField("$.baz", "qux");
+    JsonObject payload = (JsonObject) event.getPayload();
+
+    event.removeField("$.foo");
+
+    assertEquals(2, payload.size());
+    assertEquals(null, payload.get("foo"));
+    assertEquals("qux", payload.get("baz").getAsString());
+    assertEquals("b", payload.get("a").getAsString());
+  }
+
+  @Test
+  public void testRemoveMissingField() {
+    GenericJsonEvent event = getEmptyEvent();
+    JsonObject payload = (JsonObject) event.getPayload();
+
+    Object obj = event.removeField("$.foo");
+
+    assertEquals(1, payload.size());
+    assertEquals(null, obj);
+    assertEquals("b", payload.get("a").getAsString());
   }
 }

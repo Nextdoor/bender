@@ -50,35 +50,35 @@ public class GelfOperationFactory implements OperationFactory {
     subSpecs.add(new StaticSubSpecConfig("version", "1.1"));
 
     if (this.config.getSrcHostField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("host", this.config.getSrcHostField()));
+      subSpecs.add(new FieldSubSpecConfig("host", this.config.getSrcHostField(), false));
     }
 
     if (this.config.getSrcShortMessageField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("short_message", this.config.getSrcShortMessageField()));
+      subSpecs.add(new FieldSubSpecConfig("short_message", this.config.getSrcShortMessageField(), false));
     }
 
     if (this.config.getSrcFullMessageField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("full_message", this.config.getSrcFullMessageField()));
+      subSpecs.add(new FieldSubSpecConfig("full_message", this.config.getSrcFullMessageField(), false));
     }
 
     if (this.config.getSrcTimestampField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("timestamp", this.config.getSrcTimestampField()));
+      subSpecs.add(new FieldSubSpecConfig("timestamp", this.config.getSrcTimestampField(), false));
     }
 
     if (this.config.getSrcLevelField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("level", this.config.getSrcLevelField()));
+      subSpecs.add(new FieldSubSpecConfig("level", this.config.getSrcLevelField(), false));
     }
 
     if (this.config.getSrcFacilityField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("facility", this.config.getSrcFacilityField()));
+      subSpecs.add(new FieldSubSpecConfig("facility", this.config.getSrcFacilityField(), false));
     }
 
     if (this.config.getSrcLineNumberField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("line", this.config.getSrcLineNumberField()));
+      subSpecs.add(new FieldSubSpecConfig("line", this.config.getSrcLineNumberField(), false));
     }
 
     if (this.config.getSrcFileField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("file", this.config.getSrcFileField()));
+      subSpecs.add(new FieldSubSpecConfig("file", this.config.getSrcFileField(), false));
     }
   }
 }

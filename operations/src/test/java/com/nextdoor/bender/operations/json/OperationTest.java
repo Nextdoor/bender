@@ -21,38 +21,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.IOUtils;
 
-import com.nextdoor.bender.deserializer.DeserializedEvent;
-
 public class OperationTest {
-  public class DummpyEvent implements DeserializedEvent {
-    public Object payload;
-
-    @Override
-    public Object getPayload() {
-      return payload;
-    }
-
-    @Override
-    public String getField(String fieldName) {
-      return null;
-    }
-
-    @Override
-    public void setPayload(Object object) {
-      this.payload = object;
-    }
-
-    @Override
-    public void setField(String fieldName, Object value) {
-
-    }
-
-    @Override
-    public String getFieldAsString(String fieldName) {
-      return null;
-    }
-  }
-
   protected String getResourceString(String resource)
       throws UnsupportedEncodingException, IOException {
     return IOUtils

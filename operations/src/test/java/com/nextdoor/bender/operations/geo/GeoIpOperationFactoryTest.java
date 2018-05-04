@@ -31,7 +31,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.aws.S3MockClientFactory;
 import com.nextdoor.bender.operations.geo.GeoIpOperationConfig.GeoProperty;
-import com.nextdoor.bender.operations.geo.GeoIpOperationTest.DummpyEvent;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyMapEvent;
 
 
 public class GeoIpOperationFactoryTest {
@@ -87,7 +87,7 @@ public class GeoIpOperationFactoryTest {
     GeoIpOperation op = this.opFactory.newInstance();
 
 
-    DummpyEvent devent = new DummpyEvent();
+    DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("ip_address", "5.5.5.5");
 
     InternalEvent ievent = new InternalEvent("", null, 0);

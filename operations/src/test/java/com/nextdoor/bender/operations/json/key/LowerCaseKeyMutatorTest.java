@@ -28,6 +28,7 @@ import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.json.key.LowerCaseKeyOperation;
 import com.nextdoor.bender.operations.json.OperationTest;
+import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyEvent;
 
 public class LowerCaseKeyMutatorTest extends OperationTest {
 

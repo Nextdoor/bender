@@ -64,4 +64,13 @@ public interface DeserializedEvent {
    */
   public void setField(String fieldName, Object value)
       throws NotImplementedException, IllegalArgumentException;
+
+  /**
+   * Sets a field in the deserialized object.
+   *
+   * @param fieldName name of the field to set.
+   * @return Value of the field
+   * @throws IllegalArgumentException if field does not exist.
+   */
+  public Object removeField(String fieldName) throws IllegalArgumentException;
 }
