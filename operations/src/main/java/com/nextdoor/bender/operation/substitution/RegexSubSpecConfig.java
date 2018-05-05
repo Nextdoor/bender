@@ -81,13 +81,13 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
     }
   }
 
-  public RegexSubSpecConfig(List<String> sourceField, String pattern, List<RegexSubField> fields,
-      boolean removeSourceField, boolean failSrcNotFound, boolean failDstNotFound) {
+  public RegexSubSpecConfig(List<String> srcField, String pattern, List<RegexSubField> fields,
+      boolean removeSrcField, boolean failSrcNotFound, boolean failDstNotFound) {
     super(null, failDstNotFound);
-    this.sourceField = sourceField;
+    this.srcField = srcField;
     setPattern(pattern);
     this.fields = fields;
-    this.removeSourceField = removeSourceField;
+    this.removeSrcField = removeSrcField;
     this.failSrcNotFound = failSrcNotFound;
   }
 
@@ -101,7 +101,7 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
   @JsonSchemaDescription("Source fields to pull value from and apply regex to. If multiple fields are provided the "
       + "first non-null valued one is used.")
   @JsonProperty(required = true)
-  private List<String> sourceField;
+  private List<String> srcField;
 
   @JsonSchemaDescription("List of fields to create from matching regex groups.")
   @JsonSchemaDefault(value = "{}")
@@ -111,7 +111,7 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
   @JsonSchemaDescription("Removes the source field after applying this substitution.")
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
-  private Boolean removeSourceField = false;
+  private Boolean removeSrcField = false;
 
   @JsonSchemaDescription("Fail if source fields do not match regex or are not found.")
   @JsonProperty(required = false)
@@ -136,12 +136,12 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
     return this.regex;
   }
 
-  public void setSourceFields(List<String> sourceField) {
-    this.sourceField = sourceField;
+  public void setSrcFields(List<String> srcField) {
+    this.srcField = srcField;
   }
 
-  public List<String> getSourceFields() {
-    return this.sourceField;
+  public List<String> getSrcFields() {
+    return this.srcField;
   }
 
   public List<RegexSubField> getFields() {
@@ -152,12 +152,12 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
     this.fields = fields;
   }
 
-  public Boolean getRemoveSourceField() {
-    return this.removeSourceField;
+  public Boolean getRemoveSrcField() {
+    return this.removeSrcField;
   }
 
-  public void setRemoveSourceField(Boolean removeSourceField) {
-    this.removeSourceField = removeSourceField;
+  public void setRemoveSrcField(Boolean removeSrcField) {
+    this.removeSrcField = removeSrcField;
   }
 
   public Boolean getFailSrcNotFound() {

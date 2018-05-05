@@ -2259,7 +2259,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">source_field</div>
+                <div class="property-name required">src_field</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
@@ -2408,7 +2408,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">remove_source_field</div>
+                <div class="property-name ">remove_src_field</div>
                 <div class="signature-type">
                                    <span class="signature-type-boolean">
                boolean
@@ -2448,7 +2448,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">source_fields</div>
+                <div class="property-name ">src_fields</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
@@ -2493,7 +2493,7 @@ function sourceButton(element) {
       "type": "string",
       "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
     },
-    "source_field": {
+    "src_field": {
       "type": "array",
       "items": {
         "type": "string"
@@ -2507,7 +2507,7 @@ function sourceButton(element) {
       },
       "description": "List of fields to create from matching regex groups."
     },
-    "remove_source_field": {
+    "remove_src_field": {
       "type": "boolean",
       "default": false,
       "description": "Removes the source field after applying this substitution."
@@ -2517,7 +2517,7 @@ function sourceButton(element) {
       "default": true,
       "description": "Fail if source fields do not match regex or are not found."
     },
-    "source_fields": {
+    "src_fields": {
       "type": "array",
       "items": {
         "type": "string"
@@ -2528,7 +2528,7 @@ function sourceButton(element) {
   "required": [
     "type",
     "pattern",
-    "source_field",
+    "src_field",
     "fields"
   ]
 }</pre>
@@ -3196,7 +3196,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">source_field</div>
+                <div class="property-name required">src_field</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
@@ -3345,7 +3345,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">remove_source_field</div>
+                <div class="property-name ">remove_src_field</div>
                 <div class="signature-type">
                                    <span class="signature-type-boolean">
                boolean
@@ -3385,7 +3385,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">source_fields</div>
+                <div class="property-name ">src_fields</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
@@ -3430,7 +3430,7 @@ function sourceButton(element) {
       "type": "string",
       "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
     },
-    "source_field": {
+    "src_field": {
       "type": "array",
       "items": {
         "type": "string"
@@ -3444,7 +3444,7 @@ function sourceButton(element) {
       },
       "description": "List of fields to create from matching regex groups."
     },
-    "remove_source_field": {
+    "remove_src_field": {
       "type": "boolean",
       "default": false,
       "description": "Removes the source field after applying this substitution."
@@ -3454,7 +3454,7 @@ function sourceButton(element) {
       "default": true,
       "description": "Fail if source fields do not match regex or are not found."
     },
-    "source_fields": {
+    "src_fields": {
       "type": "array",
       "items": {
         "type": "string"
@@ -3465,7 +3465,7 @@ function sourceButton(element) {
   "required": [
     "type",
     "pattern",
-    "source_field",
+    "src_field",
     "fields"
   ]
 }</pre>
@@ -3721,7 +3721,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">source_field</div>
+                <div class="property-name required">src_field</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
@@ -3742,7 +3742,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">remove_source_field</div>
+                <div class="property-name ">remove_src_field</div>
                 <div class="signature-type">
                                    <span class="signature-type-boolean">
                boolean
@@ -3782,7 +3782,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">source_fields</div>
+                <div class="property-name ">src_fields</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
@@ -3827,14 +3827,14 @@ function sourceButton(element) {
       "default": true,
       "description": "Fail if destination field does not exist. This can be the case if attempting to insert into a nested destination which was not yet created."
     },
-    "source_field": {
+    "src_field": {
       "type": "array",
       "items": {
         "type": "string"
       },
       "description": "Source fields to pull value from. If multiple fields are provided the first non-null valued one is used. Note that if no fields are found the value will be set to null."
     },
-    "remove_source_field": {
+    "remove_src_field": {
       "type": "boolean",
       "default": false,
       "description": "Removes the source field when performing the substitution. Effectively making this a move operation."
@@ -3844,7 +3844,7 @@ function sourceButton(element) {
       "default": true,
       "description": "Fail if source field is not found."
     },
-    "source_fields": {
+    "src_fields": {
       "type": "array",
       "items": {
         "type": "string"
@@ -3855,7 +3855,7 @@ function sourceButton(element) {
   "required": [
     "type",
     "key",
-    "source_field"
+    "src_field"
   ]
 }</pre>
     </div>
@@ -4006,7 +4006,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">source_field</div>
+                <div class="property-name required">src_field</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
@@ -4027,7 +4027,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">remove_source_field</div>
+                <div class="property-name ">remove_src_field</div>
                 <div class="signature-type">
                                    <span class="signature-type-boolean">
                boolean
@@ -4067,7 +4067,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">source_fields</div>
+                <div class="property-name ">src_fields</div>
                 <div class="signature-type">
                             <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
@@ -4112,14 +4112,14 @@ function sourceButton(element) {
       "default": true,
       "description": "Fail if destination field does not exist. This can be the case if attempting to insert into a nested destination which was not yet created."
     },
-    "source_field": {
+    "src_field": {
       "type": "array",
       "items": {
         "type": "string"
       },
       "description": "Source fields to pull value from. If multiple fields are provided the first non-null valued one is used. Note that if no fields are found the value will be set to null."
     },
-    "remove_source_field": {
+    "remove_src_field": {
       "type": "boolean",
       "default": false,
       "description": "Removes the source field when performing the substitution. Effectively making this a move operation."
@@ -4129,7 +4129,7 @@ function sourceButton(element) {
       "default": true,
       "description": "Fail if source field is not found."
     },
-    "source_fields": {
+    "src_fields": {
       "type": "array",
       "items": {
         "type": "string"
@@ -4140,7 +4140,7 @@ function sourceButton(element) {
   "required": [
     "type",
     "key",
-    "source_field"
+    "src_field"
   ]
 }</pre>
     </div>
@@ -13411,7 +13411,7 @@ function sourceButton(element) {
           "type": "string",
           "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
         },
-        "source_field": {
+        "src_field": {
           "type": "array",
           "items": {
             "type": "string"
@@ -13425,7 +13425,7 @@ function sourceButton(element) {
           },
           "description": "List of fields to create from matching regex groups."
         },
-        "remove_source_field": {
+        "remove_src_field": {
           "type": "boolean",
           "default": false,
           "description": "Removes the source field after applying this substitution."
@@ -13435,7 +13435,7 @@ function sourceButton(element) {
           "default": true,
           "description": "Fail if source fields do not match regex or are not found."
         },
-        "source_fields": {
+        "src_fields": {
           "type": "array",
           "items": {
             "type": "string"
@@ -13446,7 +13446,7 @@ function sourceButton(element) {
       "required": [
         "type",
         "pattern",
-        "source_field",
+        "src_field",
         "fields"
       ]
     },
@@ -13584,14 +13584,14 @@ function sourceButton(element) {
           "default": true,
           "description": "Fail if destination field does not exist. This can be the case if attempting to insert into a nested destination which was not yet created."
         },
-        "source_field": {
+        "src_field": {
           "type": "array",
           "items": {
             "type": "string"
           },
           "description": "Source fields to pull value from. If multiple fields are provided the first non-null valued one is used. Note that if no fields are found the value will be set to null."
         },
-        "remove_source_field": {
+        "remove_src_field": {
           "type": "boolean",
           "default": false,
           "description": "Removes the source field when performing the substitution. Effectively making this a move operation."
@@ -13601,7 +13601,7 @@ function sourceButton(element) {
           "default": true,
           "description": "Fail if source field is not found."
         },
-        "source_fields": {
+        "src_fields": {
           "type": "array",
           "items": {
             "type": "string"
@@ -13612,7 +13612,7 @@ function sourceButton(element) {
       "required": [
         "type",
         "key",
-        "source_field"
+        "src_field"
       ]
     },
     "PartitionOperationConfig": {

@@ -76,7 +76,7 @@ public class SubstitutionOperation implements Operation {
     Pattern pattern = config.getRegex();
     Matcher matcher = null;
 
-    for (String sourceField : config.getSourceFields()) {
+    for (String sourceField : config.getSrcFields()) {
       String sourceValue;
       try {
         sourceValue = devent.getFieldAsString(sourceField);
@@ -141,7 +141,7 @@ public class SubstitutionOperation implements Operation {
      */
     Pair<String, Object> kv;
     try {
-      kv = getFieldAndSource(devent, config.getSourceFields(), false);
+      kv = getFieldAndSource(devent, config.getSrcFields(), false);
     } catch (FieldNotFoundException e) {
       if (config.getFailSrcNotFound()) {
         throw new OperationException(e);
@@ -169,7 +169,7 @@ public class SubstitutionOperation implements Operation {
     /*
      * Only remove if source field does not equal destination.
      */
-    if (config.getRemoveSourceField() && !kv.getKey().equals(config.getKey())) {
+    if (config.getRemoveSrcField() && !kv.getKey().equals(config.getKey())) {
       try {
         devent.removeField(kv.getKey());
       } catch (FieldNotFoundException e) {
@@ -306,7 +306,7 @@ public class SubstitutionOperation implements Operation {
     /*
      * Do not remove source field if it has been replaced by a regex group.
      */
-    if (config.getRemoveSourceField() && !kv.getValue().containsKey(kv.getKey())) {
+    if (config.getRemoveSrcField() && !kv.getValue().containsKey(kv.getKey())) {
       try {
         devent.removeField(kv.getKey());
       } catch (FieldNotFoundException e) {
