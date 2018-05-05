@@ -17,7 +17,6 @@ package com.nextdoor.bender.operation.substitution;
 
 import java.util.Collections;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;

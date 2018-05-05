@@ -16,7 +16,6 @@
 package com.nextdoor.bender.operation.gelf;
 
 import java.util.ArrayList;
-
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.operation.OperationFactory;
 import com.nextdoor.bender.operation.substitution.FieldSubSpecConfig;
@@ -47,38 +46,46 @@ public class GelfOperationFactory implements OperationFactory {
     ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
     this.subSpecs = subSpecs;
 
-    subSpecs.add(new StaticSubSpecConfig("version", "1.1"));
+    subSpecs.add(new StaticSubSpecConfig("version", "1.1", true));
 
     if (this.config.getSrcHostField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("host", this.config.getSrcHostField(), false));
+      subSpecs
+          .add(new FieldSubSpecConfig("host", this.config.getSrcHostField(), false, true, true));
     }
 
     if (this.config.getSrcShortMessageField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("short_message", this.config.getSrcShortMessageField(), false));
+      subSpecs.add(new FieldSubSpecConfig("short_message", this.config.getSrcShortMessageField(),
+          false, true, true));
     }
 
     if (this.config.getSrcFullMessageField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("full_message", this.config.getSrcFullMessageField(), false));
+      subSpecs.add(new FieldSubSpecConfig("full_message", this.config.getSrcFullMessageField(),
+          false, false, true));
     }
 
     if (this.config.getSrcTimestampField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("timestamp", this.config.getSrcTimestampField(), false));
+      subSpecs.add(new FieldSubSpecConfig("timestamp", this.config.getSrcTimestampField(), false,
+          false, true));
     }
 
     if (this.config.getSrcLevelField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("level", this.config.getSrcLevelField(), false));
+      subSpecs
+          .add(new FieldSubSpecConfig("level", this.config.getSrcLevelField(), false, false, true));
     }
 
     if (this.config.getSrcFacilityField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("facility", this.config.getSrcFacilityField(), false));
+      subSpecs.add(new FieldSubSpecConfig("facility", this.config.getSrcFacilityField(), false,
+          false, true));
     }
 
     if (this.config.getSrcLineNumberField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("line", this.config.getSrcLineNumberField(), false));
+      subSpecs.add(
+          new FieldSubSpecConfig("line", this.config.getSrcLineNumberField(), false, false, true));
     }
 
     if (this.config.getSrcFileField() != null) {
-      subSpecs.add(new FieldSubSpecConfig("file", this.config.getSrcFileField(), false));
+      subSpecs
+          .add(new FieldSubSpecConfig("file", this.config.getSrcFileField(), false, false, true));
     }
   }
 }

@@ -29,10 +29,11 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
   public FieldSubSpecConfig() {}
 
-  public FieldSubSpecConfig(String key, List<String> sourceField, boolean removeSourceField) {
-    super(key);
+  public FieldSubSpecConfig(String key, List<String> sourceField, boolean removeSourceField, boolean failSrcNotFound, boolean failDstNotFound) {
+    super(key, failDstNotFound);
     this.sourceField = sourceField;
     this.removeSourceField = removeSourceField;
+    this.failSrcNotFound = failSrcNotFound;
   }
 
   @JsonSchemaDescription("Source fields to pull value from. If multiple fields are provided the "
@@ -46,6 +47,11 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
   private Boolean removeSourceField = false;
+
+  @JsonSchemaDescription("Fail if source field is not found.")
+  @JsonProperty(required = false)
+  @JsonSchemaDefault(value = "true")
+  private Boolean failSrcNotFound = true;
 
   public void setSourceFields(List<String> sourceField) {
     this.sourceField = sourceField;
@@ -61,6 +67,14 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
 
   public void setRemoveSourceField(Boolean removeSourceField) {
     this.removeSourceField = removeSourceField;
+  }
+
+  public Boolean getFailSrcNotFound() {
+    return this.failSrcNotFound;
+  }
+
+  public void setFailSrcNotFound(Boolean failSrcNotFound) {
+    this.failSrcNotFound = failSrcNotFound;
   }
 
   @Override

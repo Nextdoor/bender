@@ -29,8 +29,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 public class NestedSubSpecConfig extends SubSpecConfig<NestedSubSpecConfig> {
   public NestedSubSpecConfig() {}
 
-  public NestedSubSpecConfig(String key, List<SubSpecConfig<?>> substitutions) {
-    super(key);
+  public NestedSubSpecConfig(String key, List<SubSpecConfig<?>> substitutions, boolean failDstNotFound) {
+    super(key, failDstNotFound);
     this.substitutions = substitutions;
   }
 

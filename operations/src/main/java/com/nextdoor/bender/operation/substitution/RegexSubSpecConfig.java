@@ -18,7 +18,6 @@ package com.nextdoor.bender.operation.substitution;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -82,12 +81,14 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
     }
   }
 
-  public RegexSubSpecConfig(List<String> sourceField, String pattern, List<RegexSubField> fields, boolean removeSourceField) {
-    super(null);
+  public RegexSubSpecConfig(List<String> sourceField, String pattern, List<RegexSubField> fields,
+      boolean removeSourceField, boolean failSrcNotFound, boolean failDstNotFound) {
+    super(null, failDstNotFound);
     this.sourceField = sourceField;
     setPattern(pattern);
     this.fields = fields;
     this.removeSourceField = removeSourceField;
+    this.failSrcNotFound = failSrcNotFound;
   }
 
   @JsonIgnore
@@ -111,6 +112,11 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
   private Boolean removeSourceField = false;
+
+  @JsonSchemaDescription("Fail if source fields do not match regex or are not found.")
+  @JsonProperty(required = false)
+  @JsonSchemaDefault(value = "true")
+  private Boolean failSrcNotFound = true;
 
   @JsonIgnore
   private Pattern regex;
@@ -152,5 +158,13 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
 
   public void setRemoveSourceField(Boolean removeSourceField) {
     this.removeSourceField = removeSourceField;
+  }
+
+  public Boolean getFailSrcNotFound() {
+    return this.failSrcNotFound;
+  }
+
+  public void setFailSrcNotFound(Boolean failSrcNotFound) {
+    this.failSrcNotFound = failSrcNotFound;
   }
 }

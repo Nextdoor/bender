@@ -29,8 +29,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 public class MetadataSubSpecConfig extends SubSpecConfig<MetadataSubSpecConfig> {
   public MetadataSubSpecConfig() {}
   
-  public MetadataSubSpecConfig(String key, List<String> includes, List<String> excludes) {
-    super(key);
+  public MetadataSubSpecConfig(String key, List<String> includes, List<String> excludes, boolean failDstNotFound) {
+    super(key, failDstNotFound);
     this.includes = includes;
     this.excludes = excludes;
   }
