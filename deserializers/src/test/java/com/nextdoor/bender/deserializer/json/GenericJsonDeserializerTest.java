@@ -18,6 +18,7 @@ package com.nextdoor.bender.deserializer.json;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -231,23 +232,37 @@ public class GenericJsonDeserializerTest {
   @Test
   public void testGetMissingField() throws UnsupportedEncodingException, IOException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
+    String missingField = "$.not_a_member";
+    String expectedErrorMessage = missingField + " is not in payload.";
 
     GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
-    assertEquals(null, event.getField("$.not_a_member"));
+    try {
+      event.getField(missingField);
+      fail();
+    } catch(NoSuchElementException e) {
+      assertEquals(e.getMessage(), expectedErrorMessage);
+    }
   }
 
   @Test
   public void testGetMissingNestedField() throws UnsupportedEncodingException, IOException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
+    String missingNestedField = "$.an_obj.baz";
+    String expectedErrorMessage = missingNestedField + " is not in payload.";
 
     GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
-    assertEquals(null, event.getField("$.an_obj.baz"));
+    try {
+      event.getField(missingNestedField);
+      fail();
+    } catch(NoSuchElementException e) {
+      assertEquals(e.getMessage(), expectedErrorMessage);
+    }
   }
 
   @Test

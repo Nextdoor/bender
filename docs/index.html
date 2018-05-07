@@ -1602,15 +1602,17 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">TimeOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GeoIpOperation</span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">RegexFilterOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FlattenOperation</span>
+                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GeoIpOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KeyNameReplacementOperation</span>
+                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">FlattenOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="12" class="box-12 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GelfOperation</span>
+                <span boxid="12" class="box-12 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KeyNameReplacementOperation</span>
         <span class="type-keyword"></span>
-                <span boxid="13" class="box-13 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
+                <span boxid="13" class="box-13 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">GelfOperation</span>
+        <span class="type-keyword"></span>
+                <span boxid="14" class="box-14 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">JsonKeyNameOperation</span>
 
                 </div>
                 <div class="signature-description desc"><p>Operation configuration</p>
@@ -4503,6 +4505,144 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-9">
         <div class="box-title" ref="">
+            <div class="box-name ">RegexFilterOperation</div>
+            <div class="box-description desc"><p>This operation is used to remove certain events from the stream before continuing on to the destination. Each event is assessed by applying a JsonPath to its payload and matching the value against a regex Pattern. If exclude is true, events that match this criteria will be filtered out. If exclude is false, any events not matching this criteria will be filtered out. For example, say these two events are in the stream: {\"data\": \"one\", \"type\": \"bar\"} and {\"data\": \"one\", \"type\": \"baz\"}. With config  values: regex = \"(bar)\", path = \"$.type\", and exclude = true, after filtering, the stream will only hold {\"data\": \"one\", \"type\": \"baz\"}. If instead, exclude = false, the stream would only hold {\"data\": \"one\", \"type\": \"bar\"} after filtering.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">RegexFilterOperation</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">RegexFilterOperation</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">regex</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Regex to be matched against JSON objects. See <a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">path</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>JsonPath to the element to be matched against. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">exclude</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">true</span>
+
+                </div>
+                <div class="signature-description desc"><p>If true, matches will be filtered out. If false, non-matches will be filtered out.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "This operation is used to remove certain events from the stream before continuing on to the destination. Each event is assessed by applying a JsonPath to its payload and matching the value against a regex Pattern. If exclude is true, events that match this criteria will be filtered out. If exclude is false, any events not matching this criteria will be filtered out. For example, say these two events are in the stream: {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"bar\\\"} and {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"baz\\\"}. With config  values: regex = \\\"(bar)\\\", path = \\\"$.type\\\", and exclude = true, after filtering, the stream will only hold {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"baz\\\"}. If instead, exclude = false, the stream would only hold {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"bar\\\"} after filtering.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "RegexFilterOperation"
+      ],
+      "default": "RegexFilterOperation"
+    },
+    "regex": {
+      "type": "string",
+      "description": "Regex to be matched against JSON objects. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
+    },
+    "path": {
+      "type": "string",
+      "description": "JsonPath to the element to be matched against. See https://github.com/jayway/JsonPath"
+    },
+    "exclude": {
+      "type": "boolean",
+      "default": true,
+      "description": "If true, matches will be filtered out. If false, non-matches will be filtered out."
+    }
+  },
+  "title": "RegexFilterOperation",
+  "required": [
+    "type",
+    "regex",
+    "path"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="10">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-10">
+        <div class="box-title" ref="">
             <div class="box-name ">GeoIpOperation</div>
             <div class="box-description desc"><p>Looks up geo location provided an IP address and adds a map field to the payload that optionally contains country_name, country_iso_code, subdivision_name, subdivision_iso_code, city_name, postal_code, and location. For example </p>
 <p> input = {"ip": "8.8.8.8"} </p>
@@ -4711,9 +4851,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="10">
+                <div class="box-container" boxid="11">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-10">
+    <div class="box-header box-11">
         <div class="box-title" ref="">
             <div class="box-name ">FlattenOperation</div>
             <div class="box-description desc"><p>Provided a deeply nested JSON Object, it will flatten out the object into keys with a specific separator (dot by default). For example, if the input is {"foo": {"bar": {"baz": 1}}} the operation will produce {"foo.bar.baz": 1} as the new payload.</p>
@@ -4803,9 +4943,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="11">
+                <div class="box-container" boxid="12">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-11">
+    <div class="box-header box-12">
         <div class="box-title" ref="">
             <div class="box-name ">KeyNameReplacementOperation</div>
             <div class="box-description desc"><p>Uses a regex to find matching parts of a key name and replaces with value or drops the key/value if a match is found. This is typically used to sanitize key names.</p>
@@ -4943,9 +5083,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="12">
+                <div class="box-container" boxid="13">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-12">
+    <div class="box-header box-13">
         <div class="box-title" ref="">
             <div class="box-name ">GelfOperation</div>
             <div class="box-description desc"><p>Transforms JSON input into a GELF message format (See <a href="http://docs.graylog.org/en/2.4/pages/gelf.html">http://docs.graylog.org/en/2.4/pages/gelf.html</a> details). Note that when selecting source fields use the JsonPath notation <a href="https://github.com/json-path/JsonPath">https://github.com/json-path/JsonPath</a>.</p>
@@ -5236,9 +5376,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="13">
+                <div class="box-container" boxid="14">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-13">
+    <div class="box-header box-14">
         <div class="box-title" ref="">
             <div class="box-name ">JsonKeyNameOperation</div>
             <div class="box-description desc"><p>Provided a JSON object it will recursively append the primitive type of the value to the key name. For example {"foo": "one", "bar": 2} will become {"foo__str": "one", "bar__long": 2}. The mapping is string:<strong>str, boolean:</strong>boolean, array:<strong>arr, number:</strong>long or __float. It also repalces "." with "_" in key names. This operation is particularily useful for modifying JSON which will be written to ElasticSearch which does not allow conflicting value types for keys or "." in key names.</p>
@@ -5376,6 +5516,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/TimeOperationConfig"
+        },
+        {
+          "$ref": "#/definitions/RegexFilterOperationConfig"
         },
         {
           "$ref": "#/definitions/GeoIpOperationConfig"
@@ -12575,6 +12718,9 @@ function sourceButton(element) {
               "$ref": "#/definitions/TimeOperationConfig"
             },
             {
+              "$ref": "#/definitions/RegexFilterOperationConfig"
+            },
+            {
               "$ref": "#/definitions/GeoIpOperationConfig"
             },
             {
@@ -13231,6 +13377,39 @@ function sourceButton(element) {
         "type",
         "time_field",
         "time_field_type"
+      ]
+    },
+    "RegexFilterOperationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "This operation is used to remove certain events from the stream before continuing on to the destination. Each event is assessed by applying a JsonPath to its payload and matching the value against a regex Pattern. If exclude is true, events that match this criteria will be filtered out. If exclude is false, any events not matching this criteria will be filtered out. For example, say these two events are in the stream: {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"bar\\\"} and {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"baz\\\"}. With config  values: regex = \\\"(bar)\\\", path = \\\"$.type\\\", and exclude = true, after filtering, the stream will only hold {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"baz\\\"}. If instead, exclude = false, the stream would only hold {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"bar\\\"} after filtering.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "RegexFilterOperation"
+          ],
+          "default": "RegexFilterOperation"
+        },
+        "regex": {
+          "type": "string",
+          "description": "Regex to be matched against JSON objects. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
+        },
+        "path": {
+          "type": "string",
+          "description": "JsonPath to the element to be matched against. See https://github.com/jayway/JsonPath"
+        },
+        "exclude": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, matches will be filtered out. If false, non-matches will be filtered out."
+        }
+      },
+      "title": "RegexFilterOperation",
+      "required": [
+        "type",
+        "regex",
+        "path"
       ]
     },
     "GeoIpOperationConfig": {
