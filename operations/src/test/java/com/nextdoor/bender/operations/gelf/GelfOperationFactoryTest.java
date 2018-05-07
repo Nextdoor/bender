@@ -46,7 +46,7 @@ public class GelfOperationFactoryTest {
 
     ArrayList<SubSpecConfig<?>> expected = new ArrayList<SubSpecConfig<?>>();
     expected.add(new FieldSubSpecConfig("host", Arrays.asList("foo_host"), false, true, true));
-    expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename"), false, true, true));
+    expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename"), false, false, false));
     expected.add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message", "bar"),
         false, true, true));
     expected.add(new StaticSubSpecConfig("version", "1.1", true));

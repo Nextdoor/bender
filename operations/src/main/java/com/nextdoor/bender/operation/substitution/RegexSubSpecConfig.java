@@ -81,10 +81,10 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
     }
   }
 
-  public RegexSubSpecConfig(List<String> srcField, String pattern, List<RegexSubField> fields,
+  public RegexSubSpecConfig(List<String> srcFields, String pattern, List<RegexSubField> fields,
       boolean removeSrcField, boolean failSrcNotFound, boolean failDstNotFound) {
     super(null, failDstNotFound);
-    this.srcField = srcField;
+    this.srcFields = srcFields;
     setPattern(pattern);
     this.fields = fields;
     this.removeSrcField = removeSrcField;
@@ -101,7 +101,7 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
   @JsonSchemaDescription("Source fields to pull value from and apply regex to. If multiple fields are provided the "
       + "first non-null valued one is used.")
   @JsonProperty(required = true)
-  private List<String> srcField;
+  private List<String> srcFields;
 
   @JsonSchemaDescription("List of fields to create from matching regex groups.")
   @JsonSchemaDefault(value = "{}")
@@ -136,12 +136,12 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
     return this.regex;
   }
 
-  public void setSrcFields(List<String> srcField) {
-    this.srcField = srcField;
+  public void setSrcFields(List<String> srcFields) {
+    this.srcFields = srcFields;
   }
 
   public List<String> getSrcFields() {
-    return this.srcField;
+    return this.srcFields;
   }
 
   public List<RegexSubField> getFields() {
