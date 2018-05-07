@@ -21,11 +21,12 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyMapEvent;
 
 public class URLDecodeOperationTest {
   @Test
-  public void testDecodeOnce() {
+  public void testDecodeOnce() throws FieldNotFoundException {
     DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("foo", "%3Ffoo%3Dbar%26baz%3Dqux");
 
@@ -40,7 +41,7 @@ public class URLDecodeOperationTest {
   }
 
   @Test
-  public void testDecodeTwice() {
+  public void testDecodeTwice() throws FieldNotFoundException {
     DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("foo", "%253Ffoo%253Dbar%2526baz%253Dqux");
 
@@ -55,7 +56,7 @@ public class URLDecodeOperationTest {
   }
 
   @Test
-  public void testDecodeTwoThings() {
+  public void testDecodeTwoThings() throws FieldNotFoundException {
     DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("foo", "%3Ffoo%3Dbar%26baz%3Dqux");
     devent.setField("bar", "bar%3D%28abc%29");
@@ -72,7 +73,7 @@ public class URLDecodeOperationTest {
   }
 
   @Test
-  public void testDecodeTwoThingsEmpty() {
+  public void testDecodeTwoThingsEmpty() throws FieldNotFoundException {
     DummpyMapEvent devent = new DummpyMapEvent();
     devent.setField("foo", "%3Ffoo%3Dbar%26baz%3Dqux");
 

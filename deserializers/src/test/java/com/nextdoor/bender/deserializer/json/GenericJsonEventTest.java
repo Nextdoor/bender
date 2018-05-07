@@ -20,7 +20,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -28,6 +27,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 
 public class GenericJsonEventTest {
 
@@ -40,7 +40,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testGetAsStringFromString() {
+  public void testGetAsStringFromString() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.foo", "bar");
     event.setField("$.meaningoflife", 42);
@@ -49,7 +49,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testGetAsStringFromArray() {
+  public void testGetAsStringFromArray() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     JsonParser parser = new JsonParser();
     JsonElement elm = parser.parse("[\"foo\", \"bar\"]");
@@ -58,7 +58,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testGetAsStringFromObj() {
+  public void testGetAsStringFromObj() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     JsonParser parser = new JsonParser();
     JsonElement elm = parser.parse("{\"key\": [\"foo\", \"bar\"]}");
@@ -67,7 +67,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testSetField() {
+  public void testSetField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.foo", "bar");
     JsonObject payload = (JsonObject) event.getPayload();
@@ -77,7 +77,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testOverrideField() {
+  public void testOverrideField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.a", "bar");
 
@@ -86,7 +86,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testInvalidRootPath() {
+  public void testInvalidRootPath() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("foo", "bar");
 
@@ -94,7 +94,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testNestedMissingPath() {
+  public void testNestedMissingPath() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.foo.bar", "baz");
 
@@ -103,7 +103,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testNestedPath() {
+  public void testNestedPath() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.foo", new HashMap<String, Object>());
     event.setField("$.foo.bar", "baz");
@@ -115,7 +115,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testRemoveField() {
+  public void testRemoveField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.foo", "bar");
     event.setField("$.baz", "qux");
@@ -130,7 +130,7 @@ public class GenericJsonEventTest {
   }
 
   @Test
-  public void testRemoveMissingField() {
+  public void testRemoveMissingField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     JsonObject payload = (JsonObject) event.getPayload();
 
@@ -141,7 +141,7 @@ public class GenericJsonEventTest {
     assertEquals("b", payload.get("a").getAsString());
   }
 
-  public void testGetInvalidPath() {
+  public void testGetInvalidPath() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     String invalidPath = "[$.";
     event.setField("$.foo", new HashMap<String, Object>());
@@ -152,13 +152,13 @@ public class GenericJsonEventTest {
     try {
       event.getField(invalidPath);
       fail();
-    } catch(NoSuchElementException e) {
+    } catch(FieldNotFoundException e) {
       assertEquals(e.getMessage(), expectedErrorMessage);
     }
   }
 
   @Test
-  public void testGetMissingField() {
+  public void testGetMissingField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     String missingField = "$.cookie";
     event.setField("$.foo", new HashMap<String, Object>());
@@ -168,8 +168,8 @@ public class GenericJsonEventTest {
     try {
       event.getField(missingField);
       fail();
-    } catch(NoSuchElementException e) {
-      assertEquals(e.getMessage(), expectedErrorMessage);
+    } catch(FieldNotFoundException e) {
+      assertEquals(expectedErrorMessage, e.getMessage());
     }
   }
 }

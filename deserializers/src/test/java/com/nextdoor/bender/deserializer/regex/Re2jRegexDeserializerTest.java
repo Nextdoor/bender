@@ -26,12 +26,13 @@ import com.google.gson.JsonPrimitive;
 import com.google.re2j.Pattern;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.deserializer.regex.ReFieldConfig.ReFieldType;
 
 public class Re2jRegexDeserializerTest {
 
   @Test
-  public void testSingleMatch() {
+  public void testSingleMatch() throws FieldNotFoundException {
     List<ReFieldConfig> fields = new ArrayList<>();
     fields.add(new ReFieldConfig("foo", ReFieldType.STRING));
 
@@ -53,7 +54,7 @@ public class Re2jRegexDeserializerTest {
   }
 
   @Test
-  public void testTestAlbLog() {
+  public void testTestAlbLog() throws FieldNotFoundException {
     List<ReFieldConfig> fields = new ArrayList<>();
     fields.add(new ReFieldConfig("type", ReFieldType.STRING));
     fields.add(new ReFieldConfig("timestamp", ReFieldType.STRING));

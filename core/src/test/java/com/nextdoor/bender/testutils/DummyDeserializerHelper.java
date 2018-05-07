@@ -17,7 +17,6 @@ package com.nextdoor.bender.testutils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -27,6 +26,7 @@ import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 import com.nextdoor.bender.deserializer.DeserializerFactory;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 
 public class DummyDeserializerHelper {
   public static class DummpyMapEvent implements DeserializedEvent {
@@ -38,8 +38,14 @@ public class DummyDeserializerHelper {
     }
 
     @Override
-    public Object getField(String fieldName) {
-      return payload.get(fieldName);
+    public Object getField(String fieldName) throws FieldNotFoundException {
+      Object o = payload.get(fieldName);
+
+      if (o == null) {
+        throw new FieldNotFoundException();
+      }
+
+      return o;
     }
 
     @Override
@@ -53,18 +59,14 @@ public class DummyDeserializerHelper {
     }
 
     @Override
-    public String getFieldAsString(String fieldName) throws NoSuchElementException {
+    public String getFieldAsString(String fieldName) throws FieldNotFoundException {
       Object o = getField(fieldName);
-
-      if (o == null) {
-        return null;
-      }
 
       return payload.get(fieldName).toString();
     }
 
     @Override
-    public Object removeField(String fieldName) throws IllegalArgumentException {
+    public Object removeField(String fieldName) throws FieldNotFoundException {
       return payload.remove(fieldName);
     }
   }
@@ -98,8 +100,8 @@ public class DummyDeserializerHelper {
     }
 
     @Override
-    public Object removeField(String fieldName) throws IllegalArgumentException {
-      return null;
+    public Object removeField(String fieldName) throws FieldNotFoundException {
+      throw new FieldNotFoundException();
     }
   }
 
@@ -116,7 +118,7 @@ public class DummyDeserializerHelper {
     }
 
     @Override
-    public Object getField(String fieldName) throws NoSuchElementException {
+    public Object getField(String fieldName) throws FieldNotFoundException {
       return payload;
     }
 
@@ -131,13 +133,13 @@ public class DummyDeserializerHelper {
     }
 
     @Override
-    public String getFieldAsString(String fieldName) throws NoSuchElementException {
+    public String getFieldAsString(String fieldName) throws FieldNotFoundException {
       return (String) payload;
     }
 
     @Override
-    public Object removeField(String fieldName) throws IllegalArgumentException {
-      return null;
+    public Object removeField(String fieldName) throws FieldNotFoundException {
+      throw new FieldNotFoundException("field not found");
     }
   }
 

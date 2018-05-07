@@ -26,8 +26,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 public class StaticSubSpecConfig extends SubSpecConfig<StaticSubSpecConfig> {
   public StaticSubSpecConfig() {}
 
-  public StaticSubSpecConfig(String key, String value) {
-    super(key);
+  public StaticSubSpecConfig(String key, String value, boolean failDstNotFound) {
+    super(key, failDstNotFound);
     this.value = value;
   }
 

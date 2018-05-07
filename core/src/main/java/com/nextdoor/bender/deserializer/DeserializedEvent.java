@@ -15,8 +15,6 @@
 
 package com.nextdoor.bender.deserializer;
 
-import java.util.NoSuchElementException;
-
 import org.apache.commons.lang3.NotImplementedException;
 
 public interface DeserializedEvent {
@@ -39,9 +37,9 @@ public interface DeserializedEvent {
    *
    * @param fieldName field to lookup.
    * @return Value of the field.
-   * @throws NoSuchElementException when the field does not exist.
+   * @throws FieldNotFoundException when the field does not exist.
    */
-  public Object getField(String fieldName) throws NoSuchElementException;
+  public Object getField(String fieldName) throws FieldNotFoundException;
 
   /**
    * Retrieves a field from the deserialized object as a String. Note this may rely on
@@ -49,9 +47,9 @@ public interface DeserializedEvent {
    *
    * @param fieldName field to lookup.
    * @return String value of the field.
-   * @throws NoSuchElementException when the field does not exist.
+   * @throws FieldNotFoundException when the field does not exist.
    */
-  public String getFieldAsString(String fieldName) throws NoSuchElementException;
+  public String getFieldAsString(String fieldName) throws FieldNotFoundException;
 
   /**
    * Sets a field in the deserialized object.
@@ -59,18 +57,18 @@ public interface DeserializedEvent {
    * @param fieldName name of the field to set.
    * @param value of the field.
    * @throws NotImplementedException if the deserialized event does not support this action.
-   * @throws IllegalArgumentException if field was unable to be set. Most likely due to payload
+   * @throws FieldNotFoundException if field was unable to be set. Most likely due to payload
    *         being null.
    */
   public void setField(String fieldName, Object value)
-      throws NotImplementedException, IllegalArgumentException;
+      throws NotImplementedException, FieldNotFoundException;
 
   /**
    * Sets a field in the deserialized object.
    *
    * @param fieldName name of the field to set.
    * @return Value of the field
-   * @throws IllegalArgumentException if field does not exist.
+   * @throws FieldNotFoundException if field does not exist.
    */
-  public Object removeField(String fieldName) throws IllegalArgumentException;
+  public Object removeField(String fieldName) throws FieldNotFoundException;
 }

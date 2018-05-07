@@ -29,6 +29,7 @@ import org.junit.Test;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.deserializer.json.GenericJsonEvent;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operations.json.OperationTest;
@@ -36,7 +37,7 @@ import com.nextdoor.bender.operations.json.OperationTest;
 public class RegexFilterOperationTest extends OperationTest {
 
   @Test
-  public void testFilterMatches() throws IOException {
+  public void testFilterMatches() throws IOException, FieldNotFoundException {
     JsonParser parser = new JsonParser();
     JsonElement input = parser.parse(getResourceString("filter_input.json"));
     GenericJsonEvent devent = new GenericJsonEvent(input.getAsJsonObject());
@@ -61,7 +62,7 @@ public class RegexFilterOperationTest extends OperationTest {
   }
 
   @Test
-  public void testFilterNonMatches() throws IOException {
+  public void testFilterNonMatches() throws IOException, FieldNotFoundException {
     JsonParser parser = new JsonParser();
     JsonElement input = parser.parse(getResourceString("filter_input.json"));
     GenericJsonEvent devent = new GenericJsonEvent(input.getAsJsonObject());

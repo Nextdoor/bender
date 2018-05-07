@@ -16,15 +16,12 @@
 package com.nextdoor.bender.operations.gelf;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import org.junit.Test;
-
 import com.nextdoor.bender.operation.gelf.GelfOperation;
 import com.nextdoor.bender.operation.gelf.GelfOperationConfig;
 import com.nextdoor.bender.operation.gelf.GelfOperationFactory;
@@ -48,11 +45,11 @@ public class GelfOperationFactoryTest {
     List<SubSpecConfig<?>> actual = op.getSubSpecs();
 
     ArrayList<SubSpecConfig<?>> expected = new ArrayList<SubSpecConfig<?>>();
-    expected.add(new FieldSubSpecConfig("host", Arrays.asList("foo_host"), false));
-    expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename"), false));
-    expected
-        .add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message", "bar"), false));
-    expected.add(new StaticSubSpecConfig("version", "1.1"));
+    expected.add(new FieldSubSpecConfig("host", Arrays.asList("foo_host"), false, true, true));
+    expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename"), false, false, false));
+    expected.add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message", "bar"),
+        false, true, true));
+    expected.add(new StaticSubSpecConfig("version", "1.1", true));
 
     Collections.sort(expected, Comparator.comparingInt(Object::hashCode));
     Collections.sort(actual, Comparator.comparingInt(Object::hashCode));

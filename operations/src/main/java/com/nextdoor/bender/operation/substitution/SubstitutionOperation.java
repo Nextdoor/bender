@@ -15,19 +15,19 @@
 
 package com.nextdoor.bender.operation.substitution;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.math.NumberUtils;
-
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.substitution.RegexSubSpecConfig.RegexSubField;
 
 public class SubstitutionOperation implements Operation {
@@ -37,35 +37,163 @@ public class SubstitutionOperation implements Operation {
     this.subSpecs = subSpecs;
   }
 
-  /**
-   * Perform a field substitution from one field to another. By default this is a copy operation but
-   * turns into move if RemoveSourceField is specified.
-   * 
-   * @param devent
-   * @param config
-   */
-  private Object getField(DeserializedEvent devent, FieldSubSpecConfig config) {
+  public Pair<String, Object> getFieldAndSource(DeserializedEvent devent,
+      List<String> sourceFieldsNames, boolean asString) throws FieldNotFoundException {
     Object sourceValue = null;
-
-    /*
-     * Pick first non null source field value
-     */
-    for (String sourceField : config.getSourceFields()) {
+    String foundSourceFieldName = null;
+    for (String sourceFieldName : sourceFieldsNames) {
       try {
-        if (!config.getRemoveSourceField()) {
-          sourceValue = devent.getField(sourceField);
+        if (asString) {
+          sourceValue = devent.getFieldAsString(sourceFieldName);
         } else {
-          sourceValue = devent.removeField(sourceField);
+          sourceValue = devent.getField(sourceFieldName);
         }
-
-        if (sourceValue != null) {
-          break;
-        }
-      } catch (NoSuchElementException e) {
+        foundSourceFieldName = sourceFieldName;
+        break;
+      } catch (FieldNotFoundException e) {
+        continue;
       }
     }
 
-    return sourceValue;
+    if (sourceValue == null) {
+      throw new FieldNotFoundException();
+    }
+
+    return new ImmutablePair<String, Object>(foundSourceFieldName, sourceValue);
+  }
+
+  /**
+   * Matches a regex against a field and extracts matching groups.
+   * 
+   * @param devent
+   * @param config
+   * @return
+   * @throws FieldNotFoundException
+   */
+  private Pair<String, Map<String, Object>> getRegexMatches(DeserializedEvent devent,
+      RegexSubSpecConfig config) throws FieldNotFoundException {
+    String foundSourceField = null;
+    Pattern pattern = config.getRegex();
+    Matcher matcher = null;
+
+    for (String sourceField : config.getSrcFields()) {
+      String sourceValue;
+      try {
+        sourceValue = devent.getFieldAsString(sourceField);
+      } catch (FieldNotFoundException e) {
+        continue;
+      }
+
+      matcher = pattern.matcher(sourceValue);
+
+      if (matcher.find()) {
+        /*
+         * Keep track of the field name that we use so it can be removed later.
+         */
+        foundSourceField = sourceField;
+        break;
+      }
+    }
+
+    if (foundSourceField == null) {
+      throw new FieldNotFoundException();
+    }
+
+    /*
+     * Go through each match group in the field config and attempt to add that match group from the
+     * regex match. If field type coercion does not succeed then field is skipped.
+     */
+    Map<String, Object> matchedGroups = new HashMap<String, Object>(matcher.groupCount());
+    try {
+      for (RegexSubField field : config.getFields()) {
+        String matchStrVal = matcher.group(field.getRegexGroupName());
+
+        if (matchStrVal == null) {
+          continue;
+        }
+
+        switch (field.getType()) {
+          case BOOLEAN:
+            matchedGroups.put(field.getKey(), Boolean.parseBoolean(matchStrVal));
+            break;
+          case NUMBER:
+            matchedGroups.put(field.getKey(), NumberUtils.createNumber(matchStrVal));
+            break;
+          case STRING:
+            matchedGroups.put(field.getKey(), matchStrVal);
+            break;
+          default:
+            matchedGroups.put(field.getKey(), matchStrVal);
+            break;
+        }
+      }
+    } catch (NumberFormatException e) {
+      throw new FieldNotFoundException("matched field is not a number");
+    }
+
+    return new ImmutablePair<String, Map<String, Object>>(foundSourceField, matchedGroups);
+  }
+
+  private void doFieldSub(FieldSubSpecConfig config, DeserializedEvent devent,
+      Map<String, Object> nested) {
+    /*
+     * Get the field value
+     */
+    Pair<String, Object> kv;
+    try {
+      kv = getFieldAndSource(devent, config.getSrcFields(), false);
+    } catch (FieldNotFoundException e) {
+      if (config.getFailSrcNotFound()) {
+        throw new OperationException(e);
+      }
+      return;
+    }
+
+    /*
+     * Set field value in nest or in deserialized event
+     */
+    if (nested != null) {
+      nested.put(config.getKey(), kv.getValue());
+      return;
+    }
+
+    try {
+      devent.setField(config.getKey(), kv.getValue());
+    } catch (FieldNotFoundException e) {
+      if (config.getFailDstNotFound()) {
+        throw new OperationException(e);
+      }
+      return;
+    }
+
+    /*
+     * Only remove if source field does not equal destination.
+     */
+    if (config.getRemoveSrcField() && !kv.getKey().equals(config.getKey())) {
+      try {
+        devent.removeField(kv.getKey());
+      } catch (FieldNotFoundException e) {
+        if (config.getFailSrcNotFound()) {
+          throw new OperationException(e);
+        }
+      }
+    }
+  }
+
+  private void doStaticSub(StaticSubSpecConfig config, DeserializedEvent devent,
+      Map<String, Object> nested) {
+    if (nested != null) {
+      nested.put(config.getKey(), config.getValue());
+      return;
+    }
+
+    try {
+      devent.setField(config.getKey(), config.getValue());
+    } catch (FieldNotFoundException e) {
+      if (config.getFailDstNotFound()) {
+        throw new OperationException(e);
+      }
+    }
   }
 
   /**
@@ -74,7 +202,7 @@ public class SubstitutionOperation implements Operation {
    * @param ievent
    * @param config
    */
-  private Map<String, Object> getMetadata(InternalEvent ievent, MetadataSubSpecConfig config) {
+  private Map<String, Object> getMetadata(MetadataSubSpecConfig config, InternalEvent ievent) {
     List<String> includes = config.getIncludes();
     List<String> excludes = config.getExcludes();
     Map<String, Object> metadata = new HashMap<String, Object>(ievent.getEventMetadata());
@@ -90,13 +218,31 @@ public class SubstitutionOperation implements Operation {
     return metadata;
   }
 
+  private void doMetadataSub(MetadataSubSpecConfig config, InternalEvent ievent,
+      DeserializedEvent devent, Map<String, Object> nested) {
+
+    Map<String, Object> metadata = getMetadata(config, ievent);
+    if (nested != null) {
+      nested.put(config.getKey(), metadata);
+      return;
+    }
+
+    try {
+      devent.setField(config.getKey(), metadata);
+    } catch (FieldNotFoundException e) {
+      if (config.getFailDstNotFound()) {
+        throw new OperationException(e);
+      }
+    }
+  }
+
   /**
    * Performs a field substitution with the lambda invocation context as the source.
    * 
    * @param ievent
    * @param config
    */
-  private Map<String, String> getContext(InternalEvent ievent, ContextSubSpecConfig config) {
+  private Map<String, String> getContext(ContextSubSpecConfig config, InternalEvent ievent) {
     List<String> includes = config.getIncludes();
     List<String> excludes = config.getExcludes();
     Map<String, String> contexts = ievent.getCtx().getContextAsMap();
@@ -112,129 +258,96 @@ public class SubstitutionOperation implements Operation {
     return contexts;
   }
 
-  /**
-   * Matches a regex against a field and extracts matching groups.
-   * 
-   * @param ievent
-   * @param devent
-   * @param config
-   * @return
-   */
-  private Map<String, Object> getRegexMatches(InternalEvent ievent, DeserializedEvent devent,
-      RegexSubSpecConfig config) {
-    String foundSourceField = null;
-    Pattern pattern = config.getRegex();
-    Matcher matcher = null;
+  private void doContextSub(ContextSubSpecConfig config, InternalEvent ievent,
+      DeserializedEvent devent, Map<String, Object> nested) {
 
-    for (String sourceField : config.getSourceFields()) {
+    Map<String, String> context = getContext(config, ievent);
+    if (nested != null) {
+      nested.put(config.getKey(), context);
+      return;
+    }
+
+    try {
+      devent.setField(config.getKey(), context);
+    } catch (FieldNotFoundException e) {
+      if (config.getFailDstNotFound()) {
+        throw new OperationException(e);
+      }
+    }
+  }
+
+  private void doRegexSub(RegexSubSpecConfig config, DeserializedEvent devent,
+      Map<String, Object> nested) {
+    Pair<String, Map<String, Object>> kv;
+    try {
+      kv = getRegexMatches(devent, config);
+    } catch (FieldNotFoundException e) {
+      if (config.getFailSrcNotFound()) {
+        throw new OperationException(e);
+      }
+      return;
+    }
+
+    if (nested != null) {
+      nested.putAll(kv.getValue());
+      return;
+    }
+
+    ((Map<String, Object>) kv.getValue()).forEach((k, v) -> {
       try {
-        String sourceValue = devent.getFieldAsString(sourceField);
-
-        if (sourceValue == null) {
-          continue;
+        devent.setField(k, v);
+      } catch (FieldNotFoundException e) {
+        if (config.getFailDstNotFound()) {
+          throw new OperationException(e);
         }
-
-        matcher = pattern.matcher(sourceValue);
-
-        if (matcher.find()) {
-          /*
-           * Keep track of the field name that we use so it can be removed later.
-           */
-          foundSourceField = sourceField;
-          break;
-        }
-
-      } catch (NoSuchElementException e) {
       }
-    }
-
-    if (foundSourceField == null) {
-      return Collections.emptyMap();
-    }
+    });
 
     /*
-     * Go through each match group in the field config and attempt to add that match group from the
-     * regex match. If field type coercion does not succeed then field is skipped.
+     * Do not remove source field if it has been replaced by a regex group.
      */
-    Map<String, Object> matchedGroups = new HashMap<String, Object>(matcher.groupCount());
-    for (RegexSubField field : config.getFields()) {
-      String matchStrVal = matcher.group(field.getRegexGroupName());
-
-      if (matchStrVal == null) {
-        continue;
+    if (config.getRemoveSrcField() && !kv.getValue().containsKey(kv.getKey())) {
+      try {
+        devent.removeField(kv.getKey());
+      } catch (FieldNotFoundException e) {
+        if (config.getFailSrcNotFound()) {
+          throw new OperationException(e);
+        }
       }
+    }
+  }
 
-      switch (field.getType()) {
-        case BOOLEAN:
-          matchedGroups.put(field.getKey(), Boolean.parseBoolean(matchStrVal));
-          break;
-        case NUMBER:
-          try {
-            matchedGroups.put(field.getKey(), NumberUtils.createNumber(matchStrVal));
-          } catch (NumberFormatException e) {
-            continue;
+  private void doNestedSub(NestedSubSpecConfig config, InternalEvent ievent,
+      DeserializedEvent devent, Map<String, Object> nested) {
+    for (SubSpecConfig<?> subSpec : config.getSubstitutions()) {
+      if (subSpec instanceof FieldSubSpecConfig) {
+        doFieldSub((FieldSubSpecConfig) subSpec, devent, nested);
+      } else if (subSpec instanceof StaticSubSpecConfig) {
+        doStaticSub((StaticSubSpecConfig) subSpec, devent, nested);
+      } else if (subSpec instanceof MetadataSubSpecConfig) {
+        doMetadataSub((MetadataSubSpecConfig) subSpec, ievent, devent, nested);
+      } else if (subSpec instanceof ContextSubSpecConfig) {
+        doContextSub((ContextSubSpecConfig) subSpec, ievent, devent, nested);
+      } else if (subSpec instanceof RegexSubSpecConfig) {
+        doRegexSub((RegexSubSpecConfig) subSpec, devent, nested);
+      } else if (subSpec instanceof NestedSubSpecConfig) {
+        Map<String, Object> innerNest = new HashMap<String, Object>();
+        doNestedSub((NestedSubSpecConfig) subSpec, ievent, devent, innerNest);
+
+        if (nested != null) {
+          nested.put(subSpec.getKey(), innerNest);
+          return;
+        }
+
+        try {
+          devent.setField(subSpec.getKey(), innerNest);
+        } catch (FieldNotFoundException e) {
+          if (subSpec.getFailDstNotFound()) {
+            throw new OperationException(e);
           }
-          break;
-        case STRING:
-          matchedGroups.put(field.getKey(), matchStrVal);
-          break;
-        default:
-          matchedGroups.put(field.getKey(), matchStrVal);
-          break;
+        }
       }
     }
-
-    /*
-     * Remove source field
-     */
-    if (config.getRemoveSourceField()) {
-      devent.removeField(foundSourceField);
-    }
-
-    return matchedGroups;
-  }
-
-  /**
-   * Creates a Map object from other substitutions.
-   * 
-   * @param ievent
-   * @param devent
-   * @param subSpecs
-   * @return Map containing substitutions
-   */
-  private Map<String, Object> getNested(InternalEvent ievent, DeserializedEvent devent,
-      List<SubSpecConfig<?>> subSpecs) {
-    Map<String, Object> map = new HashMap<String, Object>(subSpecs.size());
-
-    for (SubSpecConfig<?> subSpec : subSpecs) {
-      if (subSpec instanceof RegexSubSpecConfig) {
-        map.putAll((Map<String, Object>) getValue(ievent, devent, subSpec));
-      } else {
-        map.put(subSpec.getKey(), getValue(ievent, devent, subSpec));
-      }
-    }
-
-    return map;
-  }
-
-  private Object getValue(InternalEvent ievent, DeserializedEvent devent,
-      SubSpecConfig<?> subSpec) {
-    Object value = null;
-    if (subSpec instanceof FieldSubSpecConfig) {
-      value = getField(devent, (FieldSubSpecConfig) subSpec);
-    } else if (subSpec instanceof StaticSubSpecConfig) {
-      value = ((StaticSubSpecConfig) subSpec).getValue();
-    } else if (subSpec instanceof MetadataSubSpecConfig) {
-      value = getMetadata(ievent, (MetadataSubSpecConfig) subSpec);
-    } else if (subSpec instanceof ContextSubSpecConfig) {
-      value = getContext(ievent, (ContextSubSpecConfig) subSpec);
-    } else if (subSpec instanceof NestedSubSpecConfig) {
-      value = getNested(ievent, devent, ((NestedSubSpecConfig) subSpec).getSubstitutions());
-    } else if (subSpec instanceof RegexSubSpecConfig) {
-      value = getRegexMatches(ievent, devent, (RegexSubSpecConfig) subSpec);
-    }
-
-    return value;
   }
 
   @Override
@@ -245,14 +358,27 @@ public class SubstitutionOperation implements Operation {
     }
 
     for (SubSpecConfig<?> subSpec : subSpecs) {
-      Object value = getValue(ievent, devent, subSpec);
+      if (subSpec instanceof FieldSubSpecConfig) {
+        doFieldSub((FieldSubSpecConfig) subSpec, devent, null);
+      } else if (subSpec instanceof StaticSubSpecConfig) {
+        doStaticSub((StaticSubSpecConfig) subSpec, devent, null);
+      } else if (subSpec instanceof MetadataSubSpecConfig) {
+        doMetadataSub((MetadataSubSpecConfig) subSpec, ievent, devent, null);
+      } else if (subSpec instanceof ContextSubSpecConfig) {
+        doContextSub((ContextSubSpecConfig) subSpec, ievent, devent, null);
+      } else if (subSpec instanceof RegexSubSpecConfig) {
+        doRegexSub((RegexSubSpecConfig) subSpec, devent, null);
+      } else if (subSpec instanceof NestedSubSpecConfig) {
+        Map<String, Object> innerNest = new HashMap<String, Object>();
+        doNestedSub((NestedSubSpecConfig) subSpec, ievent, devent, innerNest);
 
-      if (subSpec instanceof RegexSubSpecConfig) {
-        ((Map<String, Object>) value).forEach((k, v) -> {
-          devent.setField(k, v);
-        });
-      } else {
-        devent.setField(subSpec.getKey(), value);
+        try {
+          devent.setField(subSpec.getKey(), innerNest);
+        } catch (FieldNotFoundException e) {
+          if (subSpec.getFailDstNotFound()) {
+            throw new OperationException(e);
+          }
+        }
       }
     }
 

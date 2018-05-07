@@ -16,13 +16,13 @@
 package com.nextdoor.bender.operation.decode;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.net.URLCodec;
-
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.OperationException;
 
 /**
  * URL Decodes specified fields.
@@ -51,7 +51,7 @@ public class URLDecodeOperation implements Operation {
       String value = null;
       try {
         value = ievent.getEventObj().getFieldAsString(fieldName);
-      } catch (NoSuchElementException e) {
+      } catch (FieldNotFoundException  e) {
         continue;
       }
 
@@ -73,7 +73,11 @@ public class URLDecodeOperation implements Operation {
       /*
        * Update value
        */
-      ievent.getEventObj().setField(fieldName, value);
+      try {
+        ievent.getEventObj().setField(fieldName, value);
+      } catch (FieldNotFoundException e) {
+        throw new OperationException("failed to update original field in URL decode");
+      }
     }
 
     return ievent;

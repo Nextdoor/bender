@@ -25,12 +25,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import org.junit.Test;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
+import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyStringEvent;
 import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperationFactory;
@@ -38,7 +39,7 @@ import com.nextdoor.bender.testutils.DummyOperationHelper.DummyOperationFactory;
 public class PartitionOperationTest {
 
   @Test
-  public void testGetEvaluatedPartitionsString() {
+  public void testGetEvaluatedPartitionsString() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("foo");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
@@ -81,7 +82,7 @@ public class PartitionOperationTest {
   }
 
   @Test
-  public void testGetEvaluatedPartitionsStringMultipleFields() {
+  public void testGetEvaluatedPartitionsStringMultipleFields() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("one", "two");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
@@ -91,7 +92,7 @@ public class PartitionOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyStringEvent devent = spy(new DummyStringEvent(""));
     ievent.setEventObj(devent);
-    doReturn(null).doReturn("5").when(devent).getFieldAsString(any());
+    doThrow(FieldNotFoundException.class).doReturn("5").when(devent).getFieldAsString(any());
 
     op.perform(ievent);
 
@@ -102,8 +103,8 @@ public class PartitionOperationTest {
     assertEquals(expected, actual);
   }
 
-  @Test
-  public void testGetEvaluatedPartitionsStringMultipleFieldsNull() {
+  @Test(expected = OperationException.class)
+  public void testGetEvaluatedPartitionsStringMultipleFieldsNull() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("one", "two");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
@@ -113,19 +114,18 @@ public class PartitionOperationTest {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyStringEvent devent = spy(new DummyStringEvent("baz"));
     ievent.setEventObj(devent);
-    doReturn(null).doReturn(null).when(devent).getFieldAsString(any());
+    doThrow(FieldNotFoundException.class).doThrow(FieldNotFoundException.class).when(devent).getFieldAsString(any());
 
-    op.perform(ievent);
-
-    LinkedHashMap<String, String> actual = ievent.getPartitions();
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", null);
-
-    assertEquals(expected, actual);
+    try {
+      op.perform(ievent);
+    } catch (OperationException e) {
+      assertEquals("unable to find value for partition foo", e.getMessage());
+      throw e;
+    }
   }
 
-  @Test
-  public void testGetEvaluatedPartitionsNoSuchElementException() {
+  @Test(expected = OperationException.class)
+  public void testGetEvaluatedPartitionsFieldNotFoundException() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("one");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
@@ -136,19 +136,18 @@ public class PartitionOperationTest {
     DummyStringEvent devent = spy(new DummyStringEvent("baz"));
     ievent.setEventObj(devent);
 
-    doThrow(new NoSuchElementException()).when(devent).getFieldAsString(any());
+    doThrow(FieldNotFoundException.class).when(devent).getFieldAsString(any());
 
-    op.perform(ievent);
-
-    LinkedHashMap<String, String> actual = ievent.getPartitions();
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
-    expected.put("foo", null);
-
-    assertEquals(expected, actual);
+    try {
+      op.perform(ievent);
+    } catch (OperationException e) {
+      assertEquals("unable to find value for partition foo", e.getMessage());
+      throw e;
+    }
   }
 
   @Test
-  public void testOperationThroughProcessor() {
+  public void testOperationThroughProcessor() throws FieldNotFoundException {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
     List<String> sources = Arrays.asList("foo");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);

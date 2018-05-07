@@ -17,8 +17,7 @@ package com.nextdoor.bender.operations.geo;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-
+import static org.mockito.Mockito.doThrow;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.UnknownHostException;
@@ -26,14 +25,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-
 import org.junit.Test;
-
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.nextdoor.bender.InternalEvent;
-import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operations.geo.GeoIpOperationConfig.GeoProperty;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyMapEvent;
@@ -89,7 +85,6 @@ public class GeoIpOperationTest {
     ievent.setEventObj(devent);
 
     op.perform(ievent);
-
   }
 
   @Test(expected = UnknownHostException.class)
@@ -127,7 +122,7 @@ public class GeoIpOperationTest {
     GeoIpOperation op = setup(Arrays.asList(GeoProperty.LOCATION), true);
 
     DummpyMapEvent devent = spy(new DummpyMapEvent());
-    when(devent.getField("ip_address")).thenThrow(new NoSuchElementException(""));
+    doThrow(FieldNotFoundException.class).when(devent).getFieldAsString("ip_address");
 
     InternalEvent ievent = new InternalEvent("", null, 0);
     ievent.setEventObj(devent);

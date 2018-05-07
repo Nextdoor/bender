@@ -20,17 +20,21 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+
 import static org.mockito.Mockito.spy;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.operation.OperationException;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
+
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyStringEvent;
 import com.nextdoor.bender.time.TimeOperationConfig.TimeFieldType;
 
 public class TimeOperationTest {
 
   @Test
-  public void testValidTime() {
+  public void testValidTime() throws FieldNotFoundException {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyStringEvent devent = spy(new DummyStringEvent(""));
     ievent.setEventObj(devent);
@@ -43,7 +47,7 @@ public class TimeOperationTest {
   }
 
   @Test(expected = OperationException.class)
-  public void testInvalidTime() {
+  public void testInvalidTime() throws FieldNotFoundException {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyStringEvent devent = spy(new DummyStringEvent(""));
     ievent.setEventObj(devent);
@@ -54,11 +58,11 @@ public class TimeOperationTest {
   }
 
   @Test(expected = OperationException.class)
-  public void testNullField() {
+  public void testNullField() throws FieldNotFoundException {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
     DummyStringEvent devent = spy(new DummyStringEvent(""));
     ievent.setEventObj(devent);
-    doReturn(null).when(devent).getFieldAsString("foo");
+    doThrow(FieldNotFoundException.class).when(devent).getFieldAsString("foo");
 
     TimeOperation op = new TimeOperation("foo", TimeFieldType.SECONDS);
     op.perform(ievent);

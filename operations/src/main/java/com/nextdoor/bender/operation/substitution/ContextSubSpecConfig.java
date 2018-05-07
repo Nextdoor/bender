@@ -30,8 +30,8 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 public class ContextSubSpecConfig extends SubSpecConfig<ContextSubSpecConfig> {
   public ContextSubSpecConfig() {}
 
-  public ContextSubSpecConfig(String key, List<String> includes, List<String> excludes) {
-    super(key);
+  public ContextSubSpecConfig(String key, List<String> includes, List<String> excludes, boolean failDstNotFound) {
+    super(key, failDstNotFound);
     this.includes = includes;
     this.excludes = excludes;
   }

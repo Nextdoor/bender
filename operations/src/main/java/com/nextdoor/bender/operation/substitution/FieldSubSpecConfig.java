@@ -17,7 +17,6 @@ package com.nextdoor.bender.operation.substitution;
 
 import java.util.List;
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
@@ -29,38 +28,53 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
   public FieldSubSpecConfig() {}
 
-  public FieldSubSpecConfig(String key, List<String> sourceField, boolean removeSourceField) {
-    super(key);
-    this.sourceField = sourceField;
-    this.removeSourceField = removeSourceField;
+  public FieldSubSpecConfig(String key, List<String> srcFields, boolean removeSourceField,
+      boolean failSrcNotFound, boolean failDstNotFound) {
+    super(key, failDstNotFound);
+    this.srcFields = srcFields;
+    this.removeSrcField = removeSourceField;
+    this.failSrcNotFound = failSrcNotFound;
   }
 
   @JsonSchemaDescription("Source fields to pull value from. If multiple fields are provided the "
       + "first non-null valued one is used. Note that if no fields are found the value will "
       + "be set to null.")
   @JsonProperty(required = true)
-  private List<String> sourceField;
+  private List<String> srcFields;
 
   @JsonSchemaDescription("Removes the source field when performing the substitution. Effectively "
       + "making this a move operation.")
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
-  private Boolean removeSourceField = false;
+  private Boolean removeSrcField = false;
 
-  public void setSourceFields(List<String> sourceField) {
-    this.sourceField = sourceField;
+  @JsonSchemaDescription("Fail if source field is not found.")
+  @JsonProperty(required = false)
+  @JsonSchemaDefault(value = "true")
+  private Boolean failSrcNotFound = true;
+
+  public void setSrcFields(List<String> srcFields) {
+    this.srcFields = srcFields;
   }
 
-  public List<String> getSourceFields() {
-    return this.sourceField;
+  public List<String> getSrcFields() {
+    return this.srcFields;
   }
 
-  public Boolean getRemoveSourceField() {
-    return this.removeSourceField;
+  public Boolean getRemoveSrcField() {
+    return this.removeSrcField;
   }
 
-  public void setRemoveSourceField(Boolean removeSourceField) {
-    this.removeSourceField = removeSourceField;
+  public void setRemoveSrcField(Boolean removeSrcField) {
+    this.removeSrcField = removeSrcField;
+  }
+
+  public Boolean getFailSrcNotFound() {
+    return this.failSrcNotFound;
+  }
+
+  public void setFailSrcNotFound(Boolean failSrcNotFound) {
+    this.failSrcNotFound = failSrcNotFound;
   }
 
   @Override
@@ -75,7 +89,15 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
 
     FieldSubSpecConfig other = (FieldSubSpecConfig) o;
 
-    if (!this.sourceField.equals(other.getSourceFields())) {
+    if (!this.failSrcNotFound.equals(other.getFailSrcNotFound())) {
+      return false;
+    }
+
+    if (!this.removeSrcField.equals(other.getRemoveSrcField())) {
+      return false;
+    }
+
+    if (!this.srcFields.equals(other.getSrcFields())) {
       return false;
     }
 
@@ -84,11 +106,12 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), this.sourceField);
+    return Objects.hash(super.hashCode(), this.srcFields, this.removeSrcField,
+        this.failSrcNotFound);
   }
 
   @Override
   public String toString() {
-    return super.getKey() + ":" + this.getSourceFields();
+    return super.getKey() + ":" + this.getSrcFields();
   }
 }

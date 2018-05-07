@@ -28,16 +28,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
-import com.google.common.graph.ElementOrder.Type;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.LinkedTreeMap;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.testutils.TestUtils;
 
 public class GenericJsonDeserializerTest {
@@ -208,7 +207,7 @@ public class GenericJsonDeserializerTest {
   }
 
   @Test
-  public void testGetField() throws UnsupportedEncodingException, IOException {
+  public void testGetField() throws UnsupportedEncodingException, IOException, FieldNotFoundException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
     GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
@@ -219,7 +218,7 @@ public class GenericJsonDeserializerTest {
   }
 
   @Test
-  public void testGetNestedField() throws UnsupportedEncodingException, IOException {
+  public void testGetNestedField() throws UnsupportedEncodingException, IOException, FieldNotFoundException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
     GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
@@ -242,7 +241,7 @@ public class GenericJsonDeserializerTest {
     try {
       event.getField(missingField);
       fail();
-    } catch(NoSuchElementException e) {
+    } catch(FieldNotFoundException e) {
       assertEquals(e.getMessage(), expectedErrorMessage);
     }
   }
@@ -260,13 +259,13 @@ public class GenericJsonDeserializerTest {
     try {
       event.getField(missingNestedField);
       fail();
-    } catch(NoSuchElementException e) {
+    } catch(FieldNotFoundException e) {
       assertEquals(e.getMessage(), expectedErrorMessage);
     }
   }
 
   @Test
-  public void testGetNestedObjField() throws UnsupportedEncodingException, IOException {
+  public void testGetNestedObjField() throws UnsupportedEncodingException, IOException, FieldNotFoundException {
     String input = TestUtils.getResourceString(this.getClass(), "basic.json");
 
     GenericJsonDeserializer deser = new GenericJsonDeserializer(Collections.emptyList());
@@ -322,7 +321,7 @@ public class GenericJsonDeserializerTest {
   }
 
   @Test
-  public void testSetField() throws UnsupportedEncodingException, IOException {
+  public void testSetField() throws UnsupportedEncodingException, IOException, FieldNotFoundException {
     DeserializedEvent devent = getEvent("basic.json");
 
     /*
@@ -365,7 +364,7 @@ public class GenericJsonDeserializerTest {
 
 
   @Test
-  public void testSetObjectArray() throws UnsupportedEncodingException, IOException {
+  public void testSetObjectArray() throws UnsupportedEncodingException, IOException, FieldNotFoundException {
     DeserializedEvent devent = getEvent("basic.json");
 
     /*
