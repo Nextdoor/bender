@@ -94,7 +94,8 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
   @JsonIgnore
   private String key;
 
-  @JsonSchemaDescription("Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html")
+  @JsonSchemaDescription("Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html. "
+      + "Note &lt; must be escaped with a '\\\\'.")
   @JsonProperty(required = true)
   private String pattern;
 

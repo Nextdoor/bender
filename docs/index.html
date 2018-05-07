@@ -586,7 +586,7 @@ function sourceButton(element) {
     <div class="box-header box-">
         <div class="box-title" ref="<root>">
             <div class="box-name title">Bender - Serverless ETL Framework</div>
-            <div class="box-description desc"><p>Bender provides an extendable Java framework for creating serverless  ETL functions on AWS Lambda.<br>It handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL<br>process. Check it out at <a href="https://github.com/nextdoor/bender">https://github.com/nextdoor/bender</a>.<br><br></p><h3>Specifying Configuration</h3><br><h4>S3 File</h4><br>Upload your configuration file to an S3 bucket and when creating your lambda function specify the environment<br>variable BENDER_CONFIG pointing to your configuration file in S3. For example BENDER_CONFIG=s3://example/bender.json.<br>Note that your function will require sufficient IAM privileges to read from this file.<br><br><h4>Embedded File</h4><br>If using APEX to deploy your lambda function you can add your configuration file inside a config directory.<br>See <a href="https://github.com/Nextdoor/bender/tree/master/example_project">https://github.com/Nextdoor/bender/tree/master/example_project</a> for an example. When using this method name your<br>configuration files corresponding to your lambda function aliases. Default is $LATEST.json<br><br><h3>Variable Substitution</h3><br>Your configuration file can contain variables which are substituted for lambda function<br>environment variables. In your configuration wrap the environment with &lt;&gt; tags.<br>For example: <br><pre>{"foo": &lt;BAR&gt;}</pre><p></p>
+            <div class="box-description desc"><p>Bender provides an extendable Java framework for creating serverless  ETL functions on AWS Lambda.<br>It handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL<br>process. Check it out at <a href="https://github.com/nextdoor/bender">https://github.com/nextdoor/bender</a>.<br><br></p><h3>Specifying Configuration</h3><br><h4>S3 File</h4><br>Upload your configuration file to an S3 bucket and when creating your lambda function specify the environment<br>variable BENDER_CONFIG pointing to your configuration file in S3. For example BENDER_CONFIG=s3://example/bender.json.<br>Note that your function will require sufficient IAM privileges to read from this file.<br><br><h4>Embedded File</h4><br>If using APEX to deploy your lambda function you can add your configuration file inside a config directory.<br>See <a href="https://github.com/Nextdoor/bender/tree/master/example_project">https://github.com/Nextdoor/bender/tree/master/example_project</a> for an example. When using this method name your<br>configuration files corresponding to your lambda function aliases. Default is $LATEST.json<br><br><h3>Variable Substitution</h3><br>Your configuration file can contain variables which are substituted for lambda function<br>environment variables. In your configuration wrap the environment with &lt;&gt; tags. All other uses of &lt;<br>must be escaped with '\'.<br>Example variable: <br><pre>{"foo": &lt;BAR&gt;}</pre><p></p>
 <p>Note that if BENDER_SKIP_VALIDATE=true env var is set then Bender will not validate the configuration at runtime.<br>Use this if you validate the configuration files with the CLI tool prior to deployment.</p>
 </div>
             <div class="end"></div>
@@ -2251,7 +2251,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Regex pattern with match groups. See <a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html</a></p>
+                <div class="signature-description desc"><p>Regex pattern with match groups. See <a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html</a>. Note &lt; must be escaped with a '\'.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -2471,7 +2471,7 @@ function sourceButton(element) {
     },
     "pattern": {
       "type": "string",
-      "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
+      "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html. Note &amp;lt; must be escaped with a '\\\\'."
     },
     "src_fields": {
       "type": "array",
@@ -3162,7 +3162,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Regex pattern with match groups. See <a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html</a></p>
+                <div class="signature-description desc"><p>Regex pattern with match groups. See <a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html</a>. Note &lt; must be escaped with a '\'.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -3382,7 +3382,7 @@ function sourceButton(element) {
     },
     "pattern": {
       "type": "string",
-      "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
+      "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html. Note &amp;lt; must be escaped with a '\\\\'."
     },
     "src_fields": {
       "type": "array",
@@ -12727,7 +12727,7 @@ function sourceButton(element) {
   "title": "Bender - Serverless ETL Framework",
   "type": "object",
   "additionalProperties": false,
-  "description": "Bender provides an extendable Java framework for creating serverless  ETL functions on AWS Lambda.\nIt handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL\nprocess. Check it out at https://github.com/nextdoor/bender.&lt;br&gt;&lt;br&gt;&lt;h3&gt;Specifying Configuration&lt;/h3&gt;&lt;br&gt;&lt;h4&gt;S3 File&lt;/h4&gt;&lt;br&gt;Upload your configuration file to an S3 bucket and when creating your lambda function specify the environment\nvariable BENDER_CONFIG pointing to your configuration file in S3. For example BENDER_CONFIG=s3://example/bender.json.\nNote that your function will require sufficient IAM privileges to read from this file.&lt;br&gt;&lt;br&gt;&lt;h4&gt;Embedded File&lt;/h4&gt;&lt;br&gt;If using APEX to deploy your lambda function you can add your configuration file inside a config directory.\nSee https://github.com/Nextdoor/bender/tree/master/example_project for an example. When using this method name your\nconfiguration files corresponding to your lambda function aliases. Default is $LATEST.json&lt;br&gt;&lt;br&gt;&lt;h3&gt;Variable Substitution&lt;/h3&gt;&lt;br&gt;Your configuration file can contain variables which are substituted for lambda function \nenvironment variables. In your configuration wrap the environment with &amp;lt;&amp;gt; tags. \nFor example: &lt;br&gt;&lt;pre&gt;{\"foo\": &amp;lt;BAR&amp;gt;}&lt;/pre&gt;\n\nNote that if BENDER_SKIP_VALIDATE=true env var is set then Bender will not validate the configuration at runtime.\nUse this if you validate the configuration files with the CLI tool prior to deployment.",
+  "description": "Bender provides an extendable Java framework for creating serverless  ETL functions on AWS Lambda.\nIt handles the complex plumbing and provides the interfaces necessary to build modules for all aspects of the ETL\nprocess. Check it out at https://github.com/nextdoor/bender.&lt;br&gt;&lt;br&gt;&lt;h3&gt;Specifying Configuration&lt;/h3&gt;&lt;br&gt;&lt;h4&gt;S3 File&lt;/h4&gt;&lt;br&gt;Upload your configuration file to an S3 bucket and when creating your lambda function specify the environment\nvariable BENDER_CONFIG pointing to your configuration file in S3. For example BENDER_CONFIG=s3://example/bender.json.\nNote that your function will require sufficient IAM privileges to read from this file.&lt;br&gt;&lt;br&gt;&lt;h4&gt;Embedded File&lt;/h4&gt;&lt;br&gt;If using APEX to deploy your lambda function you can add your configuration file inside a config directory.\nSee https://github.com/Nextdoor/bender/tree/master/example_project for an example. When using this method name your\nconfiguration files corresponding to your lambda function aliases. Default is $LATEST.json&lt;br&gt;&lt;br&gt;&lt;h3&gt;Variable Substitution&lt;/h3&gt;&lt;br&gt;Your configuration file can contain variables which are substituted for lambda function \nenvironment variables. In your configuration wrap the environment with &amp;lt;&amp;gt; tags. All other uses of &amp;lt; \nmust be escaped with '\\\\'.\nExample variable: &lt;br&gt;&lt;pre&gt;{\"foo\": &amp;lt;BAR&amp;gt;}&lt;/pre&gt;\n\nNote that if BENDER_SKIP_VALIDATE=true env var is set then Bender will not validate the configuration at runtime.\nUse this if you validate the configuration files with the CLI tool prior to deployment.",
   "properties": {
     "handler": {
       "oneOf": [
@@ -13305,7 +13305,7 @@ function sourceButton(element) {
         },
         "pattern": {
           "type": "string",
-          "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html"
+          "description": "Regex pattern with match groups. See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html. Note &amp;lt; must be escaped with a '\\\\'."
         },
         "src_fields": {
           "type": "array",

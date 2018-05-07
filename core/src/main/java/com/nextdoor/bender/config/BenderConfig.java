@@ -72,8 +72,9 @@ import com.nextdoor.bender.wrapper.WrapperConfig;
     + "configuration files corresponding to your lambda function aliases. Default is $LATEST.json"
     + "<br><br><h3>Variable Substitution</h3><br>"
     + "Your configuration file can contain variables which are substituted for lambda function \n"
-    + "environment variables. In your configuration wrap the environment with &lt;&gt; tags. \n"
-    + "For example: <br>" + "<pre>{\"foo\": &lt;BAR&gt;}</pre>\n\n"
+    + "environment variables. In your configuration wrap the environment with &lt;&gt; tags. All other uses of &lt; \n"
+    + "must be escaped with '\\\\'.\n"
+    + "Example variable: <br>" + "<pre>{\"foo\": &lt;BAR&gt;}</pre>\n\n"
     + "Note that if BENDER_SKIP_VALIDATE=true env var is set then Bender will not validate the configuration at runtime.\n"
     + "Use this if you validate the configuration files with the CLI tool prior to deployment.")
 public class BenderConfig {
