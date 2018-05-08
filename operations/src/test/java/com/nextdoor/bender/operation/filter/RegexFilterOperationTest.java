@@ -14,24 +14,17 @@
  */
 package com.nextdoor.bender.operation.filter;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.util.regex.Pattern;
-
 import org.junit.Test;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.deserializer.json.GenericJsonEvent;
-import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operations.json.OperationTest;
 
 public class RegexFilterOperationTest extends OperationTest {
@@ -55,10 +48,8 @@ public class RegexFilterOperationTest extends OperationTest {
     RegexFilterOperation opMatch = new RegexFilterOperation(patternMatch, path, match);
     RegexFilterOperation opFail = new RegexFilterOperation(patternFail, path, match);
 
-    assertTrue(opMatch.filterEvent(ievent.getEventObj()));
-    assertNull(opMatch.perform(ievent));
-    assertFalse(opFail.filterEvent(ievent.getEventObj()));
-    assertNotNull(opFail.perform(ievent));
+    assertFalse(opMatch.test(ievent));
+    assertTrue(opFail.test(ievent));
   }
 
   @Test
@@ -80,11 +71,8 @@ public class RegexFilterOperationTest extends OperationTest {
     RegexFilterOperation opMatch = new RegexFilterOperation(patternMatch, path, match);
     RegexFilterOperation opFail = new RegexFilterOperation(patternFail, path, match);
 
-    assertFalse(opMatch.filterEvent(ievent.getEventObj()));
-    assertNotNull(opMatch.perform(ievent));
-    assertTrue(opFail.filterEvent(ievent.getEventObj()));
-    assertNull(opFail.perform(ievent));
-
+    assertTrue(opMatch.test(ievent));
+    assertFalse(opFail.test(ievent));
   }
 
   @Test
@@ -101,11 +89,9 @@ public class RegexFilterOperationTest extends OperationTest {
     Boolean match = false;
 
     RegexFilterOperation op = new RegexFilterOperation(pattern, path, match);
-    boolean filter = op.filterEvent(ievent.getEventObj());
-    InternalEvent result = op.perform(ievent);
+    boolean filter = op.test(ievent);
 
-    assertTrue(filter);
-    assertNull(result);
+    assertFalse(filter);
   }
 
   @Test
@@ -116,15 +102,12 @@ public class RegexFilterOperationTest extends OperationTest {
     String path = "$.simple_object.key";
     Pattern pattern = Pattern.compile("(val)");
     Boolean match = false;
-    String expectedErrorMessage = "Deserialized object is null";
 
     RegexFilterOperation op = new RegexFilterOperation(pattern, path, match);
-    try {
-      op.perform(ievent);
-      fail();
-    } catch(OperationException e) {
-      assertEquals(e.getMessage(), expectedErrorMessage);
-    }
+
+    boolean filter = op.test(ievent);
+
+    assertFalse(filter);
   }
 
   @Test
@@ -141,10 +124,8 @@ public class RegexFilterOperationTest extends OperationTest {
     Boolean match = false;
 
     RegexFilterOperation op = new RegexFilterOperation(pattern, path, match);
-    boolean filter = op.filterEvent(ievent.getEventObj());
-    InternalEvent result = op.perform(ievent);
+    boolean filter = op.test(ievent);
 
-    assertTrue(filter);
-    assertNull(result);
+    assertFalse(filter);
   }
 }

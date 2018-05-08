@@ -9,7 +9,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
@@ -18,5 +18,5 @@ package com.nextdoor.bender.operation;
 import com.nextdoor.bender.InternalEvent;
 
 public interface EventOperation extends BaseOperation {
-  Object perform(InternalEvent ievent);
+  InternalEvent perform(InternalEvent ievent);
 }

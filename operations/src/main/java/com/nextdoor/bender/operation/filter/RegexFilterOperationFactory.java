@@ -18,7 +18,7 @@ package com.nextdoor.bender.operation.filter;
 import java.util.regex.Pattern;
 
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.FilterOperation;
 import com.nextdoor.bender.operation.OperationFactory;
 
 /**
@@ -30,7 +30,7 @@ public class RegexFilterOperationFactory implements OperationFactory {
   private Pattern pattern;
 
   @Override
-  public Operation newInstance() {
+  public FilterOperation newInstance() {
     return new RegexFilterOperation(
         this.pattern, this.config.getPath(), this.config.getExclude());
   }

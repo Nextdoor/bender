@@ -43,11 +43,11 @@ public class OperationProcessor extends MonitoredProcess {
   public Stream<InternalEvent> perform(Stream<InternalEvent> input) {
     Stream<InternalEvent> output = null;
 
-    if (this.op instanceof Operation) {
+    if (this.op instanceof EventOperation) {
       output = input.map(ievent -> {
         this.getRuntimeStat().start();
         try {
-          InternalEvent i = ((Operation) op).perform(ievent);
+          InternalEvent i = ((EventOperation) op).perform(ievent);
           this.getSuccessCountStat().increment();
           return i;
         } catch (OperationException e) {
@@ -80,6 +80,18 @@ public class OperationProcessor extends MonitoredProcess {
     } else if (this.op instanceof StreamOperation) {
       StreamOperation forkOp = (StreamOperation) this.op;
       output = forkOp.getOutputStream(input);
+    } else if (this.op instanceof FilterOperation) {
+      output = input.filter(ievent -> {
+        try {
+          return ((FilterOperation) this.op).test(ievent);
+        } catch (OperationException e) {
+          this.getErrorCountStat().increment();
+          logger.debug(e);
+          return false;
+        } finally {
+          this.getRuntimeStat().stop();
+        }
+      });
     } else {
       throw new OperationException("Invalid type of operation");
     }

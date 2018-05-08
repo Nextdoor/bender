@@ -9,35 +9,31 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
-package com.nextdoor.bender.operation.json.key;
+package com.nextdoor.bender.operation.filter;
 
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationFactory;
 
-/**
- * Create a {@link KeyNameOperation}.
- */
-public class LowerCaseKeyOperationFactory implements OperationFactory {
-
-  private LowerCaseKeyOperationConfig config;
-
-  @Override
-  public EventOperation newInstance() {
-    return new LowerCaseKeyOperation();
-  }
-
-  @Override
-  public Class<LowerCaseKeyOperation> getChildClass() {
-    return LowerCaseKeyOperation.class;
-  }
+public class BasicFilterOperationFactory implements OperationFactory {
+  boolean pass;
 
   @Override
   public void setConf(AbstractConfig config) {
-    this.config = (LowerCaseKeyOperationConfig) config;
+    BasicFilterOperationConfig conf = (BasicFilterOperationConfig) config;
+    pass = conf.getPass();
+  }
+
+  @Override
+  public Class<?> getChildClass() {
+    return BasicFilterOperation.class;
+  }
+
+  @Override
+  public BasicFilterOperation newInstance() {
+    return new BasicFilterOperation(this.pass);
   }
 }

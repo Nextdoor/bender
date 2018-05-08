@@ -22,12 +22,13 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.BaseOperation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.operation.OperationFactory;
 
 public class DummyAppendOperationHelper {
-  public static class DummyAppendOperation implements Operation {
+  public static class DummyAppendOperation implements EventOperation {
 
     public String appendStr;
 
@@ -65,17 +66,17 @@ public class DummyAppendOperationHelper {
   }
 
   public static class DummyAppendOperationFactory implements OperationFactory {
-    public Operation op;
+    public BaseOperation op;
     private String appendStr;
 
     public DummyAppendOperationFactory() {}
 
-    public DummyAppendOperationFactory(Operation op) {
+    public DummyAppendOperationFactory(BaseOperation op) {
       this.op = op;
     }
 
     @Override
-    public Operation newInstance() {
+    public BaseOperation newInstance() {
       return this.op == null ? new DummyAppendOperation(this.appendStr) : this.op;
     }
 

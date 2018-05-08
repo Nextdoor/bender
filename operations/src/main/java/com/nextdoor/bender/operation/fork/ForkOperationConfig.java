@@ -36,7 +36,7 @@ public class ForkOperationConfig extends OperationConfig {
   private List<Fork> forks = Collections.emptyList();
 
   public static class Fork {
-    @JsonSchemaDescription("List of operations in this fork.")
+    @JsonSchemaDescription("List of operations to perform.")
     @JsonSchemaDefault("[]")
     @JsonProperty(required = false)
     private List<OperationConfig> operations = Collections.emptyList();
@@ -54,7 +54,7 @@ public class ForkOperationConfig extends OperationConfig {
     return this.forks;
   }
 
-  public void setPartitionSpecs(List<Fork> forks) {
+  public void setForks(List<Fork> forks) {
     this.forks = forks;
   }
 

@@ -9,14 +9,17 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
 package com.nextdoor.bender.operation;
 
+import java.util.function.Predicate;
 import com.nextdoor.bender.InternalEvent;
 
-public interface Operation extends EventOperation {
-  InternalEvent perform(InternalEvent ievent);
+public interface FilterOperation extends BaseOperation, Predicate<InternalEvent> {
+
+  @Override
+  public boolean test(InternalEvent ievent) throws OperationException;
 }

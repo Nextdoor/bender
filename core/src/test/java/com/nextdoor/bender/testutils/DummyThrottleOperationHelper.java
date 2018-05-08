@@ -20,12 +20,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.BaseOperation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.operation.OperationFactory;
 
 public class DummyThrottleOperationHelper {
-  public static class DummyThrottleOperation implements Operation {
+  public static class DummyThrottleOperation implements EventOperation {
 
     public AtomicInteger counter = new AtomicInteger(0);
 
@@ -51,16 +52,16 @@ public class DummyThrottleOperationHelper {
   }
 
   public static class DummyThrottleOperationFactory implements OperationFactory {
-    public Operation op;
+    public BaseOperation op;
 
     public DummyThrottleOperationFactory() {}
 
-    public DummyThrottleOperationFactory(Operation op) {
+    public DummyThrottleOperationFactory(BaseOperation op) {
       this.op = op;
     }
 
     @Override
-    public Operation newInstance() {
+    public BaseOperation newInstance() {
       return this.op == null ? new DummyThrottleOperation() : this.op;
     }
 

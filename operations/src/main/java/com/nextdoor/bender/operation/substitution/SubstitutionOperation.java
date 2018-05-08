@@ -26,11 +26,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.substitution.RegexSubSpecConfig.RegexSubField;
 
-public class SubstitutionOperation implements Operation {
+public class SubstitutionOperation implements EventOperation {
   private final List<SubSpecConfig<?>> subSpecs;
 
   public SubstitutionOperation(List<SubSpecConfig<?>> subSpecs) {

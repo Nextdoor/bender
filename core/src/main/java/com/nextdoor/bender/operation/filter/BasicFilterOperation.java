@@ -9,16 +9,25 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
-package com.nextdoor.bender.operation;
-
-import java.util.List;
+package com.nextdoor.bender.operation.filter;
 
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.operation.FilterOperation;
+import com.nextdoor.bender.operation.OperationException;
 
-public interface MultiplexOperation extends BaseOperation {
-  List<InternalEvent> perform(InternalEvent ievent);
+public class BasicFilterOperation implements FilterOperation  {
+  final boolean pass;
+
+  public BasicFilterOperation(boolean pass) {
+    this.pass  = pass;
+  }
+
+  @Override
+  public boolean test(InternalEvent ievent) throws OperationException {
+    return this.pass;
+  }
 }

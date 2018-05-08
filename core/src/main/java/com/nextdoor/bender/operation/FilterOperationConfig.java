@@ -15,10 +15,6 @@
 
 package com.nextdoor.bender.operation;
 
-import java.util.List;
+public abstract class FilterOperationConfig extends OperationConfig {
 
-import com.nextdoor.bender.InternalEvent;
-
-public interface MultiplexOperation extends BaseOperation {
-  List<InternalEvent> perform(InternalEvent ievent);
 }

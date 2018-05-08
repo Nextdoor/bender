@@ -16,7 +16,7 @@
 package com.nextdoor.bender.operation.json.key;
 
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationFactory;
 
 /**
@@ -31,7 +31,7 @@ public class FlattenOperationFactory implements OperationFactory {
     }
 
     @Override
-    public Operation newInstance() {
+    public EventOperation newInstance() {
         return new FlattenOperation(this.config.getSeparator());
     }
 

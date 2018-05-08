@@ -27,14 +27,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.json.key.FlattenOperation;
 import com.nextdoor.bender.operation.substitution.SubSpecConfig;
 import com.nextdoor.bender.operation.substitution.SubstitutionOperation;
 import com.nextdoor.bender.time.TimeOperation;
 
-public class GelfOperation implements Operation {
+public class GelfOperation implements EventOperation {
 
   private final FlattenOperation flattenOp;
   private final SubstitutionOperation subOp;
