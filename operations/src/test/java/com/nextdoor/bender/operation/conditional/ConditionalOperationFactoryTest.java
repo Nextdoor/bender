@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import org.junit.After;
 import org.junit.Before;
@@ -78,6 +79,27 @@ public class ConditionalOperationFactoryTest {
   }
 
   @Test
+  public void testOneConditionLargeInput() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_one_condition.yaml";
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.handler(getEvents(10000), context);
+
+    List<String> expected = new LinkedList<String>();
+    for (int i = 0; i < 10000; i++) {
+      expected.add(i + "-");
+    }
+
+    /*
+     * Verify Events made it all the way through
+     */
+    assertEquals(10000, BufferedTransporter.output.size());
+    List<String> actual = BufferedTransporter.output;
+    assertTrue(expected.containsAll(actual));
+  }
+
+  @Test
   public void testTwoConditionsSmallInput() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_two_conditions.yaml";
 
@@ -96,6 +118,27 @@ public class ConditionalOperationFactoryTest {
   }
 
   @Test
+  public void testTwoConditionsLargeInput() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_two_conditions.yaml";
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.handler(getEvents(10000), context);
+
+    List<String> expected = new LinkedList<String>();
+    for (int i = 0; i < 10000; i++) {
+      expected.add(i + "+");
+    }
+
+    /*
+     * Verify Events made it all the way through
+     */
+    assertEquals(10000, BufferedTransporter.output.size());
+    List<String> actual = BufferedTransporter.output;
+    assertTrue(expected.containsAll(actual));
+  }
+
+  @Test
   public void testFilterOut() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_filterout.yaml";
 
@@ -107,5 +150,30 @@ public class ConditionalOperationFactoryTest {
      * Verify Events made it all the way through
      */
     assertEquals(0, BufferedTransporter.output.size());
+  }
+
+  @Test
+  public void testSlowConditionBranch() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_one_condition_slow.yaml";
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.handler(getEvents(1000), context);
+
+    List<String> expected = new LinkedList<String>();
+    for (int i = 0; i < 1000; i++) {
+      if (i % 2 == 0) {
+        expected.add(i + "");
+      } else {
+        expected.add(i + "+");
+      }
+    }
+    /*
+     * Verify Events made it all the way through
+     */
+    List<String> actual = BufferedTransporter.output;
+
+    assertEquals(1000, BufferedTransporter.output.size());
+    assertTrue(expected.containsAll(actual));
   }
 }

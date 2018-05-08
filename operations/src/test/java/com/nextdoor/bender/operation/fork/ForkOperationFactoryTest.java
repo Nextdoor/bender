@@ -62,7 +62,6 @@ public class ForkOperationFactoryTest {
     return dummyEvents;
   }
 
-
   @Test
   public void testTwoForksSmallInput() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_two_fork.yaml";
