@@ -65,7 +65,7 @@ public class ConditionalOperation implements StreamOperation {
    *        v
    *  +-----+-------+    +-------------+      +-------------+
    *  | Condition 1 | No | Condition 2 |  No  |    Filter   |
-   *  |   Filter    +----+   Filter    +----->+  Non-Match  |
+   *  |   Filter    +--->+   Filter    +----->+  Non-Match  |
    *  +-----+-------+    +-----+-------+      +------+------+
    *        |                  |                     |
    *    Yes |             Yes  |                     | No
