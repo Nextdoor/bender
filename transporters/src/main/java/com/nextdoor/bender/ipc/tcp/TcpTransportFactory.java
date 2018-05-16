@@ -119,7 +119,7 @@ public class TcpTransportFactory implements TransportFactory {
 
   @Override
   public TransportBuffer newTransportBuffer() {
-    return new TcpTransportBuffer(config.getMaxBufferSize(), new GenericTransportSerializer());
+    return new TcpTransportBuffer(config.getMaxBufferSize(), new GenericTransportSerializer('\n'));
   }
 
   @Override

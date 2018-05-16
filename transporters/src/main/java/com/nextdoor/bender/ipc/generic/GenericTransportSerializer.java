@@ -19,24 +19,28 @@ import com.nextdoor.bender.ipc.TransportSerializer;
 
 public class GenericTransportSerializer implements TransportSerializer {
   private char separator;
+  private boolean noSeparator = false;
 
   public GenericTransportSerializer(char separator) {
     this.separator = separator;
   }
 
   public GenericTransportSerializer() {
-    this.separator = '\n';
+    this.noSeparator = true;
   }
 
   @Override
   public byte[] serialize(InternalEvent ievent) {
+    if (this.noSeparator) {
+      return ievent.getSerialized().getBytes();
+    }
+
     /*
      * Separates each serialized record with a defined separator
      */
     StringBuilder payload = new StringBuilder();
     payload.append(ievent.getSerialized());
     payload.append(this.separator);
-
     return payload.toString().getBytes();
   }
 }

@@ -9,7 +9,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
@@ -46,6 +46,20 @@ public class GenericTansportSerializerTest {
     public LinkedHashMap<String, String> getPartitions() {
       return this.partitions;
     }
+  }
+
+  @Test
+  public void testSerializeNewLine() throws UnsupportedEncodingException, IOException {
+    GenericTransportSerializer serializer = new GenericTransportSerializer('\n');
+    InternalEvent record = new DummyEvent("foo", 0);
+
+    record.setEventTime(1505927823123l);
+    record.setSerialized("foo");
+
+    String actual = new String(serializer.serialize(record));
+    String expected = TestUtils.getResourceString(this.getClass(), "basic_output_newline.txt");
+
+    assertEquals(expected, actual);
   }
 
   @Test
