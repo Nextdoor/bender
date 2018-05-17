@@ -42,7 +42,7 @@ public class KinesisTransportBuffer implements TransportBuffer {
 
   @Override
   public boolean add(InternalEvent ievent) throws IllegalStateException, IOException {
-    if (dataRecords.size() >= this.maxRecords) {
+    if (this.dataRecords.size() >= this.maxRecords) {
       logger.trace("hit record index max");
       throw new IllegalStateException("reached max payload size");
     }
@@ -66,7 +66,8 @@ public class KinesisTransportBuffer implements TransportBuffer {
 
     this.bufferSizeBytes += record.length;
     ByteBuffer data = ByteBuffer.wrap(record);
-    dataRecords.add(new PutRecordsRequestEntry().withData(data));
+    this.dataRecords.add(
+        new PutRecordsRequestEntry().withData(data).withPartitionKey(ievent.getEventSha1Hash()));
 
     return true;
   }
