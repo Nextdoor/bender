@@ -154,6 +154,18 @@ public class SubstitutionOperation implements Operation {
      */
     if (nested != null) {
       nested.put(config.getKey(), kv.getValue());
+      /*
+       * Remove source field
+       */
+      if (config.getRemoveSrcField()) {
+        try {
+          devent.removeField(kv.getKey());
+        } catch (FieldNotFoundException e) {
+          if (config.getFailSrcNotFound()) {
+            throw new OperationException(e);
+          }
+        }
+      }
       return;
     }
 
@@ -288,8 +300,24 @@ public class SubstitutionOperation implements Operation {
       return;
     }
 
+    /*
+     * Short circuit if this is adding to a nested operation
+     */
     if (nested != null) {
       nested.putAll(kv.getValue());
+
+      /*
+       * Remove source field
+       */
+      if (config.getRemoveSrcField()) {
+        try {
+          devent.removeField(kv.getKey());
+        } catch (FieldNotFoundException e) {
+          if (config.getFailSrcNotFound()) {
+            throw new OperationException(e);
+          }
+        }
+      }
       return;
     }
 
