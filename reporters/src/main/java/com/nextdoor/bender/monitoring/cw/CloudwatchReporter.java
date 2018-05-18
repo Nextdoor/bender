@@ -23,8 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.ListUtils;
-
-import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
 import com.amazonaws.services.cloudwatch.model.Dimension;
 import com.amazonaws.services.cloudwatch.model.MetricDatum;
 import com.amazonaws.services.cloudwatch.model.PutMetricDataRequest;
@@ -38,11 +37,11 @@ import com.nextdoor.bender.monitoring.Tag;
  * Writes metrics to Amazon Cloudwatch.
  */
 public class CloudwatchReporter implements Reporter {
-  private final AmazonCloudWatchClient client;
+  private final AmazonCloudWatch client;
   private final String namespace;
   private final List<StatFilter> statFilters;
 
-  public CloudwatchReporter(AmazonCloudWatchClient client, final String namespace,
+  public CloudwatchReporter(AmazonCloudWatch client, final String namespace,
       final List<StatFilter> statFilters) {
     this.client = client;
     this.namespace = namespace;
