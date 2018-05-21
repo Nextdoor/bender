@@ -9,7 +9,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
@@ -26,11 +26,27 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
   @JsonSchemaDefault(value = "true")
   private Boolean failOnException = true;
 
+  @JsonSchemaDescription("Maximum queue size used to buffer raw data prior to deserialization. "
+      + "This adds back pressure that ensures Bender does not read quicker than it can process "
+      + "and send to your desination (transport). Increasing the buffer will increase memory "
+      + "pressure and risk of OOM but will have the benefit of increasing throughput.")
+  @JsonProperty(required = false)
+  @JsonSchemaDefault(value = "500")
+  private Integer queueSize = 500;
+
   public Boolean getFailOnException() {
     return failOnException;
   }
 
   public void setFailOnException(Boolean failOnException) {
     this.failOnException = failOnException;
+  }
+
+  public Integer getQueueSize() {
+    return this.queueSize;
+  }
+
+  public void setQueueSize(Integer queueSize) {
+    this.queueSize = queueSize;
   }
 }

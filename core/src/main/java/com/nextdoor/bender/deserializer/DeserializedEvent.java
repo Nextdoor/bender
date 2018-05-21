@@ -71,4 +71,11 @@ public interface DeserializedEvent {
    * @throws FieldNotFoundException if field does not exist.
    */
   public Object removeField(String fieldName) throws FieldNotFoundException;
+
+  /**
+   * Provides a deep copy of this object as well as the payload.
+   *
+   * @return copy of this object.
+   */
+  public DeserializedEvent copy();
 }

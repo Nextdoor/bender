@@ -18,17 +18,17 @@ package com.nextdoor.bender.operation.json;
 import com.google.gson.JsonObject;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 
-public abstract class PayloadOperation implements Operation {
+public abstract class PayloadOperation implements EventOperation {
   protected abstract void perform(JsonObject obj);
 
   /**
    * The {@link DeserializedEvent} payload must be a {@link JsonObject}.
    *
    * @param ievent Event that contains a JSON object deserialized payload.
-   * @return
+   * @return the original or new event
    */
   public InternalEvent perform(InternalEvent ievent) {
     DeserializedEvent devent;

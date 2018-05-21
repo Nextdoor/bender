@@ -15,8 +15,9 @@
 
 package com.nextdoor.bender.operation;
 
+import java.util.stream.Stream;
 import com.nextdoor.bender.InternalEvent;
 
-public interface Operation extends BaseOperation {
-  InternalEvent perform(InternalEvent ievent);
+public interface StreamOperation extends BaseOperation {
+  public Stream<InternalEvent> getOutputStream(Stream<InternalEvent> input);
 }

@@ -17,12 +17,12 @@ package com.nextdoor.bender.time;
 
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.time.TimeOperationConfig.TimeFieldType;
 import com.nextdoor.bender.utils.Time;
 
-public class TimeOperation implements Operation {
+public class TimeOperation implements EventOperation {
   private final String timeField;
   private final TimeFieldType timeFieldType;
 

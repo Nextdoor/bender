@@ -129,16 +129,18 @@ public class GenericJsonEventTest {
     assertEquals("b", payload.get("a").getAsString());
   }
 
-  @Test
+  @Test(expected = FieldNotFoundException.class)
   public void testRemoveMissingField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     JsonObject payload = (JsonObject) event.getPayload();
 
-    Object obj = event.removeField("$.foo");
-
-    assertEquals(1, payload.size());
-    assertEquals(null, obj);
-    assertEquals("b", payload.get("a").getAsString());
+    try {
+      Object obj = event.removeField("$.foo");
+    } catch (FieldNotFoundException e) {
+      assertEquals(1, payload.size());
+      assertEquals("b", payload.get("a").getAsString());
+      throw e;
+    }
   }
 
   public void testGetInvalidPath() throws FieldNotFoundException {

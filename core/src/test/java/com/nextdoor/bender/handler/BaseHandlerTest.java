@@ -48,7 +48,7 @@ import com.nextdoor.bender.ipc.IpcSenderService;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
-import com.nextdoor.bender.operation.BaseOperation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.serializer.SerializationException;
@@ -79,7 +79,7 @@ public class BaseHandlerTest {
 
     @Override
     public boolean hasNext() {
-      return events.hasNext();
+      return this.events.hasNext();
     }
 
     @Override
@@ -430,7 +430,7 @@ public class BaseHandlerTest {
 
     List<OperationProcessor> operationProcessors = handler.sources.get(0).getOperationProcessors();
     for (OperationProcessor operationProcessor : operationProcessors) {
-      BaseOperation operation = spy(operationProcessor.getOperation());
+      EventOperation operation = (EventOperation) spy(operationProcessor.getOperation());
       doThrow(new OperationException("expected")).when(operation).perform(any());
       operationProcessor.setOperation(operation);
     }

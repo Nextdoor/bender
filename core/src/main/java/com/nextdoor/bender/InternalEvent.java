@@ -18,9 +18,7 @@ package com.nextdoor.bender;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.apache.commons.codec.digest.DigestUtils;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 
@@ -52,6 +50,39 @@ public class InternalEvent {
 
     this.metadata.put("arrivalEpochMs", new Long(this.arrivalTime));
     this.metadata.put("eventSha1Hash", this.getEventSha1Hash());
+  }
+
+  /**
+   * Makes a new event by copying properties from another event.
+   * 
+   * @param other event to copy
+   */
+  private InternalEvent(InternalEvent other) {
+    this.eventString = new String(other.getEventString());
+    this.context = other.context;
+    this.eventSha1Hash = other.getEventSha1Hash();
+    this.arrivalTime = other.getArrivalTime();
+    this.eventTime = other.getEventTime();
+    this.serialized = other.getSerialized();
+
+    if (other.getPartitions() == null) {
+      this.partitions = null;
+    } else {
+      this.partitions = new LinkedHashMap<String, String>(other.getPartitions());
+    }
+
+    /*
+     * We rely on the implementation to provide a deep copy here.
+     */
+    if (other.getEventObj() != null) {
+      this.eventObj = other.getEventObj().copy();
+    }
+
+    /*
+     * Note that this is a shallow copy of the metadata. Some metadata elements are reused across
+     * multiple events within a function invocation.
+     */
+    this.metadata.putAll(other.metadata);
   }
 
   /**
@@ -148,5 +179,14 @@ public class InternalEvent {
     this.eventTime = eventTime;
     this.addMetadata("eventEpochMs", new Long(eventTime));
     this.addMetadata("sourceLagMs", new Long(System.currentTimeMillis() - this.getEventTime()));
+  }
+
+  /**
+   * This is useful for operations that want to output multiple copies of the input event.
+   *
+   * @return new event with a copy of all properties from this event.
+   */
+  public InternalEvent copy() {
+    return new InternalEvent(this);
   }
 }

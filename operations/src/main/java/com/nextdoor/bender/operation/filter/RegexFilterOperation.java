@@ -20,8 +20,7 @@ import java.util.regex.Pattern;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
-import com.nextdoor.bender.operation.Operation;
-import com.nextdoor.bender.operation.OperationException;
+import com.nextdoor.bender.operation.FilterOperation;
 
 /**
  * This operation is used to remove certain events from the stream before continuing on to the
@@ -34,7 +33,7 @@ import com.nextdoor.bender.operation.OperationException;
  * If exclude is true, events with matching values are filtered out.
  * If exclude is false, events without matching values are filtered out.
  */
-public class RegexFilterOperation implements Operation {
+public class RegexFilterOperation implements FilterOperation {
   private final Pattern pattern;
   private final String path;
   private final Boolean exclude;
@@ -46,29 +45,28 @@ public class RegexFilterOperation implements Operation {
   }
 
   /**
-   * Returns true if the event should be filtered out and false otherwise.
+   * Returns true if the event matches the filter.
    *
-   * @param devent {@link DeserializedEvent} has payload to filter against.
+   * @param ievent {@link DeserializedEvent} has payload to filter against.
    */
-  protected boolean filterEvent(DeserializedEvent devent) {
+  @Override
+  public boolean test(InternalEvent ievent) {
+    DeserializedEvent devent = ievent.getEventObj();
+    if (devent == null) {
+      return false;
+    }
+
     boolean found;
     try {
-      String field = devent.getFieldAsString(path);
+      String field = devent.getFieldAsString(this.path);
       found = this.pattern.matcher(field).matches();
     } catch (FieldNotFoundException e) {
       found = false;
     }
 
-    return exclude == found;
-  }
-
-  @Override
-  public InternalEvent perform(InternalEvent ievent) {
-    DeserializedEvent devent = ievent.getEventObj();
-    if (devent == null) {
-      throw new OperationException("Deserialized object is null");
-    }
-    // Returning null here causes the event to be filtered out.
-    return filterEvent(devent) ? null : ievent;
+    /*
+     * When false is returned then the event is excluded from the stream.
+     */
+    return this.exclude != found;
   }
 }

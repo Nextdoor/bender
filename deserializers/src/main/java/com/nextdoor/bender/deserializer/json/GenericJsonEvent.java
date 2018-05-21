@@ -122,13 +122,17 @@ public class GenericJsonEvent implements DeserializedEvent {
       throw new FieldNotFoundException(fieldName + " is not in payload because payload is null");
     }
 
-    JsonObject json = this.payload.getAsJsonObject();
-    JsonElement elm = JsonPathProvider.read(json, fieldName);
+    Object o = getField(fieldName);
+    JsonPathProvider.delete(this.payload, fieldName);
+    return o;
+  }
 
-    if (elm == null) {
-      return null;
+  @Override
+  public GenericJsonEvent copy() {
+    if (this.payload != null) {
+      return new GenericJsonEvent(this.payload.deepCopy());
+    } else {
+      return new GenericJsonEvent(null);
     }
-    JsonPathProvider.delete(json, fieldName);
-    return elm;
   }
 }
