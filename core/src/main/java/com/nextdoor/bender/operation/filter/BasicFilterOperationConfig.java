@@ -23,7 +23,7 @@ import com.nextdoor.bender.operation.FilterOperationConfig;
 @JsonSchemaDescription("If pass is set to false then events are filtered out.")
 public class BasicFilterOperationConfig extends FilterOperationConfig {
 
-  @JsonSchemaDescription("If false events is filtered out.")
+  @JsonSchemaDescription("If 'false', event is filtered out.")
   @JsonSchemaDefault(value = "false")
   private Boolean pass = false;
 

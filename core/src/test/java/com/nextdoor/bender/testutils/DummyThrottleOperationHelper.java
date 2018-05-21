@@ -25,6 +25,11 @@ import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.operation.OperationFactory;
 
+
+/**
+ * The DummyThrottleOperation helps test concurrency within the operations pipeline. For every
+ * 100 events a 100ms delay is added.
+ */
 public class DummyThrottleOperationHelper {
   public static class DummyThrottleOperation implements EventOperation {
 

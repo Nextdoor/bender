@@ -36,7 +36,7 @@ public class ConditionalOperationConfig extends OperationConfig {
   @JsonProperty(required = false)
   private List<Condition> conditions = Collections.emptyList();
 
-  @JsonSchemaDescription("When true events that don't match any conditons will be filtered out.")
+  @JsonSchemaDescription("When true events that don't match any conditions will be filtered out.")
   @JsonSchemaDefault(value = "false")
   private Boolean filterNonMatch = false;
 

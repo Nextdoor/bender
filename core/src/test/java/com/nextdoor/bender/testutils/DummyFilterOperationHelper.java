@@ -26,6 +26,11 @@ import com.nextdoor.bender.operation.FilterOperationConfig;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.OperationFactory;
 
+
+/**
+ * The DummyFilterOperation helps test filtering within forked or conditional operations. Every
+ * other event will be filtered out.
+ */
 public class DummyFilterOperationHelper {
   public static class DummyFilterOperation implements FilterOperation {
 
