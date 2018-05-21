@@ -1052,25 +1052,6 @@ function sourceButton(element) {
             <span class="type-keyword">
                
             </span>
-            <span class="type-keyword">enum</span>
-                <span class="type-enum">GovCloud</span>
-                <span class="type-enum">US_EAST_1</span>
-                <span class="type-enum">US_EAST_2</span>
-                <span class="type-enum">US_WEST_1</span>
-                <span class="type-enum">US_WEST_2</span>
-                <span class="type-enum">EU_WEST_1</span>
-                <span class="type-enum">EU_WEST_2</span>
-                <span class="type-enum">EU_WEST_3</span>
-                <span class="type-enum">EU_CENTRAL_1</span>
-                <span class="type-enum">AP_SOUTH_1</span>
-                <span class="type-enum">AP_SOUTHEAST_1</span>
-                <span class="type-enum">AP_SOUTHEAST_2</span>
-                <span class="type-enum">AP_NORTHEAST_1</span>
-                <span class="type-enum">AP_NORTHEAST_2</span>
-                <span class="type-enum">SA_EAST_1</span>
-                <span class="type-enum">CN_NORTH_1</span>
-                <span class="type-enum">CN_NORTHWEST_1</span>
-                <span class="type-enum">CA_CENTRAL_1</span>
 
                 </div>
                 <div class="signature-description desc"></div>
@@ -6806,7 +6787,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">region</div>
+                <div class="property-name required">value</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
                string
@@ -25615,7 +25596,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">value</div>
+                <div class="property-name required">region</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
                string
@@ -25623,6 +25604,25 @@ function sourceButton(element) {
             <span class="type-keyword">
                
             </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
 
                 </div>
                 <div class="signature-description desc"></div>
@@ -26615,17 +26615,19 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name required">hostname</div>
+                <div class="property-name ">timeout</div>
                 <div class="signature-type">
-                                   <span class="signature-type-string">
-               string
+                                   <span class="signature-type-integer">
+               integer
             </span>
             <span class="type-keyword">
-               
+               [1000;300000]
             </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">40000</span>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP endpoint hostname.</p>
+                <div class="signature-description desc"><p>Socket timeout on HTTP connection.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -28459,8 +28461,7 @@ function sourceButton(element) {
             <br>
 
                 </div>
-                <div class="signature-description desc"><p>HTTP headers to include.</p>
-</div>
+                <div class="signature-description desc"></div>
             </div>
             <div class="signature-box-container">
                 <div class="box-container" boxid="1">
@@ -28468,8 +28469,7 @@ function sourceButton(element) {
     <div class="box-header box-1">
         <div class="box-title" ref="">
             
-            <div class="box-description desc"><p>HTTP headers to include.</p>
-</div>
+            <div class="box-description desc"></div>
             <div class="end"></div>
         </div>
     </div>
@@ -28687,19 +28687,17 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">timeout</div>
+                <div class="property-name required">hostname</div>
                 <div class="signature-type">
-                                   <span class="signature-type-integer">
-               integer
+                                   <span class="signature-type-string">
+               string
             </span>
             <span class="type-keyword">
-               [1000;300000]
+               
             </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">40000</span>
 
                 </div>
-                <div class="signature-description desc"><p>Socket timeout on HTTP connection.</p>
+                <div class="signature-description desc"><p>HTTP endpoint hostname.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -28862,7 +28860,8 @@ function sourceButton(element) {
             <br>
 
                 </div>
-                <div class="signature-description desc"></div>
+                <div class="signature-description desc"><p>HTTP headers to include.</p>
+</div>
             </div>
             <div class="signature-box-container">
                 <div class="box-container" boxid="1">
@@ -28870,7 +28869,8 @@ function sourceButton(element) {
     <div class="box-header box-1">
         <div class="box-title" ref="">
             
-            <div class="box-description desc"></div>
+            <div class="box-description desc"><p>HTTP headers to include.</p>
+</div>
             <div class="end"></div>
         </div>
     </div>
