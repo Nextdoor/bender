@@ -59,11 +59,7 @@ public class PartitionOperation implements EventOperation {
         }
       }
 
-      if (key != null) {
-        partitions.put(spec.getName(), spec.interpret(key));
-      } else {
-        throw new OperationException("unable to find value for partition " + spec.getName());
-      }
+      partitions.put(spec.getName(), spec.interpret(key));
     }
 
     return partitions;
