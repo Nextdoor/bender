@@ -29,6 +29,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.utils.Time;
 
 public class PartitionSpec {
@@ -151,7 +152,7 @@ public class PartitionSpec {
 
   protected String getFormattedString(String input) {
     if (input == null) {
-      return input;
+      throw new OperationException("unable to find value for partition '" + this.getName() +"'");
     }
 
     switch (this.stringFormat) {

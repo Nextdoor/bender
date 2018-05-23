@@ -23,6 +23,7 @@ import static org.mockito.Mockito.spy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Stream;
@@ -63,8 +64,7 @@ public class PartitionOperationTest {
   @Test
   public void testGetEvaluatedPartitionsStatic() {
     List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
-    List<String> sources = Arrays.asList("foo");
-    PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STATIC, "123", 0);
+    PartitionSpec spec = new PartitionSpec("foo", Collections.emptyList(), PartitionSpec.Interpreter.STATIC, "123", 0);
     partitionSpecs.add(spec);
 
     PartitionOperation op = new PartitionOperation(partitionSpecs);
@@ -119,7 +119,7 @@ public class PartitionOperationTest {
     try {
       op.perform(ievent);
     } catch (OperationException e) {
-      assertEquals("unable to find value for partition foo", e.getMessage());
+      assertEquals("unable to find value for partition 'foo'", e.getMessage());
       throw e;
     }
   }
@@ -141,7 +141,7 @@ public class PartitionOperationTest {
     try {
       op.perform(ievent);
     } catch (OperationException e) {
-      assertEquals("unable to find value for partition foo", e.getMessage());
+      assertEquals("unable to find value for partition 'foo'", e.getMessage());
       throw e;
     }
   }
