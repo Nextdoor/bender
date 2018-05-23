@@ -38,7 +38,7 @@ public class S3TransportConfig extends RegionalTransportConfig {
 
   @JsonSchemaDescription("Path to append to S3 keys.")
   @JsonProperty(required = false)
-  private String basePath;
+  private String basePath = "";
 
   @JsonSchemaDescription("Compress files with bz2 compression.")
   @JsonSchemaDefault("true")

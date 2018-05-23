@@ -119,7 +119,7 @@ public class PartitionOperationTest {
     try {
       op.perform(ievent);
     } catch (OperationException e) {
-      assertEquals("unable to find value for partition foo", e.getMessage());
+      assertEquals("unable to find value for partition 'foo'", e.getMessage());
       throw e;
     }
   }
@@ -141,7 +141,7 @@ public class PartitionOperationTest {
     try {
       op.perform(ievent);
     } catch (OperationException e) {
-      assertEquals("unable to find value for partition foo", e.getMessage());
+      assertEquals("unable to find value for partition 'foo'", e.getMessage());
       throw e;
     }
   }
