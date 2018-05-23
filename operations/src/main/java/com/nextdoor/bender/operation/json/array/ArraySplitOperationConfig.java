@@ -15,15 +15,29 @@
 
 package com.nextdoor.bender.operation.json.array;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
 @JsonTypeName("JsonArraySplitOperation")
-@JsonSchemaDescription("Provided a JSON array it will produce new events with payloads coorepsonding "
-    + "to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two "
-    + "seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.")
+@JsonSchemaDescription("Provided a path to a JSON array it will produce new events with payloads "
+    + "coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be "
+    + "turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.")
 public class ArraySplitOperationConfig extends OperationConfig {
+
+  @JsonSchemaDescription("Path to a JSON node which is an array. See https://github.com/jayway/JsonPath")
+  @JsonProperty(required = true)
+  private String path;
+
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
 
   @Override
   public Class<ArraySplitOperationFactory> getFactoryClass() {
