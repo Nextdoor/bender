@@ -26,6 +26,12 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
   @JsonSchemaDefault(value = "true")
   private Boolean failOnException = true;
 
+  @JsonSchemaDescription("Adds Lambda function resource tags to reporters' metrics. Note that "
+      + "the lambda:ListTags IAM permission is required.")
+  @JsonSchemaDefault("false")
+  @JsonProperty(required = false)
+  private Boolean includeFunctionTags = false;
+
   @JsonSchemaDescription("Maximum queue size used to buffer raw data prior to deserialization. "
       + "This adds back pressure that ensures Bender does not read quicker than it can process "
       + "and send to your desination (transport). Increasing the buffer will increase memory "
@@ -48,5 +54,13 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
 
   public void setQueueSize(Integer queueSize) {
     this.queueSize = queueSize;
+  }
+
+  public Boolean getIncludeFunctionTags() {
+    return this.includeFunctionTags;
+  }
+
+  public void setIncludeFunctionTags(Boolean includeFunctionTags) {
+    this.includeFunctionTags = includeFunctionTags;
   }
 }
