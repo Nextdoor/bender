@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.operation.OperationConfig;
+import com.nextdoor.bender.operation.FilterOperationConfig;
 
 @JsonTypeName("RegexFilterOperation")
 @JsonSchemaDescription("This operation is used to remove certain events from the stream before "
@@ -32,7 +32,7 @@ import com.nextdoor.bender.operation.OperationConfig;
     + "stream will only hold {\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"baz\\\"}. If instead, "
     + "exclude = false, the stream would only hold "
     + "{\\\"data\\\": \\\"one\\\", \\\"type\\\": \\\"bar\\\"} after filtering.")
-public class RegexFilterOperationConfig extends OperationConfig {
+public class RegexFilterOperationConfig extends FilterOperationConfig {
 
   @JsonSchemaDescription("Regex to be matched against JSON objects. See "
       + "https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html")

@@ -18,7 +18,7 @@ package com.nextdoor.bender.operation.json.key;
 import java.util.regex.Pattern;
 
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationFactory;
 
 /**
@@ -30,9 +30,7 @@ public class KeyNameReplacementOperationFactory implements OperationFactory {
   private Pattern pattern;
 
   @Override
-  public Operation newInstance() {
-
-
+  public EventOperation newInstance() {
     return new KeyNameReplacementOperation(this.pattern, this.config.getReplacement(),
         this.config.getDrop());
   }

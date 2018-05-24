@@ -1,0 +1,26 @@
+---
+handler:
+  type: DummyHandlerHelper$DummyHandler
+  queue_size: 50
+sources:
+- name: Test Events
+  source_regex: ".*"
+  deserializer:
+    type: DummyDeserializerHelper$DummyDeserializerConfig
+  operations:
+  - type: ConditionalOperation
+    conditions:
+    - condition:
+        type: DummyFilterOperationHelper$DummyFilterOperationConfig
+      operations:
+      - type: DummyAppendOperationHelper$DummyAppendOperationConfig
+        append_str: "+"
+      - type: DummyThrottleOperationHelper$DummyThrottleOperationConfig
+wrapper:
+  type: DummyWrapperHelper$DummyWrapperConfig
+serializer:
+  type: DummySerializerHelper$DummySerializerConfig
+transport:
+  type: DummyTransportHelper$DummyTransporterConfig
+  threads: 1
+reporters: []

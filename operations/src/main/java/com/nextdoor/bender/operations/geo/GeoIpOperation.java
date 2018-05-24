@@ -25,11 +25,11 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operations.geo.GeoIpOperationConfig.GeoProperty;
 
-public class GeoIpOperation implements Operation {
+public class GeoIpOperation implements EventOperation {
   private final String pathToIpAddress;
   private final String destFieldName;
   private final DatabaseReader databaseReader;

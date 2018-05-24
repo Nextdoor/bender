@@ -15,19 +15,14 @@
 
 package com.nextdoor.bender.time;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
-
 import static org.mockito.Mockito.spy;
-
+import org.junit.Test;
 import com.nextdoor.bender.InternalEvent;
-import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
-
+import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummyStringEvent;
 import com.nextdoor.bender.time.TimeOperationConfig.TimeFieldType;
 

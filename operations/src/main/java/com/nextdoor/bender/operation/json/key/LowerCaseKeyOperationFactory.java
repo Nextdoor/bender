@@ -16,7 +16,7 @@
 package com.nextdoor.bender.operation.json.key;
 
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationFactory;
 
 /**
@@ -27,7 +27,7 @@ public class LowerCaseKeyOperationFactory implements OperationFactory {
   private LowerCaseKeyOperationConfig config;
 
   @Override
-  public Operation newInstance() {
+  public EventOperation newInstance() {
     return new LowerCaseKeyOperation();
   }
 

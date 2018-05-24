@@ -17,9 +17,7 @@ package com.nextdoor.bender.testutils;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.lang3.NotImplementedException;
-
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
@@ -62,17 +60,35 @@ public class DummyDeserializerHelper {
     public String getFieldAsString(String fieldName) throws FieldNotFoundException {
       Object o = getField(fieldName);
 
-      return payload.get(fieldName).toString();
+      return o.toString();
     }
 
     @Override
     public Object removeField(String fieldName) throws FieldNotFoundException {
       return payload.remove(fieldName);
     }
+
+    @Override
+    public DummpyMapEvent copy() {
+      /*
+       * Note this is a weak copy
+       */
+      DummpyMapEvent other = new DummpyMapEvent();
+      if (this.payload != null) {
+        other.setPayload(new HashMap<String, Object>(this.payload));
+      }
+      return other;
+    }
   }
 
   public static class DummpyEvent implements DeserializedEvent {
     public Object payload;
+
+    public DummpyEvent() {}
+
+    public DummpyEvent(Object payload) {
+      this.payload = payload;
+    }
 
     @Override
     public Object getPayload() {
@@ -102,6 +118,11 @@ public class DummyDeserializerHelper {
     @Override
     public Object removeField(String fieldName) throws FieldNotFoundException {
       throw new FieldNotFoundException();
+    }
+
+    @Override
+    public DummpyEvent copy() {
+      return new DummpyEvent(this.payload);
     }
   }
 
@@ -140,6 +161,15 @@ public class DummyDeserializerHelper {
     @Override
     public Object removeField(String fieldName) throws FieldNotFoundException {
       throw new FieldNotFoundException("field not found");
+    }
+
+    @Override
+    public DummyStringEvent copy() {
+      if (this.payload != null) {
+        return new DummyStringEvent(new String(this.payload));
+      } else {
+        return new DummyStringEvent(null);
+      }
     }
   }
 
@@ -181,5 +211,4 @@ public class DummyDeserializerHelper {
 
     }
   }
-
 }

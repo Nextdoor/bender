@@ -21,10 +21,10 @@ import java.util.List;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 
-public class PartitionOperation implements Operation {
+public class PartitionOperation implements EventOperation {
   private final List<PartitionSpec> partitionSpecs;
 
   public PartitionOperation(final List<PartitionSpec> partitionSpecs) {
@@ -59,11 +59,7 @@ public class PartitionOperation implements Operation {
         }
       }
 
-      if (key != null) {
-        partitions.put(spec.getName(), spec.interpret(key));
-      } else {
-        throw new OperationException("unable to find value for partition " + spec.getName());
-      }
+      partitions.put(spec.getName(), spec.interpret(key));
     }
 
     return partitions;

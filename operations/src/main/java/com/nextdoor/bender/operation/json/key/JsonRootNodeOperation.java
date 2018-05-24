@@ -19,13 +19,13 @@ import com.google.gson.JsonObject;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.json.JsonPathProvider;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 
 /**
  * Changes the root node of JSON object.
  */
-public class JsonRootNodeOperation implements Operation {
+public class JsonRootNodeOperation implements EventOperation {
   private String path;
 
   public JsonRootNodeOperation(String path) {

@@ -18,6 +18,7 @@ package com.nextdoor.bender.operation.substitution;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonIgnore;

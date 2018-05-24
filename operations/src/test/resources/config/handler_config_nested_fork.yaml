@@ -1,0 +1,29 @@
+---
+handler:
+  type: DummyHandlerHelper$DummyHandler
+  queue_size: 50
+sources:
+- name: Test Events
+  source_regex: ".*"
+  deserializer:
+    type: DummyDeserializerHelper$DummyDeserializerConfig
+  operations:
+  - type: ForkOperation
+    forks:
+    - operations:
+      - type: ForkOperation
+        forks:
+        - operations:
+          - type: DummyAppendOperationHelper$DummyAppendOperationConfig
+            append_str: "+"
+        - operations:
+          - type: DummyAppendOperationHelper$DummyAppendOperationConfig
+            append_str: "-"
+wrapper:
+  type: DummyWrapperHelper$DummyWrapperConfig
+serializer:
+  type: DummySerializerHelper$DummySerializerConfig
+transport:
+  type: DummyTransportHelper$DummyTransporterConfig
+  threads: 1
+reporters: []

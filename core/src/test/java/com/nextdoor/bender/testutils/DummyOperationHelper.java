@@ -18,12 +18,20 @@ package com.nextdoor.bender.testutils;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.BaseOperation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationConfig;
 import com.nextdoor.bender.operation.OperationFactory;
 
 public class DummyOperationHelper {
-  public static class DummyOperation implements Operation {
+  public static class DummyNullOperation implements EventOperation {
+    @Override
+    public InternalEvent perform(InternalEvent event) {
+      return null;
+    }
+  }
+
+  public static class DummyOperation implements EventOperation {
     @Override
     public InternalEvent perform(InternalEvent event) {
       return event;
@@ -40,16 +48,16 @@ public class DummyOperationHelper {
   }
 
   public static class DummyOperationFactory implements OperationFactory {
-    public Operation op;
+    public BaseOperation op;
 
     public DummyOperationFactory() {}
 
-    public DummyOperationFactory(Operation op) {
+    public DummyOperationFactory(BaseOperation op) {
       this.op = op;
     }
 
     @Override
-    public Operation newInstance() {
+    public BaseOperation newInstance() {
       return this.op == null ? new DummyOperation() : this.op;
     }
 

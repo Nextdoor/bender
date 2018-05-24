@@ -37,22 +37,22 @@ public class OperationProcessor extends MonitoredProcess {
    * this method itself does not evaluate records and is only called once per function invocation to
    * setup the stream pipeline.
    * 
-   * @param stream
+   * @param input
    * @return new stream with operation map/flatmap added
    */
-  public Stream<InternalEvent> perform(Stream<InternalEvent> stream) {
+  public Stream<InternalEvent> perform(Stream<InternalEvent> input) {
     Stream<InternalEvent> output = null;
 
-    if (this.op instanceof Operation) {
-      output = stream.map(ievent -> {
+    if (this.op instanceof EventOperation) {
+      output = input.map(ievent -> {
         this.getRuntimeStat().start();
         try {
-          InternalEvent i = ((Operation) op).perform(ievent);
+          InternalEvent i = ((EventOperation) op).perform(ievent);
           this.getSuccessCountStat().increment();
           return i;
         } catch (OperationException e) {
           this.getErrorCountStat().increment();
-          logger.debug(e);
+          logger.warn(e);
           return null;
         } finally {
           this.getRuntimeStat().stop();
@@ -63,7 +63,7 @@ public class OperationProcessor extends MonitoredProcess {
        * MultiplexOperations require the use of flatmap which allows a single stream item to produce
        * multiple results.
        */
-      output = stream.flatMap(ievent -> {
+      output = input.flatMap(ievent -> {
         this.getRuntimeStat().start();
         try {
           Stream<InternalEvent> s = ((MultiplexOperation) op).perform(ievent).stream();
@@ -71,8 +71,23 @@ public class OperationProcessor extends MonitoredProcess {
           return s;
         } catch (OperationException e) {
           this.getErrorCountStat().increment();
-          logger.debug(e);
+          logger.warn(e);
           return Stream.empty();
+        } finally {
+          this.getRuntimeStat().stop();
+        }
+      });
+    } else if (this.op instanceof StreamOperation) {
+      StreamOperation forkOp = (StreamOperation) this.op;
+      output = forkOp.getOutputStream(input);
+    } else if (this.op instanceof FilterOperation) {
+      output = input.filter(ievent -> {
+        try {
+          return ((FilterOperation) this.op).test(ievent);
+        } catch (OperationException e) {
+          this.getErrorCountStat().increment();
+          logger.warn(e);
+          return false;
         } finally {
           this.getRuntimeStat().stop();
         }
@@ -107,7 +122,7 @@ public class OperationProcessor extends MonitoredProcess {
     return this.op;
   }
 
-  public void setOperation(BaseOperation operation) {
+  public void setOperation(EventOperation operation) {
     this.op = operation;
   }
 }

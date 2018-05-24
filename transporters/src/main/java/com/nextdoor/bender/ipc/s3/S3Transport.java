@@ -153,7 +153,7 @@ public class S3Transport implements PartitionedTransport {
 
     if (this.basePath.endsWith("/")) {
       key = this.basePath + key;
-    } else {
+    } else if (!this.basePath.equals("")) {
       key = this.basePath + '/' + key;
     }
 

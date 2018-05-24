@@ -21,13 +21,13 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.net.URLCodec;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
-import com.nextdoor.bender.operation.Operation;
+import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 
 /**
  * URL Decodes specified fields.
  */
-public class URLDecodeOperation implements Operation {
+public class URLDecodeOperation implements EventOperation {
   public static final URLCodec codec = new URLCodec();
   private final List<String> fieldNames;
   private final int times;
@@ -51,7 +51,7 @@ public class URLDecodeOperation implements Operation {
       String value = null;
       try {
         value = ievent.getEventObj().getFieldAsString(fieldName);
-      } catch (FieldNotFoundException  e) {
+      } catch (FieldNotFoundException e) {
         continue;
       }
 

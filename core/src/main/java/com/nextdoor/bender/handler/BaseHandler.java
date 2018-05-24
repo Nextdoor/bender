@@ -23,13 +23,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -53,6 +51,9 @@ import com.nextdoor.bender.operation.OperationProcessor;
 import com.nextdoor.bender.serializer.SerializationException;
 import com.nextdoor.bender.serializer.SerializerProcessor;
 import com.nextdoor.bender.wrapper.Wrapper;
+import com.oath.cyclops.async.adapters.Queue;
+
+import cyclops.reactive.ReactiveSeq;
 
 /**
  * Lambda handler which contains most of the logic to process inputs.
@@ -67,10 +68,17 @@ public abstract class BaseHandler<T> implements Handler<T> {
   protected Wrapper wrapper;
   protected SerializerProcessor ser;
   private IpcSenderService ipcService;
+  private int queueSize = 1;
   protected List<Source> sources;
   protected BenderConfig config = null;
   protected Monitor monitor;
   protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
+
+  /**
+   * Per invocation
+   */
+  private Queue<InternalEvent> eventQueue = null;
+
 
   /**
    * Loads @{link com.nextdoor.bender.config.Configuration} from a resource file and initializes
@@ -150,6 +158,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
     ser = handlerResources.getSerializerProcessor();
     setIpcService(new IpcSenderService(handlerResources.getTransportFactory()));
     sources = new ArrayList<Source>(handlerResources.getSources().values());
+    queueSize = config.getHandlerConfig().getQueueSize();
     initialized = true;
   }
 
@@ -184,6 +193,13 @@ public abstract class BaseHandler<T> implements Handler<T> {
         this.getInternalEventIterator().close();
       } catch (IOException e) {
         logger.warn("Error closing iterator", e);
+      }
+
+      if (this.eventQueue != null) {
+        try {
+          this.eventQueue.closeAndClear();
+        } catch (Queue.ClosedQueueException e) {
+        }
       }
     }
   }
@@ -235,12 +251,35 @@ public abstract class BaseHandler<T> implements Handler<T> {
     AtomicLong oldestOccurrenceTime = new AtomicLong(System.currentTimeMillis());
 
     /*
-     * Process each record
+     * eventQueue allows for InternalEvents to be pulled from the Iterator and published to a
+     * stream. A Thread is created that loops through events in the iterator and offers them to the
+     * queue. Note that offering will be blocked if the queue is full (back pressure being applied).
+     * When the iterator reaches the end (hasNext = false) the queue is closed.
      */
-    int characteristics = Spliterator.IMMUTABLE;
-    Spliterator<InternalEvent> spliterator =
-        Spliterators.spliteratorUnknownSize(events, characteristics);
-    Stream<InternalEvent> input = StreamSupport.stream(spliterator, false);
+    this.eventQueue =
+        new Queue<InternalEvent>(new LinkedBlockingQueue<InternalEvent>(this.queueSize));
+
+    /*
+     * Thread will live for duration of invocation and supply Stream with events.
+     */
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        while (events.hasNext()) {
+          try {
+            eventQueue.offer(events.next());
+          } catch (Queue.ClosedQueueException e) {
+            break;
+          }
+        }
+        try {
+          eventQueue.close();
+        } catch (Queue.ClosedQueueException e) {
+        }
+      }
+    }).start();
+
+    Stream<InternalEvent> input = this.eventQueue.jdkStream();
 
     /*
      * Filter out raw events
