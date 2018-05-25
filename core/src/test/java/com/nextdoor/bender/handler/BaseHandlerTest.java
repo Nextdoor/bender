@@ -52,6 +52,7 @@ import com.nextdoor.bender.ipc.IpcSenderService;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
+import com.nextdoor.bender.monitoring.Monitor;
 import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.OperationProcessor;
@@ -135,6 +136,7 @@ public class BaseHandlerTest {
   public void before() {
     handler = new DummyHandler();
     BaseHandler.CONFIG_FILE = null;
+    Monitor.getInstance().getTags().clear();
   }
 
   @After
@@ -287,6 +289,9 @@ public class BaseHandlerTest {
         put("f2", "foo");
       }
     };
+    System.out.println(actual.entrySet());
+    System.out.println(expected.entrySet());
+
     assertTrue(actual.entrySet().containsAll(expected.entrySet()));
   }
 
