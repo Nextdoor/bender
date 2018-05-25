@@ -72,10 +72,14 @@ public class Monitor {
     Monitor.tags.add(new Tag(name, val));
   }
 
-  public void addTags(Map<String, String> tags) {
+  public void addTagsMap(Map<String, String> tags) {
     tags.forEach((k, v) -> {
       Monitor.tags.add(new Tag(k, v));
     });
+  }
+
+  public void addTags(Set<Tag> tags) {
+    Monitor.tags.addAll(tags);
   }
 
   public static Monitor getInstance() {

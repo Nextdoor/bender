@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.misc.ErrorBuffer;
-import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.S3Object;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -348,7 +348,7 @@ public class BenderConfig {
   }
 
   public static BenderConfig load(AmazonS3ClientFactory s3ClientFactory, AmazonS3URI s3Uri) {
-    AmazonS3 s3 = s3ClientFactory.newInstance();
+    AmazonS3Client s3 = s3ClientFactory.newInstance();
     S3Object s3object = s3.getObject(s3Uri.getBucket(), s3Uri.getKey());
 
     StringWriter writer = new StringWriter();
