@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.handler;
 
+import java.util.Collections;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
@@ -25,6 +27,18 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
   @JsonProperty(required = false)
   @JsonSchemaDefault(value = "true")
   private Boolean failOnException = true;
+
+  @JsonSchemaDescription("Adds Lambda function resource tags to reporters' metrics. Note that "
+      + "the lambda:ListTags IAM permission is required.")
+  @JsonSchemaDefault("false")
+  @JsonProperty(required = false)
+  private Boolean includeFunctionTags = false;
+
+  @JsonSchemaDescription("Additional tags to add to reporters' metrics. Note Lambda function "
+      + "resource tags take precedence.")
+  @JsonSchemaDefault("{}")
+  @JsonProperty(required = false)
+  private Map<String, String> metricTags = Collections.emptyMap();
 
   @JsonSchemaDescription("Maximum queue size used to buffer raw data prior to deserialization. "
       + "This adds back pressure that ensures Bender does not read quicker than it can process "
@@ -48,5 +62,21 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
 
   public void setQueueSize(Integer queueSize) {
     this.queueSize = queueSize;
+  }
+
+  public Boolean getIncludeFunctionTags() {
+    return this.includeFunctionTags;
+  }
+
+  public void setIncludeFunctionTags(Boolean includeFunctionTags) {
+    this.includeFunctionTags = includeFunctionTags;
+  }
+
+  public Map<String, String> getMetricTags() {
+    return this.metricTags;
+  }
+
+  public void setMetricTags(Map<String, String> metricTags) {
+    this.metricTags = metricTags;
   }
 }

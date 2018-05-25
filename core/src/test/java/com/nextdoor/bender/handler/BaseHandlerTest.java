@@ -16,29 +16,33 @@
 package com.nextdoor.bender.handler;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import com.amazonaws.services.lambda.AWSLambda;
+import com.amazonaws.services.lambda.model.ListTagsResult;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.InternalEventIterator;
 import com.nextdoor.bender.LambdaContext;
+import com.nextdoor.bender.aws.AWSLambdaClientFactory;
 import com.nextdoor.bender.aws.TestContext;
 import com.nextdoor.bender.config.Source;
 import com.nextdoor.bender.deserializer.DeserializationException;
@@ -48,6 +52,7 @@ import com.nextdoor.bender.ipc.IpcSenderService;
 import com.nextdoor.bender.ipc.TransportBuffer;
 import com.nextdoor.bender.ipc.TransportException;
 import com.nextdoor.bender.ipc.TransportFactory;
+import com.nextdoor.bender.monitoring.Monitor;
 import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.OperationProcessor;
@@ -131,6 +136,7 @@ public class BaseHandlerTest {
   public void before() {
     handler = new DummyHandler();
     BaseHandler.CONFIG_FILE = null;
+    Monitor.getInstance().getTags().clear();
   }
 
   @After
@@ -201,6 +207,92 @@ public class BaseHandlerTest {
     handler.handler(events, context);
 
     assertEquals("/config/staging.json", handler.config.getConfigFile());
+  }
+
+  @Test
+  public void testLambdaFunctionTags() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_tags.json";
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:test_tags");
+
+    AWSLambdaClientFactory mockFactory = mock(AWSLambdaClientFactory.class);
+    AWSLambda mockLambda = mock(AWSLambda.class);
+    doReturn(mockLambda).when(mockFactory).newInstance();
+
+    ListTagsResult mockResult = mock(ListTagsResult.class);
+    HashMap<String, String> expected = new HashMap<String, String>() {
+      {
+        put("t1", "foo");
+        put("t2", "bar");
+      }
+    };
+    doReturn(expected).when(mockResult).getTags();
+    doReturn(mockResult).when(mockLambda).listTags(any());
+
+    handler.lambdaClientFactory = mockFactory;
+    handler.init(context);
+    Map<String, String> actual = handler.monitor.getTagsMap();
+
+    assertTrue(actual.entrySet().containsAll(expected.entrySet()));
+  }
+
+  @Test
+  public void testUserTags() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_user_tags.json";
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:test_tags");
+
+    HashMap<String, String> expected = new HashMap<String, String>() {
+      {
+        put("u1", "foo");
+        put("u2", "bar");
+      }
+    };
+
+    handler.init(context);
+    Map<String, String> actual = handler.monitor.getTagsMap();
+
+    assertTrue(actual.entrySet().containsAll(expected.entrySet()));
+  }
+
+  @Test
+  public void tagsDuplicate() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_tags_duplicate.json";
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:test_tags");
+
+    AWSLambdaClientFactory mockFactory = mock(AWSLambdaClientFactory.class);
+    AWSLambda mockLambda = mock(AWSLambda.class);
+    doReturn(mockLambda).when(mockFactory).newInstance();
+
+    ListTagsResult mockResult = mock(ListTagsResult.class);
+    HashMap<String, String> functionTags = new HashMap<String, String>() {
+      {
+        put("f1", "foo");
+        put("f2", "foo");
+      }
+    };
+    doReturn(functionTags).when(mockResult).getTags();
+    doReturn(mockResult).when(mockLambda).listTags(any());
+
+    handler.lambdaClientFactory = mockFactory;
+    handler.init(context);
+    Map<String, String> actual = handler.monitor.getTagsMap();
+
+    HashMap<String, String> expected = new HashMap<String, String>() {
+      {
+        put("f1", "foo");
+        put("u1", "bar");
+        put("f2", "foo");
+      }
+    };
+    System.out.println(actual.entrySet());
+    System.out.println(expected.entrySet());
+
+    assertTrue(actual.entrySet().containsAll(expected.entrySet()));
   }
 
   @Test(expected = HandlerException.class)

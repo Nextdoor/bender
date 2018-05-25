@@ -32,9 +32,13 @@ import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
+import com.amazonaws.services.lambda.AWSLambda;
+import com.amazonaws.services.lambda.model.ListTagsRequest;
+import com.amazonaws.services.lambda.model.ListTagsResult;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.aws.AWSLambdaClientFactory;
 import com.nextdoor.bender.aws.AmazonS3ClientFactory;
 import com.nextdoor.bender.config.BenderConfig;
 import com.nextdoor.bender.config.ConfigurationException;
@@ -52,8 +56,6 @@ import com.nextdoor.bender.serializer.SerializationException;
 import com.nextdoor.bender.serializer.SerializerProcessor;
 import com.nextdoor.bender.wrapper.Wrapper;
 import com.oath.cyclops.async.adapters.Queue;
-
-import cyclops.reactive.ReactiveSeq;
 
 /**
  * Lambda handler which contains most of the logic to process inputs.
@@ -73,6 +75,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
   protected BenderConfig config = null;
   protected Monitor monitor;
   protected AmazonS3ClientFactory s3ClientFactory = new AmazonS3ClientFactory();
+  protected AWSLambdaClientFactory lambdaClientFactory = new AWSLambdaClientFactory();
 
   /**
    * Per invocation
@@ -145,6 +148,20 @@ public abstract class BaseHandler<T> implements Handler<T> {
     } catch (ClassNotFoundException e) {
       throw new HandlerException("Unable to load resource: " + e.getMessage(), e);
     }
+
+    /*
+     * Add Lambda function tags
+     */
+    if (config.getHandlerConfig().getIncludeFunctionTags()) {
+      AWSLambda lambda = this.lambdaClientFactory.newInstance();
+      ListTagsResult res = lambda.listTags(new ListTagsRequest().withResource(ctx.getInvokedFunctionArn()));
+      monitor.addTagsMap(res.getTags());
+    }
+
+    /*
+     * Add user tags
+     */
+    monitor.addTagsMap(config.getHandlerConfig().getMetricTags());
 
     /*
      * Register reporters
