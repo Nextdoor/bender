@@ -150,13 +150,18 @@ public abstract class BaseHandler<T> implements Handler<T> {
     }
 
     /*
-     * Add tags
+     * Add Lambda function tags
      */
     if (config.getHandlerConfig().getIncludeFunctionTags()) {
       AWSLambda lambda = this.lambdaClientFactory.newInstance();
       ListTagsResult res = lambda.listTags(new ListTagsRequest().withResource(ctx.getInvokedFunctionArn()));
-      monitor.addTags(res.getTags());
+      monitor.addTagsMap(res.getTags());
     }
+
+    /*
+     * Add user tags
+     */
+    monitor.addTagsMap(config.getHandlerConfig().getMetricTags());
 
     /*
      * Register reporters
