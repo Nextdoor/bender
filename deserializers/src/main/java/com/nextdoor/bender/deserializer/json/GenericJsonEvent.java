@@ -16,10 +16,10 @@
 package com.nextdoor.bender.deserializer.json;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.InvalidPathException;
-import com.jayway.jsonpath.DocumentContext;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
 
@@ -62,7 +62,7 @@ public class GenericJsonEvent implements DeserializedEvent {
           + " is an invalid path");
     }
 
-    if (obj == null) {
+    if (obj == null || obj instanceof JsonNull) {
       throw new FieldNotFoundException(field + " is not in payload.");
     }
 
@@ -90,11 +90,7 @@ public class GenericJsonEvent implements DeserializedEvent {
       fieldName = "$." + fieldName;
     }
 
-    int lastDot = fieldName.lastIndexOf('.');
-    DocumentContext json = JsonPathProvider.parse(this.payload.getAsJsonObject());
-    String path = fieldName.substring(0, lastDot);
-    String field = fieldName.substring(lastDot + 1);
-    json.put(path, field, value);
+    JsonPathProvider.setField(this.payload, value, fieldName);
   }
 
   @Override
@@ -125,6 +121,15 @@ public class GenericJsonEvent implements DeserializedEvent {
     Object o = getField(fieldName);
     JsonPathProvider.delete(this.payload, fieldName);
     return o;
+  }
+
+  @Override
+  public void deleteField(String fieldName) {
+    if (this.payload == null) {
+      return;
+    }
+
+    JsonPathProvider.delete(this.payload, fieldName);
   }
 
   @Override

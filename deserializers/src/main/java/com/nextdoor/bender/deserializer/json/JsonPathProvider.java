@@ -17,7 +17,8 @@ package com.nextdoor.bender.deserializer.json;
 
 import java.util.EnumSet;
 import java.util.Set;
-
+import java.util.concurrent.ConcurrentHashMap;
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
@@ -32,7 +33,7 @@ import com.jayway.jsonpath.spi.mapper.MappingProvider;
  */
 public class JsonPathProvider {
   /**
-   * Setup JsonPath defaults
+   * Setup JsonPath defaults and then create a static default configuration
    */
   static {
     /*
@@ -54,24 +55,44 @@ public class JsonPathProvider {
 
       @Override
       public Set<Option> options() {
-        return EnumSet.of(Option.SUPPRESS_EXCEPTIONS);
+        return EnumSet.of(Option.SUPPRESS_EXCEPTIONS, Option.DEFAULT_PATH_LEAF_TO_NULL);
       }
     });
   }
 
-  public static DocumentContext parse(String json) {
-    return JsonPath.parse(json);
+  private static final Configuration CONFIG = Configuration.defaultConfiguration();
+
+  /*
+   * As an optimization cache the compiled JsonPaths. This cache isn't expected to grow every large
+   * as it comes from user configuration. Should we decide to add programmatic path generation and
+   * use then this will have to become an LRU.
+   */
+  private static final ConcurrentHashMap<String, JsonPath> CACHE =
+      new ConcurrentHashMap<String, JsonPath>();
+
+  private static JsonPath getPath(String pathStr) {
+    JsonPath path;
+
+    if ((path = CACHE.get(pathStr)) == null) {
+      path = JsonPath.compile(pathStr);
+      CACHE.put(pathStr, path);
+    }
+
+    return path;
   }
 
-  public static DocumentContext parse(Object json) {
-    return JsonPath.parse(json);
+  public static void setField(Object jsonObject, Object newVal, String pathStr) {
+    JsonPath path = getPath(pathStr);
+    path.set(jsonObject, newVal, CONFIG);
   }
 
-  public static <T> T read(Object json, String jsonPath, Predicate... filters) {
-    return JsonPath.read(json, jsonPath, filters);
+  public static <T> T read(Object jsonObject, String pathStr, Predicate... filters) {
+    JsonPath path = getPath(pathStr);
+    return path.read(jsonObject);
   }
 
-  public static void delete(Object json, String jsonPath) {
-    JsonPath.parse(json).delete(jsonPath);
+  public static void delete(Object json, String pathStr) {
+    JsonPath path = getPath(pathStr);
+    path.delete(json, CONFIG);
   }
 }

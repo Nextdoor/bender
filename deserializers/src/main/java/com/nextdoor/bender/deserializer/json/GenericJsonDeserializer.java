@@ -18,6 +18,7 @@ package com.nextdoor.bender.deserializer.json;
 import java.util.List;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
@@ -88,10 +89,11 @@ public class GenericJsonDeserializer extends Deserializer {
     }
 
     if (rootNodeOverridePath != null) {
-      obj = JsonPathProvider.read(obj, rootNodeOverridePath);
-      if (obj == null) {
+      Object o = JsonPathProvider.read(obj, rootNodeOverridePath);
+      if (obj == null || o instanceof JsonNull) {
         throw new DeserializationException(rootNodeOverridePath + " path not found in object");
       }
+      obj = (JsonObject) o;
     }
 
     devent.setPayload(obj);

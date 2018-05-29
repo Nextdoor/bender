@@ -159,13 +159,7 @@ public class SubstitutionOperation implements EventOperation {
        * Remove source field
        */
       if (config.getRemoveSrcField()) {
-        try {
-          devent.removeField(kv.getKey());
-        } catch (FieldNotFoundException e) {
-          if (config.getFailSrcNotFound()) {
-            throw new OperationException(e);
-          }
-        }
+        devent.deleteField(kv.getKey());
       }
       return;
     }
@@ -183,13 +177,7 @@ public class SubstitutionOperation implements EventOperation {
      * Only remove if source field does not equal destination.
      */
     if (config.getRemoveSrcField() && !kv.getKey().equals(config.getKey())) {
-      try {
-        devent.removeField(kv.getKey());
-      } catch (FieldNotFoundException e) {
-        if (config.getFailSrcNotFound()) {
-          throw new OperationException(e);
-        }
-      }
+      devent.deleteField(kv.getKey());
     }
   }
 
