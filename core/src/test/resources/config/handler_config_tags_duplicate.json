@@ -2,10 +2,10 @@
   "handler": {
     "type": "DummyHandlerHelper$DummyHandler",
     "include_function_tags": true,
-    "metric_tags": {
-      "f1": "bar",
-      "u1": "bar"
-    }
+    "metric_tags": [
+      {"key": "f1", "value": "bar"},
+      {"key": "u1", "value": "bar"}
+    ]
   },
   "sources": [
     {

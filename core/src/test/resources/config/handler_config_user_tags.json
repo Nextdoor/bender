@@ -1,10 +1,10 @@
 {
   "handler": {
     "type": "DummyHandlerHelper$DummyHandler",
-    "metric_tags": {
-      "u1": "foo",
-      "u2": "bar"
-    }
+    "metric_tags": [
+      {"key": "u1", "value": "foo"},
+      {"key": "u2", "value": "bar"}
+    ]
   },
   "sources": [
     {

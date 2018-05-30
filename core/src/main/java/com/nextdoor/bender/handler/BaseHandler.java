@@ -150,18 +150,18 @@ public abstract class BaseHandler<T> implements Handler<T> {
     }
 
     /*
-     * Add Lambda function tags
+     * Add user tags
+     */
+    monitor.addTags(config.getHandlerConfig().getMetricTags());
+
+    /*
+     * Add Lambda function tags. These will override duplicate user tags.
      */
     if (config.getHandlerConfig().getIncludeFunctionTags()) {
       AWSLambda lambda = this.lambdaClientFactory.newInstance();
       ListTagsResult res = lambda.listTags(new ListTagsRequest().withResource(ctx.getInvokedFunctionArn()));
       monitor.addTagsMap(res.getTags());
     }
-
-    /*
-     * Add user tags
-     */
-    monitor.addTagsMap(config.getHandlerConfig().getMetricTags());
 
     /*
      * Register reporters

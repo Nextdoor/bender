@@ -698,17 +698,9 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">metric_tags</div>
                 <div class="signature-type">
-                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
-
-                            <span class="type-keyword">map</span>
+                            <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
-            <span class="signature-type-string">
-                string
-            </span>
-            <span class="type-keyword">
-                
-            </span>
-            <br>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Tag</span>
 
                 </div>
                 <div class="signature-description desc"><p>Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence.</p>
@@ -719,9 +711,8 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-1">
         <div class="box-title" ref="">
-            
-            <div class="box-description desc"><p>Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence.</p>
-</div>
+            <div class="box-name ">Tag</div>
+            <div class="box-description desc"></div>
             <div class="end"></div>
         </div>
     </div>
@@ -732,26 +723,61 @@ function sourceButton(element) {
             
         </div>
         <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
 
-
-    <div class="signature">
-        <div class="signature-header">
-            <div class="property-name type-pattern">additional</div>
-            <div class="signature-type">
-                
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
             </div>
         </div>
-    </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
 </div>
 
     </div>
     <div class="source">
         <pre class="json-schema">{
   "type": "object",
-  "additionalProperties": {
-    "type": "string"
+  "additionalProperties": false,
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
   },
-  "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
+  "required": [
+    "key",
+    "value"
+  ]
 }</pre>
     </div>
 </div>
@@ -847,9 +873,9 @@ function sourceButton(element) {
       "description": "Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required."
     },
     "metric_tags": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
       },
       "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
     },
@@ -960,17 +986,9 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">metric_tags</div>
                 <div class="signature-type">
-                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
-
-                            <span class="type-keyword">map</span>
+                            <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
-            <span class="signature-type-string">
-                string
-            </span>
-            <span class="type-keyword">
-                
-            </span>
-            <br>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Tag</span>
 
                 </div>
                 <div class="signature-description desc"><p>Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence.</p>
@@ -981,9 +999,8 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-1">
         <div class="box-title" ref="">
-            
-            <div class="box-description desc"><p>Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence.</p>
-</div>
+            <div class="box-name ">Tag</div>
+            <div class="box-description desc"></div>
             <div class="end"></div>
         </div>
     </div>
@@ -994,26 +1011,61 @@ function sourceButton(element) {
             
         </div>
         <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
 
-
-    <div class="signature">
-        <div class="signature-header">
-            <div class="property-name type-pattern">additional</div>
-            <div class="signature-type">
-                
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
             </div>
         </div>
-    </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
 </div>
 
     </div>
     <div class="source">
         <pre class="json-schema">{
   "type": "object",
-  "additionalProperties": {
-    "type": "string"
+  "additionalProperties": false,
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
   },
-  "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
+  "required": [
+    "key",
+    "value"
+  ]
 }</pre>
     </div>
 </div>
@@ -1109,9 +1161,9 @@ function sourceButton(element) {
       "description": "Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required."
     },
     "metric_tags": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
       },
       "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
     },
@@ -1222,17 +1274,9 @@ function sourceButton(element) {
             <div class="signature-header">
                 <div class="property-name ">metric_tags</div>
                 <div class="signature-type">
-                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
-
-                            <span class="type-keyword">map</span>
+                            <span class="type-keyword">array</span>
         <span class="type-keyword"></span>
-            <span class="signature-type-string">
-                string
-            </span>
-            <span class="type-keyword">
-                
-            </span>
-            <br>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Tag</span>
 
                 </div>
                 <div class="signature-description desc"><p>Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence.</p>
@@ -1243,9 +1287,8 @@ function sourceButton(element) {
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-1">
         <div class="box-title" ref="">
-            
-            <div class="box-description desc"><p>Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence.</p>
-</div>
+            <div class="box-name ">Tag</div>
+            <div class="box-description desc"></div>
             <div class="end"></div>
         </div>
     </div>
@@ -1256,26 +1299,61 @@ function sourceButton(element) {
             
         </div>
         <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
 
-
-    <div class="signature">
-        <div class="signature-header">
-            <div class="property-name type-pattern">additional</div>
-            <div class="signature-type">
-                
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
             </div>
         </div>
-    </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
 </div>
 
     </div>
     <div class="source">
         <pre class="json-schema">{
   "type": "object",
-  "additionalProperties": {
-    "type": "string"
+  "additionalProperties": false,
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
   },
-  "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
+  "required": [
+    "key",
+    "value"
+  ]
 }</pre>
     </div>
 </div>
@@ -1370,9 +1448,9 @@ function sourceButton(element) {
       "description": "Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required."
     },
     "metric_tags": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
       },
       "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
     },
@@ -31859,9 +31937,9 @@ function sourceButton(element) {
           "description": "Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required."
         },
         "metric_tags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tag"
           },
           "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
         },
@@ -31883,6 +31961,22 @@ function sourceButton(element) {
       "title": "S3Handler",
       "required": [
         "type"
+      ]
+    },
+    "Tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "value"
       ]
     },
     "SNSS3HandlerConfig": {
@@ -31908,9 +32002,9 @@ function sourceButton(element) {
           "description": "Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required."
         },
         "metric_tags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tag"
           },
           "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
         },
@@ -31957,9 +32051,9 @@ function sourceButton(element) {
           "description": "Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required."
         },
         "metric_tags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tag"
           },
           "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
         },
@@ -34441,22 +34535,6 @@ function sourceButton(element) {
       },
       "required": [
         "name"
-      ]
-    },
-    "Tag": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "key": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "key",
-        "value"
       ]
     },
     "DataDogReporterConfig": {

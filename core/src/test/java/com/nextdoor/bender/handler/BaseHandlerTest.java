@@ -285,12 +285,10 @@ public class BaseHandlerTest {
     HashMap<String, String> expected = new HashMap<String, String>() {
       {
         put("f1", "foo");
-        put("u1", "bar");
         put("f2", "foo");
+        put("u1", "bar");
       }
     };
-    System.out.println(actual.entrySet());
-    System.out.println(expected.entrySet());
 
     assertTrue(actual.entrySet().containsAll(expected.entrySet()));
   }

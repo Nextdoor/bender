@@ -31,6 +31,8 @@ public class Tag {
     this.value = value;
   }
 
+  public Tag() {}
+
   public String getKey() {
     return key;
   }

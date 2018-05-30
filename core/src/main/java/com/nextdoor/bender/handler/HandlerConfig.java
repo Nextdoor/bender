@@ -16,11 +16,12 @@
 package com.nextdoor.bender.handler;
 
 import java.util.Collections;
-import java.util.Map;
+import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.config.AbstractConfig;
+import com.nextdoor.bender.monitoring.Tag;
 
 public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
   @JsonSchemaDescription("If an uncaught exception occurs fail the function")
@@ -38,7 +39,7 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
       + "resource tags take precedence.")
   @JsonSchemaDefault("{}")
   @JsonProperty(required = false)
-  private Map<String, String> metricTags = Collections.emptyMap();
+  private Set<Tag> metricTags = Collections.emptySet();
 
   @JsonSchemaDescription("Maximum queue size used to buffer raw data prior to deserialization. "
       + "This adds back pressure that ensures Bender does not read quicker than it can process "
@@ -72,11 +73,11 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
     this.includeFunctionTags = includeFunctionTags;
   }
 
-  public Map<String, String> getMetricTags() {
+  public Set<Tag> getMetricTags() {
     return this.metricTags;
   }
 
-  public void setMetricTags(Map<String, String> metricTags) {
+  public void setMetricTags(Set<Tag> metricTags) {
     this.metricTags = metricTags;
   }
 }

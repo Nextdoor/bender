@@ -69,16 +69,41 @@ public class Monitor {
   }
 
   public void addTag(String name, String val) {
+    /*
+     * Remove existing tags that will be updated
+     */
+    Monitor.tags.removeIf(p -> {
+      return p.getKey().equals(name);
+    });
+
     Monitor.tags.add(new Tag(name, val));
   }
 
   public void addTagsMap(Map<String, String> tags) {
+    /*
+     * Remove existing tags that will be updated
+     */
+    Monitor.tags.removeIf(p -> {
+      return tags.containsKey(p.getKey());
+    });
+
+    /*
+     * Add new / update tags
+     */
     tags.forEach((k, v) -> {
       Monitor.tags.add(new Tag(k, v));
     });
   }
 
   public void addTags(Set<Tag> tags) {
+    /*
+     * Remove existing tags that will be updated
+     */
+    Monitor.tags.removeAll(tags);
+
+    /*
+     * Add new /update tags
+     */
     Monitor.tags.addAll(tags);
   }
 
