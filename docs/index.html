@@ -4626,7 +4626,7 @@ function sourceButton(element) {
     <div class="box-header box-6">
         <div class="box-title" ref="">
             <div class="box-name ">JsonArraySplitOperation</div>
-            <div class="box-description desc"><p>Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
+            <div class="box-description desc"><p>Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -4659,6 +4659,24 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">path</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Path to a JSON node which is an array. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -4668,7 +4686,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
+  "description": "Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
   "properties": {
     "type": {
       "type": "string",
@@ -4676,11 +4694,16 @@ function sourceButton(element) {
         "JsonArraySplitOperation"
       ],
       "default": "JsonArraySplitOperation"
+    },
+    "path": {
+      "type": "string",
+      "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
     }
   },
   "title": "JsonArraySplitOperation",
   "required": [
-    "type"
+    "type",
+    "path"
   ]
 }</pre>
     </div>
@@ -8598,7 +8621,7 @@ function sourceButton(element) {
     <div class="box-header box-6">
         <div class="box-title" ref="">
             <div class="box-name ">JsonArraySplitOperation</div>
-            <div class="box-description desc"><p>Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
+            <div class="box-description desc"><p>Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -8631,6 +8654,24 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">path</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Path to a JSON node which is an array. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -8640,7 +8681,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
+  "description": "Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
   "properties": {
     "type": {
       "type": "string",
@@ -8648,11 +8689,16 @@ function sourceButton(element) {
         "JsonArraySplitOperation"
       ],
       "default": "JsonArraySplitOperation"
+    },
+    "path": {
+      "type": "string",
+      "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
     }
   },
   "title": "JsonArraySplitOperation",
   "required": [
-    "type"
+    "type",
+    "path"
   ]
 }</pre>
     </div>
@@ -13690,7 +13736,7 @@ function sourceButton(element) {
     <div class="box-header box-6">
         <div class="box-title" ref="">
             <div class="box-name ">JsonArraySplitOperation</div>
-            <div class="box-description desc"><p>Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
+            <div class="box-description desc"><p>Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -13723,6 +13769,24 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">path</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Path to a JSON node which is an array. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -13732,7 +13796,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
+  "description": "Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
   "properties": {
     "type": {
       "type": "string",
@@ -13740,11 +13804,16 @@ function sourceButton(element) {
         "JsonArraySplitOperation"
       ],
       "default": "JsonArraySplitOperation"
+    },
+    "path": {
+      "type": "string",
+      "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
     }
   },
   "title": "JsonArraySplitOperation",
   "required": [
-    "type"
+    "type",
+    "path"
   ]
 }</pre>
     </div>
@@ -17776,7 +17845,7 @@ function sourceButton(element) {
     <div class="box-header box-6">
         <div class="box-title" ref="">
             <div class="box-name ">JsonArraySplitOperation</div>
-            <div class="box-description desc"><p>Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
+            <div class="box-description desc"><p>Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -17809,6 +17878,24 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">path</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Path to a JSON node which is an array. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -17818,7 +17905,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
+  "description": "Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
   "properties": {
     "type": {
       "type": "string",
@@ -17826,11 +17913,16 @@ function sourceButton(element) {
         "JsonArraySplitOperation"
       ],
       "default": "JsonArraySplitOperation"
+    },
+    "path": {
+      "type": "string",
+      "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
     }
   },
   "title": "JsonArraySplitOperation",
   "required": [
-    "type"
+    "type",
+    "path"
   ]
 }</pre>
     </div>
@@ -22108,7 +22200,7 @@ function sourceButton(element) {
     <div class="box-header box-6">
         <div class="box-title" ref="">
             <div class="box-name ">JsonArraySplitOperation</div>
-            <div class="box-description desc"><p>Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
+            <div class="box-description desc"><p>Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{"foo": 1}, {"bar": 2}] will be turned into two seperate events with payloads of {"foo": 1} and {"bar": 2}.</p>
 </div>
             <div class="end"></div>
         </div>
@@ -22141,6 +22233,24 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">path</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Path to a JSON node which is an array. See <a href="https://github.com/jayway/JsonPath">https://github.com/jayway/JsonPath</a></p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -22150,7 +22260,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
-  "description": "Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
+  "description": "Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
   "properties": {
     "type": {
       "type": "string",
@@ -22158,11 +22268,16 @@ function sourceButton(element) {
         "JsonArraySplitOperation"
       ],
       "default": "JsonArraySplitOperation"
+    },
+    "path": {
+      "type": "string",
+      "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
     }
   },
   "title": "JsonArraySplitOperation",
   "required": [
-    "type"
+    "type",
+    "path"
   ]
 }</pre>
     </div>
@@ -32292,7 +32407,7 @@ function sourceButton(element) {
     "ArraySplitOperationConfig": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Provided a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
+      "description": "Provided a path to a JSON array it will produce new events with payloads coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be turned into two seperate events with payloads of {\"foo\": 1} and {\"bar\": 2}.",
       "properties": {
         "type": {
           "type": "string",
@@ -32300,11 +32415,16 @@ function sourceButton(element) {
             "JsonArraySplitOperation"
           ],
           "default": "JsonArraySplitOperation"
+        },
+        "path": {
+          "type": "string",
+          "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
         }
       },
       "title": "JsonArraySplitOperation",
       "required": [
-        "type"
+        "type",
+        "path"
       ]
     },
     "URLDecodeOperationConfig": {

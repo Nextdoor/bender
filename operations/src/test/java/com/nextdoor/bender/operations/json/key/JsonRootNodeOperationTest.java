@@ -16,30 +16,28 @@
 package com.nextdoor.bender.operations.json.key;
 
 import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 import org.junit.Test;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.deserializer.json.GenericJsonEvent;
+import com.nextdoor.bender.operation.OperationException;
 import com.nextdoor.bender.operation.json.key.JsonRootNodeOperation;
 import com.nextdoor.bender.operation.json.key.JsonRootNodeOperationFactory;
 import com.nextdoor.bender.operations.json.OperationTest;
 import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyEvent;
 
-public class JsonRootNodeMutatorTest extends OperationTest {
+public class JsonRootNodeOperationTest extends OperationTest {
   @Test
-  public void testMutateRootNode()
+  public void testNewRootNode()
       throws JsonSyntaxException, UnsupportedEncodingException, IOException {
     JsonParser parser = new JsonParser();
     JsonElement input = parser.parse(getResourceString("basic_input.json"));
 
-    DummpyEvent devent = new DummpyEvent();
-    devent.payload = input.getAsJsonObject();
+    GenericJsonEvent devent = new GenericJsonEvent(input.getAsJsonObject());
 
     JsonRootNodeOperationFactory f = new JsonRootNodeOperationFactory();
     JsonRootNodeOperation operation = new JsonRootNodeOperation("$.i.ia");
@@ -48,6 +46,40 @@ public class JsonRootNodeMutatorTest extends OperationTest {
     ievent.setEventObj(devent);
     operation.perform(ievent);
 
-    assertEquals("{\"iaa\":\"bar\"}", devent.payload.toString());
+    assertEquals("{\"iaa\":\"bar\"}", devent.getPayload().toString());
+  }
+
+  @Test(expected = OperationException.class)
+  public void testNotAnObject()
+      throws JsonSyntaxException, UnsupportedEncodingException, IOException {
+    JsonParser parser = new JsonParser();
+    JsonElement input = parser.parse(getResourceString("basic_input.json"));
+
+    DummpyEvent devent = new DummpyEvent();
+    devent.payload = input.getAsJsonObject();
+
+    JsonRootNodeOperationFactory f = new JsonRootNodeOperationFactory();
+    JsonRootNodeOperation operation = new JsonRootNodeOperation("$.h.ha");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+    operation.perform(ievent);
+  }
+
+  @Test(expected = OperationException.class)
+  public void testMissingField()
+      throws JsonSyntaxException, UnsupportedEncodingException, IOException {
+    JsonParser parser = new JsonParser();
+    JsonElement input = parser.parse(getResourceString("basic_input.json"));
+
+    DummpyEvent devent = new DummpyEvent();
+    devent.payload = input.getAsJsonObject();
+
+    JsonRootNodeOperationFactory f = new JsonRootNodeOperationFactory();
+    JsonRootNodeOperation operation = new JsonRootNodeOperation("$.z");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+    operation.perform(ievent);
   }
 }

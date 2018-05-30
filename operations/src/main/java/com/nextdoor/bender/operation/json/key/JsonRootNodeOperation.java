@@ -18,7 +18,7 @@ package com.nextdoor.bender.operation.json.key;
 import com.google.gson.JsonObject;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
-import com.nextdoor.bender.deserializer.json.JsonPathProvider;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
 
@@ -48,8 +48,18 @@ public class JsonRootNodeOperation implements EventOperation {
       throw new OperationException("Payload data is not a JsonObject");
     }
 
-    JsonObject jsonPayload = (JsonObject) payload;
-    event.setPayload(JsonPathProvider.read(jsonPayload, path));
+    Object o;
+    try {
+      o = event.getField(path);
+    } catch (FieldNotFoundException e) {
+      throw new OperationException(e);
+    }
+
+    if (!(o instanceof JsonObject)) {
+      throw new OperationException("specified node '" + path +"' is not an object");
+    }
+
+    event.setPayload(o);
   }
 
   @Override
