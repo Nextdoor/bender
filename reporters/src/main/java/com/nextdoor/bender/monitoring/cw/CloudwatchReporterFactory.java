@@ -15,7 +15,8 @@
 
 package com.nextdoor.bender.monitoring.cw;
 
-import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatchClientBuilder;
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.monitoring.ReporterFactory;
 
@@ -24,16 +25,18 @@ import com.nextdoor.bender.monitoring.ReporterFactory;
  */
 public class CloudwatchReporterFactory implements ReporterFactory {
   private CloudwatchReporterConfig config;
-  private AmazonCloudWatchClient client;
+  private AmazonCloudWatch client;
 
   @Override
   public void setConf(AbstractConfig config) {
     this.config = (CloudwatchReporterConfig) config;
-    this.client = new AmazonCloudWatchClient();
+    AmazonCloudWatchClientBuilder clientBuilder = AmazonCloudWatchClientBuilder.standard();
 
     if (this.config.getRegion() != null) {
-      this.client = this.client.withRegion(this.config.getRegion());
+      clientBuilder.withRegion(this.config.getRegion());
     }
+
+    this.client = clientBuilder.build();
   }
 
   @Override
