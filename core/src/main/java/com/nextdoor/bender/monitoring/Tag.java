@@ -31,6 +31,8 @@ public class Tag {
     this.value = value;
   }
 
+  public Tag() {}
+
   public String getKey() {
     return key;
   }
@@ -52,7 +54,7 @@ public class Tag {
   }
 
   public int hashCode() {
-    return Objects.hash(this.key, this.value);
+    return Objects.hash(this.key);
   }
 
   public boolean equals(Object o) {
@@ -66,9 +68,11 @@ public class Tag {
 
     Tag t = (Tag) o;
 
+    /*
+     * Only check key because allowing duplicate keys doesn't make sense.
+     */
     boolean k = (this.key == null ? t.key == null : this.key.equals(t.key));
-    boolean v = (this.value == null ? t.value == null : this.value.equals(t.value));
 
-    return k && v;
+    return k;
   }
 }
