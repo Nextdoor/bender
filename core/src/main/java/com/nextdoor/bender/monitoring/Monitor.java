@@ -16,11 +16,12 @@
 package com.nextdoor.bender.monitoring;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -54,8 +55,56 @@ public class Monitor {
     tags.clear();
   }
 
+  public Set<Tag> getTags() {
+    return Monitor.tags;
+  }
+
+  public Map<String, String> getTagsMap() {
+    HashMap<String, String> map = new HashMap<String, String>();
+    Monitor.tags.forEach(t -> {
+      map.put(t.getKey(), t.getValue());
+    });
+
+    return map;
+  }
+
   public void addTag(String name, String val) {
-    tags.add(new Tag(name, val));
+    /*
+     * Remove existing tags that will be updated
+     */
+    Monitor.tags.removeIf(p -> {
+      return p.getKey().equals(name);
+    });
+
+    Monitor.tags.add(new Tag(name, val));
+  }
+
+  public void addTagsMap(Map<String, String> tags) {
+    /*
+     * Remove existing tags that will be updated
+     */
+    Monitor.tags.removeIf(p -> {
+      return tags.containsKey(p.getKey());
+    });
+
+    /*
+     * Add new / update tags
+     */
+    tags.forEach((k, v) -> {
+      Monitor.tags.add(new Tag(k, v));
+    });
+  }
+
+  public void addTags(Set<Tag> tags) {
+    /*
+     * Remove existing tags that will be updated
+     */
+    Monitor.tags.removeAll(tags);
+
+    /*
+     * Add new /update tags
+     */
+    Monitor.tags.addAll(tags);
   }
 
   public static Monitor getInstance() {

@@ -1,0 +1,36 @@
+{
+  "handler": {
+    "type": "DummyHandlerHelper$DummyHandler",
+    "include_function_tags": true,
+    "metric_tags": [
+      {"key": "f1", "value": "bar"},
+      {"key": "u1", "value": "bar"}
+    ]
+  },
+  "sources": [
+    {
+      "name": "Test Events",
+      "source_regex": ".*",
+      "deserializer": {
+        "type": "DummyDeserializerHelper$DummyDeserializerConfig"
+      },
+      "operations": [
+        {
+          "type": "DummyOperationHelper$DummyOperationConfig"
+        }
+      ]
+    }
+  ],
+  "wrapper": {
+    "type": "DummyWrapperHelper$DummyWrapperConfig"
+  },
+  "serializer": {
+    "type": "DummySerializerHelper$DummySerializerConfig"
+  },
+  "transport": {
+    "type": "DummyTransportHelper$DummyTransporterConfig",
+    "threads": 1
+  },
+  "reporters": [
+  ]
+}

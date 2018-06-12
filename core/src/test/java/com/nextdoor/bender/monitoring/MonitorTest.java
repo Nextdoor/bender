@@ -78,7 +78,7 @@ public class MonitorTest {
     Stat statFail = new Stat("bender.test.tags");
     statFail.addTag("foo", "3");
     Stat statPass = new Stat("bender.test.tags");
-    statPass.addTag("foo", "4");
+    statPass.addTag("bar", "4");
 
     monitor.addInvocationStat(statFail);
     monitor.addInvocationStat(statPass);
@@ -86,7 +86,7 @@ public class MonitorTest {
     monitor.writeStats();
 
     assertEquals(1, reporter.buffer.size());
-    assertEquals(true, reporter.buffer.contains("bender.test.tags foo:4 0"));
+    assertEquals(true, reporter.buffer.contains("bender.test.tags bar:4 0"));
     assertEquals(false, reporter.buffer.contains("bender.test.tags foo:3 0"));
   }
 
@@ -110,7 +110,7 @@ public class MonitorTest {
     monitor.writeStats();
 
     assertEquals(1, reporter.buffer.size());
-    assertEquals(true, reporter.buffer.contains("bender.test.tags foo:3,foo:4 0"));
+    assertEquals(true, reporter.buffer.contains("bender.test.tags foo:3 0"));
   }
 
   @Test
@@ -194,7 +194,7 @@ public class MonitorTest {
     Stat s3 = new Stat("bender.test.bar");
     s3.addTag("t0", "7");
     Stat s4 = new Stat("bender.test.bar");
-    s4.addTag("t0", "3");
+    s4.addTag("t1", "3");
 
     monitor.addInvocationStat(s1);
     monitor.addInvocationStat(s2);
@@ -207,6 +207,6 @@ public class MonitorTest {
     assertEquals(false, reporter.buffer.contains("bender.test.foo  0"));
     assertEquals(true, reporter.buffer.contains("bender.test.foo  5"));
     assertEquals(false, reporter.buffer.contains("bender.test.bar t0:7 0"));
-    assertEquals(true, reporter.buffer.contains("bender.test.bar t0:3 0"));
+    assertEquals(true, reporter.buffer.contains("bender.test.bar t1:3 0"));
   }
 }

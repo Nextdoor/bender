@@ -65,4 +65,22 @@ public class LambdaContext {
   public Map<String, String> getContextAsMap() {
     return this.ctxMap;
   }
+
+  public boolean equals(Object o) {
+    if (! (o instanceof LambdaContext) ) {
+      return false;
+    }
+
+    LambdaContext other = (LambdaContext) o;
+
+    if (! this.ctx.equals(other.ctx)) {
+      return false;
+    }
+
+    if (! this.ctxMap.equals(other.ctxMap)) {
+      return false;
+    }
+
+    return true;
+  }
 }

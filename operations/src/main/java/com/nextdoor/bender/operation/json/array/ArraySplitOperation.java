@@ -23,11 +23,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
+import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.deserializer.json.GenericJsonEvent;
 import com.nextdoor.bender.operation.MultiplexOperation;
 import com.nextdoor.bender.operation.OperationException;
 
 public class ArraySplitOperation implements MultiplexOperation {
+  private final String path;
+
+  public ArraySplitOperation(String path) {
+    this.path = path;
+  }
 
   @Override
   public List<InternalEvent> perform(InternalEvent ievent) throws OperationException {
@@ -36,17 +42,18 @@ public class ArraySplitOperation implements MultiplexOperation {
         throw new OperationException("Deserialized object is null");
       }
 
-      Object payload = ievent.getEventObj().getPayload();
-
-      LinkedHashMap<String, String> partitions = ievent.getPartitions();
-
-      if (payload == null) {
-        throw new OperationException("Deserialized object is null");
+      Object payload;
+      try {
+        payload = ievent.getEventObj().getField(this.path);
+      } catch (FieldNotFoundException e) {
+        throw new OperationException(e);
       }
 
       if (!(payload instanceof JsonArray)) {
         throw new OperationException("Payload data is not a JsonArray");
       }
+
+      LinkedHashMap<String, String> partitions = ievent.getPartitions();
 
       JsonArray arr = (JsonArray) payload;
 
@@ -57,6 +64,7 @@ public class ArraySplitOperation implements MultiplexOperation {
               new InternalEvent(elm.toString(), ievent.getCtx(), ievent.getArrivalTime());
           DeserializedEvent newDeserEvent = new GenericJsonEvent(elm.getAsJsonObject());
           newEvent.setEventObj(newDeserEvent);
+          newEvent.setEventTime(ievent.getEventTime());
 
           /*
            * Deep clone the partitions
