@@ -42,6 +42,8 @@ public abstract class HandlerTest<T> {
 
   public abstract T getTestEvent() throws Exception;
 
+  public abstract String getExpectedEvent();
+
   public abstract String getConfigFile();
 
   @Before
@@ -82,7 +84,7 @@ public abstract class HandlerTest<T> {
      * Load expected
      */
     String expected = IOUtils.toString(
-        new InputStreamReader(this.getClass().getResourceAsStream("basic_output.json"), "UTF-8"));
+        new InputStreamReader(this.getClass().getResourceAsStream(getExpectedEvent()), "UTF-8"));
 
     assertEquals(expected, actual);
   }

@@ -71,6 +71,11 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
   }
 
   @Override
+  public String getExpectedEvent() {
+    return "basic_output.json";
+  }
+
+  @Override
   public SNSEvent getTestEvent() throws Exception {
     return getTestEvent(S3_BUCKET, true);
   }

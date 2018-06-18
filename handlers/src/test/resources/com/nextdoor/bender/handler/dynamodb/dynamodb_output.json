@@ -1,0 +1,1 @@
+{"eventID":"1","eventName":"INSERT","eventVersion":"1.0","dynamodb":{"ApproximateCreationDateTime":1479499740,"SequenceNumber":"111","Keys":{"Id":"101"},"NewImage":{"Message":"New item!","Id":"101"}}}

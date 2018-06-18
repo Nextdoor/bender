@@ -33,6 +33,11 @@ public class KinesisHandlerTest extends HandlerTest<KinesisEvent> {
   }
 
   @Override
+  public String getExpectedEvent() {
+    return "basic_output.json";
+  }
+
+  @Override
   public void setup() {
 
   }

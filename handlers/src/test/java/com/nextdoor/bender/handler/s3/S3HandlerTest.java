@@ -56,6 +56,11 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
   }
 
   @Override
+  public String getExpectedEvent() {
+    return "basic_output.json";
+  }
+
+  @Override
   public S3EventNotification getTestEvent() throws Exception {
     return getTestEvent(S3_BUCKET, true);
   }
