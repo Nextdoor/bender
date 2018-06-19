@@ -22,9 +22,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import java.util.regex.Pattern;
-
 import org.junit.Test;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.LambdaContext;
@@ -614,5 +611,132 @@ public class SubstitutionOperationTest {
 
     SubstitutionOperation op = new SubstitutionOperation(subSpecs);
     op.perform(ievent);
+  }
+
+  @Test
+  public void testStringSubKnown() throws FieldNotFoundException {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    VariableConfig.FieldVariable v = new VariableConfig.FieldVariable();
+    v.setFailSrcNotFound(true);
+    v.setSrcFields(Arrays.asList("foo"));
+    subSpecs.add(new StringSubSpecConfig("bar", "foo = {0}", Arrays.asList(v), true));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    assertEquals(2, devent.payload.size());
+    assertEquals("foo = 1234", devent.getField("bar"));
+    assertEquals("1234", devent.getField("foo"));
+  }
+
+  @Test
+  public void testStringSubNumberKnown() throws FieldNotFoundException {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    VariableConfig.FieldVariable v = new VariableConfig.FieldVariable();
+    v.setFailSrcNotFound(true);
+    v.setSrcFields(Arrays.asList("foo"));
+    subSpecs.add(new StringSubSpecConfig("bar", "number = {0}", Arrays.asList(v), true));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo", new Float(1.234f));
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    assertEquals(2, devent.payload.size());
+    assertEquals("number = 1.234", devent.getField("bar"));
+  }
+
+  @Test
+  public void testStringSubUnknown() throws FieldNotFoundException {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    VariableConfig.FieldVariable v = new VariableConfig.FieldVariable();
+    v.setFailSrcNotFound(false);
+    v.setSrcFields(Arrays.asList("baz"));
+    subSpecs.add(new StringSubSpecConfig("bar", "foo = {0}", Arrays.asList(v), true));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    assertEquals(2, devent.payload.size());
+    assertEquals("foo = null", devent.getField("bar"));
+    assertEquals("1234", devent.getField("foo"));
+  }
+
+  @Test(expected = OperationException.class)
+  public void testStringSubUnknownFail() throws FieldNotFoundException {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    VariableConfig.FieldVariable v = new VariableConfig.FieldVariable();
+    v.setFailSrcNotFound(true);
+    v.setSrcFields(Arrays.asList("baz"));
+    subSpecs.add(new StringSubSpecConfig("bar", "foo = {0}", Arrays.asList(v), true));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    assertEquals(2, devent.payload.size());
+    assertEquals("foo = null", devent.getField("bar"));
+    assertEquals("1234", devent.getField("foo"));
+  }
+
+  @Test
+  public void testStringSubRemove() throws FieldNotFoundException {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    VariableConfig.FieldVariable v = new VariableConfig.FieldVariable();
+    v.setFailSrcNotFound(true);
+    v.setRemoveSrcField(true);
+    v.setSrcFields(Arrays.asList("foo"));
+    subSpecs.add(new StringSubSpecConfig("bar", "foo = {0}", Arrays.asList(v), true));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    assertEquals(1, devent.payload.size());
+    assertEquals("foo = 1234", devent.getField("bar"));
+  }
+
+  @Test
+  public void testStringSubStatic() throws FieldNotFoundException {
+    ArrayList<SubSpecConfig<?>> subSpecs = new ArrayList<SubSpecConfig<?>>();
+    VariableConfig.StaticVariable v = new VariableConfig.StaticVariable();
+    v.setValue("1234");
+    subSpecs.add(new StringSubSpecConfig("bar", "static = {0}", Arrays.asList(v), true));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(subSpecs);
+    op.perform(ievent);
+
+    assertEquals(1, devent.payload.size());
+    assertEquals("static = 1234", devent.getField("bar"));
   }
 }

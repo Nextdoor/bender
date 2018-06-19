@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender.operation.substitution;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.text.ExtendedMessageFormat;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
@@ -277,6 +279,84 @@ public class SubstitutionOperation implements EventOperation {
     }
   }
 
+  private void doStringSub(StringSubSpecConfig config, DeserializedEvent devent,
+      Map<String, Object> nested) {
+    Object[] values = new Object[config.getVariables().size()];
+    List<String> keyToRemove = new ArrayList<String>();
+
+    for (int i = 0; i < config.getVariables().size(); i++) {
+      VariableConfig<?> variable = config.getVariables().get(i);
+
+      /*
+       * Get values
+       */
+      if (variable instanceof VariableConfig.FieldVariable) {
+        Pair<String, Object> kv = null;
+        try {
+          kv = getFieldAndSource(devent, ((VariableConfig.FieldVariable) variable).getSrcFields(),
+              true);
+
+          if (((VariableConfig.FieldVariable) variable).getRemoveSrcField()) {
+            keyToRemove.add(kv.getKey());
+          }
+        } catch (FieldNotFoundException e) {
+          if (((VariableConfig.FieldVariable) variable).getFailSrcNotFound()) {
+            throw new OperationException(e);
+          }
+        }
+
+        if (kv != null) {
+          values[i] = kv.getValue();
+        } else {
+          /*
+           * This handles the case of when fail src not found is false
+           */
+          values[i] = null;
+        }
+      } else if (variable instanceof VariableConfig.StaticVariable) {
+        values[i] = ((VariableConfig.StaticVariable) variable).getValue();
+      }
+    }
+
+    /*
+     * Format string with values
+     */
+    ExtendedMessageFormat mf = config.getMessageFormat();
+    String formatted = mf.format(values);
+
+    /*
+     * Perform substitution
+     */
+    if (nested != null) {
+      nested.put(config.getKey(), formatted);
+      keyToRemove.forEach(fieldName -> {
+        try {
+          devent.removeField(fieldName);
+        } catch (FieldNotFoundException e) {
+        }
+      });
+      return;
+    }
+
+    try {
+      devent.setField(config.getKey(), formatted);
+    } catch (FieldNotFoundException e) {
+      if (config.getFailDstNotFound()) {
+        throw new OperationException(e);
+      }
+    }
+
+    /*
+     * Remove source fields
+     */
+    keyToRemove.forEach(fieldName -> {
+      try {
+        devent.removeField(fieldName);
+      } catch (FieldNotFoundException e) {
+      }
+    });
+  }
+
   private void doRegexSub(RegexSubSpecConfig config, DeserializedEvent devent,
       Map<String, Object> nested) {
     Pair<String, Map<String, Object>> kv;
@@ -347,6 +427,8 @@ public class SubstitutionOperation implements EventOperation {
         doContextSub((ContextSubSpecConfig) subSpec, ievent, devent, nested);
       } else if (subSpec instanceof RegexSubSpecConfig) {
         doRegexSub((RegexSubSpecConfig) subSpec, devent, nested);
+      } else if (subSpec instanceof StringSubSpecConfig) {
+        doStringSub((StringSubSpecConfig) subSpec, devent, nested);
       } else if (subSpec instanceof NestedSubSpecConfig) {
         Map<String, Object> innerNest = new HashMap<String, Object>();
         doNestedSub((NestedSubSpecConfig) subSpec, ievent, devent, innerNest);
@@ -385,6 +467,8 @@ public class SubstitutionOperation implements EventOperation {
         doContextSub((ContextSubSpecConfig) subSpec, ievent, devent, null);
       } else if (subSpec instanceof RegexSubSpecConfig) {
         doRegexSub((RegexSubSpecConfig) subSpec, devent, null);
+      } else if (subSpec instanceof StringSubSpecConfig) {
+        doStringSub((StringSubSpecConfig) subSpec, devent, null);
       } else if (subSpec instanceof NestedSubSpecConfig) {
         Map<String, Object> innerNest = new HashMap<String, Object>();
         doNestedSub((NestedSubSpecConfig) subSpec, ievent, devent, innerNest);
@@ -400,7 +484,7 @@ public class SubstitutionOperation implements EventOperation {
     }
 
     return ievent;
-}
+  }
 
   public List<SubSpecConfig<?>> getSubSpecs() {
     return this.subSpecs;
