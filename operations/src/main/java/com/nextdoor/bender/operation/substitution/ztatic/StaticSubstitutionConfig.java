@@ -13,20 +13,21 @@
  *
  */
 
-package com.nextdoor.bender.operation.substitution;
+package com.nextdoor.bender.operation.substitution.ztatic;
 
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.operation.substitution.SubstitutionConfig;
 
 @JsonTypeName("StaticSubstitution")
 @JsonSchemaDescription("Substitutes event field value for a static value.")
-public class StaticSubSpecConfig extends SubSpecConfig<StaticSubSpecConfig> {
-  public StaticSubSpecConfig() {}
+public class StaticSubstitutionConfig extends SubstitutionConfig {
+  public StaticSubstitutionConfig() {}
 
-  public StaticSubSpecConfig(String key, String value, boolean failDstNotFound) {
+  public StaticSubstitutionConfig(String key, String value, boolean failDstNotFound) {
     super(key, failDstNotFound);
     this.value = value;
   }
@@ -49,11 +50,11 @@ public class StaticSubSpecConfig extends SubSpecConfig<StaticSubSpecConfig> {
       return false;
     }
 
-    if (!(o instanceof StaticSubSpecConfig)) {
+    if (!(o instanceof StaticSubstitutionConfig)) {
       return false;
     }
 
-    StaticSubSpecConfig other = (StaticSubSpecConfig) o;
+    StaticSubstitutionConfig other = (StaticSubstitutionConfig) o;
 
     if (!this.value.equals(other.getValue())) {
       return false;
@@ -65,5 +66,10 @@ public class StaticSubSpecConfig extends SubSpecConfig<StaticSubSpecConfig> {
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), this.value);
+  }
+
+  @Override
+  public Class<StaticSubstitutionFactory> getFactoryClass() {
+    return StaticSubstitutionFactory.class;
   }
 }

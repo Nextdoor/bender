@@ -23,11 +23,11 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.config.AbstractConfig;
 
 
-public abstract class VariableConfig<T> extends AbstractConfig<T> {
-  public VariableConfig() {};
+public abstract class Variable<T> extends AbstractConfig<T> {
+  public Variable() {};
 
   @JsonTypeName("FieldVariable")
-  public static class FieldVariable extends VariableConfig<FieldVariable> {
+  public static class FieldVariable extends Variable<FieldVariable> {
     public FieldVariable() {};
 
     public FieldVariable(String variable, List<String> srcFields) {
@@ -76,7 +76,7 @@ public abstract class VariableConfig<T> extends AbstractConfig<T> {
   }
 
   @JsonTypeName("StaticVariable")
-  public static class StaticVariable extends VariableConfig<StaticVariable> {
+  public static class StaticVariable extends Variable<StaticVariable> {
     public StaticVariable() {};
 
     public StaticVariable(String value) {

@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.operation.substitution;
+package com.nextdoor.bender.operation.substitution.metadata;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,13 +23,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.operation.substitution.SubstitutionConfig;
 
 @JsonTypeName("MetadataSubstitution")
 @JsonSchemaDescription("Substitutes event field value for list of event metadata proprties.")
-public class MetadataSubSpecConfig extends SubSpecConfig<MetadataSubSpecConfig> {
-  public MetadataSubSpecConfig() {}
+public class MetadataSubstitutionConfig extends SubstitutionConfig {
+  public MetadataSubstitutionConfig() {}
   
-  public MetadataSubSpecConfig(String key, List<String> includes, List<String> excludes, boolean failDstNotFound) {
+  public MetadataSubstitutionConfig(String key, List<String> includes, List<String> excludes, boolean failDstNotFound) {
     super(key, failDstNotFound);
     this.includes = includes;
     this.excludes = excludes;
@@ -67,11 +68,11 @@ public class MetadataSubSpecConfig extends SubSpecConfig<MetadataSubSpecConfig> 
       return false;
     }
 
-    if (!(o instanceof MetadataSubSpecConfig)) {
+    if (!(o instanceof MetadataSubstitutionConfig)) {
       return false;
     }
 
-    MetadataSubSpecConfig other = (MetadataSubSpecConfig) o;
+    MetadataSubstitutionConfig other = (MetadataSubstitutionConfig) o;
 
     if (this.includes.equals(other.getIncludes())) {
       return false;
@@ -87,5 +88,10 @@ public class MetadataSubSpecConfig extends SubSpecConfig<MetadataSubSpecConfig> 
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), this.includes, this.excludes);
+  }
+
+  @Override
+  public Class<MetadataSubstitutionFactory> getFactoryClass() {
+    return MetadataSubstitutionFactory.class;
   }
 }

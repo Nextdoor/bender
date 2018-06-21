@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.operations.gelf;
+package com.nextdoor.bender.operation.gelf;
 
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ import org.junit.Test;
 import com.nextdoor.bender.operation.gelf.GelfOperation;
 import com.nextdoor.bender.operation.gelf.GelfOperationConfig;
 import com.nextdoor.bender.operation.gelf.GelfOperationFactory;
-import com.nextdoor.bender.operation.substitution.FieldSubSpecConfig;
-import com.nextdoor.bender.operation.substitution.StaticSubSpecConfig;
-import com.nextdoor.bender.operation.substitution.SubSpecConfig;
+import com.nextdoor.bender.operation.substitution.SubstitutionConfig;
+import com.nextdoor.bender.operation.substitution.field.FieldSubstitutionConfig;
+import com.nextdoor.bender.operation.substitution.ztatic.StaticSubstitutionConfig;
 
 public class GelfOperationFactoryTest {
 
@@ -42,14 +42,15 @@ public class GelfOperationFactoryTest {
     factory.setConf(config);
 
     GelfOperation op = factory.newInstance();
-    List<SubSpecConfig<?>> actual = op.getSubSpecs();
+    List<SubstitutionConfig> actual = factory.getSubConfigs();
 
-    ArrayList<SubSpecConfig<?>> expected = new ArrayList<SubSpecConfig<?>>();
-    expected.add(new FieldSubSpecConfig("host", Arrays.asList("foo_host"), false, true, true));
-    expected.add(new FieldSubSpecConfig("file", Arrays.asList("filename"), false, false, false));
-    expected.add(new FieldSubSpecConfig("short_message", Arrays.asList("foo_short_message", "bar"),
-        false, true, true));
-    expected.add(new StaticSubSpecConfig("version", "1.1", true));
+    ArrayList<SubstitutionConfig> expected = new ArrayList<SubstitutionConfig>();
+    expected.add(new FieldSubstitutionConfig("host", Arrays.asList("foo_host"), false, true, true));
+    expected
+        .add(new FieldSubstitutionConfig("file", Arrays.asList("filename"), false, false, false));
+    expected.add(new FieldSubstitutionConfig("short_message",
+        Arrays.asList("foo_short_message", "bar"), false, true, true));
+    expected.add(new StaticSubstitutionConfig("version", "1.1", true));
 
     Collections.sort(expected, Comparator.comparingInt(Object::hashCode));
     Collections.sort(actual, Comparator.comparingInt(Object::hashCode));

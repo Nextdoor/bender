@@ -13,23 +13,23 @@
  *
  */
 
-package com.nextdoor.bender.operation.substitution;
+package com.nextdoor.bender.operation.substitution.formatted;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import org.apache.commons.text.ExtendedMessageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.operation.substitution.SubstitutionConfig;
+import com.nextdoor.bender.operation.substitution.Variable;
 
-@JsonTypeName("StringSubstitution")
+@JsonTypeName("FormattedSubstitution")
 @JsonSchemaDescription("Creates a new string using variable replacement.")
-public class StringSubSpecConfig extends SubSpecConfig<StringSubSpecConfig> {
-  public StringSubSpecConfig() {}
+public class FormattedSubstitutionConfig extends SubstitutionConfig {
+  public FormattedSubstitutionConfig() {}
 
-  public StringSubSpecConfig(String key, String format, List<VariableConfig<?>> variables,
+  public FormattedSubstitutionConfig(String key, String format, List<Variable<?>> variables,
       boolean failDstNotFound) {
     super(key, failDstNotFound);
     setFormat(format);
@@ -44,10 +44,7 @@ public class StringSubSpecConfig extends SubSpecConfig<StringSubSpecConfig> {
   @JsonSchemaDescription("List of variables used in string substitution. Index of variable "
       + "relates to index in 'format' string.")
   @JsonProperty(required = true)
-  private List<VariableConfig<?>> variables = Collections.emptyList();
-
-  @JsonIgnore
-  private ExtendedMessageFormat mf;
+  private List<Variable<?>> variables = Collections.emptyList();
 
   public String getFormat() {
     return this.format;
@@ -55,21 +52,14 @@ public class StringSubSpecConfig extends SubSpecConfig<StringSubSpecConfig> {
 
   public void setFormat(String format) {
     this.format = format;
-    if (format != null) {
-      this.mf = new ExtendedMessageFormat(format);
-    }
   }
 
-  public void setVariables(List<VariableConfig<?>> variables) {
+  public void setVariables(List<Variable<?>> variables) {
     this.variables = variables;
   }
 
-  public List<VariableConfig<?>> getVariables() {
+  public List<Variable<?>> getVariables() {
     return this.variables;
-  }
-
-  public ExtendedMessageFormat getMessageFormat() {
-    return this.mf;
   }
 
   @Override
@@ -80,5 +70,10 @@ public class StringSubSpecConfig extends SubSpecConfig<StringSubSpecConfig> {
   @Override
   public String toString() {
     return super.getKey() + ":" + this.format;
+  }
+
+  @Override
+  public Class<FormattedSubstitutionFactory> getFactoryClass() {
+    return FormattedSubstitutionFactory.class;
   }
 }
