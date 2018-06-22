@@ -64,13 +64,20 @@ public interface DeserializedEvent {
       throws NotImplementedException, FieldNotFoundException;
 
   /**
-   * Sets a field in the deserialized object.
+   * Removes and returns field from event.
    *
-   * @param fieldName name of the field to set.
+   * @param fieldName name of field to remove.
    * @return Value of the field
    * @throws FieldNotFoundException if field does not exist.
    */
   public Object removeField(String fieldName) throws FieldNotFoundException;
+
+  /**
+   * Deletes field from event.
+   *
+   * @param fieldName name of field to delete.
+   */
+  public void deleteField(String fieldName);
 
   /**
    * Provides a deep copy of this object as well as the payload.

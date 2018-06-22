@@ -69,6 +69,11 @@ public class DummyDeserializerHelper {
     }
 
     @Override
+    public void deleteField(String fieldName) {
+      payload.remove(fieldName);
+    }
+
+    @Override
     public DummpyMapEvent copy() {
       /*
        * Note this is a weak copy
@@ -121,6 +126,9 @@ public class DummyDeserializerHelper {
     }
 
     @Override
+    public void deleteField(String fieldName) {}
+
+    @Override
     public DummpyEvent copy() {
       return new DummpyEvent(this.payload);
     }
@@ -162,6 +170,9 @@ public class DummyDeserializerHelper {
     public Object removeField(String fieldName) throws FieldNotFoundException {
       throw new FieldNotFoundException("field not found");
     }
+
+    @Override
+    public void deleteField(String fieldName) {}
 
     @Override
     public DummyStringEvent copy() {

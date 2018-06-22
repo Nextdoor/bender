@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.operation.substitution;
+package com.nextdoor.bender.operation.substitution.regex;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,12 +24,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.operation.substitution.SubstitutionConfig;
 
 @JsonTypeName("RegexSubstitution")
 @JsonSchemaDescription("Substitutes event field value for another event field value. Note the source "
     + "field and destination field can be the same.")
-public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
-  public RegexSubSpecConfig() {}
+public class RegexSubstitutionConfig extends SubstitutionConfig {
+  public RegexSubstitutionConfig() {}
 
   public static class RegexSubField {
     @JsonSchemaDescription("Regex group name identifying the field.")
@@ -82,11 +83,11 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
     }
   }
 
-  public RegexSubSpecConfig(List<String> srcFields, String pattern, List<RegexSubField> fields,
+  public RegexSubstitutionConfig(List<String> srcFields, String pattern, List<RegexSubField> fields,
       boolean removeSrcField, boolean failSrcNotFound, boolean failDstNotFound) {
     super(null, failDstNotFound);
     this.srcFields = srcFields;
-    setPattern(pattern);
+    this.pattern = pattern;
     this.fields = fields;
     this.removeSrcField = removeSrcField;
     this.failSrcNotFound = failSrcNotFound;
@@ -119,22 +120,12 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
   @JsonSchemaDefault(value = "true")
   private Boolean failSrcNotFound = true;
 
-  @JsonIgnore
-  private Pattern regex;
-
   public String getPattern() {
     return this.pattern;
   }
 
   public void setPattern(String pattern) {
     this.pattern = pattern;
-    if (pattern != null) {
-      regex = Pattern.compile(pattern);
-    }
-  }
-
-  public Pattern getRegex() {
-    return this.regex;
   }
 
   public void setSrcFields(List<String> srcFields) {
@@ -167,5 +158,10 @@ public class RegexSubSpecConfig extends SubSpecConfig<RegexSubSpecConfig> {
 
   public void setFailSrcNotFound(Boolean failSrcNotFound) {
     this.failSrcNotFound = failSrcNotFound;
+  }
+
+  @Override
+  public Class<RegexSubstitutionFactory> getFactoryClass() {
+    return RegexSubstitutionFactory.class;
   }
 }

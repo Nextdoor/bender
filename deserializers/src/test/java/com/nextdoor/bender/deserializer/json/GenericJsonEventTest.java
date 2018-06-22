@@ -18,7 +18,8 @@ package com.nextdoor.bender.deserializer.json;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.Test;
@@ -77,6 +78,23 @@ public class GenericJsonEventTest {
   }
 
   @Test
+  public void testGetFieldArrayElement() throws FieldNotFoundException {
+    GenericJsonEvent event = getEmptyEvent();
+    event.setField("$.arr", Arrays.asList("one"));
+
+    assertEquals("one", (String) event.getField("$.arr[0]"));
+  }
+
+  @Test
+  public void testSetFieldArrayElement() throws FieldNotFoundException {
+    GenericJsonEvent event = getEmptyEvent();
+    event.setField("$.arr", Arrays.asList("one"));
+    event.setField("$.arr[0]", "two");
+
+    assertEquals("two", (String) event.getField("$.arr[0]"));
+  }
+
+  @Test
   public void testOverrideField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     event.setField("$.a", "bar");
@@ -129,6 +147,21 @@ public class GenericJsonEventTest {
     assertEquals("b", payload.get("a").getAsString());
   }
 
+  @Test
+  public void testDeleteField() throws FieldNotFoundException {
+    GenericJsonEvent event = getEmptyEvent();
+    event.setField("$.foo", "bar");
+    event.setField("$.baz", "qux");
+    JsonObject payload = (JsonObject) event.getPayload();
+
+    event.deleteField("$.foo");
+
+    assertEquals(2, payload.size());
+    assertEquals(null, payload.get("foo"));
+    assertEquals("qux", payload.get("baz").getAsString());
+    assertEquals("b", payload.get("a").getAsString());
+  }
+
   @Test(expected = FieldNotFoundException.class)
   public void testRemoveMissingField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
@@ -141,6 +174,15 @@ public class GenericJsonEventTest {
       assertEquals("b", payload.get("a").getAsString());
       throw e;
     }
+  }
+
+  public void testDeleteMissingField() throws FieldNotFoundException {
+    GenericJsonEvent event = getEmptyEvent();
+    JsonObject payload = (JsonObject) event.getPayload();
+
+    event.deleteField("$.foo");
+    assertEquals(1, payload.size());
+    assertEquals("b", payload.get("a").getAsString());
   }
 
   public void testGetInvalidPath() throws FieldNotFoundException {

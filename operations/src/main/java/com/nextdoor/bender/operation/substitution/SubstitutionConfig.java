@@ -15,18 +15,16 @@
 
 package com.nextdoor.bender.operation.substitution;
 
-
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
-import com.nextdoor.bender.config.AbstractConfig;
+import com.nextdoor.bender.config.ConfigurableFactoryConfig;
 
-public abstract class SubSpecConfig<T> extends AbstractConfig<T> {
-  public SubSpecConfig() {}
+public abstract class SubstitutionConfig extends ConfigurableFactoryConfig {
+  public SubstitutionConfig() {}
 
-  public SubSpecConfig(String key, boolean failDstNotFound) {
+  public SubstitutionConfig(String key, boolean failDstNotFound) {
     this.key = key;
     this.failDstNotFound = failDstNotFound;
   }
@@ -36,8 +34,7 @@ public abstract class SubSpecConfig<T> extends AbstractConfig<T> {
   private String key;
 
   @JsonSchemaDescription("Fail if destination field does not exist. This can be the "
-      + "case if attempting to insert into a nested destination which was not "
-      + "yet created.")
+      + "case if attempting to insert into a nested destination which was not " + "yet created.")
   @JsonProperty(required = false)
   @JsonSchemaDefault(value = "true")
   private Boolean failDstNotFound = true;
@@ -64,11 +61,11 @@ public abstract class SubSpecConfig<T> extends AbstractConfig<T> {
 
   @Override
   public boolean equals(Object o) {
-    if (!(o instanceof SubSpecConfig)) {
+    if (!(o instanceof SubstitutionConfig)) {
       return false;
     }
 
-    SubSpecConfig<?> other = (SubSpecConfig<?>) o;
+    SubstitutionConfig other = (SubstitutionConfig) o;
 
     if (this.key != other.getKey()) {
       return false;

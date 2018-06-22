@@ -9,7 +9,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
@@ -17,42 +17,39 @@ package com.nextdoor.bender.operation.substitution;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.nextdoor.bender.config.AbstractConfig;
-import com.nextdoor.bender.operation.OperationFactory;
 
-/**
- * Create a {@link SubstitutionOperation}.
- */
-public class SubstitutionOperationFactory implements OperationFactory {
-  private SubstitutionOperationConfig config;
-  private  List<Substitution> substitutions;
-
-  @Override
-  public SubstitutionOperation newInstance() {
-    return new SubstitutionOperation(this.substitutions);
-  }
-
-  @Override
-  public Class<SubstitutionOperation> getChildClass() {
-    return SubstitutionOperation.class;
-  }
+public class NestedSubstitutionFactory implements SubstitutionFactory {
+  private SubstitutionFactoryFactory sff = new SubstitutionFactoryFactory();
+  private List<Substitution> substitutions;
+  private NestedSubstitutionConfig config;
 
   @Override
   public void setConf(AbstractConfig config) {
-    this.config = (SubstitutionOperationConfig) config;
+    this.config = (NestedSubstitutionConfig) config;
 
-    List<Substitution> substitutions = new ArrayList<Substitution>(this.config.getSubstitutions().size());
-    SubstitutionFactoryFactory sff = new SubstitutionFactoryFactory();
+    List<Substitution> substitutions =
+        new ArrayList<Substitution>(this.config.getSubstitutions().size());
 
     for (SubstitutionConfig subConfig : this.config.getSubstitutions()) {
       try {
-        substitutions.add(sff.getFactory(subConfig).newInstance());
+        substitutions.add(this.sff.getFactory(subConfig).newInstance());
       } catch (ClassNotFoundException e) {
         throw new RuntimeException(e);
       }
     }
 
     this.substitutions = substitutions;
+  }
+
+  @Override
+  public Class<?> getChildClass() {
+    return NestedSubstitution.class;
+  }
+
+  @Override
+  public Substitution newInstance() {
+    return new NestedSubstitution(this.config.getKey(), this.substitutions,
+        this.config.getFailDstNotFound());
   }
 }
