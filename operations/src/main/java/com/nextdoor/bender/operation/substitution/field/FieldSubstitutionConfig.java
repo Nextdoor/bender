@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.operation.substitution;
+package com.nextdoor.bender.operation.substitution.field;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,14 +21,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.operation.substitution.SubstitutionConfig;
 
 @JsonTypeName("FieldSubstitution")
 @JsonSchemaDescription("Substitutes event field value for another event field value. Note the source "
     + "field and destination field can be the same.")
-public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
-  public FieldSubSpecConfig() {}
+public class FieldSubstitutionConfig extends SubstitutionConfig {
+  public FieldSubstitutionConfig() {}
 
-  public FieldSubSpecConfig(String key, List<String> srcFields, boolean removeSourceField,
+  public FieldSubstitutionConfig(String key, List<String> srcFields, boolean removeSourceField,
       boolean failSrcNotFound, boolean failDstNotFound) {
     super(key, failDstNotFound);
     this.srcFields = srcFields;
@@ -83,11 +84,11 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
       return false;
     }
 
-    if (!(o instanceof FieldSubSpecConfig)) {
+    if (!(o instanceof FieldSubstitutionConfig)) {
       return false;
     }
 
-    FieldSubSpecConfig other = (FieldSubSpecConfig) o;
+    FieldSubstitutionConfig other = (FieldSubstitutionConfig) o;
 
     if (!this.failSrcNotFound.equals(other.getFailSrcNotFound())) {
       return false;
@@ -113,5 +114,10 @@ public class FieldSubSpecConfig extends SubSpecConfig<FieldSubSpecConfig> {
   @Override
   public String toString() {
     return super.getKey() + ":" + this.getSrcFields();
+  }
+
+  @Override
+  public Class<FieldSubstitutionFactory> getFactoryClass() {
+    return FieldSubstitutionFactory.class;
   }
 }

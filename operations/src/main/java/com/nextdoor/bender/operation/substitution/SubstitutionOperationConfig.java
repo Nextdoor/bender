@@ -28,13 +28,13 @@ import com.nextdoor.bender.operation.OperationConfig;
 public class SubstitutionOperationConfig extends OperationConfig {
   @JsonSchemaDescription("List of substitutions to perform.")
   @JsonProperty(required = true)
-  private List<SubSpecConfig<?>> substitutions = Collections.emptyList();
+  private List<SubstitutionConfig> substitutions = Collections.emptyList();
 
-  public List<SubSpecConfig<?>> getSubstitutions() {
+  public List<SubstitutionConfig> getSubstitutions() {
     return this.substitutions;
   }
 
-  public void setSubstitutions(List<SubSpecConfig<?>> substitutions) {
+  public void setSubstitutions(List<SubstitutionConfig> substitutions) {
     this.substitutions = substitutions;
   }
 

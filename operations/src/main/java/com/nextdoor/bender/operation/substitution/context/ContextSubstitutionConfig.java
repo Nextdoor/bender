@@ -13,7 +13,7 @@
  *
  */
 
-package com.nextdoor.bender.operation.substitution;
+package com.nextdoor.bender.operation.substitution.context;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,14 +23,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
+import com.nextdoor.bender.operation.substitution.SubstitutionConfig;
 
 @JsonTypeName("ContextSubstitution")
 @JsonSchemaDescription("Substitutes event field value for list of lambda function context proprties.")
+public class ContextSubstitutionConfig extends SubstitutionConfig {
+  public ContextSubstitutionConfig() {}
 
-public class ContextSubSpecConfig extends SubSpecConfig<ContextSubSpecConfig> {
-  public ContextSubSpecConfig() {}
-
-  public ContextSubSpecConfig(String key, List<String> includes, List<String> excludes, boolean failDstNotFound) {
+  public ContextSubstitutionConfig(String key, List<String> includes, List<String> excludes, boolean failDstNotFound) {
     super(key, failDstNotFound);
     this.includes = includes;
     this.excludes = excludes;
@@ -68,11 +68,11 @@ public class ContextSubSpecConfig extends SubSpecConfig<ContextSubSpecConfig> {
       return false;
     }
 
-    if (!(o instanceof ContextSubSpecConfig)) {
+    if (!(o instanceof ContextSubstitutionConfig)) {
       return false;
     }
 
-    ContextSubSpecConfig other = (ContextSubSpecConfig) o;
+    ContextSubstitutionConfig other = (ContextSubstitutionConfig) o;
 
     if (this.includes.equals(other.getIncludes())) {
       return false;
@@ -88,5 +88,10 @@ public class ContextSubSpecConfig extends SubSpecConfig<ContextSubSpecConfig> {
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), this.includes, this.excludes);
+  }
+
+  @Override
+  public Class<ContextSubstitutionFactory> getFactoryClass() {
+    return ContextSubstitutionFactory.class;
   }
 }

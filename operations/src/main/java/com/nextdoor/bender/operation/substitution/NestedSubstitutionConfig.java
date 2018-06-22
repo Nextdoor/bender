@@ -26,10 +26,10 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 @JsonTypeName("NestedSubstitution")
 @JsonSchemaDescription("The nested substitution helps build a Map object containing the "
     + "result of other substitution.")
-public class NestedSubSpecConfig extends SubSpecConfig<NestedSubSpecConfig> {
-  public NestedSubSpecConfig() {}
+public class NestedSubstitutionConfig extends SubstitutionConfig {
+  public NestedSubstitutionConfig() {}
 
-  public NestedSubSpecConfig(String key, List<SubSpecConfig<?>> substitutions, boolean failDstNotFound) {
+  public NestedSubstitutionConfig(String key, List<SubstitutionConfig> substitutions, boolean failDstNotFound) {
     super(key, failDstNotFound);
     this.substitutions = substitutions;
   }
@@ -37,13 +37,18 @@ public class NestedSubSpecConfig extends SubSpecConfig<NestedSubSpecConfig> {
   @JsonSchemaDescription("List of substitutions that will build up the final Map object.")
   @JsonProperty(required = false)
   @JsonSchemaDefault(value = "{}")
-  private List<SubSpecConfig<?>> substitutions = Collections.emptyList();
+  private List<SubstitutionConfig> substitutions = Collections.emptyList();
 
-  public List<SubSpecConfig<?>> getSubstitutions() {
+  public List<SubstitutionConfig> getSubstitutions() {
     return this.substitutions;
   }
 
-  public void setSubstitutions(List<SubSpecConfig<?>> substitutions) {
+  public void setSubstitutions(List<SubstitutionConfig> substitutions) {
     this.substitutions = substitutions;
+  }
+
+  @Override
+  public Class getFactoryClass() {
+    return NestedSubstitutionFactory.class;
   }
 }
