@@ -92,6 +92,9 @@ public class FormattedSubstitution extends Substitution {
     if (nested != null) {
       nested.put(this.key, formatted);
       keyToRemove.forEach(fieldName -> {
+        if (fieldName.equals(this.key)) {
+          return;
+        }
         try {
           devent.removeField(fieldName);
         } catch (FieldNotFoundException e) {
@@ -112,6 +115,9 @@ public class FormattedSubstitution extends Substitution {
      * Remove source fields
      */
     keyToRemove.forEach(fieldName -> {
+      if (fieldName.equals(this.key)) {
+        return;
+      }
       try {
         devent.removeField(fieldName);
       } catch (FieldNotFoundException e) {

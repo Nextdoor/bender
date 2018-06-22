@@ -51,6 +51,28 @@ public class FormattedSubstitutionTest {
   }
 
   @Test
+  public void testStringReplace() throws FieldNotFoundException {
+    Variable.FieldVariable v = new Variable.FieldVariable();
+    v.setFailSrcNotFound(true);
+    v.setSrcFields(Arrays.asList("foo"));
+    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    substitutions.add(new FormattedSubstitution("foo", new ExtendedMessageFormat("foo = {0}"),
+        Arrays.asList(v), true));
+
+    DummpyMapEvent devent = new DummpyMapEvent();
+    devent.setField("foo", "1234");
+
+    InternalEvent ievent = new InternalEvent("", null, 0);
+    ievent.setEventObj(devent);
+
+    SubstitutionOperation op = new SubstitutionOperation(substitutions);
+    op.perform(ievent);
+
+    assertEquals(1, devent.payload.size());
+    assertEquals("foo = 1234", devent.getField("foo"));
+  }
+
+  @Test
   public void testStringSubNumberKnown() throws FieldNotFoundException {
     Variable.FieldVariable v = new Variable.FieldVariable();
     v.setFailSrcNotFound(true);
