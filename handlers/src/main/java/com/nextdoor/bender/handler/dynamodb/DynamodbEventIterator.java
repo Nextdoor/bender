@@ -9,7 +9,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
@@ -44,7 +44,9 @@ public class DynamodbEventIterator implements InternalEventIterator<InternalEven
     @Override
     public InternalEvent next() {
         try {
-            return new DynamodbInternalEvent(this.iterator.next(), this.context);
+            DynamodbStreamRecord record = this.iterator.next();
+            String stringRecord = DynamodbEventSerializer.serialize(record);
+            return new DynamodbInternalEvent(record, stringRecord, this.context);
         }
         catch (IOException e) {
             return null;

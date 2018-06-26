@@ -1,12 +1,32 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * Copyright 2018 Nextdoor.com, Inc
+ *
+ */
+
 package com.nextdoor.bender.handler.dynamodb;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.internal.InternalUtils;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.StreamRecord;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
+import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
 
 public class DynamodbEventSerializer {
@@ -17,23 +37,37 @@ public class DynamodbEventSerializer {
         writer = jw;
     }
 
-    void serialize(DynamodbStreamRecord record) throws IOException {
+    static String serialize(DynamodbStreamRecord record) throws IOException {
+        StringWriter sw = new StringWriter();
+        DynamodbEventSerializer ser = new DynamodbEventSerializer(new JsonWriter(sw));
+        ser.write(record);
+        return sw.toString();
+    }
+
+    static String serialize(Map<String, AttributeValue> map) throws IOException {
+        StringWriter sw = new StringWriter();
+        DynamodbEventSerializer ser = new DynamodbEventSerializer(new JsonWriter(sw));
+        ser.write(map);
+        return sw.toString();
+    }
+
+    void write(DynamodbStreamRecord record) throws IOException {
         writer.beginObject();
 
         writeProperty("eventID", record.getEventID());
         writeProperty("eventName", record.getEventName());
         writeProperty("eventVersion", record.getEventVersion());
 
-        writeRecord(record.getDynamodb());
+        write(record.getDynamodb());
 
         writer.endObject();
     }
 
-    void serialize(Map<String, AttributeValue> map) throws IOException {
+    void write(Map<String, AttributeValue> map) throws IOException {
         writeProperty(null, map);
     }
 
-    void writeRecord(StreamRecord record) throws IOException {
+    void write(StreamRecord record) throws IOException {
         writeName("dynamodb");
         writer.beginObject();
 
@@ -52,65 +86,13 @@ public class DynamodbEventSerializer {
         if (map != null) {
             writeName(name);
 
-            writer.beginObject();
-            for (Map.Entry<String, AttributeValue> entry : map.entrySet()) {
-                writeProperty(entry.getKey(), entry.getValue());
-            }
-            writer.endObject();
-        }
-    }
-
-    void writeProperty(String name, AttributeValue value) throws IOException {
-        if (value.getBOOL() != null)
-            writeProperty(name, value.getBOOL());
-        else if (value.getNULL() != null)
-            writeProperty(name, value.getNULL());
-        else if (value.getN() != null)
-            writeProperty(name, value.getN());
-        else if (value.getS() != null)
-            writeProperty(name, value.getS());
-        else if (value.getB() != null) {
-            writeProperty(name, value.getB());
-        }
-        else if (value.getSS() != null) {
-            writer.name(name);
-            writer.beginArray();
-            for (String s : value.getSS())
-                writer.value(s);
-            writer.endArray();
-        }
-        else if (value.getNS() != null) {
-            writer.name(name);
-            writer.beginArray();
-            for (String s : value.getNS())
-                writer.value(s);
-            writer.endArray();
-        }
-        else if (value.getBS() != null) {
-            writer.name(name);
-            writer.beginArray();
-            for (ByteBuffer b : value.getBS())
-                writeProperty(null, b);
-            writer.endArray();
-        }
-        else if (value.getL() != null) {
-            writer.name(name);
-            writer.beginArray();
-            for (AttributeValue v : value.getL())
-                writeProperty(null, v);
-            writer.endArray();
-        }
-        else if (value.getM() != null) {
-            writeProperty(name, value.getM());
+            Gson gson = new Gson();
+            String json = gson.toJson(attributeValueMapToItem(map).asMap());
+            writer.jsonValue(json);
         }
     }
 
     void writeProperty(String name, String value) throws IOException {
-        writeName(name);
-        writer.value(value);
-    }
-
-    void writeProperty(String name, Boolean value) throws IOException {
         writeName(name);
         writer.value(value);
     }
@@ -120,18 +102,15 @@ public class DynamodbEventSerializer {
         writer.value(value);
     }
 
-    void writeProperty(String name, ByteBuffer value) throws IOException {
-        writeName(name);
-        if (value != null) {
-            writer.beginArray();
-            for (byte b : value.array())
-                writer.value(b);
-            writer.endArray();
-        }
-    }
-    
     void writeName(String name) throws IOException {
         if (name != null)
             writer.name(name);
+    }
+
+    static Item attributeValueMapToItem(Map<String, AttributeValue> map) {
+        ArrayList<Map<String, AttributeValue>> listOfMaps = new ArrayList<>();
+        listOfMaps.add(map);
+        List<Item> listOfItem = InternalUtils.toItemList(listOfMaps);
+        return listOfItem.get(0);
     }
 }

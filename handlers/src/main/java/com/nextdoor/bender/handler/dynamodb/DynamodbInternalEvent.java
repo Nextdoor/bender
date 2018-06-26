@@ -9,18 +9,16 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
 package com.nextdoor.bender.handler.dynamodb;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.LinkedHashMap;
 
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
-import com.google.gson.stream.JsonWriter;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.LambdaContext;
 
@@ -28,9 +26,9 @@ public class DynamodbInternalEvent extends InternalEvent {
     public static final String DYNAMODB_KEYS = "__keys__";
     private DynamodbStreamRecord record;
 
-    public DynamodbInternalEvent(DynamodbStreamRecord record, LambdaContext context)
-            throws IOException {
-        super(serizalize(record), context,
+    public DynamodbInternalEvent(
+            DynamodbStreamRecord record, String stringRecord, LambdaContext context) {
+        super(stringRecord, context,
                 record.getDynamodb().getApproximateCreationDateTime().getTime());
 
         super.addMetadata("eventName", record.getEventName());
@@ -70,16 +68,6 @@ public class DynamodbInternalEvent extends InternalEvent {
     }
 
     private static String serializeKeys(DynamodbStreamRecord record) throws IOException {
-        StringWriter sw = new StringWriter();
-        DynamodbEventSerializer ser = new DynamodbEventSerializer(new JsonWriter(sw));
-        ser.serialize(record.getDynamodb().getKeys());
-        return sw.toString();
-    }
-
-    private static String serizalize(DynamodbStreamRecord record) throws IOException {
-        StringWriter sw = new StringWriter();
-        DynamodbEventSerializer ser = new DynamodbEventSerializer(new JsonWriter(sw));
-        ser.serialize(record);
-        return sw.toString();
+        return DynamodbEventSerializer.serialize(record.getDynamodb().getKeys());
     }
 }
