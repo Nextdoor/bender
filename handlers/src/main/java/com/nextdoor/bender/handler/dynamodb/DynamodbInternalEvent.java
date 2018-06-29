@@ -15,7 +15,6 @@
 
 package com.nextdoor.bender.handler.dynamodb;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
@@ -24,10 +23,13 @@ import com.nextdoor.bender.LambdaContext;
 
 public class DynamodbInternalEvent extends InternalEvent {
     public static final String DYNAMODB_KEYS = "__keys__";
-    private DynamodbStreamRecord record;
+    private final DynamodbStreamRecord record;
+    private final String stringKeys;
 
     public DynamodbInternalEvent(
-            DynamodbStreamRecord record, String stringRecord, LambdaContext context) {
+            DynamodbStreamRecord record,
+            String stringKeys, String stringRecord,
+            LambdaContext context) {
         super(stringRecord, context,
                 record.getDynamodb().getApproximateCreationDateTime().getTime());
 
@@ -39,10 +41,7 @@ public class DynamodbInternalEvent extends InternalEvent {
         super.addMetadata("sequenceNumber", record.getDynamodb().getSequenceNumber());
 
         this.record = record;
-    }
-
-    public DynamodbInternalEvent(String record, long timestamp) {
-        super(record, null, timestamp);
+        this.stringKeys = stringKeys;
     }
 
     public DynamodbStreamRecord getRecord() {
@@ -57,17 +56,8 @@ public class DynamodbInternalEvent extends InternalEvent {
             super.setPartitions(partitions);
         }
 
-        try {
-            partitions.put(DYNAMODB_KEYS, serializeKeys(record));
-        }
-        catch (IOException e) {
-
-        }
+        partitions.put(DYNAMODB_KEYS, this.stringKeys);
 
         return partitions;
-    }
-
-    private static String serializeKeys(DynamodbStreamRecord record) throws IOException {
-        return DynamodbEventSerializer.serialize(record.getDynamodb().getKeys());
     }
 }

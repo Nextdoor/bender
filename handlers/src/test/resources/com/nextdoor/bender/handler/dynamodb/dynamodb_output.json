@@ -1,1 +1,1 @@
-{"eventID":"1","eventName":"INSERT","eventVersion":"1.0","dynamodb":{"ApproximateCreationDateTime":1479499740,"SequenceNumber":"111","Keys":{"Id":101},"NewImage":{"Message":"New item!","Id":101}}}
+{"eventSourceARN":"stream-ARN","eventID":"1","eventName":"INSERT","eventVersion":"1.0","eventSource":"aws:dynamodb","awsRegion":"us-east-1","dynamodb":{"approximateCreationDateTime":1479499740,"keys":{"Id":101},"newImage":{"Message":"New item!","Id":101},"sequenceNumber":"111","sizeBytes":26,"streamViewType":"NEW_AND_OLD_IMAGES"}}

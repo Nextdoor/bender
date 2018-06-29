@@ -30,10 +30,12 @@ import com.nextdoor.bender.LambdaContext;
 public class DynamodbEventIterator implements InternalEventIterator<InternalEvent> {
     private final Iterator<DynamodbStreamRecord> iterator;
     private final LambdaContext context;
+    private final DynamodbEventSerializer serializer;
 
     public DynamodbEventIterator(LambdaContext context, List<DynamodbStreamRecord> records) {
         this.iterator = records.iterator();
         this.context = context;
+        this.serializer = new DynamodbEventSerializer();
     }
 
     @Override
@@ -43,14 +45,10 @@ public class DynamodbEventIterator implements InternalEventIterator<InternalEven
 
     @Override
     public InternalEvent next() {
-        try {
-            DynamodbStreamRecord record = this.iterator.next();
-            String stringRecord = DynamodbEventSerializer.serialize(record);
-            return new DynamodbInternalEvent(record, stringRecord, this.context);
-        }
-        catch (IOException e) {
-            return null;
-        }
+        DynamodbStreamRecord record = this.iterator.next();
+        String stringKeys = this.serializer.serialize(record.getDynamodb().getKeys());
+        String stringRecord = this.serializer.serialize(record);
+        return new DynamodbInternalEvent(record, stringKeys, stringRecord, this.context);
     }
 
     @Override

@@ -16,101 +16,83 @@
 package com.nextdoor.bender.handler.dynamodb;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.internal.InternalUtils;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.StreamRecord;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 public class DynamodbEventSerializer {
 
-    private JsonWriter writer;
+    /**
+     * DateAdapter serializes dates in epoch format.
+     */
+    static class DateAdapter extends TypeAdapter<Date> {
+        public Date read(JsonReader r) throws IOException {
+            throw new IOException("Not implemented yet");
+        }
 
-    DynamodbEventSerializer(JsonWriter jw) {
-        writer = jw;
-    }
-
-    static String serialize(DynamodbStreamRecord record) throws IOException {
-        StringWriter sw = new StringWriter();
-        DynamodbEventSerializer ser = new DynamodbEventSerializer(new JsonWriter(sw));
-        ser.write(record);
-        return sw.toString();
-    }
-
-    static String serialize(Map<String, AttributeValue> map) throws IOException {
-        StringWriter sw = new StringWriter();
-        DynamodbEventSerializer ser = new DynamodbEventSerializer(new JsonWriter(sw));
-        ser.write(map);
-        return sw.toString();
-    }
-
-    void write(DynamodbStreamRecord record) throws IOException {
-        writer.beginObject();
-
-        writeProperty("eventID", record.getEventID());
-        writeProperty("eventName", record.getEventName());
-        writeProperty("eventVersion", record.getEventVersion());
-
-        write(record.getDynamodb());
-
-        writer.endObject();
-    }
-
-    void write(Map<String, AttributeValue> map) throws IOException {
-        writeProperty(null, map);
-    }
-
-    void write(StreamRecord record) throws IOException {
-        writeName("dynamodb");
-        writer.beginObject();
-
-        writeProperty(
-                "ApproximateCreationDateTime",
-                record.getApproximateCreationDateTime().getTime());
-        writeProperty("SequenceNumber", record.getSequenceNumber());
-        writeProperty("Keys", record.getKeys());
-        writeProperty("OldImage", record.getOldImage());
-        writeProperty("NewImage", record.getNewImage());
-
-        writer.endObject();
-    }
-
-    void writeProperty(String name, Map<String, AttributeValue> map) throws IOException {
-        if (map != null) {
-            writeName(name);
-
-            Gson gson = new Gson();
-            String json = gson.toJson(attributeValueMapToItem(map).asMap());
-            writer.jsonValue(json);
+        public void write(JsonWriter w, Date d) throws IOException {
+            w.value(d.getTime());
         }
     }
 
-    void writeProperty(String name, String value) throws IOException {
-        writeName(name);
-        writer.value(value);
+    /**
+     * AttributeValueMapAdapter serializes DynamoDB JSON into standard JSON format.
+     */
+    class AttributeValueMapAdapter extends TypeAdapter<Map<String, AttributeValue>> {
+        public Map<String, AttributeValue> read(JsonReader r) throws IOException {
+            throw new IOException("Not implemented yet");
+        }
+
+        public void write(JsonWriter w, Map<String, AttributeValue> map) throws IOException {
+            if (map == null) {
+                w.nullValue();
+            } else {
+                // Uses the outer class's gson instance
+                String json = gson.toJson(attributeValueMapToItem(map).asMap());
+                w.jsonValue(json);
+            }
+        }
+
+        private Item attributeValueMapToItem(Map<String, AttributeValue> map) {
+            ArrayList<Map<String, AttributeValue>> listOfMaps = new ArrayList<>();
+            listOfMaps.add(map);
+            List<Item> listOfItem = InternalUtils.toItemList(listOfMaps);
+            return listOfItem.get(0);
+        }
     }
 
-    void writeProperty(String name, long value) throws IOException {
-        writeName(name);
-        writer.value(value);
+    private Gson gson;
+
+    DynamodbEventSerializer() {
+        gson = createGson();
     }
 
-    void writeName(String name) throws IOException {
-        if (name != null)
-            writer.name(name);
+    private Gson createGson() {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Date.class, new DateAdapter());
+        builder.registerTypeAdapter(
+                new TypeToken<Map<String, AttributeValue>>() {}.getType(),
+                new AttributeValueMapAdapter());
+        return builder.create();
     }
 
-    static Item attributeValueMapToItem(Map<String, AttributeValue> map) {
-        ArrayList<Map<String, AttributeValue>> listOfMaps = new ArrayList<>();
-        listOfMaps.add(map);
-        List<Item> listOfItem = InternalUtils.toItemList(listOfMaps);
-        return listOfItem.get(0);
+    String serialize(DynamodbStreamRecord record) {
+        return gson.toJson(record);
+    }
+
+    String serialize(Map<String, AttributeValue> map) {
+        return gson.toJson(map);
     }
 }

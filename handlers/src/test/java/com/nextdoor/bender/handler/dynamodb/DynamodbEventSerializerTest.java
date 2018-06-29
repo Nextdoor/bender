@@ -45,7 +45,7 @@ public class DynamodbEventSerializerTest {
             "  ]" +
             "}";
 
-    static String EXPECTED_FORMAT = "{\"eventID\":\"1\",\"eventName\":\"INSERT\",\"eventVersion\":\"1.0\",\"dynamodb\":{\"ApproximateCreationDateTime\":1479499740,\"SequenceNumber\":\"111\",%s}}";
+    static String EXPECTED_FORMAT = "{\"eventSourceARN\":\"stream-ARN\",\"eventID\":\"1\",\"eventName\":\"INSERT\",\"eventVersion\":\"1.0\",\"eventSource\":\"aws:dynamodb\",\"awsRegion\":\"us-east-1\",\"dynamodb\":{\"approximateCreationDateTime\":1479499740,%s,\"sequenceNumber\":\"111\",\"streamViewType\":\"NEW_AND_OLD_IMAGES\"}}";
 
     @Test
     public void testRecord() throws IOException {
@@ -67,9 +67,9 @@ public class DynamodbEventSerializerTest {
                 "  ]" +
                 "}";
         DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
-        String result = DynamodbEventSerializer.serialize(event.getRecords().get(0));
+        String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
 
-        String expected = "{\"eventID\":\"1\",\"eventName\":\"INSERT\",\"eventVersion\":\"1.0\",\"dynamodb\":{\"ApproximateCreationDateTime\":1479499740,\"SequenceNumber\":\"111\"}}";
+        String expected = "{\"eventSourceARN\":\"stream-ARN\",\"eventID\":\"1\",\"eventName\":\"INSERT\",\"eventVersion\":\"1.0\",\"eventSource\":\"aws:dynamodb\",\"awsRegion\":\"us-east-1\",\"dynamodb\":{\"approximateCreationDateTime\":1479499740,\"sequenceNumber\":\"111\"}}";
         assertEquals(expected, result);
     }
 
@@ -85,9 +85,9 @@ public class DynamodbEventSerializerTest {
                 "  }" +
                 "}");
         DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
-        String result = DynamodbEventSerializer.serialize(event.getRecords().get(0));
+        String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
 
-        String expected = String.format(EXPECTED_FORMAT, "\"Keys\":{\"Type\":\"content\",\"Id\":101}");
+        String expected = String.format(EXPECTED_FORMAT, "\"keys\":{\"Type\":\"content\",\"Id\":101}");
         assertEquals(expected, result);
     }
 
@@ -118,9 +118,9 @@ public class DynamodbEventSerializerTest {
                 "  }" +
                 "}");
         DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
-        String result = DynamodbEventSerializer.serialize(event.getRecords().get(0));
+        String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
 
-        String expected = String.format(EXPECTED_FORMAT, "\"NewImage\":{\"Message\":\"New item!\",\"Bytes\":[104,101,108,108,111],\"IsSold\":true,\"Id\":101,\"Tags\":[\"message\",\"sold\"],\"Metrics\":[42.2,3.14],\"Blobs\":[[102,111,111],[98,97,114]]}");
+        String expected = String.format(EXPECTED_FORMAT, "\"newImage\":{\"Message\":\"New item!\",\"Bytes\":[104,101,108,108,111],\"IsSold\":true,\"Id\":101,\"Tags\":[\"message\",\"sold\"],\"Metrics\":[42.2,3.14],\"Blobs\":[[102,111,111],[98,97,114]]}");
         assertEquals(expected, result);
     }
 
@@ -136,9 +136,9 @@ public class DynamodbEventSerializerTest {
                 "  }" +
                 "}");
         DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
-        String result = DynamodbEventSerializer.serialize(event.getRecords().get(0));
+        String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
 
-        String expected = String.format(EXPECTED_FORMAT, "\"OldImage\":{\"Message\":\"New item!\",\"Id\":101}");
+        String expected = String.format(EXPECTED_FORMAT, "\"oldImage\":{\"Message\":\"New item!\",\"Id\":101}");
         assertEquals(expected, result);
     }
 }
