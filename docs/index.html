@@ -605,11 +605,13 @@ function sourceButton(element) {
                 <div class="signature-type">
                             <span class="type-keyword">one of</span>
         <span class="type-keyword"></span>
-                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">S3Handler</span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">DynamodbHandler</span>
         <span class="type-keyword"></span>
-                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">SNSS3Handler</span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">S3Handler</span>
         <span class="type-keyword"></span>
-                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KinesisHandler</span>
+                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">SNSS3Handler</span>
+        <span class="type-keyword"></span>
+                <span boxid="4" class="box-4 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KinesisHandler</span>
 
                 </div>
                 <div class="signature-description desc"><p>Handler configuration</p>
@@ -619,6 +621,247 @@ function sourceButton(element) {
                 <div class="box-container" boxid="1">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">DynamodbHandler</div>
+            <div class="box-description desc"><p>For use with DynamoDB stream triggers. Set the function handler to "com.nextdoor.bender.handler.dynamodb.DynamodbHandler::handler". The following IAM permissions are also required: dynamodb:DescribeStream, dynamodb:GetRecords, dynamodb:GetShardIterator, and dynamodb:ListStreams. DynamoDB stream events use AttributeValues (see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html">https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html</a>) which uses data type as name, but such construct is converted to standard JSON by DynamodbHandler. For example, {"value":{"N":"123"}} becomes {"value":123}.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">DynamodbHandler</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">DynamodbHandler</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">fail_on_exception</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">true</span>
+
+                </div>
+                <div class="signature-description desc"><p>If an uncaught exception occurs fail the function</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">include_function_tags</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">metric_tags</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Tag</span>
+
+                </div>
+                <div class="signature-description desc"><p>Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">Tag</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">queue_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">500</span>
+
+                </div>
+                <div class="signature-description desc"><p>Maximum queue size used to buffer raw data prior to deserialization. This adds back pressure that ensures Bender does not read quicker than it can process and send to your desination (transport). Increasing the buffer will increase memory pressure and risk of OOM but will have the benefit of increasing throughput.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "For use with DynamoDB stream triggers. Set the function handler to \"com.nextdoor.bender.handler.dynamodb.DynamodbHandler::handler\". The following IAM permissions are also required: dynamodb:DescribeStream, dynamodb:GetRecords, dynamodb:GetShardIterator, and dynamodb:ListStreams. DynamoDB stream events use AttributeValues (see https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html) which uses data type as name, but such construct is converted to standard JSON by DynamodbHandler. For example, {\"value\":{\"N\":\"123\"}} becomes {\"value\":123}.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "DynamodbHandler"
+      ],
+      "default": "DynamodbHandler"
+    },
+    "fail_on_exception": {
+      "type": "boolean",
+      "default": true,
+      "description": "If an uncaught exception occurs fail the function"
+    },
+    "include_function_tags": {
+      "type": "boolean",
+      "default": false,
+      "description": "Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required."
+    },
+    "metric_tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
+      },
+      "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
+    },
+    "queue_size": {
+      "type": "integer",
+      "default": 500,
+      "description": "Maximum queue size used to buffer raw data prior to deserialization. This adds back pressure that ensures Bender does not read quicker than it can process and send to your desination (transport). Increasing the buffer will increase memory pressure and risk of OOM but will have the benefit of increasing throughput."
+    }
+  },
+  "title": "DynamodbHandler",
+  "required": [
+    "type"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
         <div class="box-title" ref="">
             <div class="box-name ">S3Handler</div>
             <div class="box-description desc"><p>For use with S3 Object creation Lambda triggers. You will also need to set the function handler to "com.nextdoor.bender.handler.s3.S3Handler::handler". The following IAM permissions are required: s3:GetObject and lambda:InvokeFunction. Note you will also need to provide permissoins to the S3 bucket to invoke your function.</p>
@@ -904,9 +1147,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="2">
+                <div class="box-container" boxid="3">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-2">
+    <div class="box-header box-3">
         <div class="box-title" ref="">
             <div class="box-name ">SNSS3Handler</div>
             <div class="box-description desc"><p>Similar to the S3Handler but reads SNS notifications which contain S3 Object creation events. This is may be required if you have multiple functions running against the same bucket. For more information about S3 SNS triggers see <a href="https://aws.amazon.com/blogs/compute/fanout-s3-event-notifications-to-multiple-endpoints/.You">https://aws.amazon.com/blogs/compute/fanout-s3-event-notifications-to-multiple-endpoints/.You</a> will need to set the function handler to "com.nextdoor.bender.handler.s3.SNSS3Handler::handler". The following IAM permissions are required: s3:GetObject and lambda:InvokeFunction. Note you will also need to provide permissions to S3 bucket to publish to SNS and SNS to invoke your function.</p>
@@ -1192,9 +1435,9 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
-                <div class="box-container" boxid="3">
+                <div class="box-container" boxid="4">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-3">
+    <div class="box-header box-4">
         <div class="box-title" ref="">
             <div class="box-name ">KinesisHandler</div>
             <div class="box-description desc"><p>For use with Kinesis triggers. Set the function handler to "com.nextdoor.bender.handler.kinesis.KinesisHandler::handler". The following IAM permissions are also required: kinesis:DescribeStream, kinesis:ListStreams, kinesis:GetShardIterator, kinesis:GetRecords, and kinesis:ListTagsForStream.</p>
@@ -35983,6 +36226,9 @@ function sourceButton(element) {
     "handler": {
       "oneOf": [
         {
+          "$ref": "#/definitions/DynamodbHandlerConfig"
+        },
+        {
           "$ref": "#/definitions/S3HandlerConfig"
         },
         {
@@ -36081,6 +36327,62 @@ function sourceButton(element) {
     }
   },
   "definitions": {
+    "DynamodbHandlerConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "For use with DynamoDB stream triggers. Set the function handler to \"com.nextdoor.bender.handler.dynamodb.DynamodbHandler::handler\". The following IAM permissions are also required: dynamodb:DescribeStream, dynamodb:GetRecords, dynamodb:GetShardIterator, and dynamodb:ListStreams. DynamoDB stream events use AttributeValues (see https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html) which uses data type as name, but such construct is converted to standard JSON by DynamodbHandler. For example, {\"value\":{\"N\":\"123\"}} becomes {\"value\":123}.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "DynamodbHandler"
+          ],
+          "default": "DynamodbHandler"
+        },
+        "fail_on_exception": {
+          "type": "boolean",
+          "default": true,
+          "description": "If an uncaught exception occurs fail the function"
+        },
+        "include_function_tags": {
+          "type": "boolean",
+          "default": false,
+          "description": "Adds Lambda function resource tags to reporters' metrics. Note that the lambda:ListTags IAM permission is required."
+        },
+        "metric_tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tag"
+          },
+          "description": "Additional tags to add to reporters' metrics. Note Lambda function resource tags take precedence."
+        },
+        "queue_size": {
+          "type": "integer",
+          "default": 500,
+          "description": "Maximum queue size used to buffer raw data prior to deserialization. This adds back pressure that ensures Bender does not read quicker than it can process and send to your desination (transport). Increasing the buffer will increase memory pressure and risk of OOM but will have the benefit of increasing throughput."
+        }
+      },
+      "title": "DynamodbHandler",
+      "required": [
+        "type"
+      ]
+    },
+    "Tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ]
+    },
     "S3HandlerConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -36128,22 +36430,6 @@ function sourceButton(element) {
       "title": "S3Handler",
       "required": [
         "type"
-      ]
-    },
-    "Tag": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "key": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "key",
-        "value"
       ]
     },
     "SNSS3HandlerConfig": {
@@ -38872,6 +39158,9 @@ function sourceButton(element) {
       "handler": {
         "oneOf": [
           {
+            "$ref": "#/definitions/DynamodbHandlerConfig"
+          },
+          {
             "$ref": "#/definitions/S3HandlerConfig"
           },
           {
@@ -38975,6 +39264,9 @@ function sourceButton(element) {
     "properties": {
       "handler": {
         "oneOf": [
+          {
+            "$ref": "#/definitions/DynamodbHandlerConfig"
+          },
           {
             "$ref": "#/definitions/S3HandlerConfig"
           },

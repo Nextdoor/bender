@@ -1,0 +1,31 @@
+{
+  "Records":[
+    {
+      "eventID":"1",
+      "eventName":"INSERT",
+      "eventVersion":"1.0",
+      "eventSource":"aws:dynamodb",
+      "awsRegion":"us-east-1",
+      "dynamodb":{
+        "ApproximateCreationDateTime": 1479499740,
+        "Keys":{
+          "Id":{
+            "N":"101"
+          }
+        },
+        "NewImage":{
+          "Message":{
+            "S":"New item!"
+          },
+          "Id":{
+            "N":"101"
+          }
+        },
+        "SequenceNumber":"111",
+        "SizeBytes":26,
+        "StreamViewType":"NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN":"stream-ARN"
+    }
+  ]
+}

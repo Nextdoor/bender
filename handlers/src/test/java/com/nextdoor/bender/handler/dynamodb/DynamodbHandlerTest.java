@@ -9,46 +9,49 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2018 Nextdoor.com, Inc
  *
  */
 
-package com.nextdoor.bender.handler.kinesis;
+package com.nextdoor.bender.handler.dynamodb;
 
-import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
-import com.nextdoor.bender.handler.BaseHandler;
+import java.io.InputStreamReader;
+
+import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
 import com.nextdoor.bender.handler.HandlerTest;
-import com.nextdoor.bender.testutils.TestUtils;
 
-public class KinesisHandlerTest extends HandlerTest<KinesisEvent> {
+import org.apache.commons.io.IOUtils;
+
+public class DynamodbHandlerTest extends HandlerTest<DynamodbEvent> {
 
   @Override
-  public KinesisHandler getHandler() {
-    return new KinesisHandler();
+  public DynamodbHandler getHandler() {
+    return new DynamodbHandler();
   }
 
   @Override
-  public KinesisEvent getTestEvent() throws Exception {
-    return TestUtils.createEvent(this.getClass(), "basic_input.json");
+  public DynamodbEvent getTestEvent() throws Exception {
+    String json = IOUtils.toString(new InputStreamReader(
+        this.getClass().getResourceAsStream("dynamodb_records.json"),
+        "UTF-8"));
+    return DynamodbEventDeserializer.deserialize(json);
   }
 
   @Override
   public String getExpectedEvent() {
-    return "basic_output.json";
+    return "dynamodb_output.json";
   }
 
   @Override
   public void setup() {
-
   }
 
   @Override
   public String getConfigFile() {
-    return "/com/nextdoor/bender/handler/config_kinesis.json";
+    return "/com/nextdoor/bender/handler/config_dynamodb.json";
   }
 
   @Override
   public void teardown() {
-
   }
 }

@@ -8,6 +8,7 @@ target
 *.iml
 .idea
 bin
+node_modules
 tmp
 dependency-reduced-pom.xml
 bender.iml

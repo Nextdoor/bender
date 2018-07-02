@@ -1,0 +1,63 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * Copyright 2018 Nextdoor.com, Inc
+ *
+ */
+
+package com.nextdoor.bender.handler.dynamodb;
+
+import java.util.LinkedHashMap;
+
+import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
+import com.nextdoor.bender.InternalEvent;
+import com.nextdoor.bender.LambdaContext;
+
+public class DynamodbInternalEvent extends InternalEvent {
+  public static final String DYNAMODB_KEYS = "__keys__";
+  private final DynamodbStreamRecord record;
+  private final String stringKeys;
+
+  public DynamodbInternalEvent(
+      DynamodbStreamRecord record,
+      String stringKeys, String stringRecord,
+      LambdaContext context) {
+    super(stringRecord, context,
+        record.getDynamodb().getApproximateCreationDateTime().getTime());
+
+    super.addMetadata("eventName", record.getEventName());
+    super.addMetadata("eventSource", record.getEventSource());
+    super.addMetadata("eventSourceArn", record.getEventSourceARN());
+    super.addMetadata("eventID", record.getEventID());
+    super.addMetadata("awsRegion", record.getAwsRegion());
+    super.addMetadata("sequenceNumber", record.getDynamodb().getSequenceNumber());
+
+    this.record = record;
+    this.stringKeys = stringKeys;
+  }
+
+  public DynamodbStreamRecord getRecord() {
+    return record;
+  }
+
+  @Override
+  public LinkedHashMap<String, String> getPartitions() {
+    LinkedHashMap<String, String> partitions = super.getPartitions();
+    if (partitions == null) {
+      partitions = new LinkedHashMap<String, String>(1);
+      super.setPartitions(partitions);
+    }
+
+    partitions.put(DYNAMODB_KEYS, this.stringKeys);
+
+    return partitions;
+  }
+}
