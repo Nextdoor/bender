@@ -27,6 +27,14 @@ import java.io.IOException;
 
 public class DynamodbEventDeserializer {
 
+    private static ObjectMapper mapper = new ObjectMapper();
+
+    static {
+        mapper.addMixIn(com.amazonaws.services.dynamodbv2.model.Record.class, RecordIgnoreDuplicateMethods.class);
+        mapper.addMixIn(com.amazonaws.services.dynamodbv2.model.StreamRecord.class, StreamRecordIgnoreDuplicateMethods.class);
+        mapper.setPropertyNamingStrategy(new PropertyNamingFix());
+    }
+
     interface RecordIgnoreDuplicateMethods {
         @JsonIgnore
         public void setEventName(OperationType eventName);
@@ -74,13 +82,6 @@ public class DynamodbEventDeserializer {
     }
 
     public static DynamodbEvent deserialize(String json) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-
-        mapper.addMixIn(com.amazonaws.services.dynamodbv2.model.Record.class, RecordIgnoreDuplicateMethods.class);
-        mapper.addMixIn(com.amazonaws.services.dynamodbv2.model.StreamRecord.class, StreamRecordIgnoreDuplicateMethods.class);
-        mapper.setPropertyNamingStrategy(new PropertyNamingFix());
-
-        DynamodbEvent event = mapper.readValue(json, DynamodbEvent.class);
-        return event;
+        return mapper.readValue(json, DynamodbEvent.class);
     }
 }

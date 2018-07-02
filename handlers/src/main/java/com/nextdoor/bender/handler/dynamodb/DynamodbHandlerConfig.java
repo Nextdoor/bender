@@ -20,10 +20,14 @@ import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.handler.HandlerConfig;
 
 @JsonTypeName("DynamodbHandler")
-@JsonSchemaDescription("For use with Dynamodb stream triggers. Set the function handler to "
+@JsonSchemaDescription("For use with DynamoDB stream triggers. Set the function handler to "
         + "\"com.nextdoor.bender.handler.dynamodb.DynamodbHandler::handler\". The following IAM "
         + "permissions are also required: dynamodb:DescribeStream, dynamodb:GetRecords, "
-        + "dynamodb:GetShardIterator, and dynamodb:ListStreams.")
+        + "dynamodb:GetShardIterator, and dynamodb:ListStreams. DynamoDB stream events use "
+        + "AttributeValues (see "
+        + "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html) "
+        + "which uses data type as name, but such construct is converted to standard JSON by "
+        + "DynamodbHandler. For example, {\"value\":{\"N\":\"123\"}} becomes {\"value\":123}.")
 public class DynamodbHandlerConfig extends HandlerConfig {
 
 }
