@@ -25,120 +25,120 @@ import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
 
 public class DynamodbEventSerializerTest {
 
-    static String RECORD_FORMAT =
-            "{" +
-            "  \"Records\":[" +
-            "    {" +
-            "      \"eventID\":\"1\"," +
-            "      \"eventName\":\"INSERT\"," +
-            "      \"eventVersion\":\"1.0\"," +
-            "      \"eventSource\":\"aws:dynamodb\"," +
-            "      \"awsRegion\":\"us-east-1\"," +
-            "      \"dynamodb\":{" +
-            "        \"ApproximateCreationDateTime\": 1479499740," +
-            "        %s," +
-            "        \"SequenceNumber\":\"111\"," +
-            "        \"StreamViewType\":\"NEW_AND_OLD_IMAGES\"" +
-            "      }," +
-            "      \"eventSourceARN\":\"stream-ARN\"" +
-            "    }" +
-            "  ]" +
-            "}";
+  static String RECORD_FORMAT =
+      "{" +
+      "  \"Records\":[" +
+      "    {" +
+      "      \"eventID\":\"1\"," +
+      "      \"eventName\":\"INSERT\"," +
+      "      \"eventVersion\":\"1.0\"," +
+      "      \"eventSource\":\"aws:dynamodb\"," +
+      "      \"awsRegion\":\"us-east-1\"," +
+      "      \"dynamodb\":{" +
+      "      \"ApproximateCreationDateTime\": 1479499740," +
+      "      %s," +
+      "      \"SequenceNumber\":\"111\"," +
+      "      \"StreamViewType\":\"NEW_AND_OLD_IMAGES\"" +
+      "      }," +
+      "      \"eventSourceARN\":\"stream-ARN\"" +
+      "    }" +
+      "  ]" +
+      "}";
 
-    static String EXPECTED_FORMAT = "{\"eventSourceARN\":\"stream-ARN\",\"eventID\":\"1\",\"eventName\":\"INSERT\",\"eventVersion\":\"1.0\",\"eventSource\":\"aws:dynamodb\",\"awsRegion\":\"us-east-1\",\"dynamodb\":{\"approximateCreationDateTime\":1479499740,%s,\"sequenceNumber\":\"111\",\"streamViewType\":\"NEW_AND_OLD_IMAGES\"}}";
+  static String EXPECTED_FORMAT = "{\"eventSourceARN\":\"stream-ARN\",\"eventID\":\"1\",\"eventName\":\"INSERT\",\"eventVersion\":\"1.0\",\"eventSource\":\"aws:dynamodb\",\"awsRegion\":\"us-east-1\",\"dynamodb\":{\"approximateCreationDateTime\":1479499740,%s,\"sequenceNumber\":\"111\",\"streamViewType\":\"NEW_AND_OLD_IMAGES\"}}";
 
-    @Test
-    public void testRecord() throws IOException {
-        String input =
-                "{" +
-                "  \"Records\":[" +
-                "    {" +
-                "      \"eventID\":\"1\"," +
-                "      \"eventName\":\"INSERT\"," +
-                "      \"eventVersion\":\"1.0\"," +
-                "      \"eventSource\":\"aws:dynamodb\"," +
-                "      \"awsRegion\":\"us-east-1\"," +
-                "      \"dynamodb\":{" +
-                "        \"ApproximateCreationDateTime\": 1479499740," +
-                "        \"SequenceNumber\":\"111\"" +
-                "      }," +
-                "      \"eventSourceARN\":\"stream-ARN\"" +
-                "    }" +
-                "  ]" +
-                "}";
-        DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
-        String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
+  @Test
+  public void testRecord() throws IOException {
+    String input =
+        "{" +
+        "  \"Records\":[" +
+        "    {" +
+        "      \"eventID\":\"1\"," +
+        "      \"eventName\":\"INSERT\"," +
+        "      \"eventVersion\":\"1.0\"," +
+        "      \"eventSource\":\"aws:dynamodb\"," +
+        "      \"awsRegion\":\"us-east-1\"," +
+        "      \"dynamodb\":{" +
+        "      \"ApproximateCreationDateTime\": 1479499740," +
+        "      \"SequenceNumber\":\"111\"" +
+        "      }," +
+        "      \"eventSourceARN\":\"stream-ARN\"" +
+        "    }" +
+        "  ]" +
+        "}";
+    DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
+    String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
 
-        String expected = "{\"eventSourceARN\":\"stream-ARN\",\"eventID\":\"1\",\"eventName\":\"INSERT\",\"eventVersion\":\"1.0\",\"eventSource\":\"aws:dynamodb\",\"awsRegion\":\"us-east-1\",\"dynamodb\":{\"approximateCreationDateTime\":1479499740,\"sequenceNumber\":\"111\"}}";
-        assertEquals(expected, result);
-    }
+    String expected = "{\"eventSourceARN\":\"stream-ARN\",\"eventID\":\"1\",\"eventName\":\"INSERT\",\"eventVersion\":\"1.0\",\"eventSource\":\"aws:dynamodb\",\"awsRegion\":\"us-east-1\",\"dynamodb\":{\"approximateCreationDateTime\":1479499740,\"sequenceNumber\":\"111\"}}";
+    assertEquals(expected, result);
+  }
 
-    @Test
-    public void testKeys() throws IOException {
-        String input = String.format(RECORD_FORMAT,
-                "\"Keys\":{" +
-                "  \"Type\":{" +
-                "    \"S\":\"content\"" +
-                "  }," +
-                "  \"Id\":{" +
-                "    \"N\":\"101\"" +
-                "  }" +
-                "}");
-        DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
-        String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
+  @Test
+  public void testKeys() throws IOException {
+    String input = String.format(RECORD_FORMAT,
+        "\"Keys\":{" +
+        "  \"Type\":{" +
+        "    \"S\":\"content\"" +
+        "  }," +
+        "  \"Id\":{" +
+        "    \"N\":\"101\"" +
+        "  }" +
+        "}");
+    DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
+    String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
 
-        String expected = String.format(EXPECTED_FORMAT, "\"keys\":{\"Type\":\"content\",\"Id\":101}");
-        assertEquals(expected, result);
-    }
+    String expected = String.format(EXPECTED_FORMAT, "\"keys\":{\"Type\":\"content\",\"Id\":101}");
+    assertEquals(expected, result);
+  }
 
-    @Test
-    public void testNewImage() throws IOException {
-        String input = String.format(RECORD_FORMAT,
-                "\"NewImage\":{" +
-                "  \"Message\":{" +
-                "    \"S\":\"New item!\"" +
-                "  }," +
-                "  \"Bytes\":{" +
-                "    \"B\":\"aGVsbG8=\"" +
-                "  }," +
-                "  \"IsSold\":{" +
-                "    \"BOOL\":1" +
-                "  }," +
-                "  \"Id\":{" +
-                "    \"N\":\"101\"" +
-                "  }," +
-                "  \"Tags\":{" +
-                "    \"SS\":[\"message\",\"sold\"]" +
-                "  }," +
-                "  \"Metrics\":{" +
-                "    \"NS\":[\"42.2\",\"3.14\"]" +
-                "  }," +
-                "  \"Blobs\":{" +
-                "    \"BS\":[\"Zm9v\",\"YmFy\"]" +
-                "  }" +
-                "}");
-        DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
-        String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
+  @Test
+  public void testNewImage() throws IOException {
+    String input = String.format(RECORD_FORMAT,
+        "\"NewImage\":{" +
+        "  \"Message\":{" +
+        "    \"S\":\"New item!\"" +
+        "  }," +
+        "  \"Bytes\":{" +
+        "    \"B\":\"aGVsbG8=\"" +
+        "  }," +
+        "  \"IsSold\":{" +
+        "    \"BOOL\":1" +
+        "  }," +
+        "  \"Id\":{" +
+        "    \"N\":\"101\"" +
+        "  }," +
+        "  \"Tags\":{" +
+        "    \"SS\":[\"message\",\"sold\"]" +
+        "  }," +
+        "  \"Metrics\":{" +
+        "    \"NS\":[\"42.2\",\"3.14\"]" +
+        "  }," +
+        "  \"Blobs\":{" +
+        "    \"BS\":[\"Zm9v\",\"YmFy\"]" +
+        "  }" +
+        "}");
+    DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
+    String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
 
-        String expected = String.format(EXPECTED_FORMAT, "\"newImage\":{\"Message\":\"New item!\",\"Bytes\":[104,101,108,108,111],\"IsSold\":true,\"Id\":101,\"Tags\":[\"message\",\"sold\"],\"Metrics\":[42.2,3.14],\"Blobs\":[[102,111,111],[98,97,114]]}");
-        assertEquals(expected, result);
-    }
+    String expected = String.format(EXPECTED_FORMAT, "\"newImage\":{\"Message\":\"New item!\",\"Bytes\":[104,101,108,108,111],\"IsSold\":true,\"Id\":101,\"Tags\":[\"message\",\"sold\"],\"Metrics\":[42.2,3.14],\"Blobs\":[[102,111,111],[98,97,114]]}");
+    assertEquals(expected, result);
+  }
 
-    @Test
-    public void testOldImage() throws IOException {
-        String input = String.format(RECORD_FORMAT,
-                "\"OldImage\":{" +
-                "  \"Message\":{" +
-                "    \"S\":\"New item!\"" +
-                "  }," +
-                "  \"Id\":{" +
-                "    \"N\":\"101\"" +
-                "  }" +
-                "}");
-        DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
-        String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
+  @Test
+  public void testOldImage() throws IOException {
+    String input = String.format(RECORD_FORMAT,
+        "\"OldImage\":{" +
+        "  \"Message\":{" +
+        "    \"S\":\"New item!\"" +
+        "  }," +
+        "  \"Id\":{" +
+        "    \"N\":\"101\"" +
+        "  }" +
+        "}");
+    DynamodbEvent event = DynamodbEventDeserializer.deserialize(input);
+    String result = new DynamodbEventSerializer().serialize(event.getRecords().get(0));
 
-        String expected = String.format(EXPECTED_FORMAT, "\"oldImage\":{\"Message\":\"New item!\",\"Id\":101}");
-        assertEquals(expected, result);
-    }
+    String expected = String.format(EXPECTED_FORMAT, "\"oldImage\":{\"Message\":\"New item!\",\"Id\":101}");
+    assertEquals(expected, result);
+  }
 }

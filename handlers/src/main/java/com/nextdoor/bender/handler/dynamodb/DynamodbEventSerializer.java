@@ -34,65 +34,65 @@ import com.google.gson.stream.JsonWriter;
 
 public class DynamodbEventSerializer {
 
-    /**
-     * DateAdapter serializes dates in epoch format.
-     */
-    static class DateAdapter extends TypeAdapter<Date> {
-        public Date read(JsonReader r) throws IOException {
-            throw new IOException("Not implemented yet");
-        }
-
-        public void write(JsonWriter w, Date d) throws IOException {
-            w.value(d.getTime());
-        }
+  /**
+   * DateAdapter serializes dates in epoch format.
+   */
+  static class DateAdapter extends TypeAdapter<Date> {
+    public Date read(JsonReader r) throws IOException {
+      throw new IOException("Not implemented yet");
     }
 
-    /**
-     * AttributeValueMapAdapter serializes DynamoDB JSON into standard JSON format.
-     */
-    class AttributeValueMapAdapter extends TypeAdapter<Map<String, AttributeValue>> {
-        public Map<String, AttributeValue> read(JsonReader r) throws IOException {
-            throw new IOException("Not implemented yet");
-        }
+    public void write(JsonWriter w, Date d) throws IOException {
+      w.value(d.getTime());
+    }
+  }
 
-        public void write(JsonWriter w, Map<String, AttributeValue> map) throws IOException {
-            if (map == null) {
-                w.nullValue();
-            } else {
-                // Uses the outer class's gson instance
-                String json = gson.toJson(attributeValueMapToItem(map).asMap());
-                w.jsonValue(json);
-            }
-        }
-
-        private Item attributeValueMapToItem(Map<String, AttributeValue> map) {
-            ArrayList<Map<String, AttributeValue>> listOfMaps = new ArrayList<>();
-            listOfMaps.add(map);
-            List<Item> listOfItem = InternalUtils.toItemList(listOfMaps);
-            return listOfItem.get(0);
-        }
+  /**
+   * AttributeValueMapAdapter serializes DynamoDB JSON into standard JSON format.
+   */
+  class AttributeValueMapAdapter extends TypeAdapter<Map<String, AttributeValue>> {
+    public Map<String, AttributeValue> read(JsonReader r) throws IOException {
+      throw new IOException("Not implemented yet");
     }
 
-    private Gson gson;
-
-    DynamodbEventSerializer() {
-        gson = createGson();
+    public void write(JsonWriter w, Map<String, AttributeValue> map) throws IOException {
+      if (map == null) {
+        w.nullValue();
+      } else {
+        // Uses the outer class's gson instance
+        String json = gson.toJson(attributeValueMapToItem(map).asMap());
+        w.jsonValue(json);
+      }
     }
 
-    private Gson createGson() {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Date.class, new DateAdapter());
-        builder.registerTypeAdapter(
-                new TypeToken<Map<String, AttributeValue>>() {}.getType(),
-                new AttributeValueMapAdapter());
-        return builder.create();
+    private Item attributeValueMapToItem(Map<String, AttributeValue> map) {
+      ArrayList<Map<String, AttributeValue>> listOfMaps = new ArrayList<>();
+      listOfMaps.add(map);
+      List<Item> listOfItem = InternalUtils.toItemList(listOfMaps);
+      return listOfItem.get(0);
     }
+  }
 
-    String serialize(DynamodbStreamRecord record) {
-        return gson.toJson(record);
-    }
+  private Gson gson;
 
-    String serialize(Map<String, AttributeValue> map) {
-        return gson.toJson(map);
-    }
+  DynamodbEventSerializer() {
+    gson = createGson();
+  }
+
+  private Gson createGson() {
+    GsonBuilder builder = new GsonBuilder();
+    builder.registerTypeAdapter(Date.class, new DateAdapter());
+    builder.registerTypeAdapter(
+        new TypeToken<Map<String, AttributeValue>>() {}.getType(),
+        new AttributeValueMapAdapter());
+    return builder.create();
+  }
+
+  String serialize(DynamodbStreamRecord record) {
+    return gson.toJson(record);
+  }
+
+  String serialize(Map<String, AttributeValue> map) {
+    return gson.toJson(map);
+  }
 }

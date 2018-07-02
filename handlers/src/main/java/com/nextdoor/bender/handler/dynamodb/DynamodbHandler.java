@@ -28,42 +28,42 @@ import com.nextdoor.bender.handler.HandlerException;
 import com.nextdoor.bender.utils.SourceUtils;
 
 public class DynamodbHandler extends BaseHandler<DynamodbEvent> implements Handler<DynamodbEvent> {
-    private InternalEventIterator<InternalEvent> recordIterator = null;
-    private Source source = null;
+  private InternalEventIterator<InternalEvent> recordIterator = null;
+  private Source source = null;
 
-    public void handler(DynamodbEvent event, Context context) throws HandlerException {
-        if (!initialized) {
-            init(context);
-        }
-
-        this.recordIterator = new DynamodbEventIterator(
-                new LambdaContext(context), event.getRecords());
-
-        DynamodbStreamRecord firstRecord = event.getRecords().get(0);
-        this.source = SourceUtils.getSource(firstRecord.getEventSourceARN(), sources);
-
-        super.process(context);
+  public void handler(DynamodbEvent event, Context context) throws HandlerException {
+    if (!initialized) {
+      init(context);
     }
 
-    @Override
-    public Source getSource() {
-        return this.source;
-    }
+    this.recordIterator = new DynamodbEventIterator(
+        new LambdaContext(context), event.getRecords());
 
-    @Override
-    public String getSourceName() {
-        return "aws:dynamodb";
-    }
+    DynamodbStreamRecord firstRecord = event.getRecords().get(0);
+    this.source = SourceUtils.getSource(firstRecord.getEventSourceARN(), sources);
 
-    @Override
-    public void onException(Exception e) {
-        /*
-         * No special handling needed as state is not kept.
-         */
-    }
+    super.process(context);
+  }
 
-    @Override
-    public InternalEventIterator<InternalEvent> getInternalEventIterator() {
-        return this.recordIterator;
-    }
+  @Override
+  public Source getSource() {
+    return this.source;
+  }
+
+  @Override
+  public String getSourceName() {
+    return "aws:dynamodb";
+  }
+
+  @Override
+  public void onException(Exception e) {
+    /*
+     * No special handling needed as state is not kept.
+     */
+  }
+
+  @Override
+  public InternalEventIterator<InternalEvent> getInternalEventIterator() {
+    return this.recordIterator;
+  }
 }

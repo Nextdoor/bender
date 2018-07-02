@@ -27,61 +27,61 @@ import java.io.IOException;
 
 public class DynamodbEventDeserializer {
 
-    private static ObjectMapper mapper = new ObjectMapper();
+  private static ObjectMapper mapper = new ObjectMapper();
 
-    static {
-        mapper.addMixIn(com.amazonaws.services.dynamodbv2.model.Record.class, RecordIgnoreDuplicateMethods.class);
-        mapper.addMixIn(com.amazonaws.services.dynamodbv2.model.StreamRecord.class, StreamRecordIgnoreDuplicateMethods.class);
-        mapper.setPropertyNamingStrategy(new PropertyNamingFix());
-    }
+  static {
+    mapper.addMixIn(com.amazonaws.services.dynamodbv2.model.Record.class, RecordIgnoreDuplicateMethods.class);
+    mapper.addMixIn(com.amazonaws.services.dynamodbv2.model.StreamRecord.class, StreamRecordIgnoreDuplicateMethods.class);
+    mapper.setPropertyNamingStrategy(new PropertyNamingFix());
+  }
 
-    interface RecordIgnoreDuplicateMethods {
-        @JsonIgnore
-        public void setEventName(OperationType eventName);
-        @JsonProperty("eventName")
-        public void setEventName(String eventName);
-    }
+  interface RecordIgnoreDuplicateMethods {
+    @JsonIgnore
+    public void setEventName(OperationType eventName);
+    @JsonProperty("eventName")
+    public void setEventName(String eventName);
+  }
 
-    interface StreamRecordIgnoreDuplicateMethods {
-        @JsonIgnore
-        public void setStreamViewType(StreamViewType streamViewType);
-        @JsonProperty("StreamViewType")
-        public void setStreamViewType(String streamViewType);
-    }
+  interface StreamRecordIgnoreDuplicateMethods {
+    @JsonIgnore
+    public void setStreamViewType(StreamViewType streamViewType);
+    @JsonProperty("StreamViewType")
+    public void setStreamViewType(String streamViewType);
+  }
 
-    public static class PropertyNamingFix extends PropertyNamingStrategy.PropertyNamingStrategyBase {
-        @Override
-        public String translate(String propertyName) {
-            switch(propertyName) {
-                case "eventID":
-                    return "eventID";
-                case "eventVersion":
-                    return "eventVersion";
-                case "eventSource":
-                    return "eventSource";
-                case "awsRegion":
-                    return "awsRegion";
-                case "dynamodb":
-                    return "dynamodb";
-                case "eventSourceARN":
-                    return "eventSourceARN";
-                case "bool":
-                    return "BOOL";
-                case "ss":
-                    return "SS";
-                case "ns":
-                    return "NS";
-                case "bs":
-                    return "BS";
-                default:
-                    String first = propertyName.substring(0, 1);
-                    String rest = propertyName.substring(1);
-                    return first.toUpperCase() + rest;
-            }
-        }
+  public static class PropertyNamingFix extends PropertyNamingStrategy.PropertyNamingStrategyBase {
+    @Override
+    public String translate(String propertyName) {
+      switch(propertyName) {
+        case "eventID":
+          return "eventID";
+        case "eventVersion":
+          return "eventVersion";
+        case "eventSource":
+          return "eventSource";
+        case "awsRegion":
+          return "awsRegion";
+        case "dynamodb":
+          return "dynamodb";
+        case "eventSourceARN":
+          return "eventSourceARN";
+        case "bool":
+          return "BOOL";
+        case "ss":
+          return "SS";
+        case "ns":
+          return "NS";
+        case "bs":
+          return "BS";
+        default:
+          String first = propertyName.substring(0, 1);
+          String rest = propertyName.substring(1);
+          return first.toUpperCase() + rest;
+      }
     }
+  }
 
-    public static DynamodbEvent deserialize(String json) throws IOException {
-        return mapper.readValue(json, DynamodbEvent.class);
-    }
+  public static DynamodbEvent deserialize(String json) throws IOException {
+    return mapper.readValue(json, DynamodbEvent.class);
+  }
 }

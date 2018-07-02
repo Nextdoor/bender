@@ -28,31 +28,31 @@ import com.nextdoor.bender.LambdaContext;
  * Wraps DynamodbStreamRecords with an iterator that constructs {@link DynamodbInternalEvent}s.
  */
 public class DynamodbEventIterator implements InternalEventIterator<InternalEvent> {
-    private final Iterator<DynamodbStreamRecord> iterator;
-    private final LambdaContext context;
-    private final DynamodbEventSerializer serializer;
+  private final Iterator<DynamodbStreamRecord> iterator;
+  private final LambdaContext context;
+  private final DynamodbEventSerializer serializer;
 
-    public DynamodbEventIterator(LambdaContext context, List<DynamodbStreamRecord> records) {
-        this.iterator = records.iterator();
-        this.context = context;
-        this.serializer = new DynamodbEventSerializer();
-    }
+  public DynamodbEventIterator(LambdaContext context, List<DynamodbStreamRecord> records) {
+    this.iterator = records.iterator();
+    this.context = context;
+    this.serializer = new DynamodbEventSerializer();
+  }
 
-    @Override
-    public boolean hasNext() {
-        return this.iterator.hasNext();
-    }
+  @Override
+  public boolean hasNext() {
+    return this.iterator.hasNext();
+  }
 
-    @Override
-    public InternalEvent next() {
-        DynamodbStreamRecord record = this.iterator.next();
-        String stringKeys = this.serializer.serialize(record.getDynamodb().getKeys());
-        String stringRecord = this.serializer.serialize(record);
-        return new DynamodbInternalEvent(record, stringKeys, stringRecord, this.context);
-    }
+  @Override
+  public InternalEvent next() {
+    DynamodbStreamRecord record = this.iterator.next();
+    String stringKeys = this.serializer.serialize(record.getDynamodb().getKeys());
+    String stringRecord = this.serializer.serialize(record);
+    return new DynamodbInternalEvent(record, stringKeys, stringRecord, this.context);
+  }
 
-    @Override
-    public void close() throws IOException {
+  @Override
+  public void close() throws IOException {
 
-    }
+  }
 }

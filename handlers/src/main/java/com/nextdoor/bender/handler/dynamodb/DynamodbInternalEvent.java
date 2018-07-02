@@ -22,42 +22,42 @@ import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.LambdaContext;
 
 public class DynamodbInternalEvent extends InternalEvent {
-    public static final String DYNAMODB_KEYS = "__keys__";
-    private final DynamodbStreamRecord record;
-    private final String stringKeys;
+  public static final String DYNAMODB_KEYS = "__keys__";
+  private final DynamodbStreamRecord record;
+  private final String stringKeys;
 
-    public DynamodbInternalEvent(
-            DynamodbStreamRecord record,
-            String stringKeys, String stringRecord,
-            LambdaContext context) {
-        super(stringRecord, context,
-                record.getDynamodb().getApproximateCreationDateTime().getTime());
+  public DynamodbInternalEvent(
+      DynamodbStreamRecord record,
+      String stringKeys, String stringRecord,
+      LambdaContext context) {
+    super(stringRecord, context,
+        record.getDynamodb().getApproximateCreationDateTime().getTime());
 
-        super.addMetadata("eventName", record.getEventName());
-        super.addMetadata("eventSource", record.getEventSource());
-        super.addMetadata("eventSourceArn", record.getEventSourceARN());
-        super.addMetadata("eventID", record.getEventID());
-        super.addMetadata("awsRegion", record.getAwsRegion());
-        super.addMetadata("sequenceNumber", record.getDynamodb().getSequenceNumber());
+    super.addMetadata("eventName", record.getEventName());
+    super.addMetadata("eventSource", record.getEventSource());
+    super.addMetadata("eventSourceArn", record.getEventSourceARN());
+    super.addMetadata("eventID", record.getEventID());
+    super.addMetadata("awsRegion", record.getAwsRegion());
+    super.addMetadata("sequenceNumber", record.getDynamodb().getSequenceNumber());
 
-        this.record = record;
-        this.stringKeys = stringKeys;
+    this.record = record;
+    this.stringKeys = stringKeys;
+  }
+
+  public DynamodbStreamRecord getRecord() {
+    return record;
+  }
+
+  @Override
+  public LinkedHashMap<String, String> getPartitions() {
+    LinkedHashMap<String, String> partitions = super.getPartitions();
+    if (partitions == null) {
+      partitions = new LinkedHashMap<String, String>(1);
+      super.setPartitions(partitions);
     }
 
-    public DynamodbStreamRecord getRecord() {
-        return record;
-    }
+    partitions.put(DYNAMODB_KEYS, this.stringKeys);
 
-    @Override
-    public LinkedHashMap<String, String> getPartitions() {
-        LinkedHashMap<String, String> partitions = super.getPartitions();
-        if (partitions == null) {
-            partitions = new LinkedHashMap<String, String>(1);
-            super.setPartitions(partitions);
-        }
-
-        partitions.put(DYNAMODB_KEYS, this.stringKeys);
-
-        return partitions;
-    }
+    return partitions;
+  }
 }

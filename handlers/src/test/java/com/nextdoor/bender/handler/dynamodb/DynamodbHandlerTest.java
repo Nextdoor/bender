@@ -24,34 +24,34 @@ import org.apache.commons.io.IOUtils;
 
 public class DynamodbHandlerTest extends HandlerTest<DynamodbEvent> {
 
-    @Override
-    public DynamodbHandler getHandler() {
-        return new DynamodbHandler();
-    }
+  @Override
+  public DynamodbHandler getHandler() {
+    return new DynamodbHandler();
+  }
 
-    @Override
-    public DynamodbEvent getTestEvent() throws Exception {
-        String json = IOUtils.toString(new InputStreamReader(
-                this.getClass().getResourceAsStream("dynamodb_records.json"),
-                "UTF-8"));
-        return DynamodbEventDeserializer.deserialize(json);
-    }
+  @Override
+  public DynamodbEvent getTestEvent() throws Exception {
+    String json = IOUtils.toString(new InputStreamReader(
+        this.getClass().getResourceAsStream("dynamodb_records.json"),
+        "UTF-8"));
+    return DynamodbEventDeserializer.deserialize(json);
+  }
 
-    @Override
-    public String getExpectedEvent() {
-        return "dynamodb_output.json";
-    }
+  @Override
+  public String getExpectedEvent() {
+    return "dynamodb_output.json";
+  }
 
-    @Override
-    public void setup() {
-    }
+  @Override
+  public void setup() {
+  }
 
-    @Override
-    public String getConfigFile() {
-        return "/com/nextdoor/bender/handler/config_dynamodb.json";
-    }
+  @Override
+  public String getConfigFile() {
+    return "/com/nextdoor/bender/handler/config_dynamodb.json";
+  }
 
-    @Override
-    public void teardown() {
-    }
+  @Override
+  public void teardown() {
+  }
 }
