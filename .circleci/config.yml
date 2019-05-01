@@ -5,7 +5,7 @@ jobs:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo
     environment:
-      MAVEN_OPTS: "-Xms256m -Xmx3072m -XX:MaxPermSize=256m"
+      MAVEN_OPTS: "-Xms16m -Xmx2048m -XX:MaxPermSize=256m"
       TERM: dumb
 
       # CircleCI Environment Variables
