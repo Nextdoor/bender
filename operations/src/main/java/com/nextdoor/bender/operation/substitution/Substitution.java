@@ -48,7 +48,7 @@ public abstract class Substitution {
     }
 
     if (sourceValue == null) {
-      throw new FieldNotFoundException();
+      throw new FieldNotFoundException("unable to find field in: " + sourceFieldsNames);
     }
 
     return new ImmutablePair<String, Object>(foundSourceFieldName, sourceValue);

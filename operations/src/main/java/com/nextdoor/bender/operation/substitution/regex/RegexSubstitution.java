@@ -148,7 +148,7 @@ public class RegexSubstitution extends Substitution {
     }
 
     if (foundSourceField == null) {
-      throw new FieldNotFoundException();
+      throw new FieldNotFoundException("unable to find field in: " + this.srcFields);
     }
 
     /*
