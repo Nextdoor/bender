@@ -48,6 +48,7 @@ public abstract class Substitution {
     }
 
     if (sourceValue == null) {
+      System.out.println(devent.getPayload());
       throw new FieldNotFoundException("unable to find field in: " + sourceFieldsNames);
     }
 
