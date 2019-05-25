@@ -23,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
 import java.net.URLDecoder;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -34,6 +35,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.event.S3EventNotification.S3Entity;
 import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRecord;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.evanlennick.retry4j.CallExecutor;
 import com.evanlennick.retry4j.CallResults;
@@ -55,6 +57,7 @@ import com.nextdoor.bender.aws.AmazonS3ClientFactory;
  * may occur.
  */
 public class S3EventIterator implements InternalEventIterator<InternalEvent> {
+  private static final long ALLOWABLE_SPOUT_LAG_IN_MS = 300000; // 5 mins
   private static final Logger logger = Logger.getLogger(S3EventIterator.class);
   private final AmazonS3Client client;
   private final List<S3EventNotificationRecord> records;
@@ -187,6 +190,11 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
       logger.trace("s3 get request id: " + client.getCachedResponseMetadata(req).getRequestId()
           + " host: " + client.getCachedResponseMetadata(req).getHostId() + " cloudfrontid: "
           + client.getCachedResponseMetadata(req).getCloudFrontId());
+      Date objOpenTime = new Date();
+      long spoutLag = obj.getObjectMetadata().getLastModified().getTime() - objOpenTime.getTime();
+      if(spoutLag > ALLOWABLE_SPOUT_LAG_IN_MS) {
+        logger.debug("late file (" + spoutLag + " ms) s3://" + bucketName + "/" + key);
+      }
 
       /*
        * If the file is compressed run it through the GZIP decompressor
