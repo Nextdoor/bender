@@ -57,7 +57,7 @@ import com.nextdoor.bender.aws.AmazonS3ClientFactory;
  * may occur.
  */
 public class S3EventIterator implements InternalEventIterator<InternalEvent> {
-  private static final long ALLOWABLE_SPOUT_LAG_IN_MS = 300000; // 5 mins
+  private static final long NOTIFICATION_DELAY_GRACE_PERIOD = 300000; // 5 mins
   private static final Logger logger = Logger.getLogger(S3EventIterator.class);
   private final AmazonS3Client client;
   private final List<S3EventNotificationRecord> records;
@@ -190,11 +190,17 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
       logger.trace("s3 get request id: " + client.getCachedResponseMetadata(req).getRequestId()
           + " host: " + client.getCachedResponseMetadata(req).getHostId() + " cloudfrontid: "
           + client.getCachedResponseMetadata(req).getCloudFrontId());
-      Date objOpenTime = new Date();
-      long spoutLag = obj.getObjectMetadata().getLastModified().getTime() - objOpenTime.getTime();
-      if(spoutLag > ALLOWABLE_SPOUT_LAG_IN_MS) {
-        logger.debug("late file (" + spoutLag + " ms) s3://" + bucketName + "/" + key);
-      }
+      long notificationDelay = obj.getObjectMetadata().getLastModified().getTime()
+          - this.arrivalTime;
+      if(notificationDelay > NOTIFICATION_DELAY_GRACE_PERIOD) {
+        /*
+         * Notification delay is measured from when the object was last modified time in S3 to when
+         * the SNS message was actually recieved by Bender. (If the producer only writes objects
+         * once, then this is effectively the created time.)
+         */
+        logger.debug("Notification for s3://" + bucketName + "/" + key + " was received at"
+            + event.getEventTime().toDate() + " - " + (notificationDelay / 1000) + " sec after the file"
+            + " landed in S3 (" + obj.getObjectMetadata().getLastModified() + ").");
 
       /*
        * If the file is compressed run it through the GZIP decompressor
