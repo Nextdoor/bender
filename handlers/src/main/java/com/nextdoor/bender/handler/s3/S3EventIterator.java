@@ -190,8 +190,8 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
       logger.trace("s3 get request id: " + client.getCachedResponseMetadata(req).getRequestId()
           + " host: " + client.getCachedResponseMetadata(req).getHostId() + " cloudfrontid: "
           + client.getCachedResponseMetadata(req).getCloudFrontId());
-      long notificationDelay = obj.getObjectMetadata().getLastModified().getTime()
-          - this.arrivalTime;
+      long notificationDelay = this.arrivalTime
+          - obj.getObjectMetadata().getLastModified().getTime();
       if(notificationDelay > NOTIFICATION_DELAY_GRACE_PERIOD) {
         /*
          * Notification delay is measured from when the object was last modified time in S3 to when
