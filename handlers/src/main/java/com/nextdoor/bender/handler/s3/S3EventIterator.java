@@ -201,6 +201,7 @@ public class S3EventIterator implements InternalEventIterator<InternalEvent> {
         logger.debug("Notification for s3://" + bucketName + "/" + key + " was received at"
             + event.getEventTime().toDate() + " - " + (notificationDelay / 1000) + " sec after the file"
             + " landed in S3 (" + obj.getObjectMetadata().getLastModified() + ").");
+      }
 
       /*
        * If the file is compressed run it through the GZIP decompressor
