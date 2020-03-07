@@ -107,8 +107,8 @@ public class S3Proxy {
       @Override
       public void run() {
         try {
-          ((UnixProcess) s3ProxyProcess).kill("TERM");
-        } catch (IOException | InterruptedException e) {
+          ((UnixProcess) s3ProxyProcess).kill(15);
+        } catch (IOException e) {
           return;
         }
       }
@@ -126,8 +126,8 @@ public class S3Proxy {
     }
 
     try {
-      ((UnixProcess) this.s3ProxyProcess).kill("TERM");
-    } catch (IOException | InterruptedException e) {
+      ((UnixProcess) this.s3ProxyProcess).kill(15);
+    } catch (IOException e) {
       return;
     }
   }

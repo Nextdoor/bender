@@ -75,7 +75,9 @@ public class BaseHandlerS3Test {
 
   @After
   public void teardown() {
-    this.clientFactory.shutdown();
+	  if (this.clientFactory != null) {
+		  this.clientFactory.shutdown();
+	  }
   }
 
   @Test
