@@ -1,8 +1,8 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:8u212-jdk-stretch
+      - image: cimg/openjdk:11.0.6
     working_directory: ~/repo
     environment:
       MAVEN_OPTS: "-Xms16m -Xmx2048m"
@@ -33,8 +33,8 @@ jobs:
       # Set up NPM/NodeJS for doc building
       - run:
           command: |
-            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-            sudo apt-get install -y nodejs npm
+            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+            sudo apt-get install -y nodejs
             sudo npm install jquery -g
             sudo npm install node-docson -g
 
@@ -44,14 +44,14 @@ jobs:
       # .m2 directory for each of the individual Bender modules.
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "pom.xml" }}
+            - v2-dependencies-
       - run: mvn dependency:resolve-plugins
       - run: mvn clean compile -Dmaven.main.skip -Dexec.skip
       - save_cache:
           paths:
             - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
+          key: v2-dependencies-{{ checksum "pom.xml" }}
 
       - run: cp .circleci/m2.settings.xml ~/.m2/settings.xml
 
@@ -97,9 +97,8 @@ jobs:
             fi
             if echo ${CIRCLE_BRANCH} | grep "^release\/[0-9]\+\.[0-9]\+\.[0-9]\+$"; then
               echo "Deploying Release"
-              sudo apt-get install gnupg1
               echo $GPG_KEY | base64 --decode > build.gpg
-              gpg1 --import build.gpg
+              gpg --import build.gpg
               mvn clean deploy -DaltDeploymentRepository=ossrh::default::${RELEASE_LOC} -DskipTests
             else
               echo "Skipping Release Deploy"
