@@ -32,8 +32,6 @@ import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
 import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
 
-import vc.inreach.aws.request.AWSSigningRequestInterceptor;
-
 public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory {
 
   @Override
@@ -98,6 +96,6 @@ public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory 
   }
 
   private HttpClientBuilder addSigningAuth(HttpClientBuilder cb, UrlSigningAuthConfig auth) {
-    return cb.addInterceptorLast(new AWSSigningRequestInterceptor(auth.getAWSSigner()));
+    return cb.addInterceptorLast(auth.getHttpInterceptor());
   }
 }

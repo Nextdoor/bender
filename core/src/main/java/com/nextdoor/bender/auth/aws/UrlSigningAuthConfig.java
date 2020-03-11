@@ -15,16 +15,16 @@
 
 package com.nextdoor.bender.auth.aws;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import org.apache.http.HttpRequestInterceptor;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.http.AWSRequestSigningApacheInterceptor;
+import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.nextdoor.bender.auth.AuthConfig;
 
-import vc.inreach.aws.request.AWSSigner;
 
 @JsonTypeName("UrlSigningAuth")
 public class UrlSigningAuthConfig extends AuthConfig<UrlSigningAuthConfig> {
@@ -50,11 +50,13 @@ public class UrlSigningAuthConfig extends AuthConfig<UrlSigningAuthConfig> {
     this.region = region;
   }
 
-  public AWSSigner getAWSSigner() {
-    final com.google.common.base.Supplier<LocalDateTime> clock =
-        () -> LocalDateTime.now(ZoneOffset.UTC);
+  public HttpRequestInterceptor getHttpInterceptor() {
     DefaultAWSCredentialsProviderChain cp = new DefaultAWSCredentialsProviderChain();
 
-    return new AWSSigner(cp, this.region.getName(), this.service, clock);
+    AWS4Signer signer = new AWS4Signer();
+    signer.setServiceName(this.service);
+    signer.setRegionName(this.region.getName());
+
+    return new AWSRequestSigningApacheInterceptor(this.service, signer, cp);
   }
 }
