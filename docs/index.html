@@ -29576,6 +29576,7 @@ function sourceButton(element) {
                 <span class="type-enum">UPPER_CAMEL_CASE_WITH_SPACES</span>
                 <span class="type-enum">LOWER_CASE_WITH_UNDERSCORES</span>
                 <span class="type-enum">LOWER_CASE_WITH_DASHES</span>
+                <span class="type-enum">LOWER_CASE_WITH_DOTS</span>
             <span class="type-keyword">default</span>
             <span class="type-default">LOWER_CASE_WITH_UNDERSCORES</span>
 
@@ -29612,7 +29613,8 @@ function sourceButton(element) {
         "UPPER_CAMEL_CASE",
         "UPPER_CAMEL_CASE_WITH_SPACES",
         "LOWER_CASE_WITH_UNDERSCORES",
-        "LOWER_CASE_WITH_DASHES"
+        "LOWER_CASE_WITH_DASHES",
+        "LOWER_CASE_WITH_DOTS"
       ],
       "description": "GSON field naming policy. See https://google.github.io/gson/apidocs/com/google/gson/FieldNamingPolicy.html"
     }
@@ -29849,13 +29851,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -29863,7 +29869,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region.</p>
@@ -29995,13 +30003,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -30009,7 +30021,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
     },
@@ -30402,13 +30416,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -30416,7 +30434,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"></div>
@@ -30443,7 +30463,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">awssigner</div>
+                <div class="property-name ">http_interceptor</div>
                 <div class="signature-type">
                         
                 </div>
@@ -30473,13 +30493,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -30487,13 +30511,15 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ]
     },
     "service": {
       "type": "string"
     },
-    "awssigner": {}
+    "http_interceptor": {}
   },
   "title": "UrlSigningAuth",
   "required": [
@@ -30642,13 +30668,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -30656,7 +30686,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
@@ -30690,13 +30722,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -30704,7 +30740,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "AWS region associated with the KMS key used to encrypt the value."
     }
@@ -31576,13 +31614,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -31590,7 +31632,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
@@ -31624,13 +31668,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -31638,7 +31686,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "AWS region associated with the KMS key used to encrypt the value."
     }
@@ -32809,13 +32859,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -32823,7 +32877,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
@@ -32857,13 +32913,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -32871,7 +32931,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "AWS region associated with the KMS key used to encrypt the value."
     }
@@ -33575,13 +33637,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -33589,7 +33655,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
@@ -33623,13 +33691,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -33637,7 +33709,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "AWS region associated with the KMS key used to encrypt the value."
     }
@@ -34292,13 +34366,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -34306,7 +34384,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
@@ -34340,13 +34420,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -34354,7 +34438,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "AWS region associated with the KMS key used to encrypt the value."
     }
@@ -34730,13 +34816,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -34744,7 +34834,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region.</p>
@@ -34841,13 +34933,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -34855,7 +34951,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
     },
@@ -35185,13 +35283,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -35199,7 +35301,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
@@ -35233,13 +35337,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -35247,7 +35355,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "AWS region associated with the KMS key used to encrypt the value."
     }
@@ -35806,13 +35916,17 @@ function sourceButton(element) {
             </span>
             <span class="type-keyword">enum</span>
                 <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
                 <span class="type-enum">US_EAST_1</span>
                 <span class="type-enum">US_EAST_2</span>
                 <span class="type-enum">US_WEST_1</span>
                 <span class="type-enum">US_WEST_2</span>
                 <span class="type-enum">EU_WEST_1</span>
                 <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
                 <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
                 <span class="type-enum">AP_SOUTH_1</span>
                 <span class="type-enum">AP_SOUTHEAST_1</span>
                 <span class="type-enum">AP_SOUTHEAST_2</span>
@@ -35820,7 +35934,9 @@ function sourceButton(element) {
                 <span class="type-enum">AP_NORTHEAST_2</span>
                 <span class="type-enum">SA_EAST_1</span>
                 <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
                 <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
 
                 </div>
                 <div class="signature-description desc"><p>Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region.</p>
@@ -35878,13 +35994,17 @@ function sourceButton(element) {
       "type": "string",
       "enum": [
         "GovCloud",
+        "US_GOV_EAST_1",
         "US_EAST_1",
         "US_EAST_2",
         "US_WEST_1",
         "US_WEST_2",
         "EU_WEST_1",
         "EU_WEST_2",
+        "EU_WEST_3",
         "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
         "AP_SOUTH_1",
         "AP_SOUTHEAST_1",
         "AP_SOUTHEAST_2",
@@ -35892,7 +36012,9 @@ function sourceButton(element) {
         "AP_NORTHEAST_2",
         "SA_EAST_1",
         "CN_NORTH_1",
-        "CA_CENTRAL_1"
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
       ],
       "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
     },
@@ -37956,7 +38078,8 @@ function sourceButton(element) {
             "UPPER_CAMEL_CASE",
             "UPPER_CAMEL_CASE_WITH_SPACES",
             "LOWER_CASE_WITH_UNDERSCORES",
-            "LOWER_CASE_WITH_DASHES"
+            "LOWER_CASE_WITH_DASHES",
+            "LOWER_CASE_WITH_DOTS"
           ],
           "description": "GSON field naming policy. See https://google.github.io/gson/apidocs/com/google/gson/FieldNamingPolicy.html"
         }
@@ -38015,13 +38138,17 @@ function sourceButton(element) {
           "type": "string",
           "enum": [
             "GovCloud",
+            "US_GOV_EAST_1",
             "US_EAST_1",
             "US_EAST_2",
             "US_WEST_1",
             "US_WEST_2",
             "EU_WEST_1",
             "EU_WEST_2",
+            "EU_WEST_3",
             "EU_CENTRAL_1",
+            "EU_NORTH_1",
+            "AP_EAST_1",
             "AP_SOUTH_1",
             "AP_SOUTHEAST_1",
             "AP_SOUTHEAST_2",
@@ -38029,7 +38156,9 @@ function sourceButton(element) {
             "AP_NORTHEAST_2",
             "SA_EAST_1",
             "CN_NORTH_1",
-            "CA_CENTRAL_1"
+            "CN_NORTHWEST_1",
+            "CA_CENTRAL_1",
+            "ME_SOUTH_1"
           ],
           "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
         },
@@ -38221,13 +38350,17 @@ function sourceButton(element) {
           "type": "string",
           "enum": [
             "GovCloud",
+            "US_GOV_EAST_1",
             "US_EAST_1",
             "US_EAST_2",
             "US_WEST_1",
             "US_WEST_2",
             "EU_WEST_1",
             "EU_WEST_2",
+            "EU_WEST_3",
             "EU_CENTRAL_1",
+            "EU_NORTH_1",
+            "AP_EAST_1",
             "AP_SOUTH_1",
             "AP_SOUTHEAST_1",
             "AP_SOUTHEAST_2",
@@ -38235,7 +38368,9 @@ function sourceButton(element) {
             "AP_NORTHEAST_2",
             "SA_EAST_1",
             "CN_NORTH_1",
-            "CA_CENTRAL_1"
+            "CN_NORTHWEST_1",
+            "CA_CENTRAL_1",
+            "ME_SOUTH_1"
           ],
           "description": "AWS region associated with the KMS key used to encrypt the value."
         }
@@ -38283,13 +38418,17 @@ function sourceButton(element) {
           "type": "string",
           "enum": [
             "GovCloud",
+            "US_GOV_EAST_1",
             "US_EAST_1",
             "US_EAST_2",
             "US_WEST_1",
             "US_WEST_2",
             "EU_WEST_1",
             "EU_WEST_2",
+            "EU_WEST_3",
             "EU_CENTRAL_1",
+            "EU_NORTH_1",
+            "AP_EAST_1",
             "AP_SOUTH_1",
             "AP_SOUTHEAST_1",
             "AP_SOUTHEAST_2",
@@ -38297,13 +38436,15 @@ function sourceButton(element) {
             "AP_NORTHEAST_2",
             "SA_EAST_1",
             "CN_NORTH_1",
-            "CA_CENTRAL_1"
+            "CN_NORTHWEST_1",
+            "CA_CENTRAL_1",
+            "ME_SOUTH_1"
           ]
         },
         "service": {
           "type": "string"
         },
-        "awssigner": {}
+        "http_interceptor": {}
       },
       "title": "UrlSigningAuth",
       "required": [
@@ -38894,13 +39035,17 @@ function sourceButton(element) {
           "type": "string",
           "enum": [
             "GovCloud",
+            "US_GOV_EAST_1",
             "US_EAST_1",
             "US_EAST_2",
             "US_WEST_1",
             "US_WEST_2",
             "EU_WEST_1",
             "EU_WEST_2",
+            "EU_WEST_3",
             "EU_CENTRAL_1",
+            "EU_NORTH_1",
+            "AP_EAST_1",
             "AP_SOUTH_1",
             "AP_SOUTHEAST_1",
             "AP_SOUTHEAST_2",
@@ -38908,7 +39053,9 @@ function sourceButton(element) {
             "AP_NORTHEAST_2",
             "SA_EAST_1",
             "CN_NORTH_1",
-            "CA_CENTRAL_1"
+            "CN_NORTHWEST_1",
+            "CA_CENTRAL_1",
+            "ME_SOUTH_1"
           ],
           "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
         },
@@ -39068,13 +39215,17 @@ function sourceButton(element) {
           "type": "string",
           "enum": [
             "GovCloud",
+            "US_GOV_EAST_1",
             "US_EAST_1",
             "US_EAST_2",
             "US_WEST_1",
             "US_WEST_2",
             "EU_WEST_1",
             "EU_WEST_2",
+            "EU_WEST_3",
             "EU_CENTRAL_1",
+            "EU_NORTH_1",
+            "AP_EAST_1",
             "AP_SOUTH_1",
             "AP_SOUTHEAST_1",
             "AP_SOUTHEAST_2",
@@ -39082,7 +39233,9 @@ function sourceButton(element) {
             "AP_NORTHEAST_2",
             "SA_EAST_1",
             "CN_NORTH_1",
-            "CA_CENTRAL_1"
+            "CN_NORTHWEST_1",
+            "CA_CENTRAL_1",
+            "ME_SOUTH_1"
           ],
           "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
         },

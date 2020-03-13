@@ -93,10 +93,10 @@ public class Re2jRegexDeserializerTest {
     assertEquals(new JsonPrimitive(1337), event.getField("client_port"));
     assertEquals("127.13.13.13", event.getField("target_ip"));
     assertEquals(new JsonPrimitive(7331), event.getField("target_port"));
-    assertEquals(new JsonPrimitive(new Float(1.001)), event.getField("request_processing_time"));
+    assertEquals(new JsonPrimitive(new Double(1.001)), event.getField("request_processing_time"));
     assertEquals("1.001", event.getFieldAsString("request_processing_time"));
-    assertEquals(new JsonPrimitive(new Float(2.002)), event.getField("target_processing_time"));
-    assertEquals(new JsonPrimitive(new Float(3.003)), event.getField("response_processing_time"));
+    assertEquals(new JsonPrimitive(new Double(2.002)), event.getField("target_processing_time"));
+    assertEquals(new JsonPrimitive(new Double(3.003)), event.getField("response_processing_time"));
     assertEquals(new JsonPrimitive(201), event.getField("elb_status_code"));
     assertEquals(new JsonPrimitive(200), event.getField("target_status_code"));
     assertEquals(new JsonPrimitive(687), event.getField("received_bytes"));
