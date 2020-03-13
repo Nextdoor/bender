@@ -22,11 +22,13 @@ import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
@@ -159,8 +161,16 @@ public abstract class BaseHandler<T> implements Handler<T> {
      */
     if (config.getHandlerConfig().getIncludeFunctionTags()) {
       AWSLambda lambda = this.lambdaClientFactory.newInstance();
-      ListTagsResult res = lambda.listTags(new ListTagsRequest().withResource(ctx.getInvokedFunctionArn()));
-      monitor.addTagsMap(res.getTags());
+      ListTagsResult res =
+          lambda.listTags(new ListTagsRequest().withResource(ctx.getInvokedFunctionArn()));
+
+      monitor.addTagsMap(
+          /*
+           * Filter out tags that come from CloudFormation
+           */
+          res.getTags().entrySet().stream()
+              .filter(map -> !map.getKey().startsWith("aws:cloudformation"))
+              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
     /*
