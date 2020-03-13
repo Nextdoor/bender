@@ -1,9 +1,13 @@
 package com.nextdoor.bender.operation.delete;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
+@JsonTypeName("DeleteFieldOperation")
+@JsonSchemaDescription("Deletes the inputted field in the deserialized object. " +
+        "When using JSON use JsonPath format to specify field. See https://github.com/jayway/JsonPath")
 public class DeleteFieldOperationConfig extends OperationConfig {
 
     @JsonSchemaDescription("Name of field key to be deleted.")

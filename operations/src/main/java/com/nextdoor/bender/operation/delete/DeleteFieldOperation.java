@@ -4,14 +4,12 @@ import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
-import org.apache.commons.lang3.Validate;
 
 public class DeleteFieldOperation implements EventOperation {
-    private final String key;
+    private final String keyField;
 
-    public DeleteFieldOperation(String key) {
-        Validate.notNull(key);
-        this.key = key;
+    public DeleteFieldOperation(String keyField) {
+        this.keyField = keyField;
     }
 
     @Override
@@ -30,6 +28,6 @@ public class DeleteFieldOperation implements EventOperation {
      */
     private void deleteKeyFromEvent(InternalEvent internalEvent) {
         DeserializedEvent deserializedEvent = internalEvent.getEventObj();
-        deserializedEvent.deleteField(key);
+        deserializedEvent.deleteField(keyField);
     }
 }

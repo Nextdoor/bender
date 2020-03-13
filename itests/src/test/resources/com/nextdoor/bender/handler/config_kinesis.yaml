@@ -20,6 +20,8 @@ sources:
         key: metadata
         excludes:
           - sourceLagMs
+  - type: DeleteFieldOperation
+    key_field: "$.metadata"
 wrapper:
   type: PassthroughWrapper
 serializer:
