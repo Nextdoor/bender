@@ -3,6 +3,7 @@ package com.nextdoor.bender.operation.delete;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.operation.EventOperation;
+import com.nextdoor.bender.operation.OperationException;
 import org.apache.commons.lang3.Validate;
 
 public class DeleteFieldOperation implements EventOperation {
@@ -18,13 +19,15 @@ public class DeleteFieldOperation implements EventOperation {
         try {
             deleteKeyFromEvent(internalEvent);
         } catch (Exception e) {
-            throw new RuntimeException("JSON field deletion failed.", e);
+            throw new OperationException("JSON field deletion failed for this reason: " + e.getMessage());
         }
 
         return internalEvent;
     }
 
-    //if the field doesn't exist in the JSON, this is a noop based on the JSONPath impl
+    /*
+     * if the field doesn't exist in the JSON, this is a noop based on the JSONPath impl
+     */
     private void deleteKeyFromEvent(InternalEvent internalEvent) {
         DeserializedEvent deserializedEvent = internalEvent.getEventObj();
         deserializedEvent.deleteField(key);
