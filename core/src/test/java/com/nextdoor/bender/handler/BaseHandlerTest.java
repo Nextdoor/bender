@@ -293,6 +293,42 @@ public class BaseHandlerTest {
     assertTrue(actual.entrySet().containsAll(expected.entrySet()));
   }
 
+  @Test
+  public void tagsCloudformation() throws HandlerException {
+    BaseHandler.CONFIG_FILE = "/config/handler_config_tags_duplicate.json";
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:test_tags");
+
+    AWSLambdaClientFactory mockFactory = mock(AWSLambdaClientFactory.class);
+    AWSLambda mockLambda = mock(AWSLambda.class);
+    doReturn(mockLambda).when(mockFactory).newInstance();
+
+    ListTagsResult mockResult = mock(ListTagsResult.class);
+    HashMap<String, String> functionTags = new HashMap<String, String>() {
+      {
+        put("f1", "foo");
+        put("aws:cloudformation:foo", "foo");
+        put("aws:cloudformation:bar", "bar");
+      }
+    };
+    doReturn(functionTags).when(mockResult).getTags();
+    doReturn(mockResult).when(mockLambda).listTags(any());
+
+    handler.lambdaClientFactory = mockFactory;
+    handler.init(context);
+    Map<String, String> actual = handler.monitor.getTagsMap();
+
+    HashMap<String, String> expected = new HashMap<String, String>() {
+      {
+        put("f1", "foo");
+        put("u1", "bar");
+      }
+    };
+
+    assertTrue(actual.entrySet().containsAll(expected.entrySet()));
+  }
+
   @Test(expected = HandlerException.class)
   public void testBadConfig() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_bad.json";
