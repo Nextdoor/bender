@@ -43,6 +43,11 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
   }
 
   @Override
+  public String getExpectedOutputFile() {
+    return "basic_output.json";
+  }
+
+  @Override
   public Handler<S3EventNotification> getHandler() {
     S3Handler handler = new S3Handler();
     handler.s3ClientFactory = this.clientFactory;

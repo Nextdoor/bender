@@ -19,35 +19,35 @@ import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
 import com.nextdoor.bender.handler.HandlerTest;
 import com.nextdoor.bender.testutils.TestUtils;
 
-public class KinesisHandlerTest extends HandlerTest<KinesisEvent> {
+public class KinesisHandlerDeletedMetadataTest extends HandlerTest<KinesisEvent> {
 
-  @Override
-  public KinesisHandler getHandler() {
-    return new KinesisHandler();
-  }
+    @Override
+    public KinesisHandler getHandler() {
+        return new KinesisHandler();
+    }
 
-  @Override
-  public KinesisEvent getTestEvent() throws Exception {
-    return TestUtils.createEvent(this.getClass(), "basic_input.json");
-  }
+    @Override
+    public KinesisEvent getTestEvent() throws Exception {
+        return TestUtils.createEvent(this.getClass(), "basic_input.json");
+    }
 
-  @Override
-  public void setup() {
+    @Override
+    public void setup() {
 
-  }
+    }
 
-  @Override
-  public void teardown() {
+    @Override
+    public void teardown() {
 
-  }
+    }
 
-  @Override
-  public String getConfigFile() {
-    return "/com/nextdoor/bender/handler/config_kinesis.yaml";
-  }
+    @Override
+    public String getConfigFile() {
+        return "/com/nextdoor/bender/handler/config_kinesis_with_delete.yaml";
+    }
 
-  @Override
-  public String getExpectedOutputFile() {
-    return "basic_output.json";
-  }
+    @Override
+    public String getExpectedOutputFile() {
+        return "basic_output_with_delete.json";
+    }
 }

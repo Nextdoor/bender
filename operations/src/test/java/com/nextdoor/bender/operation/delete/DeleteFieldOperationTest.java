@@ -3,13 +3,14 @@ package com.nextdoor.bender.operation.delete;
 import com.google.gson.JsonObject;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.json.GenericJsonEvent;
+import com.nextdoor.bender.operation.OperationException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class DeleteFieldOperationTest {
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = OperationException.class)
     public void testNullField() {
         InternalEvent ievent = new InternalEvent("foo", null, 1);
 

@@ -45,6 +45,11 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
   }
 
   @Override
+  public String getExpectedOutputFile() {
+    return "basic_output.json";
+  }
+
+  @Override
   public Handler<SNSEvent> getHandler() {
     SNSS3Handler handler = new SNSS3Handler();
     handler.s3ClientFactory = this.clientFactory;
