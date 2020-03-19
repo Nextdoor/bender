@@ -1,5 +1,8 @@
-package com.nextdoor.bender.monitoring;
+package com.nextdoor.bender.monitoring.embedded.metrics;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.nextdoor.bender.monitoring.Stat;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
@@ -8,17 +11,19 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class ReporterUtilsTest {
-
+public class CloudWatchEmbeddedMetricsReporterTest {
     private Long timestamp = 1584580665491L;
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Test
     public void testWithNoStats() throws Exception {
-        String actualJson = ReporterUtils.getCloudWatchEmbeddedMetricsJson("nextdoor",
+        String actualJson = CloudWatchEmbeddedMetricsReporter.getCloudWatchEmbeddedMetricsJson("nextdoor",
                 timestamp,
                 Collections.emptyMap(),
-                Collections.emptyList());
+                Collections.emptyList(),
+                gson);
 
+        System.out.println(this.getClass().getResource("."));
         String expectedJson = IOUtils.toString(
                 new InputStreamReader(this.getClass().getResourceAsStream("empty_metrics.json"), "UTF-8"));
 
@@ -29,10 +34,11 @@ public class ReporterUtilsTest {
     public void testWithNoDimensionsAndStats() throws Exception {
         List<Stat> stats = Arrays.asList(new Stat("counts", 20),
                 new Stat("errors", 2));
-        String actualJson = ReporterUtils.getCloudWatchEmbeddedMetricsJson("nextdoor",
+        String actualJson = CloudWatchEmbeddedMetricsReporter.getCloudWatchEmbeddedMetricsJson("nextdoor",
                 timestamp,
                 Collections.emptyMap(),
-                stats);
+                stats,
+                gson);
 
         String expectedJson = IOUtils.toString(
                 new InputStreamReader(this.getClass().getResourceAsStream("metrics_with_stats_no_dimensions.json"), "UTF-8"));
@@ -48,10 +54,11 @@ public class ReporterUtilsTest {
         Stat s2 = new Stat("errors", 2);
         List<Stat> stats = Arrays.asList(s1, s2);
 
-        String actualJson = ReporterUtils.getCloudWatchEmbeddedMetricsJson("nextdoor",
+        String actualJson = CloudWatchEmbeddedMetricsReporter.getCloudWatchEmbeddedMetricsJson("nextdoor",
                 timestamp,
                 Collections.emptyMap(),
-                stats);
+                stats,
+                gson);
 
         String expectedJson = IOUtils.toString(
                 new InputStreamReader(this.getClass().getResourceAsStream("metrics_with_stats_varying_dimensions.json"), "UTF-8"));
@@ -71,14 +78,16 @@ public class ReporterUtilsTest {
         dimensions.put("team", "systems");
         dimensions.put("company", "nextdoor");
 
-        String actualJson = ReporterUtils.getCloudWatchEmbeddedMetricsJson("nextdoor",
+        String actualJson = CloudWatchEmbeddedMetricsReporter.getCloudWatchEmbeddedMetricsJson("nextdoor",
                 timestamp,
                 dimensions,
-                stats);
+                stats,
+                gson);
 
         String expectedJson = IOUtils.toString(
                 new InputStreamReader(this.getClass().getResourceAsStream("metrics_with_stats_many_dimensions.json"), "UTF-8"));
 
         assertEquals(expectedJson, actualJson);
     }
+
 }

@@ -1,4 +1,4 @@
-package com.nextdoor.bender.monitoring.cw_embedded_metrics;
+package com.nextdoor.bender.monitoring.embedded.metrics;
 
 import com.google.gson.annotations.SerializedName;
 

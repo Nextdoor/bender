@@ -13,13 +13,12 @@
  *
  */
 
-package com.nextdoor.bender.monitoring.cw_embedded_metrics;
+package com.nextdoor.bender.monitoring.embedded.metrics;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.monitoring.RegionalReporterConfig;
-import com.nextdoor.bender.monitoring.cw.CloudwatchReporterFactory;
 
 @JsonTypeName("CloudWatchEmbeddedMetrics")
 @JsonSchemaDescription("Writes metrics to Cloudwatch by printing to stdout. It is important to consider costs when "
