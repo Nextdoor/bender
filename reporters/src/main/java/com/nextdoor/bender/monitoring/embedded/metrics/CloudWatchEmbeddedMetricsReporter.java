@@ -18,7 +18,6 @@ package com.nextdoor.bender.monitoring.embedded.metrics;
 import com.amazonaws.services.cloudwatch.model.Dimension;
 import com.amazonaws.services.cloudwatch.model.StandardUnit;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.nextdoor.bender.monitoring.Reporter;
 import com.nextdoor.bender.monitoring.Stat;
 import com.nextdoor.bender.monitoring.StatFilter;
@@ -42,13 +41,7 @@ public class CloudWatchEmbeddedMetricsReporter implements Reporter {
                                              final List<StatFilter> statFilters) {
         this.namespace = namespace;
         this.statFilters = statFilters;
-        this.gson = getGson();
-    }
-
-    private Gson getGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        return gsonBuilder.create();
+        this.gson = new Gson();
     }
 
     @Override

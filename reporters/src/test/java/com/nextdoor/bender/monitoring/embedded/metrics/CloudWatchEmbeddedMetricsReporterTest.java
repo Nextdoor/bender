@@ -1,7 +1,6 @@
 package com.nextdoor.bender.monitoring.embedded.metrics;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.nextdoor.bender.monitoring.Stat;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -13,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class CloudWatchEmbeddedMetricsReporterTest {
     private Long timestamp = 1584580665491L;
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private Gson gson = new Gson();
 
     @Test
     public void testWithNoStats() throws Exception {
@@ -23,7 +22,6 @@ public class CloudWatchEmbeddedMetricsReporterTest {
                 Collections.emptyList(),
                 gson);
 
-        System.out.println(this.getClass().getResource("."));
         String expectedJson = IOUtils.toString(
                 new InputStreamReader(this.getClass().getResourceAsStream("empty_metrics.json"), "UTF-8"));
 
