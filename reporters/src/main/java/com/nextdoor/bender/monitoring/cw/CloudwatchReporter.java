@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.ListUtils;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
@@ -32,6 +31,8 @@ import com.nextdoor.bender.monitoring.Reporter;
 import com.nextdoor.bender.monitoring.Stat;
 import com.nextdoor.bender.monitoring.StatFilter;
 import com.nextdoor.bender.monitoring.Tag;
+
+import static com.nextdoor.bender.monitoring.ReporterUtils.tagsToDimensions;
 
 /**
  * Writes metrics to Amazon Cloudwatch.
@@ -88,14 +89,6 @@ public class CloudwatchReporter implements Reporter {
 
       this.client.putMetricData(req);
     }
-  }
-
-  private Collection<Dimension> tagsToDimensions(final Set<Tag> tags) {
-    return tags.stream().map(e -> tagToDim(e.getKey(), e.getValue())).collect(Collectors.toList());
-  }
-
-  private Dimension tagToDim(String name, String value) {
-    return new Dimension().withName(name).withValue(value != null ? value : "None");
   }
 
   @Override

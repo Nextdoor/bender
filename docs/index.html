@@ -35663,6 +35663,8 @@ function sourceButton(element) {
                 <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Cloudwatch</span>
         <span class="type-keyword"></span>
                 <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">DataDog</span>
+        <span class="type-keyword"></span>
+                <span boxid="3" class="box-3 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">CloudWatchEmbeddedMetrics</span>
 
                 </div>
                 <div class="signature-description desc"><p>List of reporter configurations</p>
@@ -36330,6 +36332,371 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
+                <div class="box-container" boxid="3">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-3">
+        <div class="box-title" ref="">
+            <div class="box-name ">CloudWatchEmbeddedMetrics</div>
+            <div class="box-description desc"><p>Writes metrics to Cloudwatch by printing to stdout. It is important to consider costs when using this reporter see <a href="https://aws.amazon.com/cloudwatch/pricing/">https://aws.amazon.com/cloudwatch/pricing/</a>.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">CloudWatchEmbeddedMetrics</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">CloudWatchEmbeddedMetrics</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">stat_filters</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StatFilter</span>
+
+                </div>
+                <div class="signature-description desc"><p>List of filter to apply to stats. If a stat matches the filter it is excluded when being published.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">StatFilter</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">name</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Name of the Stat to match against</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">report_zeros</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">true</span>
+
+                </div>
+                <div class="signature-description desc"><p>Report zero-valued stats</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">tags</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Tag</span>
+
+                </div>
+                <div class="signature-description desc"><p>Map of tag names and values to match</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">Tag</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">key</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the Stat to match against"
+    },
+    "report_zeros": {
+      "type": "boolean",
+      "default": true,
+      "description": "Report zero-valued stats"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
+      },
+      "description": "Map of tag names and values to match"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">namespace</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">Nextdoor/bender</span>
+
+                </div>
+                <div class="signature-description desc"><p>Cloudwatch namespace to write metrics under.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Writes metrics to Cloudwatch by printing to stdout. It is important to consider costs when using this reporter see https://aws.amazon.com/cloudwatch/pricing/.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "CloudWatchEmbeddedMetrics"
+      ],
+      "default": "CloudWatchEmbeddedMetrics"
+    },
+    "stat_filters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/StatFilter"
+      },
+      "description": "List of filter to apply to stats. If a stat matches the filter it is excluded when being published."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_GOV_EAST_1",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_WEST_3",
+        "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
+      ],
+      "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
+    },
+    "namespace": {
+      "type": "string",
+      "default": "Nextdoor/bender",
+      "description": "Cloudwatch namespace to write metrics under."
+    }
+  },
+  "title": "CloudWatchEmbeddedMetrics",
+  "required": [
+    "type"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end"></div>
+
+                </div>
             </div>
         </div>
 
@@ -36444,6 +36811,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/DataDogReporterConfig"
+        },
+        {
+          "$ref": "#/definitions/CloudWatchEmbeddedMetricsReporterConfig"
         }
       ]
     }
@@ -39304,6 +39674,64 @@ function sourceButton(element) {
       "required": [
         "type"
       ]
+    },
+    "CloudWatchEmbeddedMetricsReporterConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Writes metrics to Cloudwatch by printing to stdout. It is important to consider costs when using this reporter see https://aws.amazon.com/cloudwatch/pricing/.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "CloudWatchEmbeddedMetrics"
+          ],
+          "default": "CloudWatchEmbeddedMetrics"
+        },
+        "stat_filters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StatFilter"
+          },
+          "description": "List of filter to apply to stats. If a stat matches the filter it is excluded when being published."
+        },
+        "region": {
+          "type": "string",
+          "enum": [
+            "GovCloud",
+            "US_GOV_EAST_1",
+            "US_EAST_1",
+            "US_EAST_2",
+            "US_WEST_1",
+            "US_WEST_2",
+            "EU_WEST_1",
+            "EU_WEST_2",
+            "EU_WEST_3",
+            "EU_CENTRAL_1",
+            "EU_NORTH_1",
+            "AP_EAST_1",
+            "AP_SOUTH_1",
+            "AP_SOUTHEAST_1",
+            "AP_SOUTHEAST_2",
+            "AP_NORTHEAST_1",
+            "AP_NORTHEAST_2",
+            "SA_EAST_1",
+            "CN_NORTH_1",
+            "CN_NORTHWEST_1",
+            "CA_CENTRAL_1",
+            "ME_SOUTH_1"
+          ],
+          "description": "Region of remote AWS service. Not required to be set if you are using a service within the Lambda's current region. Ensure a service is supported in the remote region."
+        },
+        "namespace": {
+          "type": "string",
+          "default": "Nextdoor/bender",
+          "description": "Cloudwatch namespace to write metrics under."
+        }
+      },
+      "title": "CloudWatchEmbeddedMetrics",
+      "required": [
+        "type"
+      ]
     }
   },
   "__original": {
@@ -39407,6 +39835,9 @@ function sourceButton(element) {
           },
           {
             "$ref": "#/definitions/DataDogReporterConfig"
+          },
+          {
+            "$ref": "#/definitions/CloudWatchEmbeddedMetricsReporterConfig"
           }
         ]
       }
@@ -39514,6 +39945,9 @@ function sourceButton(element) {
           },
           {
             "$ref": "#/definitions/DataDogReporterConfig"
+          },
+          {
+            "$ref": "#/definitions/CloudWatchEmbeddedMetricsReporterConfig"
           }
         ]
       }
