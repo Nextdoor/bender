@@ -1,0 +1,38 @@
+{
+  "_aws": {
+    "Timestamp": 1584580665491,
+    "CloudWatchMetrics": [
+      {
+        "Namespace": "nextdoor",
+        "Dimensions": [
+          [
+            "stage",
+            "region"
+          ]
+        ],
+        "Metrics": [
+          {
+            "Name": "counts",
+            "Unit": "None"
+          }
+        ]
+      },
+      {
+        "Namespace": "nextdoor",
+        "Dimensions": [
+          []
+        ],
+        "Metrics": [
+          {
+            "Name": "errors",
+            "Unit": "None"
+          }
+        ]
+      }
+    ]
+  },
+  "stage": "prod",
+  "counts": 20,
+  "region": "us-east-1",
+  "errors": 2
+}
