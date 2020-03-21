@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -373,6 +374,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
       try {
         String raw = null;
         raw = this.ser.serialize(this.wrapper.getWrapped(ievent));
+        Stat bytesSent = new Stat("serializer.serialized_bytes", raw.getBytes(StandardCharsets.UTF_8).length);
+        monitor.addInstanceStat(bytesSent);
         ievent.setSerialized(raw);
         return ievent;
       } catch (SerializationException e) {
