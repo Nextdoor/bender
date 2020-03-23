@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -264,6 +265,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
     List<OperationProcessor> operations = source.getOperationProcessors();
     List<String> containsStrings = source.getContainsStrings();
     List<Pattern> regexPatterns = source.getRegexPatterns();
+    AtomicInteger totalBytesInputted = new AtomicInteger(0);
+    AtomicInteger totalBytesSent = new AtomicInteger(0);
 
     this.getIpcService().setContext(context);
 
@@ -319,6 +322,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
         ievent -> {
           eventCount.incrementAndGet();
           String eventStr = ievent.getEventString();
+          totalBytesInputted.addAndGet(eventStr.length());
 
           /*
            * Apply String contains filters before deserialization
@@ -341,7 +345,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
           }
 
           return true;
-        });
+        }
+    );
 
 
     /*
@@ -372,10 +377,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
      */
     Stream<InternalEvent> serialized = operated.map(ievent -> {
       try {
-        String raw = null;
-        raw = this.ser.serialize(this.wrapper.getWrapped(ievent));
-        Stat bytesSent = new Stat("serializer.serialized_bytes", raw.getBytes(StandardCharsets.UTF_8).length);
-        monitor.addInstanceStat(bytesSent);
+        String raw = this.ser.serialize(this.wrapper.getWrapped(ievent));
+        totalBytesSent.addAndGet(raw.length());
         ievent.setSerialized(raw);
         return ievent;
       } catch (SerializationException e) {
@@ -416,7 +419,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
       if (!this.skipWriteStats) {
         writeStats(eventCount.get(), oldestArrivalTime.get(), oldestOccurrenceTime.get(), evtSource,
-            runtime);
+            runtime, totalBytesInputted.get(), totalBytesSent.get());
       }
 
       if (logger.isTraceEnabled()) {
@@ -434,8 +437,13 @@ public abstract class BaseHandler<T> implements Handler<T> {
     }
   }
 
-  private void writeStats(long evtCount, long oldestArrivalTime, long oldestOccurrenceTime,
-      String source, Stat runtime) {
+  private void writeStats(long evtCount,
+                          long oldestArrivalTime,
+                          long oldestOccurrenceTime,
+                          String source,
+                          Stat runtime,
+                          int totalBytesInputted,
+                          int totalBytesSent) {
     /*
      * Add some stats about this invocation
      */
@@ -444,6 +452,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
         Stat.MetricType.gauge);
     Stat sourceLag = new Stat("source.lag.ms", (System.currentTimeMillis() - oldestOccurrenceTime),
         Stat.MetricType.gauge);
+    Stat bytesInputted = new Stat("serializer.total_bytes_inputted", totalBytesInputted);
+    Stat bytesOutputted = new Stat("serializer.total_bytes_sent", totalBytesSent);
 
     eventCount.addTag("source", source);
     spoutLag.addTag("source", source);
@@ -454,6 +464,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
     this.monitor.addInvocationStat(spoutLag);
     this.monitor.addInvocationStat(sourceLag);
     this.monitor.addInvocationStat(runtime);
+    this.monitor.addInvocationStat(bytesInputted);
+    this.monitor.addInvocationStat(bytesOutputted);
 
     /*
      * Report stats
