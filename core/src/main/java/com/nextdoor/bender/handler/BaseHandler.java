@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -452,8 +451,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
         Stat.MetricType.gauge);
     Stat sourceLag = new Stat("source.lag.ms", (System.currentTimeMillis() - oldestOccurrenceTime),
         Stat.MetricType.gauge);
-    Stat bytesInputted = new Stat("serializer.total_bytes_inputted", totalBytesInputted);
-    Stat bytesOutputted = new Stat("serializer.total_bytes_sent", totalBytesSent);
+    Stat bytesInputted = new Stat("event.byte_size", totalBytesInputted);
+    Stat bytesOutputted = new Stat("serializer.serialized_bytes", totalBytesSent);
 
     eventCount.addTag("source", source);
     spoutLag.addTag("source", source);
