@@ -19,11 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -446,25 +442,17 @@ public abstract class BaseHandler<T> implements Handler<T> {
     /*
      * Add some stats about this invocation
      */
-    Stat eventCount = new Stat("event.count", evtCount, Stat.MetricType.count);
-    Stat spoutLag = new Stat("spout.lag.ms", (System.currentTimeMillis() - oldestArrivalTime),
-        Stat.MetricType.gauge);
-    Stat sourceLag = new Stat("source.lag.ms", (System.currentTimeMillis() - oldestOccurrenceTime),
-        Stat.MetricType.gauge);
-    Stat eventByteSize = new Stat("event.byte_size", totalEventBytes);
-    Stat serializedBytes = new Stat("serializer.serialized_bytes", totalSerializedBytes);
+    List<Stat> stats = Arrays.asList(
+            new Stat("event.count", evtCount, Stat.MetricType.count),
+            new Stat("spout.lag.ms", (System.currentTimeMillis() - oldestArrivalTime), Stat.MetricType.gauge),
+            new Stat("source.lag.ms", (System.currentTimeMillis() - oldestOccurrenceTime), Stat.MetricType.gauge),
+            runtime,
+            new Stat("event.byte_size", totalEventBytes),
+            new Stat("serializer.serialized_bytes", totalSerializedBytes)
+    );
 
-    eventCount.addTag("source", source);
-    spoutLag.addTag("source", source);
-    sourceLag.addTag("source", source);
-    runtime.addTag("source", source);
-
-    this.monitor.addInvocationStat(eventCount);
-    this.monitor.addInvocationStat(spoutLag);
-    this.monitor.addInvocationStat(sourceLag);
-    this.monitor.addInvocationStat(runtime);
-    this.monitor.addInvocationStat(eventByteSize);
-    this.monitor.addInvocationStat(serializedBytes);
+    stats.forEach(s -> s.addTag("source", source));
+    stats.forEach(s -> this.monitor.addInvocationStat(s));
 
     /*
      * Report stats
