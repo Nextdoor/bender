@@ -90,9 +90,9 @@
     </dependency>
 
     <dependency>
-      <groupId>vc.inreach.aws</groupId>
-      <artifactId>aws-signing-request-interceptor</artifactId>
-      <version>${aws-signing-request-interceptor.version}</version>
+      <groupId>com.github.awslabs</groupId>
+      <artifactId>aws-request-signing-apache-interceptor</artifactId>
+      <version>${aws-request-signing-apache-interceptor.version}</version>
     </dependency>
 
     <dependency>

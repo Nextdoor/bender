@@ -19,14 +19,13 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
@@ -159,8 +158,16 @@ public abstract class BaseHandler<T> implements Handler<T> {
      */
     if (config.getHandlerConfig().getIncludeFunctionTags()) {
       AWSLambda lambda = this.lambdaClientFactory.newInstance();
-      ListTagsResult res = lambda.listTags(new ListTagsRequest().withResource(ctx.getInvokedFunctionArn()));
-      monitor.addTagsMap(res.getTags());
+      ListTagsResult res =
+          lambda.listTags(new ListTagsRequest().withResource(ctx.getInvokedFunctionArn()));
+
+      monitor.addTagsMap(
+          /*
+           * Filter out tags that come from CloudFormation
+           */
+          res.getTags().entrySet().stream()
+              .filter(map -> !map.getKey().startsWith("aws:cloudformation"))
+              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
     /*
@@ -253,6 +260,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
     List<OperationProcessor> operations = source.getOperationProcessors();
     List<String> containsStrings = source.getContainsStrings();
     List<Pattern> regexPatterns = source.getRegexPatterns();
+    AtomicInteger totalEventsBytes = new AtomicInteger(0);
+    AtomicInteger totalSerializedBytes = new AtomicInteger(0);
 
     this.getIpcService().setContext(context);
 
@@ -308,6 +317,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
         ievent -> {
           eventCount.incrementAndGet();
           String eventStr = ievent.getEventString();
+          totalEventsBytes.addAndGet(eventStr.length());
 
           /*
            * Apply String contains filters before deserialization
@@ -330,7 +340,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
           }
 
           return true;
-        });
+        }
+    );
 
 
     /*
@@ -361,8 +372,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
      */
     Stream<InternalEvent> serialized = operated.map(ievent -> {
       try {
-        String raw = null;
-        raw = this.ser.serialize(this.wrapper.getWrapped(ievent));
+        String raw = this.ser.serialize(this.wrapper.getWrapped(ievent));
+        totalSerializedBytes.addAndGet(raw.length());
         ievent.setSerialized(raw);
         return ievent;
       } catch (SerializationException e) {
@@ -403,7 +414,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
       if (!this.skipWriteStats) {
         writeStats(eventCount.get(), oldestArrivalTime.get(), oldestOccurrenceTime.get(), evtSource,
-            runtime);
+            runtime, totalEventsBytes.get(), totalSerializedBytes.get());
       }
 
       if (logger.isTraceEnabled()) {
@@ -421,26 +432,27 @@ public abstract class BaseHandler<T> implements Handler<T> {
     }
   }
 
-  private void writeStats(long evtCount, long oldestArrivalTime, long oldestOccurrenceTime,
-      String source, Stat runtime) {
+  private void writeStats(long evtCount,
+                          long oldestArrivalTime,
+                          long oldestOccurrenceTime,
+                          String source,
+                          Stat runtime,
+                          int totalEventBytes,
+                          int totalSerializedBytes) {
     /*
      * Add some stats about this invocation
      */
-    Stat eventCount = new Stat("event.count", evtCount, Stat.MetricType.count);
-    Stat spoutLag = new Stat("spout.lag.ms", (System.currentTimeMillis() - oldestArrivalTime),
-        Stat.MetricType.gauge);
-    Stat sourceLag = new Stat("source.lag.ms", (System.currentTimeMillis() - oldestOccurrenceTime),
-        Stat.MetricType.gauge);
+    List<Stat> stats = Arrays.asList(
+            new Stat("event.count", evtCount, Stat.MetricType.count),
+            new Stat("spout.lag.ms", (System.currentTimeMillis() - oldestArrivalTime), Stat.MetricType.gauge),
+            new Stat("source.lag.ms", (System.currentTimeMillis() - oldestOccurrenceTime), Stat.MetricType.gauge),
+            runtime,
+            new Stat("event.byte_size", totalEventBytes),
+            new Stat("serializer.serialized_bytes", totalSerializedBytes)
+    );
 
-    eventCount.addTag("source", source);
-    spoutLag.addTag("source", source);
-    sourceLag.addTag("source", source);
-    runtime.addTag("source", source);
-
-    this.monitor.addInvocationStat(eventCount);
-    this.monitor.addInvocationStat(spoutLag);
-    this.monitor.addInvocationStat(sourceLag);
-    this.monitor.addInvocationStat(runtime);
+    stats.forEach(s -> s.addTag("source", source));
+    stats.forEach(s -> this.monitor.addInvocationStat(s));
 
     /*
      * Report stats
