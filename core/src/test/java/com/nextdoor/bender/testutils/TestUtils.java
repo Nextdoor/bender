@@ -18,8 +18,12 @@ import com.amazonaws.services.lambda.runtime.events.KinesisEvent.Record;
  * Common test helper methods that are used by other modules.
  */
 public class TestUtils {
-  public static KinesisEvent createEvent(Class clazz, String resource)
-      throws UnsupportedEncodingException, IOException {
+
+  public static KinesisEvent createEvent(Class clazz, String resource) throws IOException {
+    return createEvent(clazz, resource, "arn:aws:kinesis:us-east-1:1234:stream/test-events-stream");
+  }
+
+  public static KinesisEvent createEvent(Class clazz, String resource, String eventSourceArn) throws IOException {
     /*
      * Create a kinesis record from a sample JSON file
      */
@@ -38,7 +42,7 @@ public class TestUtils {
      */
     KinesisEventRecord krecord = new KinesisEventRecord();
     krecord.setKinesis(rec);
-    krecord.setEventSourceARN("arn:aws:kinesis:us-east-1:1234:stream/test-events-stream");
+    krecord.setEventSourceARN(eventSourceArn);
     krecord.setEventID("shardId-000000000000:1234");
 
     /*

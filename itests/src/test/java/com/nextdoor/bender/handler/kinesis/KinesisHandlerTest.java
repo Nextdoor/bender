@@ -28,7 +28,9 @@ public class KinesisHandlerTest extends HandlerTest<KinesisEvent> {
 
   @Override
   public KinesisEvent getTestEvent() throws Exception {
-    return TestUtils.createEvent(this.getClass(), "basic_input.json");
+    return TestUtils.createEvent(this.getClass(),
+            "basic_input.json",
+            "arn:aws:kinesis:us-east-1:1234:stream/test-events-stream");
   }
 
   @Override
