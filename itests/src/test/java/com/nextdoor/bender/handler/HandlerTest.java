@@ -55,6 +55,8 @@ public abstract class HandlerTest<T> {
 
   public abstract String getConfigFile();
 
+  public abstract String getExpectedOutputFile();
+
   @Test
   public void testBasicEndtoEnd() throws Exception {
     TestContext ctx = new TestContext();
@@ -77,8 +79,10 @@ public abstract class HandlerTest<T> {
     /*
      * Load expected
      */
-    String expected = IOUtils.toString(
-        new InputStreamReader(this.getClass().getResourceAsStream("basic_output.json"), "UTF-8"));
+    String expected = IOUtils.toString(new InputStreamReader(
+            this.getClass().getResourceAsStream(getExpectedOutputFile()),
+            "UTF-8")
+    );
 
     assertEquals(expected, actual);
   }
