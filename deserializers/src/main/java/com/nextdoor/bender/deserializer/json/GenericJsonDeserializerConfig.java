@@ -37,7 +37,7 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
           + "attempt to decode them and then unzip.")
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
-  private boolean performBase64DecodeAndUnzip = false;
+  private Boolean performBase64DecodeAndUnzip = false;
 
   @JsonSchemaDescription("Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath")
   @JsonProperty(required = false)
@@ -85,11 +85,11 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
     this.rootNodeOverridePath = rootNodeOverridePath;
   }
 
-  public boolean isPerformBase64DecodeAndUnzip() {
+  public Boolean isPerformBase64DecodeAndUnzip() {
     return performBase64DecodeAndUnzip;
   }
 
-  public void setPerformBase64DecodeAndUnzip(boolean performBase64DecodeAndUnzip) {
+  public void setPerformBase64DecodeAndUnzip(Boolean performBase64DecodeAndUnzip) {
     this.performBase64DecodeAndUnzip = performBase64DecodeAndUnzip;
   }
 
