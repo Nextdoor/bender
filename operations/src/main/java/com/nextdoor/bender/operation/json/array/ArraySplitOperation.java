@@ -16,11 +16,13 @@
 package com.nextdoor.bender.operation.json.array;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
@@ -30,9 +32,16 @@ import com.nextdoor.bender.operation.OperationException;
 
 public class ArraySplitOperation implements MultiplexOperation {
   private final String path;
+  private final List<String> fieldsToKeep;
 
   public ArraySplitOperation(String path) {
+    this(path, Collections.emptyList());
+  }
+
+  public ArraySplitOperation(String path,
+                             List<String> fieldsToKeep) {
     this.path = path;
+    this.fieldsToKeep = fieldsToKeep;
   }
 
   @Override
@@ -60,9 +69,12 @@ public class ArraySplitOperation implements MultiplexOperation {
       ArrayList<InternalEvent> output = new ArrayList<InternalEvent>();
       for (JsonElement elm : arr) {
         try {
-          InternalEvent newEvent =
-              new InternalEvent(elm.toString(), ievent.getCtx(), ievent.getArrivalTime());
-          DeserializedEvent newDeserEvent = new GenericJsonEvent(elm.getAsJsonObject());
+          JsonObject newObject = elm.deepCopy().getAsJsonObject();
+          if (!fieldsToKeep.isEmpty()) {
+            addFieldsToNewJsonObject(ievent, newObject);
+          }
+          InternalEvent newEvent = new InternalEvent(newObject.toString(), ievent.getCtx(), ievent.getArrivalTime());
+          DeserializedEvent newDeserEvent = new GenericJsonEvent(newObject);
           newEvent.setEventObj(newDeserEvent);
           newEvent.setEventTime(ievent.getEventTime());
 
@@ -87,6 +99,13 @@ public class ArraySplitOperation implements MultiplexOperation {
       }
 
       return output;
+    }
+  }
+
+  private void addFieldsToNewJsonObject(InternalEvent internalEvent, JsonObject newObject) {
+    for (String field : fieldsToKeep) {
+      JsonObject jsonObject = (JsonObject) internalEvent.getEventObj().getPayload();
+      newObject.add(field, jsonObject.get(field));
     }
   }
 }

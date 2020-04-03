@@ -17,7 +17,9 @@ package com.nextdoor.bender.handler;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
@@ -70,11 +72,14 @@ public abstract class HandlerTest<T> {
     T event = getTestEvent();
     fhandler.handler(event, ctx);
 
-    /*
-     * Load output
-     */
-    assertEquals(1, DummyTransportHelper.BufferedTransporter.output.size());
-    String actual = DummyTransportHelper.BufferedTransporter.output.get(0);
+    /* validate output */
+    validateOutput(DummyTransportHelper.BufferedTransporter.output);
+  }
+
+  /* this can be overridden if validation needs to be any different) */
+  public void validateOutput(List<String> output) throws IOException {
+    assertEquals(1, output.size());
+    String actual = output.get(0);
 
     /*
      * Load expected

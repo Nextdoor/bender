@@ -15,7 +15,12 @@
 
 package com.nextdoor.bender.deserializer.json;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -36,20 +41,48 @@ public class GenericJsonDeserializer extends Deserializer {
   protected JsonParser parser;
   private final List<FieldConfig> nestedFieldConfigs;
   private String rootNodeOverridePath;
+  private final boolean performBase64DecodeAndUnzip;
 
   public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs) {
-    this(nestedFieldConfigs, null);
+    this(nestedFieldConfigs, null, false);
   }
 
   public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs,
-      String rootNodeOverridePath) {
+                                 String rootNodeOverridePath,
+                                 boolean performBase64DecodeAndUnzip) {
     this.nestedFieldConfigs = nestedFieldConfigs;
     this.rootNodeOverridePath = rootNodeOverridePath;
+    this.performBase64DecodeAndUnzip = performBase64DecodeAndUnzip;
+  }
+
+  public byte[] readGzipCompressedData(byte[] data) throws IOException {
+    GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(data));
+    ByteArrayOutputStream byteArrayOutputStream = new java.io.ByteArrayOutputStream();
+
+    int res = 0;
+    byte[] buf = new byte[1024];
+    while (res >= 0) {
+      res = gzipInputStream.read(buf, 0, buf.length);
+      if (res > 0) {
+        byteArrayOutputStream.write(buf, 0, res);
+      }
+    }
+    return byteArrayOutputStream.toByteArray();
   }
 
   @Override
   public DeserializedEvent deserialize(String raw) {
     GenericJsonEvent devent = new GenericJsonEvent(null);
+
+    if (performBase64DecodeAndUnzip) {
+      try {
+        byte[] decoded = Base64.getDecoder().decode(raw);
+        byte[] unzipped = readGzipCompressedData(decoded);
+        raw = new String(unzipped);
+      } catch (Exception e) {
+        throw new DeserializationException(e);
+      }
+    }
 
     JsonElement elm;
     try {

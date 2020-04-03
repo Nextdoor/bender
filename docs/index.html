@@ -2172,7 +2172,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>Field to put any data which preceeded JSON object.</p>
+                <div class="signature-description desc"><p>Field to put any data which preceded JSON object.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -2194,7 +2194,7 @@ function sourceButton(element) {
     },
     "prefix_field": {
       "type": "string",
-      "description": "Field to put any data which preceeded JSON object."
+      "description": "Field to put any data which preceded JSON object."
     }
   },
   "required": [
@@ -2206,6 +2206,26 @@ function sourceButton(element) {
 <div class="end"></div>
 
                 </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">perform_base64_decode_and_unzip</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then unzip.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
             </div>
         </div>
         <div class="signature">
@@ -2251,6 +2271,11 @@ function sourceButton(element) {
       },
       "description": "Configuration on how to interpret string fields which can also be deserialized as JSON. For example: {\"foo\": \"{\"bar\": \"baz\"}\"} will become {\"foo\": {\"bar\": \"baz\"}\"}."
     },
+    "perform_base64_decode_and_unzip": {
+      "type": "boolean",
+      "default": false,
+      "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then unzip."
+    },
     "root_node_override_path": {
       "type": "string",
       "description": "Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath"
@@ -2258,7 +2283,8 @@ function sourceButton(element) {
   },
   "title": "GenericJson",
   "required": [
-    "type"
+    "type",
+    "perform_base64_decode_and_unzip"
   ]
 }</pre>
     </div>
@@ -6110,6 +6136,27 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">fields_to_keep</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -6131,6 +6178,13 @@ function sourceButton(element) {
     "path": {
       "type": "string",
       "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
+    },
+    "fields_to_keep": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc."
     }
   },
   "title": "JsonArraySplitOperation",
@@ -11011,6 +11065,27 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">fields_to_keep</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -11032,6 +11107,13 @@ function sourceButton(element) {
     "path": {
       "type": "string",
       "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
+    },
+    "fields_to_keep": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc."
     }
   },
   "title": "JsonArraySplitOperation",
@@ -17036,6 +17118,27 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">fields_to_keep</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -17057,6 +17160,13 @@ function sourceButton(element) {
     "path": {
       "type": "string",
       "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
+    },
+    "fields_to_keep": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc."
     }
   },
   "title": "JsonArraySplitOperation",
@@ -22053,6 +22163,27 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">fields_to_keep</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -22074,6 +22205,13 @@ function sourceButton(element) {
     "path": {
       "type": "string",
       "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
+    },
+    "fields_to_keep": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc."
     }
   },
   "title": "JsonArraySplitOperation",
@@ -27315,6 +27453,27 @@ function sourceButton(element) {
             <div class="signature-box-container">
             </div>
         </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">fields_to_keep</div>
+                <div class="signature-type">
+                            <span class="type-keyword">array</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
 
 
 </div>
@@ -27336,6 +27495,13 @@ function sourceButton(element) {
     "path": {
       "type": "string",
       "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
+    },
+    "fields_to_keep": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc."
     }
   },
   "title": "JsonArraySplitOperation",
@@ -37677,6 +37843,11 @@ function sourceButton(element) {
           },
           "description": "Configuration on how to interpret string fields which can also be deserialized as JSON. For example: {\"foo\": \"{\"bar\": \"baz\"}\"} will become {\"foo\": {\"bar\": \"baz\"}\"}."
         },
+        "perform_base64_decode_and_unzip": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then unzip."
+        },
         "root_node_override_path": {
           "type": "string",
           "description": "Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath"
@@ -37684,7 +37855,8 @@ function sourceButton(element) {
       },
       "title": "GenericJson",
       "required": [
-        "type"
+        "type",
+        "perform_base64_decode_and_unzip"
       ]
     },
     "FieldConfig": {
@@ -37697,7 +37869,7 @@ function sourceButton(element) {
         },
         "prefix_field": {
           "type": "string",
-          "description": "Field to put any data which preceeded JSON object."
+          "description": "Field to put any data which preceded JSON object."
         }
       },
       "required": [
@@ -38378,6 +38550,13 @@ function sourceButton(element) {
         "path": {
           "type": "string",
           "description": "Path to a JSON node which is an array. See https://github.com/jayway/JsonPath"
+        },
+        "fields_to_keep": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "If an array is found and split, this can specify additional fields to keep in the new JSON object to preserve common contexts, such as timestamps, accountId, etc."
         }
       },
       "title": "JsonArraySplitOperation",

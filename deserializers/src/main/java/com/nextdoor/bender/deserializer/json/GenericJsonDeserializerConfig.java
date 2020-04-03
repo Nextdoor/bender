@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDefault;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.deserializer.DeserializerConfig;
 
@@ -32,6 +33,12 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
   @JsonProperty(required = false)
   private List<FieldConfig> nestedFieldConfigs = Collections.emptyList();
 
+  @JsonSchemaDescription("When true the deserializer will assume that the raw event strings are base64 encoded and will"
+          + "attempt to decode them and then unzip.")
+  @JsonSchemaDefault(value = "false")
+  @JsonProperty(required = false)
+  private boolean performBase64DecodeAndUnzip = false;
+
   @JsonSchemaDescription("Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath")
   @JsonProperty(required = false)
   private String rootNodeOverridePath;
@@ -41,7 +48,7 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
     @JsonProperty(required = true)
     private String field;
 
-    @JsonSchemaDescription("Field to put any data which preceeded JSON object.")
+    @JsonSchemaDescription("Field to put any data which preceded JSON object.")
     @JsonProperty(required = false)
     private String prefixField;
 
@@ -76,6 +83,14 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
 
   public void setRootNodeOverridePath(String rootNodeOverridePath) {
     this.rootNodeOverridePath = rootNodeOverridePath;
+  }
+
+  public boolean isPerformBase64DecodeAndUnzip() {
+    return performBase64DecodeAndUnzip;
+  }
+
+  public void setPerformBase64DecodeAndUnzip(boolean performBase64DecodeAndUnzip) {
+    this.performBase64DecodeAndUnzip = performBase64DecodeAndUnzip;
   }
 
   @Override
