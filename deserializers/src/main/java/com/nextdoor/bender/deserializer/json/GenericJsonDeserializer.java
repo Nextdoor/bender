@@ -41,6 +41,8 @@ public class GenericJsonDeserializer extends Deserializer {
   protected JsonParser parser;
   private final List<FieldConfig> nestedFieldConfigs;
   private String rootNodeOverridePath;
+  private Base64.Decoder base64decoder;
+  private ByteArrayOutputStream byteArrayOutputStream;
   private final boolean performBase64DecodeAndUnzip;
 
   public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs) {
@@ -52,13 +54,13 @@ public class GenericJsonDeserializer extends Deserializer {
                                  boolean performBase64DecodeAndUnzip) {
     this.nestedFieldConfigs = nestedFieldConfigs;
     this.rootNodeOverridePath = rootNodeOverridePath;
+    this.base64decoder = Base64.getDecoder();
+    this.byteArrayOutputStream = new ByteArrayOutputStream();
     this.performBase64DecodeAndUnzip = performBase64DecodeAndUnzip;
   }
 
   public byte[] readGzipCompressedData(byte[] data) throws IOException {
     GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(data));
-    ByteArrayOutputStream byteArrayOutputStream = new java.io.ByteArrayOutputStream();
-
     int res = 0;
     byte[] buf = new byte[1024];
     while (res >= 0) {
@@ -67,7 +69,12 @@ public class GenericJsonDeserializer extends Deserializer {
         byteArrayOutputStream.write(buf, 0, res);
       }
     }
-    return byteArrayOutputStream.toByteArray();
+
+    try {
+      return byteArrayOutputStream.toByteArray();
+    } finally {
+      byteArrayOutputStream.reset(); //clears output so it can be used again later
+    }
   }
 
   @Override
@@ -76,7 +83,7 @@ public class GenericJsonDeserializer extends Deserializer {
 
     if (performBase64DecodeAndUnzip) {
       try {
-        byte[] decoded = Base64.getDecoder().decode(raw);
+        byte[] decoded = base64decoder.decode(raw);
         byte[] unzipped = readGzipCompressedData(decoded);
         raw = new String(unzipped);
       } catch (Exception e) {
