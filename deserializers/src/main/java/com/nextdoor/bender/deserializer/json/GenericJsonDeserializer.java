@@ -64,9 +64,8 @@ public class GenericJsonDeserializer extends Deserializer {
   }
 
   public byte[] readGzipCompressedData(byte[] data) throws IOException {
-    GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(data));
-    IOUtils.copy(gzipInputStream, byteArrayOutputStream, bufferSize);
-    try {
+    try (GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(data))) {
+      IOUtils.copy(gzipInputStream, byteArrayOutputStream, bufferSize);
       return byteArrayOutputStream.toByteArray();
     } finally {
       byteArrayOutputStream.reset(); //clears output so it can be used again later
