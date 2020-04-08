@@ -59,7 +59,7 @@ public class GenericJsonDeserializerTest {
     GenericJsonDeserializerConfig.FieldConfig fconfig =
         new GenericJsonDeserializerConfig.FieldConfig();
     fconfig.setField("MESSAGE");
-    GenericJsonDeserializer deser = new GenericJsonDeserializer(Arrays.asList(fconfig), path, isEncodedAndZipped);
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Arrays.asList(fconfig), path, isEncodedAndZipped, 1024);
     deser.init();
     return deser.deserialize(input);
   }

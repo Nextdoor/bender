@@ -39,6 +39,10 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
   @JsonProperty(required = false)
   private Boolean performBase64DecodeAndUnzip = false;
 
+  @JsonSchemaDescription("This sets the buffer size (default 1024) when an event object needs to be unzipped.")
+  @JsonProperty(required = false)
+  private Integer bufferSize = 1024;
+
   @JsonSchemaDescription("Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath")
   @JsonProperty(required = false)
   private String rootNodeOverridePath;
@@ -91,6 +95,14 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
 
   public void setPerformBase64DecodeAndUnzip(Boolean performBase64DecodeAndUnzip) {
     this.performBase64DecodeAndUnzip = performBase64DecodeAndUnzip;
+  }
+
+  public Integer getBufferSize() {
+    return bufferSize;
+  }
+
+  public void setBufferSize(Integer bufferSize) {
+    this.bufferSize = bufferSize;
   }
 
   @Override
