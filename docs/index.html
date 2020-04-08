@@ -2230,6 +2230,24 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
+                <div class="property-name ">buffer_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>This sets the buffer size (default 1024) when an event object needs to be unzipped.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
                 <div class="property-name ">root_node_override_path</div>
                 <div class="signature-type">
                                    <span class="signature-type-string">
@@ -2275,6 +2293,10 @@ function sourceButton(element) {
       "type": "boolean",
       "default": false,
       "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then unzip."
+    },
+    "buffer_size": {
+      "type": "integer",
+      "description": "This sets the buffer size (default 1024) when an event object needs to be unzipped."
     },
     "root_node_override_path": {
       "type": "string",
@@ -37846,6 +37868,10 @@ function sourceButton(element) {
           "type": "boolean",
           "default": false,
           "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then unzip."
+        },
+        "buffer_size": {
+          "type": "integer",
+          "description": "This sets the buffer size (default 1024) when an event object needs to be unzipped."
         },
         "root_node_override_path": {
           "type": "string",
