@@ -30,7 +30,7 @@ public class GenericJsonDeserializerFactory implements DeserializerFactory {
   public Deserializer newInstance() {
     return new GenericJsonDeserializer(this.config.getNestedFieldConfigs(),
             this.config.getRootNodeOverridePath(),
-            this.config.isPerformBase64DecodeAndUnzip(),
+            this.config.getPerformBase64DecodeAndExpandGzip(),
             this.config.getBufferSize());
   }
 

@@ -44,7 +44,7 @@ public class GenericJsonDeserializer extends Deserializer {
   private String rootNodeOverridePath;
   private Base64.Decoder base64decoder;
   private ByteArrayOutputStream byteArrayOutputStream;
-  private final boolean performBase64DecodeAndUnzip;
+  private final boolean performBase64DecodeAndExpandGzip;
   private final int bufferSize;
 
   public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs) {
@@ -59,7 +59,7 @@ public class GenericJsonDeserializer extends Deserializer {
     this.rootNodeOverridePath = rootNodeOverridePath;
     this.base64decoder = Base64.getDecoder();
     this.byteArrayOutputStream = new ByteArrayOutputStream();
-    this.performBase64DecodeAndUnzip = performBase64DecodeAndUnzip;
+    this.performBase64DecodeAndExpandGzip = performBase64DecodeAndUnzip;
     this.bufferSize = bufferSize;
   }
 
@@ -76,7 +76,7 @@ public class GenericJsonDeserializer extends Deserializer {
   public DeserializedEvent deserialize(String raw) {
     GenericJsonEvent devent = new GenericJsonEvent(null);
 
-    if (performBase64DecodeAndUnzip) {
+    if (performBase64DecodeAndExpandGzip) {
       try {
         byte[] decoded = base64decoder.decode(raw);
         byte[] unzipped = readGzipCompressedData(decoded);

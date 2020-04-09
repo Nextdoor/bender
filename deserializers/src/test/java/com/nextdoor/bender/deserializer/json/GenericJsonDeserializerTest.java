@@ -53,13 +53,13 @@ public class GenericJsonDeserializerTest {
     return getEvent(filename, path, false);
   }
 
-  private DeserializedEvent getEvent(String filename, String path, boolean isEncodedAndZipped)
+  private DeserializedEvent getEvent(String filename, String path, boolean isEncodedAndGzip)
           throws IOException {
     String input = TestUtils.getResourceString(this.getClass(), filename);
     GenericJsonDeserializerConfig.FieldConfig fconfig =
         new GenericJsonDeserializerConfig.FieldConfig();
     fconfig.setField("MESSAGE");
-    GenericJsonDeserializer deser = new GenericJsonDeserializer(Arrays.asList(fconfig), path, isEncodedAndZipped, 1024);
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Arrays.asList(fconfig), path, isEncodedAndGzip, 1024);
     deser.init();
     return deser.deserialize(input);
   }

@@ -2210,7 +2210,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">perform_base64_decode_and_unzip</div>
+                <div class="property-name ">perform_base64_decode_and_expand_gzip</div>
                 <div class="signature-type">
                                    <span class="signature-type-boolean">
                boolean
@@ -2222,7 +2222,7 @@ function sourceButton(element) {
             <span class="type-default">false</span>
 
                 </div>
-                <div class="signature-description desc"><p>When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then unzip.</p>
+                <div class="signature-description desc"><p>When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then expand the gzip file.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -2240,7 +2240,7 @@ function sourceButton(element) {
             </span>
 
                 </div>
-                <div class="signature-description desc"><p>This sets the buffer size (default 1024) when an event object needs to be unzipped.</p>
+                <div class="signature-description desc"><p>This sets the buffer size (default 1024) when an event object is a gzip and needs to be expanded.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -2289,14 +2289,14 @@ function sourceButton(element) {
       },
       "description": "Configuration on how to interpret string fields which can also be deserialized as JSON. For example: {\"foo\": \"{\"bar\": \"baz\"}\"} will become {\"foo\": {\"bar\": \"baz\"}\"}."
     },
-    "perform_base64_decode_and_unzip": {
+    "perform_base64_decode_and_expand_gzip": {
       "type": "boolean",
       "default": false,
-      "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then unzip."
+      "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then expand the gzip file."
     },
     "buffer_size": {
       "type": "integer",
-      "description": "This sets the buffer size (default 1024) when an event object needs to be unzipped."
+      "description": "This sets the buffer size (default 1024) when an event object is a gzip and needs to be expanded."
     },
     "root_node_override_path": {
       "type": "string",
@@ -37864,14 +37864,14 @@ function sourceButton(element) {
           },
           "description": "Configuration on how to interpret string fields which can also be deserialized as JSON. For example: {\"foo\": \"{\"bar\": \"baz\"}\"} will become {\"foo\": {\"bar\": \"baz\"}\"}."
         },
-        "perform_base64_decode_and_unzip": {
+        "perform_base64_decode_and_expand_gzip": {
           "type": "boolean",
           "default": false,
-          "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then unzip."
+          "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then expand the gzip file."
         },
         "buffer_size": {
           "type": "integer",
-          "description": "This sets the buffer size (default 1024) when an event object needs to be unzipped."
+          "description": "This sets the buffer size (default 1024) when an event object is a gzip and needs to be expanded."
         },
         "root_node_override_path": {
           "type": "string",

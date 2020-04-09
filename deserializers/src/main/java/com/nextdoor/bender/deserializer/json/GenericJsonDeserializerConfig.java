@@ -34,12 +34,12 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
   private List<FieldConfig> nestedFieldConfigs = Collections.emptyList();
 
   @JsonSchemaDescription("When true the deserializer will assume that the raw event strings are base64 encoded and will"
-          + "attempt to decode them and then unzip.")
+          + "attempt to decode them and then expand the gzip file.")
   @JsonSchemaDefault(value = "false")
   @JsonProperty(required = false)
-  private Boolean performBase64DecodeAndUnzip = false;
+  private Boolean performBase64DecodeAndExpandGzip = false;
 
-  @JsonSchemaDescription("This sets the buffer size (default 1024) when an event object needs to be unzipped.")
+  @JsonSchemaDescription("This sets the buffer size (default 1024) when an event object is a gzip and needs to be expanded.")
   @JsonProperty(required = false)
   private Integer bufferSize = 1024;
 
@@ -89,12 +89,12 @@ public class GenericJsonDeserializerConfig extends DeserializerConfig {
     this.rootNodeOverridePath = rootNodeOverridePath;
   }
 
-  public Boolean isPerformBase64DecodeAndUnzip() {
-    return performBase64DecodeAndUnzip;
+  public Boolean getPerformBase64DecodeAndExpandGzip() {
+    return performBase64DecodeAndExpandGzip;
   }
 
-  public void setPerformBase64DecodeAndUnzip(Boolean performBase64DecodeAndUnzip) {
-    this.performBase64DecodeAndUnzip = performBase64DecodeAndUnzip;
+  public void setPerformBase64DecodeAndExpandGzip(Boolean performBase64DecodeAndExpandGzip) {
+    this.performBase64DecodeAndExpandGzip = performBase64DecodeAndExpandGzip;
   }
 
   public Integer getBufferSize() {
