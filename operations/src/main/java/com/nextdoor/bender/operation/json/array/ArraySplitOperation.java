@@ -69,10 +69,12 @@ public class ArraySplitOperation implements MultiplexOperation {
       ArrayList<InternalEvent> output = new ArrayList<InternalEvent>();
       for (JsonElement elm : arr) {
         try {
-          JsonObject newObject = elm.deepCopy().getAsJsonObject();
-          if (!fieldsToKeep.isEmpty()) {
-            addFieldsToNewJsonObject(ievent, newObject);
+          JsonObject newObject = elm.getAsJsonObject();
+          for (String field : this.fieldsToKeep) {
+            JsonObject jsonObject = (JsonObject) ievent.getEventObj().getPayload();
+            newObject.add(field, jsonObject.get(field));
           }
+
           InternalEvent newEvent = new InternalEvent(newObject.toString(), ievent.getCtx(), ievent.getArrivalTime());
           DeserializedEvent newDeserEvent = new GenericJsonEvent(newObject);
           newEvent.setEventObj(newDeserEvent);
@@ -102,10 +104,4 @@ public class ArraySplitOperation implements MultiplexOperation {
     }
   }
 
-  private void addFieldsToNewJsonObject(InternalEvent internalEvent, JsonObject newObject) {
-    for (String field : fieldsToKeep) {
-      JsonObject jsonObject = (JsonObject) internalEvent.getEventObj().getPayload();
-      newObject.add(field, jsonObject.get(field));
-    }
-  }
 }
