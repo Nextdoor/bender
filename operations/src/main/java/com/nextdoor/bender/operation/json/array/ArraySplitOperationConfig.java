@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.operation.OperationConfig;
 
+import java.util.Collections;
+import java.util.List;
+
 @JsonTypeName("JsonArraySplitOperation")
 @JsonSchemaDescription("Provided a path to a JSON array it will produce new events with payloads "
     + "coorepsonding to elements of the array. For example [{\"foo\": 1}, {\"bar\": 2}] will be "
@@ -30,6 +33,10 @@ public class ArraySplitOperationConfig extends OperationConfig {
   @JsonProperty(required = true)
   private String path;
 
+  @JsonSchemaDescription("If an array is found and split, this can specify additional fields to keep in the new "
+          + "JSON object to preserve common contexts, such as timestamps, accountId, etc.")
+  @JsonProperty(required = false)
+  private List<String> fieldsToKeep = Collections.emptyList();
 
   public String getPath() {
     return path;
@@ -37,6 +44,14 @@ public class ArraySplitOperationConfig extends OperationConfig {
 
   public void setPath(String path) {
     this.path = path;
+  }
+
+  public List<String> getFieldsToKeep() {
+    return fieldsToKeep;
+  }
+
+  public void setFieldsToKeep(List<String> fieldsToKeep) {
+    this.fieldsToKeep = fieldsToKeep;
   }
 
   @Override

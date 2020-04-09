@@ -1,0 +1,31 @@
+{
+  "messageType": "DATA_MESSAGE",
+  "owner": "1234EXAMPLE",
+  "logGroup": "sampleLogGroupName",
+  "logStream": "sampleLogStreamName",
+  "subscriptionFilters": [
+    "sampleFilter"
+  ],
+  "logEvents": [
+    {
+      "id": "id1",
+      "timestamp": 1585259524965,
+      "message": "START RequestId:"
+    },
+    {
+      "id": "id2",
+      "timestamp": 1585259525143,
+      "message": "Some application logs emitted from the Lambda function."
+    },
+    {
+      "id": "id3",
+      "timestamp": 1585259525145,
+      "message": "END RequestId:"
+    },
+    {
+      "id": "id4",
+      "timestamp": 1585259525145,
+      "message": "REPORT RequestId:"
+    }
+  ]
+}

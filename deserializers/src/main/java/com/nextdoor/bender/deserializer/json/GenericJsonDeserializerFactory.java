@@ -29,7 +29,9 @@ public class GenericJsonDeserializerFactory implements DeserializerFactory {
   @Override
   public Deserializer newInstance() {
     return new GenericJsonDeserializer(this.config.getNestedFieldConfigs(),
-        this.config.getRootNodeOverridePath());
+            this.config.getRootNodeOverridePath(),
+            this.config.getPerformBase64DecodeAndExpandGzip(),
+            this.config.getBufferSize());
   }
 
   @Override

@@ -1,0 +1,33 @@
+---
+handler:
+  type: KinesisHandler
+sources:
+  - name: Test Events
+    source_regex: ".*"
+    deserializer:
+      type: GenericJson
+      perform_base64_decode_and_expand_gzip: true
+      nested_field_configs:
+        - field: MESSAGE
+    operations:
+      - type: DeleteFieldOperation
+        key_field: "$.subscriptionFilters"
+      - type: JsonArraySplitOperation
+        path: "$.logEvents"
+        fields_to_keep: ["owner", "logGroup", "logStream"]
+      - type: JsonKeyNameOperation
+      - type: SubstitutionOperation
+        substitutions:
+          - type: MetadataSubstitution
+            key: metadata
+            excludes:
+              - sourceLagMs
+wrapper:
+  type: PassthroughWrapper
+serializer:
+  type: Json
+transport:
+  type: DummyTransportHelper$DummyTransporterConfig
+  threads: 1
+reporters:
+  - type: DataDog

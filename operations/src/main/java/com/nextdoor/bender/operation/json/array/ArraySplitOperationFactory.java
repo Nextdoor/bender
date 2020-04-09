@@ -27,7 +27,7 @@ public class ArraySplitOperationFactory implements OperationFactory {
 
   @Override
   public ArraySplitOperation newInstance() {
-    return new ArraySplitOperation(this.config.getPath());
+    return new ArraySplitOperation(this.config.getPath(), this.config.getFieldsToKeep());
   }
 
   @Override

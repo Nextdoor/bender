@@ -15,7 +15,12 @@
 
 package com.nextdoor.bender.deserializer.json;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -28,6 +33,7 @@ import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.DeserializedEvent;
 import com.nextdoor.bender.deserializer.Deserializer;
 import com.nextdoor.bender.deserializer.json.GenericJsonDeserializerConfig.FieldConfig;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Converts a JSON string into a JsonElement object.
@@ -36,20 +42,49 @@ public class GenericJsonDeserializer extends Deserializer {
   protected JsonParser parser;
   private final List<FieldConfig> nestedFieldConfigs;
   private String rootNodeOverridePath;
+  private Base64.Decoder base64decoder;
+  private ByteArrayOutputStream byteArrayOutputStream;
+  private final boolean performBase64DecodeAndExpandGzip;
+  private final int bufferSize;
 
   public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs) {
-    this(nestedFieldConfigs, null);
+    this(nestedFieldConfigs, null, false, 1024);
   }
 
   public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs,
-      String rootNodeOverridePath) {
+                                 String rootNodeOverridePath,
+                                 boolean performBase64DecodeAndUnzip,
+                                 int bufferSize) {
     this.nestedFieldConfigs = nestedFieldConfigs;
     this.rootNodeOverridePath = rootNodeOverridePath;
+    this.base64decoder = Base64.getDecoder();
+    this.byteArrayOutputStream = new ByteArrayOutputStream();
+    this.performBase64DecodeAndExpandGzip = performBase64DecodeAndUnzip;
+    this.bufferSize = bufferSize;
+  }
+
+  public byte[] readGzipCompressedData(byte[] data) throws IOException {
+    try (GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(data))) {
+      IOUtils.copy(gzipInputStream, byteArrayOutputStream, bufferSize);
+      return byteArrayOutputStream.toByteArray();
+    } finally {
+      byteArrayOutputStream.reset(); //clears output so it can be used again later
+    }
   }
 
   @Override
   public DeserializedEvent deserialize(String raw) {
     GenericJsonEvent devent = new GenericJsonEvent(null);
+
+    if (performBase64DecodeAndExpandGzip) {
+      try {
+        byte[] decoded = base64decoder.decode(raw);
+        byte[] unzipped = readGzipCompressedData(decoded);
+        raw = new String(unzipped);
+      } catch (Exception e) {
+        throw new DeserializationException(e);
+      }
+    }
 
     JsonElement elm;
     try {
