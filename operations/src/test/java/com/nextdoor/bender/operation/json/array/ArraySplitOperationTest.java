@@ -209,14 +209,37 @@ public class ArraySplitOperationTest extends OperationTest {
     ievent.setEventTime(124);
     List<InternalEvent> events = operation.perform(ievent);
 
-    for (InternalEvent event : events) {
-      JsonElement actual = JsonParser.parseString(event.getEventString());
-      assertTrue(actual.getAsJsonObject().has("owner"));
-      assertTrue(actual.getAsJsonObject().has("logGroup"));
-      assertTrue(actual.getAsJsonObject().has("logStream"));
-      assertTrue(actual.getAsJsonObject().has("id"));
-      assertTrue(actual.getAsJsonObject().has("message"));
-      assertTrue(actual.getAsJsonObject().has("timestamp"));
-    }
+    assertEquals(4, events.size());
+    JsonElement actual = JsonParser.parseString(events.get(0).getEventString());
+    assertTrue(actual.getAsJsonObject().has("owner"));
+    assertTrue(actual.getAsJsonObject().has("logGroup"));
+    assertTrue(actual.getAsJsonObject().has("logStream"));
+    assertTrue(actual.getAsJsonObject().has("id"));
+    assertTrue(actual.getAsJsonObject().has("message"));
+    assertTrue(actual.getAsJsonObject().has("timestamp"));
+
+    actual = JsonParser.parseString(events.get(1).getEventString());
+    assertTrue(actual.getAsJsonObject().has("owner"));
+    assertTrue(actual.getAsJsonObject().has("logGroup"));
+    assertTrue(actual.getAsJsonObject().has("logStream"));
+    assertTrue(actual.getAsJsonObject().has("id"));
+    assertTrue(actual.getAsJsonObject().has("message"));
+    assertTrue(actual.getAsJsonObject().has("timestamp"));
+
+    actual = JsonParser.parseString(events.get(2).getEventString());
+    assertTrue(actual.getAsJsonObject().has("owner"));
+    assertTrue(actual.getAsJsonObject().has("logGroup"));
+    assertTrue(actual.getAsJsonObject().has("logStream"));
+    assertTrue(actual.getAsJsonObject().has("id"));
+    assertTrue(actual.getAsJsonObject().has("message"));
+    assertTrue(actual.getAsJsonObject().has("timestamp"));
+
+    actual = JsonParser.parseString(events.get(3).getEventString());
+    assertTrue(actual.getAsJsonObject().has("owner"));
+    assertTrue(actual.getAsJsonObject().has("logGroup"));
+    assertTrue(actual.getAsJsonObject().has("logStream"));
+    assertTrue(actual.getAsJsonObject().has("id"));
+    assertTrue(actual.getAsJsonObject().has("message"));
+    assertTrue(actual.getAsJsonObject().has("timestamp"));
   }
 }
