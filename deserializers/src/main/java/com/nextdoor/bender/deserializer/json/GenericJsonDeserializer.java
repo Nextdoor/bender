@@ -82,6 +82,14 @@ public class GenericJsonDeserializer extends Deserializer {
         byte[] unzipped = readGzipCompressedData(decoded);
         raw = new String(unzipped);
       } catch (Exception e) {
+        //we're seeing errors during base64 decode
+        //checking if mime decoder will do it correctly
+        try {
+          Base64.getMimeDecoder().decode(raw);
+          System.out.println("Mime decoder worked");
+        } catch (Exception ex) {
+          System.out.println("Using mime decoder didn't work either");
+        }
         throw new DeserializationException(e);
       }
     }

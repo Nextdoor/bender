@@ -351,6 +351,8 @@ public abstract class BaseHandler<T> implements Handler<T> {
       DeserializedEvent data = deser.deserialize(ievent.getEventString());
 
       if (data == null || data.getPayload() == null) {
+        logger.warn("Failed to deserialize the following event:");
+        ievent.getEventMetadata().forEach((k, v) -> logger.warn(k + ": " + v));
         logger.warn("Failed to deserialize: " + ievent.getEventString());
         return null;
       }
