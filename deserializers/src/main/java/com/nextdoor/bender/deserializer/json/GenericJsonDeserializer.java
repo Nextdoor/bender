@@ -78,8 +78,9 @@ public class GenericJsonDeserializer extends Deserializer {
 
     if (performBase64DecodeAndExpandGzip) {
       try {
-        byte[] decoded = base64decoder.decode(raw);
-        byte[] unzipped = readGzipCompressedData(decoded);
+        //removing base64 decode since we suspect kinesis java client already does the decode
+        //byte[] decoded = base64decoder.decode(raw);
+        byte[] unzipped = readGzipCompressedData(raw.getBytes());
         raw = new String(unzipped);
       } catch (Exception e) {
         //we're seeing errors during base64 decode
