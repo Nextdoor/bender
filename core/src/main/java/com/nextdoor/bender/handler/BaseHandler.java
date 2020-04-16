@@ -348,7 +348,12 @@ public abstract class BaseHandler<T> implements Handler<T> {
      * Deserialize
      */
     Stream<InternalEvent> deserialized = filtered.map(ievent -> {
-      DeserializedEvent data = deser.deserialize(ievent.getEventString());
+      DeserializedEvent data;
+      if (deser.getDeserializer().getIsZipped()) {
+        data = deser.deserialize(ievent.getRawKinesisData());
+      } else {
+        data = deser.deserialize(ievent.getEventString());
+      }
 
       if (data == null || data.getPayload() == null) {
         logger.warn("Failed to deserialize the following event:");

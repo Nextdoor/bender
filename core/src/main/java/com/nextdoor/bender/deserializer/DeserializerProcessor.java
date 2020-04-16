@@ -19,6 +19,8 @@ import org.apache.log4j.Logger;
 
 import com.nextdoor.bender.monitoring.MonitoredProcess;
 
+import java.nio.ByteBuffer;
+
 /**
  * Wrapper around {@link Deserializer} that keeps timing information on how long it takes to
  * deserialize events and handles error cases.
@@ -42,6 +44,23 @@ public class DeserializerProcessor extends MonitoredProcess {
    * @return A DeserializedEvent if deserialization succeeded or null if it failed.
    */
   public DeserializedEvent deserialize(String eventString) {
+    DeserializedEvent dEvent = null;
+    this.getRuntimeStat().start();
+
+    try {
+      dEvent = this.deser.deserialize(eventString);
+      this.getSuccessCountStat().increment();
+    } catch (DeserializationException e) {
+      logger.warn("failed to deserialize", e);
+      this.getErrorCountStat().increment();
+    } finally {
+      this.getRuntimeStat().stop();
+    }
+
+    return dEvent;
+  }
+
+  public DeserializedEvent deserialize(ByteBuffer eventString) {
     DeserializedEvent dEvent = null;
     this.getRuntimeStat().start();
 

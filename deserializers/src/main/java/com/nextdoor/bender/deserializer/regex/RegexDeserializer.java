@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender.deserializer.regex;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +35,16 @@ public class RegexDeserializer extends Deserializer {
   public RegexDeserializer(final Pattern pattern, final List<ReFieldConfig> fields) {
     this.pattern = pattern;
     this.fields = fields;
+  }
+
+  @Override
+  public boolean getIsZipped() {
+    return false;
+  }
+
+  @Override
+  public DeserializedEvent deserialize(ByteBuffer raw) {
+    return new GenericJsonEvent(null);
   }
 
   @Override

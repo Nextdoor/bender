@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.deserializer;
 
+import java.nio.ByteBuffer;
+
 public abstract class Deserializer {
   /**
    * @param raw original event string.
@@ -22,8 +24,12 @@ public abstract class Deserializer {
    */
   public abstract DeserializedEvent deserialize(String raw);
 
+  public abstract DeserializedEvent deserialize(ByteBuffer raw);
+
   /**
    * Performs any deserializer initialization that needs to be done.
    */
   public abstract void init();
+
+  public abstract boolean getIsZipped();
 }

@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ import com.nextdoor.bender.deserializer.DeserializedEvent;
  */
 public class InternalEvent {
   private final String eventString;
+  protected ByteBuffer rawKinesisData;
   private final LambdaContext context;
   private final String eventSha1Hash;
   private final long arrivalTime;
@@ -83,6 +85,14 @@ public class InternalEvent {
      * multiple events within a function invocation.
      */
     this.metadata.putAll(other.metadata);
+  }
+
+  public ByteBuffer getRawKinesisData() {
+    return rawKinesisData;
+  }
+
+  public void setRawKinesisData(ByteBuffer rawKinesisData) {
+    this.rawKinesisData = rawKinesisData;
   }
 
   /**

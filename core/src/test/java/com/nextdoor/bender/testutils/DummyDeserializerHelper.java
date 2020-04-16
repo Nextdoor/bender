@@ -15,6 +15,7 @@
 
 package com.nextdoor.bender.testutils;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.NotImplementedException;
@@ -215,6 +216,16 @@ public class DummyDeserializerHelper {
     @Override
     public DeserializedEvent deserialize(String raw) {
       return new DummyStringEvent(raw);
+    }
+
+    @Override
+    public DeserializedEvent deserialize(ByteBuffer raw) {
+      return null;
+    }
+
+    @Override
+    public boolean getIsZipped() {
+      return true;
     }
 
     @Override

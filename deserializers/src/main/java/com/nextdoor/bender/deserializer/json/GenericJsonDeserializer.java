@@ -18,6 +18,7 @@ package com.nextdoor.bender.deserializer.json;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
@@ -44,7 +45,7 @@ public class GenericJsonDeserializer extends Deserializer {
   private String rootNodeOverridePath;
   private Base64.Decoder base64decoder;
   private ByteArrayOutputStream byteArrayOutputStream;
-  private final boolean performBase64DecodeAndExpandGzip;
+  public final boolean performBase64DecodeAndExpandGzip;
   private final int bufferSize;
 
   public GenericJsonDeserializer(List<FieldConfig> nestedFieldConfigs) {
@@ -73,27 +74,51 @@ public class GenericJsonDeserializer extends Deserializer {
   }
 
   @Override
-  public DeserializedEvent deserialize(String raw) {
-    GenericJsonEvent devent = new GenericJsonEvent(null);
+  public boolean getIsZipped() {
+    return performBase64DecodeAndExpandGzip;
+  }
 
-    if (performBase64DecodeAndExpandGzip) {
-      try {
-        //removing base64 decode since we suspect kinesis java client already does the decode
-        //byte[] decoded = base64decoder.decode(raw);
-        byte[] unzipped = readGzipCompressedData(raw.getBytes());
-        raw = new String(unzipped);
-      } catch (Exception e) {
-        //we're seeing errors during base64 decode
-        //checking if mime decoder will do it correctly
-        try {
-          Base64.getMimeDecoder().decode(raw);
-          System.out.println("Mime decoder worked");
-        } catch (Exception ex) {
-          System.out.println("Using mime decoder didn't work either");
-        }
-        throw new DeserializationException(e);
-      }
+  @Override
+  public DeserializedEvent deserialize(String raw) {
+//    if (performBase64DecodeAndExpandGzip) {
+//      try {
+//        //removing base64 decode since we suspect kinesis java client already does the decode
+//        //byte[] decoded = base64decoder.decode(raw);
+//        byte[] unzipped = readGzipCompressedData(raw.getBytes());
+//        raw = new String(unzipped);
+//      } catch (Exception e) {
+//        //we're seeing errors during base64 decode
+//        //checking if mime decoder will do it correctly
+//        try {
+//          Base64.getMimeDecoder().decode(raw);
+//          System.out.println("Mime decoder worked");
+//        } catch (Exception ex) {
+//          System.out.println("Using mime decoder didn't work either");
+//        }
+//        throw new DeserializationException(e);
+//      }
+//    }
+
+    return getDeserialize(raw);
+  }
+
+  @Override
+  public DeserializedEvent deserialize(ByteBuffer raw) {
+    System.out.println("Running deserialize with the raw bytebuffer array");
+
+    try {
+      //removing base64 decode since we suspect kinesis java client already does the decode
+      //byte[] decoded = base64decoder.decode(raw);
+      byte[] unzipped = readGzipCompressedData(raw.array());
+      String rawString = new String(unzipped);
+      return getDeserialize(rawString);
+    } catch (Exception e) {
+      throw new DeserializationException(e);
     }
+  }
+
+  private DeserializedEvent getDeserialize(String raw) {
+    GenericJsonEvent devent = new GenericJsonEvent(null);
 
     JsonElement elm;
     try {

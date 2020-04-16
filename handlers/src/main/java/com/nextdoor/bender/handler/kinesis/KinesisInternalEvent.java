@@ -37,6 +37,7 @@ public class KinesisInternalEvent extends InternalEvent {
     super.addMetadata("partitionKey", record.getKinesis().getPartitionKey());
     super.addMetadata("sequenceNumber", record.getKinesis().getSequenceNumber());
 
+    this.rawKinesisData = record.getKinesis().getData();
     this.record = record;
     this.shardId = shardId;
   }
