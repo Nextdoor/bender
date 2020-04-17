@@ -1647,7 +1647,7 @@ function sourceButton(element) {
         </div>
         <div class="signature">
             <div class="signature-header">
-                <div class="property-name ">assume_kinesis_data_is_gzipped</div>
+                <div class="property-name ">decompress</div>
                 <div class="signature-type">
                                    <span class="signature-type-boolean">
                boolean
@@ -1659,7 +1659,7 @@ function sourceButton(element) {
             <span class="type-default">false</span>
 
                 </div>
-                <div class="signature-description desc"><p>If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be expanded before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated.</p>
+                <div class="signature-description desc"><p>If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be decompressed before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -1745,10 +1745,10 @@ function sourceButton(element) {
       "default": false,
       "description": "Whether to add kinesis shardid to the event partitions list. The key is \"__shardid__\" and value will look like \"shardId-000000000000\". Note that partitioning must be either enabled or supported by the transport you use. Not all transporters support partitioning."
     },
-    "assume_kinesis_data_is_gzipped": {
+    "decompress": {
       "type": "boolean",
       "default": false,
-      "description": "If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be expanded before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated."
+      "description": "If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be decompressed before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated."
     },
     "buffer_size": {
       "type": "integer",
@@ -37674,10 +37674,10 @@ function sourceButton(element) {
           "default": false,
           "description": "Whether to add kinesis shardid to the event partitions list. The key is \"__shardid__\" and value will look like \"shardId-000000000000\". Note that partitioning must be either enabled or supported by the transport you use. Not all transporters support partitioning."
         },
-        "assume_kinesis_data_is_gzipped": {
+        "decompress": {
           "type": "boolean",
           "default": false,
-          "description": "If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be expanded before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated."
+          "description": "If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be decompressed before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated."
         },
         "buffer_size": {
           "type": "integer",
