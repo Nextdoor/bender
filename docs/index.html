@@ -783,7 +783,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -856,7 +856,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -1024,7 +1024,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -1144,7 +1144,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -1312,7 +1312,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -1432,7 +1432,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -1600,7 +1600,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -1640,6 +1640,44 @@ function sourceButton(element) {
 
                 </div>
                 <div class="signature-description desc"><p>Whether to add kinesis shardid to the event partitions list. The key is "<strong>shardid</strong>" and value will look like "shardId-000000000000". Note that partitioning must be either enabled or supported by the transport you use. Not all transporters support partitioning.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">decompress</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be decompressed before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">buffer_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>This sets the buffer size (default 1024) when Kinesis data is a gzip and needs to be expanded. This flag is only used if the getAssumeKinesisDataIsGzipped config is set as true.</p>
 </div>
             </div>
             <div class="signature-box-container">
@@ -1707,6 +1745,15 @@ function sourceButton(element) {
       "default": false,
       "description": "Whether to add kinesis shardid to the event partitions list. The key is \"__shardid__\" and value will look like \"shardId-000000000000\". Note that partitioning must be either enabled or supported by the transport you use. Not all transporters support partitioning."
     },
+    "decompress": {
+      "type": "boolean",
+      "default": false,
+      "description": "If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be decompressed before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated."
+    },
+    "buffer_size": {
+      "type": "integer",
+      "description": "This sets the buffer size (default 1024) when Kinesis data is a gzip and needs to be expanded. This flag is only used if the getAssumeKinesisDataIsGzipped config is set as true."
+    },
     "add_shardid_to_partitions": {
       "type": "boolean"
     }
@@ -1718,7 +1765,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -1985,7 +2032,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -2072,7 +2119,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -2203,47 +2250,9 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">perform_base64_decode_and_expand_gzip</div>
-                <div class="signature-type">
-                                   <span class="signature-type-boolean">
-               boolean
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-            <span class="type-keyword">default</span>
-            <span class="type-default">false</span>
-
-                </div>
-                <div class="signature-description desc"><p>When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then expand the gzip file.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
-            </div>
-        </div>
-        <div class="signature">
-            <div class="signature-header">
-                <div class="property-name ">buffer_size</div>
-                <div class="signature-type">
-                                   <span class="signature-type-integer">
-               integer
-            </span>
-            <span class="type-keyword">
-               
-            </span>
-
-                </div>
-                <div class="signature-description desc"><p>This sets the buffer size (default 1024) when an event object is a gzip and needs to be expanded.</p>
-</div>
-            </div>
-            <div class="signature-box-container">
             </div>
         </div>
         <div class="signature">
@@ -2289,15 +2298,6 @@ function sourceButton(element) {
       },
       "description": "Configuration on how to interpret string fields which can also be deserialized as JSON. For example: {\"foo\": \"{\"bar\": \"baz\"}\"} will become {\"foo\": {\"bar\": \"baz\"}\"}."
     },
-    "perform_base64_decode_and_expand_gzip": {
-      "type": "boolean",
-      "default": false,
-      "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then expand the gzip file."
-    },
-    "buffer_size": {
-      "type": "integer",
-      "description": "This sets the buffer size (default 1024) when an event object is a gzip and needs to be expanded."
-    },
     "root_node_override_path": {
       "type": "string",
       "description": "Path to a JSON node which is promoted to root node. See https://github.com/jayway/JsonPath"
@@ -2310,7 +2310,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -2508,7 +2508,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -2575,7 +2575,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -2665,7 +2665,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -2924,7 +2924,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -3147,7 +3147,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -3254,7 +3254,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -3425,7 +3425,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -3722,7 +3722,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -3945,7 +3945,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -4052,7 +4052,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -4223,7 +4223,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -4254,7 +4254,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -4509,7 +4509,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -4597,7 +4597,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -4656,7 +4656,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -4794,7 +4794,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -4965,7 +4965,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -5033,7 +5033,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -5288,7 +5288,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -5376,7 +5376,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -5435,7 +5435,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -5573,7 +5573,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -5744,7 +5744,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -5803,7 +5803,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -6060,7 +6060,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -6098,7 +6098,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -6216,7 +6216,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -6339,7 +6339,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="8">
@@ -6429,7 +6429,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="9">
@@ -6496,7 +6496,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="10">
@@ -6616,7 +6616,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="11">
@@ -6754,7 +6754,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="12">
@@ -6966,7 +6966,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="13">
@@ -7058,7 +7058,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="14">
@@ -7150,7 +7150,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="15">
@@ -7290,7 +7290,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="16">
@@ -7437,7 +7437,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -7504,7 +7504,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -7594,7 +7594,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -7853,7 +7853,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -8076,7 +8076,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -8183,7 +8183,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -8354,7 +8354,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -8651,7 +8651,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -8874,7 +8874,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -8981,7 +8981,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -9152,7 +9152,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -9183,7 +9183,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -9438,7 +9438,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -9526,7 +9526,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -9585,7 +9585,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -9723,7 +9723,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -9894,7 +9894,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -9962,7 +9962,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -10217,7 +10217,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -10305,7 +10305,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -10364,7 +10364,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -10502,7 +10502,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -10673,7 +10673,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -10732,7 +10732,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -10989,7 +10989,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -11027,7 +11027,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -11145,7 +11145,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -11268,7 +11268,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="8">
@@ -11358,7 +11358,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="9">
@@ -11425,7 +11425,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="10">
@@ -11545,7 +11545,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="11">
@@ -11683,7 +11683,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="12">
@@ -11895,7 +11895,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="13">
@@ -11987,7 +11987,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="14">
@@ -12079,7 +12079,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="15">
@@ -12219,7 +12219,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="16">
@@ -12250,7 +12250,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="17">
@@ -12543,7 +12543,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="18">
@@ -12610,7 +12610,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -12765,7 +12765,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -12857,7 +12857,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -12950,7 +12950,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -13013,7 +13013,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="17">
@@ -13306,7 +13306,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="18">
@@ -13373,7 +13373,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -13452,7 +13452,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -13490,7 +13490,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -13557,7 +13557,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -13647,7 +13647,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -13906,7 +13906,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -14129,7 +14129,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -14236,7 +14236,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -14407,7 +14407,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -14704,7 +14704,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -14927,7 +14927,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -15034,7 +15034,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -15205,7 +15205,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -15236,7 +15236,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -15491,7 +15491,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -15579,7 +15579,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -15638,7 +15638,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -15776,7 +15776,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -15947,7 +15947,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -16015,7 +16015,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -16270,7 +16270,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -16358,7 +16358,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -16417,7 +16417,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -16555,7 +16555,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -16726,7 +16726,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -16785,7 +16785,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -17042,7 +17042,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -17080,7 +17080,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -17198,7 +17198,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -17321,7 +17321,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="8">
@@ -17411,7 +17411,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="9">
@@ -17478,7 +17478,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="10">
@@ -17598,7 +17598,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="11">
@@ -17736,7 +17736,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="12">
@@ -17948,7 +17948,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="13">
@@ -18040,7 +18040,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="14">
@@ -18132,7 +18132,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="15">
@@ -18272,7 +18272,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="16">
@@ -18535,7 +18535,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -18602,7 +18602,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -18692,7 +18692,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -18951,7 +18951,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -19174,7 +19174,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -19281,7 +19281,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -19452,7 +19452,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -19749,7 +19749,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -19972,7 +19972,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -20079,7 +20079,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -20250,7 +20250,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -20281,7 +20281,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -20536,7 +20536,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -20624,7 +20624,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -20683,7 +20683,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -20821,7 +20821,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -20992,7 +20992,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -21060,7 +21060,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -21315,7 +21315,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -21403,7 +21403,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -21462,7 +21462,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -21600,7 +21600,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -21771,7 +21771,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -21830,7 +21830,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -22087,7 +22087,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -22125,7 +22125,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -22243,7 +22243,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -22366,7 +22366,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="8">
@@ -22456,7 +22456,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="9">
@@ -22523,7 +22523,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="10">
@@ -22643,7 +22643,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="11">
@@ -22781,7 +22781,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="12">
@@ -22993,7 +22993,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="13">
@@ -23085,7 +23085,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="14">
@@ -23177,7 +23177,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="15">
@@ -23317,7 +23317,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="16">
@@ -23348,7 +23348,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="17">
@@ -23641,7 +23641,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="18">
@@ -23708,7 +23708,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -23787,7 +23787,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -23825,7 +23825,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -23892,7 +23892,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -23982,7 +23982,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -24241,7 +24241,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -24464,7 +24464,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -24571,7 +24571,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -24742,7 +24742,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -25039,7 +25039,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -25262,7 +25262,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -25369,7 +25369,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -25540,7 +25540,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -25571,7 +25571,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -25826,7 +25826,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -25914,7 +25914,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -25973,7 +25973,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -26111,7 +26111,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -26282,7 +26282,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -26350,7 +26350,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -26605,7 +26605,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -26693,7 +26693,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -26752,7 +26752,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -26890,7 +26890,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -27061,7 +27061,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -27120,7 +27120,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -27377,7 +27377,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -27415,7 +27415,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -27533,7 +27533,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -27656,7 +27656,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="8">
@@ -27746,7 +27746,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="9">
@@ -27813,7 +27813,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="10">
@@ -27933,7 +27933,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="11">
@@ -28071,7 +28071,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="12">
@@ -28283,7 +28283,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="13">
@@ -28375,7 +28375,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="14">
@@ -28467,7 +28467,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="15">
@@ -28607,7 +28607,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="16">
@@ -28638,7 +28638,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="17">
@@ -28931,7 +28931,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="18">
@@ -28998,7 +28998,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -29153,7 +29153,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -29245,7 +29245,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -29338,7 +29338,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -29401,7 +29401,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="17">
@@ -29694,7 +29694,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="18">
@@ -29761,7 +29761,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -29877,7 +29877,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -29965,7 +29965,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -30032,7 +30032,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -30099,7 +30099,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -30166,7 +30166,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -30288,7 +30288,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -30440,7 +30440,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -30722,7 +30722,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -31009,7 +31009,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -31192,7 +31192,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -31418,7 +31418,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -31504,7 +31504,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -31549,7 +31549,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -31706,7 +31706,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -31900,7 +31900,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="4">
@@ -32189,7 +32189,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -32364,7 +32364,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -32450,7 +32450,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -32533,7 +32533,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -32656,7 +32656,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="5">
@@ -32954,7 +32954,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="6">
@@ -33046,7 +33046,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="7">
@@ -33332,7 +33332,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -33609,7 +33609,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -33695,7 +33695,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -33740,7 +33740,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -33803,7 +33803,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -33925,7 +33925,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="8">
@@ -34212,7 +34212,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -34387,7 +34387,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -34473,7 +34473,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -34536,7 +34536,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -34654,7 +34654,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="9">
@@ -34941,7 +34941,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -35116,7 +35116,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -35202,7 +35202,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -35283,7 +35283,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -35405,7 +35405,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="10">
@@ -35646,7 +35646,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="11">
@@ -36033,7 +36033,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -36119,7 +36119,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -36217,7 +36217,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="12">
@@ -36309,7 +36309,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -36525,7 +36525,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -36563,7 +36563,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -36695,7 +36695,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="2">
@@ -36890,7 +36890,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -36928,7 +36928,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -36991,7 +36991,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
                 <div class="box-container" boxid="3">
@@ -37186,7 +37186,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -37224,7 +37224,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -37356,7 +37356,7 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
+<div class="end">
 
                 </div>
             </div>
@@ -37674,6 +37674,15 @@ function sourceButton(element) {
           "default": false,
           "description": "Whether to add kinesis shardid to the event partitions list. The key is \"__shardid__\" and value will look like \"shardId-000000000000\". Note that partitioning must be either enabled or supported by the transport you use. Not all transporters support partitioning."
         },
+        "decompress": {
+          "type": "boolean",
+          "default": false,
+          "description": "If this flag is set to true, then the Kinesis handler will assume all incoming Kinesis record's data will be a gzip that needs to be decompressed before it's stored as a string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK willtake care of decoding so this flag ensures the gzip is inflated."
+        },
+        "buffer_size": {
+          "type": "integer",
+          "description": "This sets the buffer size (default 1024) when Kinesis data is a gzip and needs to be expanded. This flag is only used if the getAssumeKinesisDataIsGzipped config is set as true."
+        },
         "add_shardid_to_partitions": {
           "type": "boolean"
         }
@@ -37863,15 +37872,6 @@ function sourceButton(element) {
             "$ref": "#/definitions/FieldConfig"
           },
           "description": "Configuration on how to interpret string fields which can also be deserialized as JSON. For example: {\"foo\": \"{\"bar\": \"baz\"}\"} will become {\"foo\": {\"bar\": \"baz\"}\"}."
-        },
-        "perform_base64_decode_and_expand_gzip": {
-          "type": "boolean",
-          "default": false,
-          "description": "When true the deserializer will assume that the raw event strings are base64 encoded and willattempt to decode them and then expand the gzip file."
-        },
-        "buffer_size": {
-          "type": "integer",
-          "description": "This sets the buffer size (default 1024) when an event object is a gzip and needs to be expanded."
         },
         "root_node_override_path": {
           "type": "string",
@@ -40669,5 +40669,5 @@ function sourceButton(element) {
 }</pre>
     </div>
 </div>
-<div class="end"></div>
-</div></body></html>
+<div class="end">
+</div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></body></html>

@@ -15,7 +15,6 @@
 
 package com.nextdoor.bender.handler.kinesis;
 
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent.KinesisEventRecord;
@@ -38,8 +37,11 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
     }
 
     KinesisHandlerConfig handlerConfig = (KinesisHandlerConfig) this.config.getHandlerConfig();
-    this.recordIterator = new KinesisEventIterator(new LambdaContext(context), event.getRecords(),
-        handlerConfig.getAddShardIdToPartitions());
+    this.recordIterator = new KinesisEventIterator(new LambdaContext(context),
+            event.getRecords(),
+            handlerConfig.getAddShardIdToPartitions(),
+            handlerConfig.getDecompress(),
+            handlerConfig.getBufferSize());
 
     /*
      * Get processors based on the source stream ARN

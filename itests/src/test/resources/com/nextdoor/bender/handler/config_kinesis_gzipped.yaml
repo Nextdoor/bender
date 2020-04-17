@@ -1,12 +1,12 @@
 ---
 handler:
   type: KinesisHandler
+  decompress: true
 sources:
   - name: Test Events
     source_regex: ".*"
     deserializer:
       type: GenericJson
-      perform_base64_decode_and_expand_gzip: true
       nested_field_configs:
         - field: MESSAGE
     operations:

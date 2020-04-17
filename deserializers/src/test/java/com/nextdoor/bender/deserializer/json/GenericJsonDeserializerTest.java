@@ -45,66 +45,14 @@ public class GenericJsonDeserializerTest {
     return getEvent(filename, null);
   }
 
-  private DeserializedEvent getEvent(String filename, boolean isEncodedAndZipped) throws IOException {
-    return getEvent(filename, null, isEncodedAndZipped);
-  }
-
   private DeserializedEvent getEvent(String filename, String path) throws IOException {
-    return getEvent(filename, path, false);
-  }
-
-  private DeserializedEvent getEvent(String filename, String path, boolean isEncodedAndGzip)
-          throws IOException {
     String input = TestUtils.getResourceString(this.getClass(), filename);
     GenericJsonDeserializerConfig.FieldConfig fconfig =
         new GenericJsonDeserializerConfig.FieldConfig();
     fconfig.setField("MESSAGE");
-    GenericJsonDeserializer deser = new GenericJsonDeserializer(Arrays.asList(fconfig), path, isEncodedAndGzip, 1024);
+    GenericJsonDeserializer deser = new GenericJsonDeserializer(Arrays.asList(fconfig), path);
     deser.init();
     return deser.deserialize(input);
-  }
-
-  @Test
-  public void testBase64EncodedString() throws IOException {
-    DeserializedEvent devent = getEvent("base_64_encoded.txt", true);
-
-    /*
-     * Verify payload type
-     */
-    assertNotNull(devent.getPayload());
-    assertEquals(devent.getPayload().getClass(), JsonObject.class);
-
-    /*
-     * Verify payload data
-     */
-    JsonObject obj = (JsonObject) devent.getPayload();
-
-    assertTrue(obj.has("messageType"));
-    assertTrue(obj.get("messageType").isJsonPrimitive());
-    assertTrue(obj.get("messageType").getAsJsonPrimitive().isString());
-
-    assertTrue(obj.has("owner"));
-    assertTrue(obj.get("owner").isJsonPrimitive());
-    assertTrue(obj.get("owner").getAsJsonPrimitive().isString());
-
-
-    assertTrue(obj.has("logGroup"));
-    assertTrue(obj.get("logGroup").isJsonPrimitive());
-    assertTrue(obj.get("logGroup").getAsJsonPrimitive().isString());
-
-    assertTrue(obj.has("logStream"));
-    assertTrue(obj.get("logStream").isJsonPrimitive());
-    assertTrue(obj.get("logStream").getAsJsonPrimitive().isString());
-
-    assertTrue(obj.has("subscriptionFilters"));
-    assertTrue(obj.get("subscriptionFilters").isJsonArray());
-    assertTrue(obj.get("subscriptionFilters").getAsJsonArray().isJsonArray());
-
-    assertTrue(obj.has("logEvents"));
-    assertTrue(obj.get("logEvents").isJsonArray());
-    assertTrue(obj.get("logEvents").getAsJsonArray().get(0).getAsJsonObject().has("id"));
-    assertTrue(obj.get("logEvents").getAsJsonArray().get(0).getAsJsonObject().has("timestamp"));
-    assertTrue(obj.get("logEvents").getAsJsonArray().get(0).getAsJsonObject().has("message"));
   }
 
   @Test
