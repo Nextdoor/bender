@@ -40,7 +40,7 @@ public class KinesisHandler extends BaseHandler<KinesisEvent> implements Handler
     this.recordIterator = new KinesisEventIterator(new LambdaContext(context),
             event.getRecords(),
             handlerConfig.getAddShardIdToPartitions(),
-            handlerConfig.getAssumeKinesisDataIsGzipped(),
+            handlerConfig.getDecompress(),
             handlerConfig.getBufferSize());
 
     /*

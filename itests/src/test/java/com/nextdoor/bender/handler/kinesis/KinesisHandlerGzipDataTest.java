@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class KinesisHandlerBase64DecodeTest extends HandlerTest<KinesisEvent> {
+public class KinesisHandlerGzipDataTest extends HandlerTest<KinesisEvent> {
 
     @Override
     public KinesisHandler getHandler() {
