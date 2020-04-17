@@ -41,6 +41,28 @@ public class KinesisHandlerConfig extends HandlerConfig {
     return this.addKinesisShardToPartitions;
   }
 
+  @JsonSchemaDescription("If this flag is set to true, then the Kinesis handler will assume all incoming " +
+          "Kinesis record's data will be a gzip that needs to be expanded before it's stored as a " +
+          "string in the KinesisInternalEvent. One example use case is how using a CloudWatch log subscription filter " +
+          "on Kinesis results in data being stored as a zip that is base64 encoded. The Kinesis Java SDK will" +
+          "take care of decoding so this flag ensures the gzip is inflated.")
+  @JsonProperty(required = false)
+  @JsonSchemaDefault("false")
+  private Boolean assumeKinesisDataIsGzipped = false;
+
+  public Boolean getAssumeKinesisDataIsGzipped() {
+    return assumeKinesisDataIsGzipped;
+  }
+
+  @JsonSchemaDescription("This sets the buffer size (default 1024) when Kinesis data is a gzip and needs to be expanded." +
+          " This flag is only used if the getAssumeKinesisDataIsGzipped config is set as true.")
+  @JsonProperty(required = false)
+  private Integer bufferSize = 1024;
+
+  public Integer getBufferSize() {
+    return bufferSize;
+  }
+
   @JsonProperty("add_shardid_to_partitions")
   public void setAddShardIdToPartitions(Boolean addKinesisShardToPartitions) {
     this.addKinesisShardToPartitions = addKinesisShardToPartitions;

@@ -1,19 +1,29 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * Copyright 2017 Nextdoor.com, Inc
+ *
+ */
+
 package com.nextdoor.bender.handler.kinesis;
 
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
+import com.nextdoor.bender.handler.BaseHandler;
 import com.nextdoor.bender.handler.HandlerTest;
 import com.nextdoor.bender.testutils.TestUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.Base64;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
-public class KinesisHandlerBase64DecodeTest extends HandlerTest<KinesisEvent> {
+public class KinesisHandlerWithGzipTest extends HandlerTest<KinesisEvent> {
 
     @Override
     public KinesisHandler getHandler() {
@@ -22,9 +32,7 @@ public class KinesisHandlerBase64DecodeTest extends HandlerTest<KinesisEvent> {
 
     @Override
     public KinesisEvent getTestEvent() throws Exception {
-        KinesisEvent kinesisEvent = TestUtils.createEvent(this.getClass(),
-                "basic_input.json",
-                "arn:aws:kinesis:us-east-1:2341:stream/test-events-stream");
+        KinesisEvent kinesisEvent = TestUtils.createEvent(this.getClass(), "basic_input.json");
         kinesisEvent.getRecords().get(0).getKinesis().setData(getBase64DecodedGzipFile());
         return kinesisEvent;
     }
@@ -38,42 +46,22 @@ public class KinesisHandlerBase64DecodeTest extends HandlerTest<KinesisEvent> {
     }
 
     @Override
+    public String getExpectedEvent() {
+        return "basic_output_cw_logs.json";
+    }
+
+    @Override
     public void setup() {
 
     }
 
     @Override
+    public String getConfigFile() {
+        return "/com/nextdoor/bender/handler/config_kinesis_with_gzip.json";
+    }
+
+    @Override
     public void teardown() {
 
-    }
-
-    @Override
-    public String getConfigFile() {
-        return "/com/nextdoor/bender/handler/config_kinesis_gzipped.yaml";
-    }
-
-    @Override
-    public String getExpectedOutputFile() {
-        return "multiple_outputs_list.txt";
-    }
-
-    @Override
-    public void validateOutput(List<String> output) throws IOException {
-        assertEquals(4, output.size());
-
-        /*
-         * Load expected
-         */
-        BufferedReader br = new BufferedReader(new InputStreamReader(
-                this.getClass().getResourceAsStream(getExpectedOutputFile()),
-                "UTF-8"));
-        String event;
-        int index = 0;
-        while ((event = br.readLine()) != null) {
-            assertEquals(event, output.get(index));
-            index += 1;
-        }
-
-        br.close();
     }
 }

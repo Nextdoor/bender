@@ -1,0 +1,32 @@
+{
+  "handler": {
+    "type": "KinesisHandler",
+    "assume_kinesis_data_is_gzipped": true
+  },
+  "sources": [
+    {
+      "name": "Test Events",
+      "source_regex": ".*",
+      "deserializer": {
+        "type": "DummyDeserializerHelper$DummyDeserializerConfig"
+      },
+      "operations": [
+        {
+          "type": "DummyOperationHelper$DummyOperationConfig"
+        }
+      ]
+    }
+  ],
+  "wrapper": {
+    "type": "DummyWrapperHelper$DummyWrapperConfig"
+  },
+  "serializer": {
+    "type": "DummySerializerHelper$DummySerializerConfig"
+  },
+  "transport": {
+    "type": "DummyTransportHelper$DummyTransporterConfig",
+    "threads": 1
+  },
+  "reporters": [
+  ]
+}
