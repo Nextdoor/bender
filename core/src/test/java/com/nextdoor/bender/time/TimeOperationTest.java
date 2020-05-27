@@ -41,6 +41,30 @@ public class TimeOperationTest {
     assertEquals(1504728473000l, ievent.getEventTime());
   }
 
+  @Test
+  public void testValidISO8601() throws FieldNotFoundException {
+    InternalEvent ievent = new InternalEvent("foo", null, 1);
+    DummyStringEvent devent = spy(new DummyStringEvent(""));
+    ievent.setEventObj(devent);
+    doReturn("2020-05-04T10:45:01.480Z").when(devent).getFieldAsString("foo");
+
+    TimeOperation op = new TimeOperation("foo", TimeFieldType.ISO8601);
+    op.perform(ievent);
+
+    assertEquals(1588589101480l, ievent.getEventTime());
+  }
+
+  @Test(expected = OperationException.class)
+  public void testInvalidISO8601() throws FieldNotFoundException {
+    InternalEvent ievent = new InternalEvent("foo", null, 1);
+    DummyStringEvent devent = spy(new DummyStringEvent(""));
+    ievent.setEventObj(devent);
+    doReturn("note a date string").when(devent).getFieldAsString("foo");
+
+    TimeOperation op = new TimeOperation("foo", TimeFieldType.ISO8601);
+    op.perform(ievent);
+  }
+
   @Test(expected = OperationException.class)
   public void testInvalidTime() throws FieldNotFoundException {
     InternalEvent ievent = new InternalEvent("foo", null, 1);
