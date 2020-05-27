@@ -15,6 +15,8 @@
 
 package com.nextdoor.bender.time;
 
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import com.nextdoor.bender.InternalEvent;
 import com.nextdoor.bender.deserializer.FieldNotFoundException;
 import com.nextdoor.bender.operation.EventOperation;
@@ -25,6 +27,7 @@ import com.nextdoor.bender.utils.Time;
 public class TimeOperation implements EventOperation {
   private final String timeField;
   private final TimeFieldType timeFieldType;
+  private final static DateTimeFormatter iso8601Parser = ISODateTimeFormat.dateTime();
 
   public TimeOperation(String timeField, TimeFieldType timeFieldType) {
     this.timeField = timeField;
@@ -39,6 +42,13 @@ public class TimeOperation implements EventOperation {
         break;
       case MILLISECONDS:
         ts = (long) (Double.parseDouble(dvalue));
+        break;
+      case ISO8601:
+        try {
+          ts = iso8601Parser.parseDateTime(dvalue).getMillis();
+        } catch (IllegalArgumentException | UnsupportedOperationException e) {
+          throw new OperationException(e);
+        }
         break;
       default:
         throw new OperationException("unsupported TimeFieldType");

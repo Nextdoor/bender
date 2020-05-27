@@ -27,7 +27,7 @@ import com.nextdoor.bender.operation.OperationConfig;
 public class TimeOperationConfig extends OperationConfig {
 
   public static enum TimeFieldType {
-    SECONDS, MILLISECONDS
+    SECONDS, MILLISECONDS, ISO8601
   }
 
   @JsonSchemaDescription("Name of field to use as time field")
