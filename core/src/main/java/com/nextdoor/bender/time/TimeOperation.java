@@ -27,7 +27,7 @@ import com.nextdoor.bender.utils.Time;
 public class TimeOperation implements EventOperation {
   private final String timeField;
   private final TimeFieldType timeFieldType;
-  private final static DateTimeFormatter iso8601Parser = ISODateTimeFormat.dateTime();
+  private final static DateTimeFormatter iso8601Parser = ISODateTimeFormat.dateTimeParser();
 
   public TimeOperation(String timeField, TimeFieldType timeFieldType) {
     this.timeField = timeField;
