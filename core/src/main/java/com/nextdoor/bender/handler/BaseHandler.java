@@ -154,6 +154,13 @@ public abstract class BaseHandler<T> implements Handler<T> {
     monitor.addTags(config.getHandlerConfig().getMetricTags());
 
     /*
+     * Set logger level
+     */
+    if config.getHandlerConfig().getUseDebugLogger() {
+      LogManager.getRootLogger().setLevel(Level.DEBUG);
+    }
+
+    /*
      * Add Lambda function tags. These will override duplicate user tags.
      */
     if (config.getHandlerConfig().getIncludeFunctionTags()) {

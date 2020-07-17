@@ -41,6 +41,12 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
   @JsonProperty(required = false)
   private Set<Tag> metricTags = Collections.emptySet();
 
+  @JsonSchemaDescription("Configures debug logger. Note that this will significantly slow down the "
+      + "application. Use with caution.")
+  @JsonSchemaDefault("false")
+  @JsonProperty(required = false)
+  private String useDebugLogger = false;
+
   @JsonSchemaDescription("Maximum queue size used to buffer raw data prior to deserialization. "
       + "This adds back pressure that ensures Bender does not read quicker than it can process "
       + "and send to your desination (transport). Increasing the buffer will increase memory "
@@ -80,4 +86,13 @@ public abstract class HandlerConfig extends AbstractConfig<HandlerConfig> {
   public void setMetricTags(Set<Tag> metricTags) {
     this.metricTags = metricTags;
   }
+
+  public Boolean getUseDebugLogger() {
+    return this.useDebugLogger;
+  }
+
+  public void setUseDebugLogger(Boolean useDebugLogger) {
+    this.useDebugLogger = useDebugLogger;
+  }
+
 }
