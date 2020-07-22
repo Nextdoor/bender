@@ -159,6 +159,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
      * Set logger level
      */
     if (System.getenv("WIRE_LOGGING") != null) {
+      System.out.println("Setting verbose wire logging...");
       Logger logger = Logger.getLogger("apache.http.wire");
       logger.setLevel(Level.DEBUG);
     }
