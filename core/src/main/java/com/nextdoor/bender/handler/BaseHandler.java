@@ -30,6 +30,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Level;
 
 import com.amazonaws.services.lambda.AWSLambda;
 import com.amazonaws.services.lambda.model.ListTagsRequest;
@@ -156,8 +158,9 @@ public abstract class BaseHandler<T> implements Handler<T> {
     /*
      * Set logger level
      */
-    if config.getHandlerConfig().getUseDebugLogger() {
-      LogManager.getRootLogger().setLevel(Level.DEBUG);
+    if (System.getenv("WIRE_LOGGING") != null) {
+      Logger logger = Logger.getLogger("apache.http.wire");
+      logger.setLevel(Level.DEBUG);
     }
 
     /*
