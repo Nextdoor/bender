@@ -92,6 +92,11 @@ public class IpcSenderService extends MonitoredProcess {
         return;
       } catch (IllegalStateException e) {
         send(buffer, partitions);
+        if (this.hasUnrecoverableException.getAndSet(false)) {
+          // TODO: confirm for the s3 case that clients will need a lifecycle policy
+          //  that aborts incomplete uploads within a timeframe.
+          throw new TransportException("TransportThread was unsuccessful when adding an event.");
+        }
       } catch (IOException e) {
         throw new TransportException("Exception occurred while adding to buffer", e);
       }
@@ -152,10 +157,15 @@ public class IpcSenderService extends MonitoredProcess {
   synchronized public void flush() throws InterruptedException, TransportException {
     synchronized (buffers) {
       /*
-       * Send what remains in the buffers
+       * Send what remains in the buffers.
+       * If there are errors, we will send an error at the end
        */
       this.buffers.forEach((partition, buffer) -> send(buffer, partition));
       this.buffers.clear();
+    }
+
+    if (this.hasUnrecoverableException.getAndSet(false)) {
+      throw new TransportException("Not all transports succeeded when sending remaining buffers in the IpcSenderService during a flush operation.");
     }
 
     /*
@@ -180,7 +190,7 @@ public class IpcSenderService extends MonitoredProcess {
      * Fail if there are any errors
      */
     if (this.hasUnrecoverableException.getAndSet(false)) {
-      throw new TransportException("Not all transports succeeded");
+      throw new TransportException("Not all transports succeeded when flushing IpcSenderService.");
     }
   }
 
