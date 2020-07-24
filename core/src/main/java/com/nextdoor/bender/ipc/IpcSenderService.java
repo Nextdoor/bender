@@ -158,13 +158,15 @@ public class IpcSenderService extends MonitoredProcess {
     synchronized (buffers) {
       /*
        * Send what remains in the buffers.
-       * If there are errors, we will send an error at the end
+       * If there are errors, we will immediately send an error after this sync block.
        */
       this.buffers.forEach((partition, buffer) -> send(buffer, partition));
       this.buffers.clear();
     }
 
     if (this.hasUnrecoverableException.getAndSet(false)) {
+      // TODO: confirm for the s3 case that clients will need a lifecycle policy
+      //  that aborts incomplete uploads within a timeframe.
       throw new TransportException("Not all transports succeeded when sending remaining buffers in the IpcSenderService during a flush operation.");
     }
 
