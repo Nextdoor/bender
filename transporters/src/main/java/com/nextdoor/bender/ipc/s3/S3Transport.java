@@ -101,7 +101,7 @@ public class S3Transport implements PartitionedTransport {
               key,
               upload.getUploadId(),
               upload.getPartCount());
-      throw new TransportException(debuggingMessage + e, e);
+      throw new TransportException(debuggingMessage, e);
     } finally {
       try {
         input.close();

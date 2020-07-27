@@ -54,21 +54,28 @@ public class S3TransportFactory implements TransportFactory {
 
   @Override
   public void close() {
+    Exception e = null;
     for (MultiPartUpload upload : this.pendingMultiPartUploads.values()) {
       CompleteMultipartUploadRequest req = upload.getCompleteMultipartUploadRequest();
       try {
         this.client.completeMultipartUpload(req);
-      } catch (AmazonS3Exception e) {
-        String errorMessage = String.format("failed to complete multi-part upload for key %s, uploadId %s, and partCount %s.",
+      } catch (AmazonS3Exception ex) {
+        String errorMessage = String.format("failed to complete multi-part upload for key %s, " +
+                        "uploadId %s, and partCount %s. All remaining uploads were aborted as a result.",
                 upload.getKey(),
                 upload.getPartCount(),
                 upload.getUploadId());
-        logger.error(errorMessage, e);
+        logger.error(errorMessage, ex);
         abortAllMultiPartUploads();
-        throw new RuntimeException(errorMessage + " . All remaining uploads were aborted as a result.", e);
+        e = ex;
+        break;
       }
     }
+
     this.pendingMultiPartUploads.clear();
+    if (e != null) {
+      throw new RuntimeException(e);
+    }
   }
 
   // this helper method makes a best attempt to abort all the multipart uploads

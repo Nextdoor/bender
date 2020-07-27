@@ -65,6 +65,14 @@ public class IpcSenderService extends MonitoredProcess {
    * @throws TransportException error while adding to the buffer.
    */
   synchronized public void add(InternalEvent ievent) throws TransportException {
+    // since threads are running concurrently, we need to check this proactively and
+    // abort as soon as we find threads that threw an exception.
+    if (this.hasUnrecoverableException.getAndSet(false)) {
+      // TODO: confirm for the s3 case that clients will need a lifecycle policy
+      //  that aborts incomplete uploads within a timeframe.
+      throw new TransportException("TransportThread was unsuccessful when adding an event.");
+    }
+
     /*
      * Get appropriate buffer for the event's partition values
      */
@@ -92,11 +100,6 @@ public class IpcSenderService extends MonitoredProcess {
         return;
       } catch (IllegalStateException e) {
         send(buffer, partitions);
-        if (this.hasUnrecoverableException.getAndSet(false)) {
-          // TODO: confirm for the s3 case that clients will need a lifecycle policy
-          //  that aborts incomplete uploads within a timeframe.
-          throw new TransportException("TransportThread was unsuccessful when adding an event.");
-        }
       } catch (IOException e) {
         throw new TransportException("Exception occurred while adding to buffer", e);
       }
@@ -164,12 +167,6 @@ public class IpcSenderService extends MonitoredProcess {
       this.buffers.clear();
     }
 
-    if (this.hasUnrecoverableException.getAndSet(false)) {
-      // TODO: confirm for the s3 case that clients will need a lifecycle policy
-      //  that aborts incomplete uploads within a timeframe.
-      throw new TransportException("Not all transports succeeded when sending remaining buffers in the IpcSenderService during a flush operation.");
-    }
-
     /*
      * Wait for transporter to finish
      */
@@ -178,22 +175,24 @@ public class IpcSenderService extends MonitoredProcess {
     }
 
     /*
-     * Some factories keep state on the transports they create. Perform any cleanup that is
-     * required.
-     */
-    transportFactory.close();
-
-    /*
      * Collect runtime of each thread
      */
     this.getRuntimeStat().join();
 
     /*
-     * Fail if there are any errors
+     * Fail if there are any errors so we don't close the factory and end up with partial success.
      */
     if (this.hasUnrecoverableException.getAndSet(false)) {
-      throw new TransportException("Not all transports succeeded when flushing IpcSenderService.");
+      // TODO: confirm for the s3 case that clients will need a lifecycle policy
+      //  that aborts incomplete uploads within a timeframe.
+      throw new TransportException("Not all transports succeeded when sending remaining buffers in the IpcSenderService during a flush operation.");
     }
+
+    /*
+     * Some factories keep state on the transports they create. Perform any cleanup that is
+     * required.
+     */
+    transportFactory.close();
   }
 
   synchronized public void shutdown() {
