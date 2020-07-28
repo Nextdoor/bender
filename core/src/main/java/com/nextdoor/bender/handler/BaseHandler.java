@@ -384,19 +384,21 @@ public abstract class BaseHandler<T> implements Handler<T> {
     /*
      * Transport
      */
-    serialized.forEach(ievent -> {
-      /*
-       * Update times
-       */
-      updateOldest(oldestArrivalTime, ievent.getArrivalTime());
-      updateOldest(oldestOccurrenceTime, ievent.getEventTime());
+    boolean abortEarly = false;
+    for (InternalEvent iEvent : serialized.collect(Collectors.toList())) {
+      // avoid unnecessary computations and let the ipc call flush() to abort handler
+      if (abortEarly) { break; }
+
+      updateOldest(oldestArrivalTime, iEvent.getArrivalTime());
+      updateOldest(oldestOccurrenceTime, iEvent.getEventTime());
 
       try {
-        this.getIpcService().add(ievent);
+        this.getIpcService().add(iEvent);
       } catch (TransportException e) {
         logger.warn("error adding event", e);
+        abortEarly = true;
       }
-    });
+    }
 
     /*
      * Wait for transporters to finish

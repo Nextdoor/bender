@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -421,6 +423,8 @@ public class BaseHandlerTest {
     try {
       handler.handler(events, context);
     } catch (Exception e) {
+      verify(spyIpc, times(2)).add(any());
+      verify(spyIpc).flush();
       throw e.getCause().getCause();
     }
   }
@@ -453,6 +457,46 @@ public class BaseHandlerTest {
     handler.handler(events, context);
 
     assertEquals(1, spyIpc.getSuccessCountStat().getValue());
+  }
+
+  @Test(expected = TransportException.class)
+  public void testIpcSkipsOtherBuffersOnFailure() throws Throwable {
+    BaseHandler.CONFIG_FILE = "/config/handler_config.json";
+    handler.skipWriteStats = true;
+
+    List<DummyEvent> events = new ArrayList<DummyEvent>(2);
+    events.add(new DummyEvent("foo", 0));
+    events.add(new DummyEvent("bar", 0));
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.init(context);
+
+    TransportBuffer tbSpy1 = spy(new ArrayTransportBuffer());
+    TransportBuffer tbSpy2 = spy(new ArrayTransportBuffer());
+
+    doCallRealMethod().doCallRealMethod().when(tbSpy1).add(any());
+    doThrow(new IllegalStateException("expected")).when(tbSpy2).add(any());
+
+    IpcSenderService spyIpc = spy(handler.getIpcService());
+    TransportFactory tfSpy = spy(spyIpc.getTransportFactory());
+    when(tfSpy.newTransportBuffer()).thenReturn(tbSpy1, tbSpy2);
+    spyIpc.setTransportFactory(tfSpy);
+
+    // this will cause the first ipc.add() to throw a TransportException and let us
+    // fail fast to the ipc.flush() method
+    spyIpc.setHasUnrecoverableException(true);
+
+    handler.setIpcService(spyIpc);
+    try {
+      handler.handler(events, context);
+    } catch (Exception e) {
+      verify(spyIpc).add(any()); //only occurs once
+      verify(spyIpc).flush();
+      verify(tfSpy).close();
+      assertEquals(0, spyIpc.getSuccessCountStat().getValue());
+      throw e.getCause().getCause(); // TransportException is wrapped under HandlerException
+    }
   }
 
   @Test

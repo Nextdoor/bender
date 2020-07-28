@@ -65,9 +65,11 @@ public class IpcSenderService extends MonitoredProcess {
    * @throws TransportException error while adding to the buffer.
    */
   synchronized public void add(InternalEvent ievent) throws TransportException {
-    // since threads are running concurrently, we need to check this proactively and
-    // abort as soon as we find threads that threw an exception.
-    if (this.hasUnrecoverableException.getAndSet(false)) {
+    // Since threads are running concurrently, we need to check this proactively.
+    // Even though handler just logs the exception, we're able to avoid starting new
+    // multi part uploads and let the handler error out faster so it can re-try the payload.
+    // We leave the value as is so it can be used during flush() to throw an exception.
+    if (this.hasUnrecoverableException.get()) {
       // TODO: confirm for the s3 case that clients will need a lifecycle policy
       //  that aborts incomplete uploads within a timeframe.
       throw new TransportException("TransportThread was unsuccessful when adding an event.");
@@ -180,19 +182,18 @@ public class IpcSenderService extends MonitoredProcess {
     this.getRuntimeStat().join();
 
     /*
-     * Fail if there are any errors so we don't close the factory and end up with partial success.
-     */
-    if (this.hasUnrecoverableException.getAndSet(false)) {
-      // TODO: confirm for the s3 case that clients will need a lifecycle policy
-      //  that aborts incomplete uploads within a timeframe.
-      throw new TransportException("Not all transports succeeded when sending remaining buffers in the IpcSenderService during a flush operation.");
-    }
-
-    /*
      * Some factories keep state on the transports they create. Perform any cleanup that is
      * required.
      */
     transportFactory.close();
+
+    /*
+     * Fail if there are any errors so we don't close the factory and end up with partial success.
+     */
+    if (this.hasUnrecoverableException.getAndSet(false)) {
+      throw new TransportException("Not all transports succeeded when sending remaining buffers in the IpcSenderService during a flush operation.");
+    }
+
   }
 
   synchronized public void shutdown() {

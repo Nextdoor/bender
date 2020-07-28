@@ -290,8 +290,8 @@ public class IpcSenderServiceTest {
     try {
       ipc.flush();
     } catch (TransportException e) {
-      // we expect that the factory isn't closed since the flush discovers the exception first and throws
-      verify(tfactory, never()).close();
+      // we expect that the factory is closed since the exception check is done at the end
+      verify(tfactory).close();
       throw e;
     }
 
