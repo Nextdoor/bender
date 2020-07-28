@@ -21,6 +21,7 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
@@ -384,21 +385,19 @@ public abstract class BaseHandler<T> implements Handler<T> {
     /*
      * Transport
      */
-    boolean abortEarly = false;
-    for (InternalEvent iEvent : serialized.collect(Collectors.toList())) {
-      // avoid unnecessary computations and let the ipc call flush() to abort handler
-      if (abortEarly) { break; }
-
-      updateOldest(oldestArrivalTime, iEvent.getArrivalTime());
-      updateOldest(oldestOccurrenceTime, iEvent.getEventTime());
+    AtomicBoolean abortEarly = new AtomicBoolean(false);
+    serialized.takeWhile(internalEvent -> !abortEarly.get())
+              .forEach(internalEvent -> {
+      updateOldest(oldestArrivalTime, internalEvent.getArrivalTime());
+      updateOldest(oldestOccurrenceTime, internalEvent.getEventTime());
 
       try {
-        this.getIpcService().add(iEvent);
+        this.getIpcService().add(internalEvent);
       } catch (TransportException e) {
         logger.warn("error adding event", e);
-        abortEarly = true;
+        abortEarly.set(true);
       }
-    }
+    });
 
     /*
      * Wait for transporters to finish
