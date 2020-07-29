@@ -177,21 +177,22 @@ public class IpcSenderService extends MonitoredProcess {
     }
 
     /*
-     * Collect runtime of each thread
-     */
-    this.getRuntimeStat().join();
-
-    /*
      * Some factories keep state on the transports they create. Perform any cleanup that is
      * required.
      */
     transportFactory.close();
 
     /*
-     * Fail if there are any errors so we don't close the factory and end up with partial success.
+     * Collect runtime of each thread
+     */
+    this.getRuntimeStat().join();
+
+    /*
+     * Fail if there are any errors. These can come from the add() method above or
+     * from the send() operation earlier in this method when clearing the buffers.
      */
     if (this.hasUnrecoverableException.getAndSet(false)) {
-      throw new TransportException("Not all transports succeeded when sending remaining buffers in the IpcSenderService during a flush operation.");
+      throw new TransportException("Not all transports succeeded during the handler.");
     }
 
   }
