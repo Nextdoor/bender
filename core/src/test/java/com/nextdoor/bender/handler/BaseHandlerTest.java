@@ -17,8 +17,7 @@ package com.nextdoor.bender.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.doReturn;
@@ -33,6 +32,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.IntStream;
+
+import com.nextdoor.bender.ipc.*;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,10 +52,6 @@ import com.nextdoor.bender.config.Source;
 import com.nextdoor.bender.deserializer.DeserializationException;
 import com.nextdoor.bender.deserializer.Deserializer;
 import com.nextdoor.bender.deserializer.DeserializerProcessor;
-import com.nextdoor.bender.ipc.IpcSenderService;
-import com.nextdoor.bender.ipc.TransportBuffer;
-import com.nextdoor.bender.ipc.TransportException;
-import com.nextdoor.bender.ipc.TransportFactory;
 import com.nextdoor.bender.monitoring.Monitor;
 import com.nextdoor.bender.operation.EventOperation;
 import com.nextdoor.bender.operation.OperationException;
@@ -421,6 +421,8 @@ public class BaseHandlerTest {
     try {
       handler.handler(events, context);
     } catch (Exception e) {
+      verify(spyIpc, times(2)).add(any());
+      verify(spyIpc).flush();
       throw e.getCause().getCause();
     }
   }
@@ -453,6 +455,91 @@ public class BaseHandlerTest {
     handler.handler(events, context);
 
     assertEquals(1, spyIpc.getSuccessCountStat().getValue());
+  }
+
+  @Test(expected = TransportException.class)
+  public void testIpcSkipsOtherEventsOnFailure() throws Throwable {
+    BaseHandler.CONFIG_FILE = "/config/handler_config.json";
+    handler.skipWriteStats = true;
+
+    List<DummyEvent> events = new ArrayList<>(2);
+    events.add(new DummyEvent("foo", 0));
+    events.add(new DummyEvent("bar", 0));
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.init(context);
+
+    TransportBuffer tbSpy1 = spy(new ArrayTransportBuffer());
+    TransportBuffer tbSpy2 = spy(new ArrayTransportBuffer());
+
+    doCallRealMethod().doCallRealMethod().when(tbSpy1).add(any());
+    doThrow(new IllegalStateException("expected")).when(tbSpy2).add(any());
+
+    IpcSenderService spyIpc = spy(handler.getIpcService());
+    TransportFactory tfSpy = spy(spyIpc.getTransportFactory());
+    when(tfSpy.newTransportBuffer()).thenReturn(tbSpy1, tbSpy2);
+    spyIpc.setTransportFactory(tfSpy);
+
+    // this will cause the first ipc.add() to throw a TransportException and let us
+    // fail fast to the ipc.flush() method
+    spyIpc.setHasUnrecoverableException(true);
+
+    handler.setIpcService(spyIpc);
+    try {
+      handler.handler(events, context);
+    } catch (Exception e) {
+      verify(spyIpc).add(any()); //only occurs once
+      verify(spyIpc).flush();
+      verify(tfSpy).close();
+      assertEquals(0, spyIpc.getSuccessCountStat().getValue());
+      throw e.getCause().getCause(); // TransportException is wrapped under HandlerException
+    }
+  }
+
+  @Test(expected = TransportException.class)
+  public void testIpcSkipsOtherEventsOnFailureInMiddleOfEvents() throws Throwable {
+    BaseHandler.CONFIG_FILE = "/config/handler_config.json";
+    handler.skipWriteStats = true;
+
+    List<DummyEvent> events = new ArrayList<>();
+    IntStream.range(0, 5).forEach(i -> events.add(new DummyEvent(StringUtils.repeat("foo", i), 0)));
+
+    TestContext context = new TestContext();
+    context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
+    handler.init(context);
+
+    TransportBuffer tbSpy1 = spy(new ArrayTransportBuffer());
+    TransportBuffer tbSpy2 = spy(new ArrayTransportBuffer());
+    TransportBuffer tbSpy3 = spy(new ArrayTransportBuffer());
+    TransportBuffer tbSpy4 = spy(new ArrayTransportBuffer());
+    TransportBuffer tbSpy5 = spy(new ArrayTransportBuffer());
+
+    doCallRealMethod().doCallRealMethod().when(tbSpy1).add(any());
+    doCallRealMethod().doCallRealMethod().when(tbSpy2).add(any());
+    doThrow(new IllegalStateException("expected")).when(tbSpy3).add(any());
+
+    IpcSenderService spyIpc = spy(handler.getIpcService());
+    TransportFactory tfSpy = spy(spyIpc.getTransportFactory());
+
+    when(tfSpy.newTransportBuffer()).thenReturn(tbSpy1, tbSpy2, tbSpy3, tbSpy4, tbSpy5);
+
+    IpcSenderServiceTest.DummyTransporter failingTransporter = spy(new IpcSenderServiceTest.DummyTransporter());
+    doThrow(new TransportException("expected")).when(failingTransporter).sendBatch(any());
+    when(tfSpy.newInstance()).thenReturn(failingTransporter);
+
+    spyIpc.setTransportFactory(tfSpy);
+    handler.setIpcService(spyIpc);
+
+    try {
+      handler.handler(events, context);
+    } catch (Exception e) {
+      verify(spyIpc, times(3)).add(any()); //exception occurs in 3rd buffer
+      verify(spyIpc).flush();
+      verify(tfSpy).close();
+      assertEquals(0, spyIpc.getSuccessCountStat().getValue());
+      throw e.getCause().getCause(); // TransportException is wrapped under HandlerException
+    }
   }
 
   @Test
