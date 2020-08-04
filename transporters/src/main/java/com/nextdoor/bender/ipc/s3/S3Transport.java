@@ -89,6 +89,7 @@ public class S3Transport implements PartitionedTransport {
      */
     UploadPartRequest req =
         upload.getUploadPartRequest().withInputStream(input).withPartSize(streamSize);
+    req.getRequestClientOptions().setReadLimit((int) (streamSize + 1));
 
     try {
       UploadPartResult res = client.uploadPart(req);
