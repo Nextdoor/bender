@@ -21,6 +21,7 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
@@ -384,17 +385,17 @@ public abstract class BaseHandler<T> implements Handler<T> {
     /*
      * Transport
      */
-    serialized.forEach(ievent -> {
-      /*
-       * Update times
-       */
-      updateOldest(oldestArrivalTime, ievent.getArrivalTime());
-      updateOldest(oldestOccurrenceTime, ievent.getEventTime());
+    AtomicBoolean abortEarly = new AtomicBoolean(false);
+    serialized.takeWhile(internalEvent -> !abortEarly.get())
+              .forEach(internalEvent -> {
+      updateOldest(oldestArrivalTime, internalEvent.getArrivalTime());
+      updateOldest(oldestOccurrenceTime, internalEvent.getEventTime());
 
       try {
-        this.getIpcService().add(ievent);
+        this.getIpcService().add(internalEvent);
       } catch (TransportException e) {
         logger.warn("error adding event", e);
+        abortEarly.set(true);
       }
     });
 

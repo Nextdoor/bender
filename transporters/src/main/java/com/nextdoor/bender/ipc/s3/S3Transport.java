@@ -87,8 +87,9 @@ public class S3Transport implements PartitionedTransport {
     /*
      * Write out to S3. Note that the S3 client auto closes the input stream.
      */
-    UploadPartRequest req =
-        upload.getUploadPartRequest().withInputStream(input).withPartSize(streamSize);
+    UploadPartRequest req = upload.getUploadPartRequest()
+            .withInputStream(input)
+            .withPartSize(streamSize);
     req.getRequestClientOptions().setReadLimit((int) (streamSize + 1));
 
     try {
@@ -96,7 +97,12 @@ public class S3Transport implements PartitionedTransport {
       upload.addPartETag(res.getPartETag());
     } catch (AmazonClientException e) {
       client.abortMultipartUpload(upload.getAbortMultipartUploadRequest());
-      throw new TransportException("unable to put file" + e, e);
+      multiPartUploads.remove(key);
+      String debuggingMessage = String.format("unable to put file with key %s and uploadId %s when trying to upload part number %s, leading to exception: ",
+              key,
+              upload.getUploadId(),
+              upload.getPartCount());
+      throw new TransportException(debuggingMessage, e);
     } finally {
       try {
         input.close();

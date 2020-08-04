@@ -16,12 +16,7 @@
 package com.nextdoor.bender.ipc;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -277,7 +272,7 @@ public class IpcSenderServiceTest {
   @Test(expected = TransportException.class)
   public void testExceptionEscalation() throws TransportException, InterruptedException {
     DummyTransporter mockDummyTransporter = mock(DummyTransporter.class);
-    DummyTransporterFactory tfactory = new DummyTransporterFactory();
+    DummyTransporterFactory tfactory = spy(new DummyTransporterFactory());
     tfactory.transporter = mockDummyTransporter;
     doThrow(new TransportException("expected exception in test")).when(mockDummyTransporter)
         .sendBatch(any(DummyTransportBuffer.class));
@@ -288,8 +283,40 @@ public class IpcSenderServiceTest {
     /*
      * Expect shutdown to throw a TransportException when a child thread also throws as
      * TransportException
+     *
+     * flush() is required to be called since we added a single event only and the dummy transport
+     * buffer only empties the buffer with 5 events stored
      */
-    ipc.flush();
+    try {
+      ipc.flush();
+    } catch (TransportException e) {
+      // we expect that the factory is closed since the exception check is done at the end
+      verify(tfactory).close();
+      throw e;
+    }
+
+  }
+
+  @Test(expected = TransportException.class)
+  public void testThreadExceptionDuringAdd() throws TransportException, InterruptedException {
+    DummyTransporter mockDummyTransporter = mock(DummyTransporter.class);
+    DummyTransporterFactory tfactory = new DummyTransporterFactory();
+    tfactory.transporter = mockDummyTransporter;
+
+    doThrow(new TransportException("expected exception in test")).when(mockDummyTransporter)
+            .sendBatch(any(DummyTransportBuffer.class));
+
+    IpcSenderService ipc = new IpcSenderService(tfactory);
+    // add 5 events to fill up the buffer so the next will result in a sendBatch()
+    for (int i = 0; i < 5; i++) {
+      ipc.add(mock(InternalEvent.class));
+    }
+
+    // this will trigger the sendBatch exception above
+    ipc.add(mock(InternalEvent.class));
+
+    Thread.sleep(5); // lets thread from last event complete and throw exception
+    ipc.add(mock(InternalEvent.class)); // add() checks at start for any threads that threw exceptions
   }
 
   private static class DummyEvent extends InternalEvent {

@@ -38,8 +38,7 @@ public class S3TransportFactory implements TransportFactory {
   private S3TransportConfig config;
   private AmazonS3Client client;
 
-  private Map<String, MultiPartUpload> pendingMultiPartUploads =
-      new HashMap<String, MultiPartUpload>();
+  private Map<String, MultiPartUpload> pendingMultiPartUploads = new HashMap<>();
   private S3TransportSerializer serializer = new S3TransportSerializer();
 
   @Override
@@ -57,30 +56,38 @@ public class S3TransportFactory implements TransportFactory {
   public void close() {
     Exception e = null;
     for (MultiPartUpload upload : this.pendingMultiPartUploads.values()) {
-
-      if (e == null) {
-        CompleteMultipartUploadRequest req = upload.getCompleteMultipartUploadRequest();
-        try {
-          this.client.completeMultipartUpload(req);
-        } catch (AmazonS3Exception e1) {
-          logger.error("failed to complete multi-part upload for " + upload.getKey() + " parts "
-              + upload.getPartCount(), e1);
-          e = e1;
-        }
-      } else {
-        logger.warn("aborting upload for: " + upload.getKey());
-        AbortMultipartUploadRequest req = upload.getAbortMultipartUploadRequest();
-        try {
-          this.client.abortMultipartUpload(req);
-        } catch (AmazonS3Exception e1) {
-          logger.error("failed to abort multi-part upload", e1);
-        }
+      CompleteMultipartUploadRequest req = upload.getCompleteMultipartUploadRequest();
+      try {
+        this.client.completeMultipartUpload(req);
+      } catch (AmazonS3Exception ex) {
+        String errorMessage = String.format("failed to complete multi-part upload for key %s, " +
+                        "uploadId %s, and partCount %s. All remaining uploads were aborted as a result.",
+                upload.getKey(),
+                upload.getPartCount(),
+                upload.getUploadId());
+        logger.error(errorMessage, ex);
+        abortAllMultiPartUploads();
+        e = ex;
+        break;
       }
     }
-    this.pendingMultiPartUploads.clear();
 
+    this.pendingMultiPartUploads.clear();
     if (e != null) {
-      throw new RuntimeException("failed while closing transport", e);
+      throw new RuntimeException(e);
+    }
+  }
+
+  // this helper method makes a best attempt to abort all the multipart uploads
+  // whenever a single error is encountered during the close operation above.
+  private void abortAllMultiPartUploads() {
+    for (MultiPartUpload upload : this.pendingMultiPartUploads.values()) {
+      AbortMultipartUploadRequest req = upload.getAbortMultipartUploadRequest();
+      try {
+        this.client.abortMultipartUpload(req);
+      } catch (AmazonS3Exception e1) {
+        logger.error("failed to abort multi-part upload", e1);
+      }
     }
   }
 

@@ -65,6 +65,16 @@ public class IpcSenderService extends MonitoredProcess {
    * @throws TransportException error while adding to the buffer.
    */
   synchronized public void add(InternalEvent ievent) throws TransportException {
+    // Since threads are running concurrently, we need to check this proactively.
+    // Even though handler just logs the exception, we're able to avoid starting new
+    // multi part uploads and let the handler error out faster so it can re-try the payload.
+    // We leave the value as is so it can be used during flush() to throw an exception.
+    if (this.hasUnrecoverableException.get()) {
+      // TODO: confirm for the s3 case that clients will need a lifecycle policy
+      //  that aborts incomplete uploads within a timeframe.
+      throw new TransportException("TransportThread was unsuccessful when adding an event.");
+    }
+
     /*
      * Get appropriate buffer for the event's partition values
      */
@@ -152,7 +162,8 @@ public class IpcSenderService extends MonitoredProcess {
   synchronized public void flush() throws InterruptedException, TransportException {
     synchronized (buffers) {
       /*
-       * Send what remains in the buffers
+       * Send what remains in the buffers.
+       * If there are errors, we will immediately send an error after this sync block.
        */
       this.buffers.forEach((partition, buffer) -> send(buffer, partition));
       this.buffers.clear();
@@ -177,11 +188,13 @@ public class IpcSenderService extends MonitoredProcess {
     this.getRuntimeStat().join();
 
     /*
-     * Fail if there are any errors
+     * Fail if there are any errors. These can come from the add() method above or
+     * from the send() operation earlier in this method when clearing the buffers.
      */
     if (this.hasUnrecoverableException.getAndSet(false)) {
-      throw new TransportException("Not all transports succeeded");
+      throw new TransportException("Not all transports succeeded during the handler.");
     }
+
   }
 
   synchronized public void shutdown() {
