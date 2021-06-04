@@ -54,7 +54,7 @@ public abstract class AbstractHttpTransportConfig extends TransportConfig {
   @JsonSchemaDescription("Maximum number of documents in api call.")
   @JsonSchemaDefault(value = "500")
   @JsonProperty(required = false)
-  @Min(500)
+  @Min(1)
   @Max(100000)
   private Integer batchSize = 500;
 
