@@ -44,7 +44,7 @@ public class GelfOperationFactoryTest {
     GelfOperation op = factory.newInstance();
     List<SubstitutionConfig> actual = factory.getSubConfigs();
 
-    ArrayList<SubstitutionConfig> expected = new ArrayList<SubstitutionConfig>();
+    ArrayList<SubstitutionConfig> expected = new ArrayList<>();
     expected.add(new FieldSubstitutionConfig("host", Arrays.asList("foo_host"), false, true, true));
     expected
         .add(new FieldSubstitutionConfig("file", Arrays.asList("filename"), false, false, false));

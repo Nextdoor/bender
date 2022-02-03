@@ -48,7 +48,7 @@ public class HttpTransportFactoryTest {
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
     verify(factory, times(1)).getClient(anyBoolean(), anyString(), captor.capture(), anyInt());
 
-    Map<String, String> expected = new HashMap<String, String>();
+    Map<String, String> expected = new HashMap<>();
     expected.put("foo", "bar");
     expected.put("Authorization", "Basic Zm9vOmJhcg==");
 

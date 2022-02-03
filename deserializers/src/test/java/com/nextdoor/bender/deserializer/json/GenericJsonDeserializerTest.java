@@ -270,7 +270,7 @@ public class GenericJsonDeserializerTest {
     deser.init();
     DeserializedEvent event = deser.deserialize(input);
 
-    Map<String, String> expected = new HashMap<String, String>();
+    Map<String, String> expected = new HashMap<>();
     expected.put("foo", "bar");
     Object o = event.getField("$.an_obj");
     assertTrue(o instanceof JsonObject);
@@ -371,7 +371,7 @@ public class GenericJsonDeserializerTest {
     assertNotNull(devent.getPayload());
     assertEquals(devent.getPayload().getClass(), JsonObject.class);
 
-    List<Object> list = new ArrayList<Object>();
+    List<Object> list = new ArrayList<>();
     list.add("foo");
     list.add(new Long(1));
     devent.setField("$.new_field", list);

@@ -45,7 +45,7 @@ public class FormattedSubstitution extends Substitution {
   protected void doSubstitution(InternalEvent ievent, DeserializedEvent devent,
       Map<String, Object> nested) {
     Object[] values = new Object[this.variables.size()];
-    List<String> keyToRemove = new ArrayList<String>();
+    List<String> keyToRemove = new ArrayList<>();
 
     for (int i = 0; i < this.variables.size(); i++) {
       Variable<?> variable = this.variables.get(i);

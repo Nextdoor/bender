@@ -51,7 +51,7 @@ public class ForkOperationFactoryTest {
   }
 
   private Iterator<DummyEvent> getEvents(int count) {
-    Queue<DummyEvent> q = new Queue<DummyEvent>();
+    Queue<DummyEvent> q = new Queue<>();
     Iterator<DummyEvent> dummyEvents = q.stream().iterator();
 
     for (int i = 0; i < count; i++) {
@@ -87,7 +87,7 @@ public class ForkOperationFactoryTest {
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
     handler.handler(getEvents(10000), context);
 
-    List<String> expected = new LinkedList<String>();
+    List<String> expected = new LinkedList<>();
     for (int i = 0; i < 10000; i++) {
       expected.add(i + "+-");
       expected.add(i + "-+");
@@ -108,7 +108,7 @@ public class ForkOperationFactoryTest {
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
     handler.handler(getEvents(10), context);
 
-    List<String> expected = new LinkedList<String>();
+    List<String> expected = new LinkedList<>();
     for (int i = 0; i < 10; i++) {
       expected.add(i + "+-");
       expected.add(i + "-+");
@@ -130,7 +130,7 @@ public class ForkOperationFactoryTest {
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
     handler.handler(getEvents(10), context);
 
-    List<String> expected = new LinkedList<String>();
+    List<String> expected = new LinkedList<>();
     for (int i = 0; i < 10; i++) {
       expected.add(i + "+");
       expected.add(i + "-");
@@ -169,7 +169,7 @@ public class ForkOperationFactoryTest {
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
     handler.handler(getEvents(1000), context);
 
-    List<String> expected = new LinkedList<String>();
+    List<String> expected = new LinkedList<>();
     for (int i = 0; i < 1000; i++) {
       expected.add(i + "+");
       expected.add(i + "-");

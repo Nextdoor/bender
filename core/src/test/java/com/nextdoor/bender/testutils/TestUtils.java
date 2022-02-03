@@ -49,7 +49,7 @@ public class TestUtils {
      * Add single KinesisEventRecord to a KinesisEvent
      */
     KinesisEvent kevent = new KinesisEvent();
-    List<KinesisEventRecord> events = new ArrayList<KinesisEventRecord>(1);
+    List<KinesisEventRecord> events = new ArrayList<>(1);
     events.add(krecord);
     kevent.setRecords(events);
 

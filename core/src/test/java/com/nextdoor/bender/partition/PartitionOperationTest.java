@@ -41,7 +41,7 @@ public class PartitionOperationTest {
 
   @Test
   public void testGetEvaluatedPartitionsString() throws FieldNotFoundException {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
+    List<PartitionSpec> partitionSpecs = new ArrayList<>(1);
     List<String> sources = Arrays.asList("foo");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
     partitionSpecs.add(spec);
@@ -55,7 +55,7 @@ public class PartitionOperationTest {
     op.perform(ievent);
 
     LinkedHashMap<String, String> actual = ievent.getPartitions();
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
+    LinkedHashMap<String, String> expected = new LinkedHashMap<>(1);
     expected.put("foo", "baz");
 
     assertEquals(expected, actual);
@@ -63,7 +63,7 @@ public class PartitionOperationTest {
 
   @Test
   public void testGetEvaluatedPartitionsStatic() {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
+    List<PartitionSpec> partitionSpecs = new ArrayList<>(1);
     PartitionSpec spec = new PartitionSpec("foo", Collections.emptyList(), PartitionSpec.Interpreter.STATIC, "123", 0);
     partitionSpecs.add(spec);
 
@@ -75,7 +75,7 @@ public class PartitionOperationTest {
     op.perform(ievent);
 
     LinkedHashMap<String, String> actual = ievent.getPartitions();
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
+    LinkedHashMap<String, String> expected = new LinkedHashMap<>(1);
     expected.put("foo", "123");
 
     assertEquals(expected, actual);
@@ -83,7 +83,7 @@ public class PartitionOperationTest {
 
   @Test
   public void testGetEvaluatedPartitionsStringMultipleFields() throws FieldNotFoundException {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
+    List<PartitionSpec> partitionSpecs = new ArrayList<>(1);
     List<String> sources = Arrays.asList("one", "two");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
     partitionSpecs.add(spec);
@@ -97,7 +97,7 @@ public class PartitionOperationTest {
     op.perform(ievent);
 
     LinkedHashMap<String, String> actual = ievent.getPartitions();
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
+    LinkedHashMap<String, String> expected = new LinkedHashMap<>(1);
     expected.put("foo", "5");
 
     assertEquals(expected, actual);
@@ -105,7 +105,7 @@ public class PartitionOperationTest {
 
   @Test(expected = OperationException.class)
   public void testGetEvaluatedPartitionsStringMultipleFieldsNull() throws FieldNotFoundException {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
+    List<PartitionSpec> partitionSpecs = new ArrayList<>(1);
     List<String> sources = Arrays.asList("one", "two");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
     partitionSpecs.add(spec);
@@ -126,7 +126,7 @@ public class PartitionOperationTest {
 
   @Test(expected = OperationException.class)
   public void testGetEvaluatedPartitionsFieldNotFoundException() throws FieldNotFoundException {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
+    List<PartitionSpec> partitionSpecs = new ArrayList<>(1);
     List<String> sources = Arrays.asList("one");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
     partitionSpecs.add(spec);
@@ -148,7 +148,7 @@ public class PartitionOperationTest {
 
   @Test
   public void testOperationThroughProcessor() throws FieldNotFoundException {
-    List<PartitionSpec> partitionSpecs = new ArrayList<PartitionSpec>(1);
+    List<PartitionSpec> partitionSpecs = new ArrayList<>(1);
     List<String> sources = Arrays.asList("foo");
     PartitionSpec spec = new PartitionSpec("foo", sources, PartitionSpec.Interpreter.STRING);
     partitionSpecs.add(spec);
@@ -165,7 +165,7 @@ public class PartitionOperationTest {
     opProc.perform(Stream.of(ievent)).count();
 
     LinkedHashMap<String, String> actual = ievent.getPartitions();
-    LinkedHashMap<String, String> expected = new LinkedHashMap<String, String>(1);
+    LinkedHashMap<String, String> expected = new LinkedHashMap<>(1);
     expected.put("foo", "baz");
 
     assertEquals(expected, actual);

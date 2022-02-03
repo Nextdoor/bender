@@ -38,7 +38,7 @@ public class SplunkTansportSerializerTest {
 
     public DummyEvent(String record, long timestamp) {
       super(record, null, timestamp);
-      this.partitions = new LinkedHashMap<String, String>(0);
+      this.partitions = new LinkedHashMap<>(0);
     }
 
     @Override

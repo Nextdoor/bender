@@ -28,7 +28,7 @@ import com.nextdoor.bender.deserializer.FieldNotFoundException;
 
 public class DummyDeserializerHelper {
   public static class DummpyMapEvent implements DeserializedEvent {
-    public Map<String, Object> payload = new HashMap<String, Object>();
+    public Map<String, Object> payload = new HashMap<>();
 
     @Override
     public Object getPayload() {
@@ -80,7 +80,7 @@ public class DummyDeserializerHelper {
        */
       DummpyMapEvent other = new DummpyMapEvent();
       if (this.payload != null) {
-        other.setPayload(new HashMap<String, Object>(this.payload));
+        other.setPayload(new HashMap<>(this.payload));
       }
       return other;
     }

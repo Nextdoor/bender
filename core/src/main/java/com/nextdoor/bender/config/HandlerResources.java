@@ -42,11 +42,11 @@ import com.nextdoor.bender.wrapper.WrapperFactory;
  */
 public class HandlerResources {
   private static final Logger logger = Logger.getLogger(HandlerResources.class);
-  private Map<String, Source> sources = new HashMap<String, Source>();
+  private Map<String, Source> sources = new HashMap<>();
   private SerializerProcessor serializerProcessor;
   private WrapperFactory wrapperFactory;
   private TransportFactory transportFactory;
-  private List<Reporter> reporters = new ArrayList<Reporter>(0);
+  private List<Reporter> reporters = new ArrayList<>(0);
   private final TransportFactoryFactory tff = new TransportFactoryFactory();
   private final ReporterFactoryFactory rff = new ReporterFactoryFactory();
   private final SerializerFactoryFactory sff = new SerializerFactoryFactory();

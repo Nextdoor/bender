@@ -82,7 +82,7 @@ public abstract class AbstractHttpTransportConfig extends TransportConfig {
   @JsonSchemaDescription("HTTP headers to include.")
   @JsonSchemaDefault(value = "{}")
   @JsonProperty(required = false)
-  private Map<String, ValueConfig<?>> httpHeaders = new HashMap<String, ValueConfig<?>>(0);
+  private Map<String, ValueConfig<?>> httpHeaders = new HashMap<>(0);
 
   public Boolean isUseSSL() {
     return useSSL;
@@ -149,7 +149,7 @@ public abstract class AbstractHttpTransportConfig extends TransportConfig {
   }
 
   public Map<String, String> getHttpStringHeaders() {
-    Map<String, String> stringHeaders = new HashMap<String, String>(this.httpHeaders.size());
+    Map<String, String> stringHeaders = new HashMap<>(this.httpHeaders.size());
     this.httpHeaders.forEach((k, v) -> {
       stringHeaders.put(k, v.getValue());
     });

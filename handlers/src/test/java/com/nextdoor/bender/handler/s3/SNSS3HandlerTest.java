@@ -99,7 +99,7 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
     S3EventNotificationRecord rec = new S3EventNotificationRecord(null, null, null,
         "1970-01-01T00:00:00.000Z", null, null, null, entity, null);
 
-    List<S3EventNotificationRecord> notifications = new ArrayList<S3EventNotificationRecord>(2);
+    List<S3EventNotificationRecord> notifications = new ArrayList<>(2);
     notifications.add(rec);
 
     /*
@@ -111,7 +111,7 @@ public class SNSS3HandlerTest extends HandlerTest<SNSEvent> {
 
     SNSEvent snsEvent = new SNSEvent();
 
-    ArrayList<SNSRecord> snsRecords = new ArrayList<SNSRecord>(1);
+    ArrayList<SNSRecord> snsRecords = new ArrayList<>(1);
     SNSRecord snsRecord = new SNSRecord();
     snsRecord.setEventSource("aws:sns");
     snsRecord.setEventVersion("1.0");

@@ -47,7 +47,7 @@ public class GelfOperationFactory implements OperationFactory {
   public void setConf(AbstractConfig config) {
     this.config = (GelfOperationConfig) config;
 
-    ArrayList<SubstitutionConfig> subConfigs = new ArrayList<SubstitutionConfig>();
+    ArrayList<SubstitutionConfig> subConfigs = new ArrayList<>();
     subConfigs.add(new StaticSubstitutionConfig("version", "1.1", true));
 
     if (this.config.getSrcHostField() != null) {
@@ -90,7 +90,7 @@ public class GelfOperationFactory implements OperationFactory {
           new FieldSubstitutionConfig("file", this.config.getSrcFileField(), false, false, true));
     }
 
-    List<Substitution> substitutions = new ArrayList<Substitution>(subConfigs.size());
+    List<Substitution> substitutions = new ArrayList<>(subConfigs.size());
     SubstitutionFactoryFactory sff = new SubstitutionFactoryFactory();
 
     for (SubstitutionConfig subConfig : subConfigs) {

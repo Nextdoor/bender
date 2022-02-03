@@ -95,13 +95,13 @@ public class GeoIpOperationFactoryTest {
 
     op.perform(ievent);
 
-    HashMap<String, Object> expected = new HashMap<String, Object>();
+    HashMap<String, Object> expected = new HashMap<>();
     expected.put("ip_address", "5.5.5.5");
-    HashMap<String, Object> expectedLoc = new HashMap<String, Object>();
+    HashMap<String, Object> expectedLoc = new HashMap<>();
     expectedLoc.put("lat", new Double("51.75"));
     expectedLoc.put("lon", new Double("2.25"));
 
-    Map<String, Object> expectedGeo = new HashMap<String, Object>();
+    Map<String, Object> expectedGeo = new HashMap<>();
     expectedGeo.put("location", expectedLoc);
     expectedGeo.put("country_name", "Eriador");
     expectedGeo.put("country_iso_code", "ER");

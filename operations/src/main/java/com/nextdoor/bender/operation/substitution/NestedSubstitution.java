@@ -46,7 +46,7 @@ public class NestedSubstitution extends Substitution {
          * and then add that map to the map passed to this function.
          */
         NestedSubstitution nsub = (NestedSubstitution) sub;
-        Map<String, Object> innerNest = new HashMap<String, Object>(nsub.substitutions.size());
+        Map<String, Object> innerNest = new HashMap<>(nsub.substitutions.size());
         sub.doSubstitution(ievent, devent, innerNest);
         nested.put(nsub.key, innerNest);
       } else {
@@ -57,7 +57,7 @@ public class NestedSubstitution extends Substitution {
 
   @Override
   protected void doSubstitution(InternalEvent ievent, DeserializedEvent devent) {
-    Map<String, Object> innerNest = new HashMap<String, Object>(this.substitutions.size());
+    Map<String, Object> innerNest = new HashMap<>(this.substitutions.size());
     doSubstitution(ievent, devent, innerNest);
 
     try {

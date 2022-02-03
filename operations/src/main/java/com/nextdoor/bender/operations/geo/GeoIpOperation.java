@@ -103,7 +103,7 @@ public class GeoIpOperation implements EventOperation {
       throw new OperationException(e);
     }
 
-    HashMap<String, Object> geo = new HashMap<String, Object>(1);
+    HashMap<String, Object> geo = new HashMap<>(1);
     for (GeoProperty property : this.geoProperties) {
       switch (property) {
         case COUNTRY_NAME:
@@ -184,7 +184,7 @@ public class GeoIpOperation implements EventOperation {
             throw new OperationException("error getting lat/lon");
           }
 
-          HashMap<String, Object> location = new HashMap<String, Object>(2);
+          HashMap<String, Object> location = new HashMap<>(2);
           location.put("lat", lat);
           location.put("lon", lon);
           geo.put("location", location);

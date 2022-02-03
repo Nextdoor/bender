@@ -151,7 +151,7 @@ public class BaseHandlerTest {
   public void testEndToEnd() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(2);
+    List<DummyEvent> events = new ArrayList<>(2);
     events.add(new DummyEvent("foo", 0));
     events.add(new DummyEvent("bar", 0));
 
@@ -171,7 +171,7 @@ public class BaseHandlerTest {
   public void testEndToEndWithNoOperations() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_no_operations.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(2);
+    List<DummyEvent> events = new ArrayList<>(2);
     events.add(new DummyEvent("foo", 0));
     events.add(new DummyEvent("bar", 0));
 
@@ -189,7 +189,7 @@ public class BaseHandlerTest {
 
   @Test
   public void testLatestTagConfig() throws HandlerException {
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
 
     TestContext context = new TestContext();
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test");
@@ -200,7 +200,7 @@ public class BaseHandlerTest {
 
   @Test
   public void testTagConfig() throws HandlerException {
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
 
     TestContext context = new TestContext();
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:staging");
@@ -333,7 +333,7 @@ public class BaseHandlerTest {
   public void testBadConfig() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_bad.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
 
     TestContext context = new TestContext();
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
@@ -344,7 +344,7 @@ public class BaseHandlerTest {
   public void testMissingConfig() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/missing.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
 
     TestContext context = new TestContext();
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test:tag");
@@ -355,7 +355,7 @@ public class BaseHandlerTest {
   public void testGeneralTransportExceptionOnShutdown() throws Throwable {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
     events.add(new DummyEvent("foo", 0));
 
     TestContext context = new TestContext();
@@ -378,7 +378,7 @@ public class BaseHandlerTest {
   public void testInterruptedExceptionOnShutdown() throws Throwable {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
     events.add(new DummyEvent("foo", 0));
 
     TestContext context = new TestContext();
@@ -401,7 +401,7 @@ public class BaseHandlerTest {
   public void testTransportOnSendFailure() throws Throwable {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(2);
+    List<DummyEvent> events = new ArrayList<>(2);
     events.add(new DummyEvent("foo", 0));
     events.add(new DummyEvent("bar", 0));
 
@@ -432,7 +432,7 @@ public class BaseHandlerTest {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(2);
+    List<DummyEvent> events = new ArrayList<>(2);
     events.add(new DummyEvent("foo", 0));
     events.add(new DummyEvent("bar", 0));
 
@@ -547,7 +547,7 @@ public class BaseHandlerTest {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
     events.add(new DummyEvent("foo", 0));
 
     TestContext context = new TestContext();
@@ -569,7 +569,7 @@ public class BaseHandlerTest {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
     events.add(new DummyEvent("foo", 0));
 
     TestContext context = new TestContext();
@@ -591,7 +591,7 @@ public class BaseHandlerTest {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
     events.add(new DummyEvent("foo", 0));
 
     TestContext context = new TestContext();
@@ -613,7 +613,7 @@ public class BaseHandlerTest {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
     events.add(new DummyEvent("foo", 0));
 
     TestContext context = new TestContext();
@@ -634,7 +634,7 @@ public class BaseHandlerTest {
     BaseHandler.CONFIG_FILE = "/config/handler_config.json";
     handler.skipWriteStats = true;
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
     events.add(new DummyEvent("foo", 0));
 
     TestContext context = new TestContext();
@@ -656,7 +656,7 @@ public class BaseHandlerTest {
   public void testMultipleOperationsConfig() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_two_operations.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
     events.add(new DummyEvent("foo", 0));
 
     TestContext context = new TestContext();
@@ -683,7 +683,7 @@ public class BaseHandlerTest {
   public void testContains() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_contains.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(2);
+    List<DummyEvent> events = new ArrayList<>(2);
     events.add(new DummyEvent("foo", 0));
     events.add(new DummyEvent("bar", 0));
     events.add(new DummyEvent("loop", 0));
@@ -703,7 +703,7 @@ public class BaseHandlerTest {
   public void testRegex() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_regex.json";
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(2);
+    List<DummyEvent> events = new ArrayList<>(2);
     events.add(new DummyEvent("foo", 0));
     events.add(new DummyEvent("bar", 0));
     events.add(new DummyEvent("loop", 0));

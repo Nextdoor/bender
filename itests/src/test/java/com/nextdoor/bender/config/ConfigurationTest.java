@@ -54,7 +54,7 @@ public class ConfigurationTest {
     BenderConfig config = BenderConfig.load("/com/nextdoor/bender/handler/http_headers.yaml");
     HttpTransportConfig httpConf = (HttpTransportConfig) config.getTransportConfig();
 
-    Map<String, String> expected = new LinkedHashMap<String, String>();
+    Map<String, String> expected = new LinkedHashMap<>();
     expected.put("foo", "bar");
 
     assertEquals(expected, httpConf.getHttpStringHeaders());

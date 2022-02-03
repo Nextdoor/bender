@@ -42,7 +42,7 @@ public class SubstitutionOperationFactory implements OperationFactory {
   public void setConf(AbstractConfig config) {
     this.config = (SubstitutionOperationConfig) config;
 
-    List<Substitution> substitutions = new ArrayList<Substitution>(this.config.getSubstitutions().size());
+    List<Substitution> substitutions = new ArrayList<>(this.config.getSubstitutions().size());
     SubstitutionFactoryFactory sff = new SubstitutionFactoryFactory();
 
     for (SubstitutionConfig subConfig : this.config.getSubstitutions()) {

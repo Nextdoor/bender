@@ -52,7 +52,7 @@ public class DynamodbInternalEvent extends InternalEvent {
   public LinkedHashMap<String, String> getPartitions() {
     LinkedHashMap<String, String> partitions = super.getPartitions();
     if (partitions == null) {
-      partitions = new LinkedHashMap<String, String>(1);
+      partitions = new LinkedHashMap<>(1);
       super.setPartitions(partitions);
     }
 

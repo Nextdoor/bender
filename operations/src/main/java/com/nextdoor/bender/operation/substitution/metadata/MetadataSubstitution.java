@@ -59,7 +59,7 @@ public class MetadataSubstitution extends Substitution {
   }
 
   private Map<String, Object> getMetadata(InternalEvent ievent) {
-    Map<String, Object> metadata = new HashMap<String, Object>(ievent.getEventMetadata());
+    Map<String, Object> metadata = new HashMap<>(ievent.getEventMetadata());
 
     if (!this.includes.isEmpty()) {
       metadata.keySet().retainAll(this.includes);

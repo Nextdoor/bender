@@ -41,7 +41,7 @@ public class DataDogReporter implements Reporter {
 
   @Override
   public void write(ArrayList<Stat> stats, long invokeTimeMs, Set<Tag> tags) {
-    Set<Tag> allTags = new HashSet<Tag>();
+    Set<Tag> allTags = new HashSet<>();
 
     /*
      * DataDog only tracks to second precision

@@ -38,7 +38,7 @@ public class SplunkTransportFactory extends BaseHttpTransportFactory {
   protected Map<String, String> getHeaders() {
     SplunkTransportConfig config = (SplunkTransportConfig) super.config;
     Map<String,String> parentHeaders = super.getHeaders();
-    Map<String,String> myHeaders = new HashMap<String, String>(parentHeaders);
+    Map<String,String> myHeaders = new HashMap<>(parentHeaders);
     String authHeader = "Splunk " + config.getAuthToken();
     myHeaders.put(HttpHeaders.AUTHORIZATION, authHeader);
 

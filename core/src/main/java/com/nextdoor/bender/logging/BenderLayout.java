@@ -49,7 +49,7 @@ public class BenderLayout extends Layout {
   public static String VERSION;
 
   private static class ExceptionLog {
-    public List<String> stacktrace = new ArrayList<String>();
+    public List<String> stacktrace = new ArrayList<>();
     public String message;
     @SerializedName("class")
     public String clazz;

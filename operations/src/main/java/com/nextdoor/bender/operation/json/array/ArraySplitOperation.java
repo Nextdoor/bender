@@ -66,7 +66,7 @@ public class ArraySplitOperation implements MultiplexOperation {
 
       JsonArray arr = (JsonArray) payload;
 
-      ArrayList<InternalEvent> output = new ArrayList<InternalEvent>();
+      ArrayList<InternalEvent> output = new ArrayList<>();
       for (JsonElement elm : arr) {
         try {
           JsonObject newObject = elm.getAsJsonObject();
@@ -85,7 +85,7 @@ public class ArraySplitOperation implements MultiplexOperation {
            */
           if (partitions != null) {
             LinkedHashMap<String, String> newPartitions =
-                new LinkedHashMap<String, String>(partitions.size());
+                new LinkedHashMap<>(partitions.size());
 
             partitions.entrySet().forEach(kv -> {
               newPartitions.put(new String(kv.getKey()), new String(kv.getValue()));

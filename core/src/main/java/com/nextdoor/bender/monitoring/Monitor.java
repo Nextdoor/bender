@@ -31,12 +31,12 @@ import org.apache.log4j.Logger;
  */
 public class Monitor {
   private static final Logger logger = Logger.getLogger(Monitor.class);
-  private static ArrayList<Stat> instanceStats = new ArrayList<Stat>();
-  private static ArrayList<Stat> invocationStats = new ArrayList<Stat>();
-  private static ArrayList<Reporter> statsReporters = new ArrayList<Reporter>();
-  private static ArrayList<MonitoredProcess> processes = new ArrayList<MonitoredProcess>();
+  private static ArrayList<Stat> instanceStats = new ArrayList<>();
+  private static ArrayList<Stat> invocationStats = new ArrayList<>();
+  private static ArrayList<Reporter> statsReporters = new ArrayList<>();
+  private static ArrayList<MonitoredProcess> processes = new ArrayList<>();
 
-  protected static Set<Tag> tags = new HashSet<Tag>();
+  protected static Set<Tag> tags = new HashSet<>();
   private static Monitor monitor = new Monitor();
   private long invokeTime = 0;
 
@@ -60,7 +60,7 @@ public class Monitor {
   }
 
   public Map<String, String> getTagsMap() {
-    HashMap<String, String> map = new HashMap<String, String>();
+    HashMap<String, String> map = new HashMap<>();
     Monitor.tags.forEach(t -> {
       map.put(t.getKey(), t.getValue());
     });
@@ -120,7 +120,7 @@ public class Monitor {
   }
 
   public ArrayList<Stat> getStats() {
-    ArrayList<Stat> combinedStats = new ArrayList<Stat>();
+    ArrayList<Stat> combinedStats = new ArrayList<>();
     combinedStats.addAll(instanceStats);
     combinedStats.addAll(invocationStats);
 

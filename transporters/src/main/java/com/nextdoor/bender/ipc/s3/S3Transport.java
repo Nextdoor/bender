@@ -144,7 +144,7 @@ public class S3Transport implements PartitionedTransport {
     /*
      * Create s3 key (filepath + filename)
      */
-    LinkedHashMap<String, String> parts = new LinkedHashMap<String, String>(partitions);
+    LinkedHashMap<String, String> parts = new LinkedHashMap<>(partitions);
 
 
     String filename = parts.remove(FILENAME_KEY);

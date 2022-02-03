@@ -30,7 +30,7 @@ import com.nextdoor.bender.ipc.UnpartitionedTransport;
 
 public class DummyTransportHelper {
   public static class ArrayTransportBuffer implements TransportBuffer {
-    private ArrayList<String> buffer = new ArrayList<String>();
+    private ArrayList<String> buffer = new ArrayList<>();
     private int maxSize;
 
     public ArrayTransportBuffer() {
@@ -72,7 +72,7 @@ public class DummyTransportHelper {
 
   public static class BufferedTransporter implements UnpartitionedTransport {
 
-    public static ArrayList<String> output = new ArrayList<String>();
+    public static ArrayList<String> output = new ArrayList<>();
 
     @Override
     public void sendBatch(TransportBuffer buffer) throws TransportException {

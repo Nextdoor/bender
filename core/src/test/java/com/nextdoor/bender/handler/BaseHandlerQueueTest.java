@@ -122,7 +122,7 @@ public class BaseHandlerQueueTest {
   public void testFastSourceFastConsumer() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_queue.yaml";
 
-    Queue<DummyEvent> q = new Queue<DummyEvent>();
+    Queue<DummyEvent> q = new Queue<>();
     Iterator<DummyEvent> dummyEvents = q.stream().iterator();
 
     for (int i = 0; i < 1000; i++) {
@@ -144,7 +144,7 @@ public class BaseHandlerQueueTest {
   public void testSlowSourceFastConsumer() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_queue.yaml";
 
-    Queue<DummyEvent> q = new Queue<DummyEvent>();
+    Queue<DummyEvent> q = new Queue<>();
     Iterator<DummyEvent> dummyEvents = q.stream().iterator();
 
     new Thread(new Runnable() {
@@ -177,7 +177,7 @@ public class BaseHandlerQueueTest {
   public void testSlowSourceSlowConsumer() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_queue_throttle.yaml";
 
-    Queue<DummyEvent> q = new Queue<DummyEvent>();
+    Queue<DummyEvent> q = new Queue<>();
     Iterator<DummyEvent> dummyEvents = q.stream().iterator();
 
     new Thread(new Runnable() {
@@ -210,7 +210,7 @@ public class BaseHandlerQueueTest {
   public void testFastSourceSlowConsumer() throws HandlerException {
     BaseHandler.CONFIG_FILE = "/config/handler_config_queue_throttle.yaml";
 
-    Queue<DummyEvent> q = new Queue<DummyEvent>();
+    Queue<DummyEvent> q = new Queue<>();
     Iterator<DummyEvent> dummyEvents = q.stream().iterator();
 
     for (int i = 0; i < 1000; i++) {

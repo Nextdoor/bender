@@ -60,7 +60,7 @@ public class SNSS3Handler extends BaseHandler<SNSEvent> implements Handler<SNSEv
     }
 
     this.source = this.sources.get(0);
-    this.inputFiles = new ArrayList<String>(0);
+    this.inputFiles = new ArrayList<>(0);
 
     if (this.logTrigger) {
       logger.info("trigger: " + gson.toJson(event));
@@ -77,7 +77,7 @@ public class SNSS3Handler extends BaseHandler<SNSEvent> implements Handler<SNSEv
        * Validate the S3 file matches the regex
        */
       List<S3EventNotificationRecord> toProcess =
-          new ArrayList<S3EventNotificationRecord>(s3Event.getRecords());
+          new ArrayList<>(s3Event.getRecords());
       for (S3EventNotificationRecord s3Record : s3Event.getRecords()) {
         String s3Path = String.format("s3://%s/%s", s3Record.getS3().getBucket().getName(),
             s3Record.getS3().getObject().getKey());

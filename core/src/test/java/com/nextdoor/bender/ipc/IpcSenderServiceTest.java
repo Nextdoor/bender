@@ -41,7 +41,7 @@ public class IpcSenderServiceTest {
 
   public static class DummyTransportBuffer implements TransportBuffer {
 
-    protected ArrayList<InternalEvent> buffer = new ArrayList<InternalEvent>(5);
+    protected ArrayList<InternalEvent> buffer = new ArrayList<>(5);
 
     public DummyTransportBuffer() {}
 
@@ -164,7 +164,7 @@ public class IpcSenderServiceTest {
     /*
      * Create 12 events. Every 5 adds a send should happen.
      */
-    ArrayList<InternalEvent> sent = new ArrayList<InternalEvent>();
+    ArrayList<InternalEvent> sent = new ArrayList<>();
     for (int i = 0; i < 12; i++) {
       InternalEvent ie = new DummyEvent("" + i, 0);
       ie.setPartitions(new LinkedHashMap(0));
@@ -329,7 +329,7 @@ public class IpcSenderServiceTest {
 
     public DummyEvent(String record, long timestamp) {
       super(record, null, timestamp);
-      this.partitions = new LinkedHashMap<String, String>(0);
+      this.partitions = new LinkedHashMap<>(0);
     }
 
     @Override
@@ -348,13 +348,13 @@ public class IpcSenderServiceTest {
     tfactory.transporter = mockDummyTransporter;
     IpcSenderService ipc = new IpcSenderService(tfactory);
 
-    ArrayList<InternalEvent> sent1 = new ArrayList<InternalEvent>();
-    ArrayList<InternalEvent> sent2 = new ArrayList<InternalEvent>();
+    ArrayList<InternalEvent> sent1 = new ArrayList<>();
+    ArrayList<InternalEvent> sent2 = new ArrayList<>();
 
     /*
      * Write 3 events to partition test1
      */
-    LinkedHashMap<String, String> part1 = new LinkedHashMap<String, String>(1);
+    LinkedHashMap<String, String> part1 = new LinkedHashMap<>(1);
     part1.put("p1", "test1");
     for (int i = 0; i < 3; i++) {
       InternalEvent ie = new DummyEvent("" + i, 0, part1);
@@ -365,7 +365,7 @@ public class IpcSenderServiceTest {
     /*
      * Write 5 events to partition test2
      */
-    LinkedHashMap<String, String> part2 = new LinkedHashMap<String, String>(1);
+    LinkedHashMap<String, String> part2 = new LinkedHashMap<>(1);
     part2.put("p1", "test2");
     for (int i = 0; i < 5; i++) {
       InternalEvent ie = new DummyEvent("" + i, 0, part2);
@@ -376,7 +376,7 @@ public class IpcSenderServiceTest {
     /*
      * Write 2 events to partition test1 again
      */
-    LinkedHashMap<String, String> part3 = new LinkedHashMap<String, String>(1);
+    LinkedHashMap<String, String> part3 = new LinkedHashMap<>(1);
     part3.put("p1", "test1");
     for (int i = 0; i < 2; i++) {
       InternalEvent ie = new DummyEvent("" + i, 0, part3);

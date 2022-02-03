@@ -46,7 +46,7 @@ public class RegexSubstitutionTest {
         + "(?<page>(?:\\/?([^\\s\\n\\?\\[\\]\\{\\}\\#]*(?:(?=\\.)){1}|[^\\s\\n\\?\\[\\]\\{\\}\\.\\#]*)?)([\\.]{1}[^\\s\\?\\#]*)?)?"
         + "(?<args>(?:\\?{1}([^\\s\\n\\#\\[\\]]*))?)";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("url"), Pattern.compile(pattern), regexSubFields, false, true, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -73,7 +73,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("q", RegexSubField.RegexSubFieldType.STRING, "q"));
     String pattern = "(?<q>(expectedstring))";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo"), Pattern.compile(pattern), regexSubFields, false, false, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -105,7 +105,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("q", RegexSubField.RegexSubFieldType.STRING, "q"));
     String pattern = "(?<q>(expectedstring))";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo"), Pattern.compile(pattern), regexSubFields, true, true, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -127,7 +127,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("foo", RegexSubField.RegexSubFieldType.STRING, "foo"));
     String pattern = "(?<foo>(expectedstring))";
 
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo"), Pattern.compile(pattern), regexSubFields, true, true, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -149,7 +149,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("q", RegexSubField.RegexSubFieldType.NUMBER, "q"));
     String pattern = "(?<q>(expectedstring))";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo"), Pattern.compile(pattern), regexSubFields, false, false, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -171,7 +171,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("q", RegexSubField.RegexSubFieldType.NUMBER, "q"));
     String pattern = "(?<q>(expectedstring))";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo"), Pattern.compile(pattern), regexSubFields, true, false, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -193,7 +193,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("q", RegexSubField.RegexSubFieldType.NUMBER, "q"));
     String pattern = "(?<q>(expectedstring))";
 
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo"), Pattern.compile(pattern), regexSubFields, false, true, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -212,7 +212,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("q", RegexSubField.RegexSubFieldType.STRING, "q"));
     String pattern = "(?<q>(expectedstring))";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo", "foo1", "foo2"), Pattern.compile(pattern), regexSubFields, false, true, true));
 
 
@@ -236,7 +236,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("q", RegexSubField.RegexSubFieldType.STRING, "q"));
     String pattern = "(?<q>(\\d+))";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo", "foo1"), Pattern.compile(pattern), regexSubFields, false, true, true));
 
 
@@ -260,7 +260,7 @@ public class RegexSubstitutionTest {
         Arrays.asList(new RegexSubField("q", RegexSubField.RegexSubFieldType.STRING, "q"));
     String pattern = "(?<q>(\\d+))";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo", "foo1"), Pattern.compile(pattern), regexSubFields, false, false, true));
 
 
@@ -284,7 +284,7 @@ public class RegexSubstitutionTest {
 
     String pattern = "(?<q>(\\d+))";
     
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new RegexSubstitution(Arrays.asList("foo", "foo1"), Pattern.compile(pattern), regexSubFields, false, true, true));
 
 

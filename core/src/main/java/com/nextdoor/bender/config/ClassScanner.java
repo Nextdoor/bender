@@ -31,7 +31,7 @@ public class ClassScanner {
 
   public static Set<Class> getSubtypes(List<Class> clazzes)
       throws InterruptedException, ExecutionException {
-    Set<Class> classSet = new HashSet<Class>();
+    Set<Class> classSet = new HashSet<>();
     int threads = Runtime.getRuntime().availableProcessors();
     ExecutorService pool = Executors.newFixedThreadPool(threads);
     Future<ScanResult> futureScan =

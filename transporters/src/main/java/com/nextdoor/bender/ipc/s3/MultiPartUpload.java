@@ -30,7 +30,7 @@ public class MultiPartUpload {
   private final String bucketName;
   private AtomicInteger partCount = new AtomicInteger(0);
 
-  List<PartETag> partETags = new ArrayList<PartETag>();
+  List<PartETag> partETags = new ArrayList<>();
 
   public MultiPartUpload(String bucketName, String key, String uploadId) {
     this.bucketName = bucketName;

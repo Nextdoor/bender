@@ -42,7 +42,7 @@ public class MonitorTest {
 
     StatFilter filter = new StatFilter();
     filter.setName("bender.test.fail");
-    List<StatFilter> filters = new ArrayList<StatFilter>(1);
+    List<StatFilter> filters = new ArrayList<>(1);
     filters.add(filter);
 
     DummyReporter reporter = new DummyReporter(filters);
@@ -69,7 +69,7 @@ public class MonitorTest {
     StatFilter filter = new StatFilter();
     filter.setName("bender.test.tags");
     filter.setTags(Sets.newSet(new Tag("foo", "3")));
-    List<StatFilter> filters = new ArrayList<StatFilter>(1);
+    List<StatFilter> filters = new ArrayList<>(1);
     filters.add(filter);
 
     DummyReporter reporter = new DummyReporter(filters);
@@ -95,7 +95,7 @@ public class MonitorTest {
     MonitorFactory mf = new MonitorFactory();
     Monitor monitor = mf.getInstance();
 
-    List<StatFilter> filters = new ArrayList<StatFilter>(1);
+    List<StatFilter> filters = new ArrayList<>(1);
 
     DummyReporter reporter = new DummyReporter(filters);
     monitor.addReporters(Arrays.asList(reporter));
@@ -118,7 +118,7 @@ public class MonitorTest {
     MonitorFactory mf = new MonitorFactory();
     Monitor monitor = mf.getInstance();
 
-    List<StatFilter> filters = new ArrayList<StatFilter>(1);
+    List<StatFilter> filters = new ArrayList<>(1);
 
     DummyReporter reporter = new DummyReporter(filters);
     monitor.addReporters(Arrays.asList(reporter));
@@ -145,7 +145,7 @@ public class MonitorTest {
 
     StatFilter filter = new StatFilter();
     filter.setReportZeros(false);
-    List<StatFilter> filters = new ArrayList<StatFilter>(1);
+    List<StatFilter> filters = new ArrayList<>(1);
     filters.add(filter);
 
     DummyReporter reporter = new DummyReporter(filters);
@@ -180,7 +180,7 @@ public class MonitorTest {
     filterBarTags.setReportZeros(true);
     filterBarTags.setTags(Sets.newSet(new Tag("t0", "7")));
 
-    List<StatFilter> filters = new ArrayList<StatFilter>(2);
+    List<StatFilter> filters = new ArrayList<>(2);
     filters.add(filterFooZero);
     filters.add(filterBarTags);
 

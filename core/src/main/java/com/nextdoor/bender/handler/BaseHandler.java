@@ -182,7 +182,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
     wrapper = handlerResources.getWrapperFactory().newInstance();
     ser = handlerResources.getSerializerProcessor();
     setIpcService(new IpcSenderService(handlerResources.getTransportFactory()));
-    sources = new ArrayList<Source>(handlerResources.getSources().values());
+    sources = new ArrayList<>(handlerResources.getSources().values());
     queueSize = config.getHandlerConfig().getQueueSize();
     initialized = true;
   }
@@ -284,7 +284,7 @@ public abstract class BaseHandler<T> implements Handler<T> {
      * When the iterator reaches the end (hasNext = false) the queue is closed.
      */
     this.eventQueue =
-        new Queue<InternalEvent>(new LinkedBlockingQueue<InternalEvent>(this.queueSize));
+        new Queue<>(new LinkedBlockingQueue<>(this.queueSize));
 
     /*
      * Thread will live for duration of invocation and supply Stream with events.

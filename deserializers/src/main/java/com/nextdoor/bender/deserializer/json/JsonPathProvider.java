@@ -68,7 +68,7 @@ public class JsonPathProvider {
    * use then this will have to become an LRU.
    */
   private static final ConcurrentHashMap<String, JsonPath> CACHE =
-      new ConcurrentHashMap<String, JsonPath>();
+      new ConcurrentHashMap<>();
 
   private static JsonPath getPath(String pathStr) {
     JsonPath path;

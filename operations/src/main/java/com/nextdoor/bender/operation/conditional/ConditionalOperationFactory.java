@@ -39,11 +39,11 @@ public class ConditionalOperationFactory implements OperationFactory {
     this.config = (ConditionalOperationConfig) config;
 
     List<Pair<FilterOperation, List<OperationProcessor>>> cases =
-        new ArrayList<Pair<FilterOperation, List<OperationProcessor>>>();
+        new ArrayList<>();
     OperationFactoryFactory off = new OperationFactoryFactory();
 
     for (Condition caze : this.config.getConditions()) {
-      List<OperationProcessor> processorsInCase = new ArrayList<OperationProcessor>();
+      List<OperationProcessor> processorsInCase = new ArrayList<>();
 
       /*
        * Create {@OperationProcessor}s from configs
@@ -64,7 +64,7 @@ public class ConditionalOperationFactory implements OperationFactory {
       }
 
       cases.add(
-          new ImmutablePair<FilterOperation, List<OperationProcessor>>(filter, processorsInCase));
+          new ImmutablePair<>(filter, processorsInCase));
     }
 
     this.cases = cases;

@@ -147,7 +147,7 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
     /*
      * Add default headers
      */
-    ArrayList<BasicHeader> headers = new ArrayList<BasicHeader>(stringHeaders.size());
+    ArrayList<BasicHeader> headers = new ArrayList<>(stringHeaders.size());
     stringHeaders.forEach((k, v) -> headers.add(new BasicHeader(k, v)));
     cb.setDefaultHeaders(headers);
 

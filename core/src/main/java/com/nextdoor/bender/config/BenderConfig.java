@@ -111,7 +111,7 @@ public class BenderConfig {
   private static final Class<?>[] subtypes = new Subtypes().getSubtypes();
 
   private static class Subtypes {
-    private ArrayList<Class> subtypes = new ArrayList<Class>();
+    private ArrayList<Class> subtypes = new ArrayList<>();
 
     private static final ArrayList<Class> abstractConfigClasses = new ArrayList<Class>() {
       {

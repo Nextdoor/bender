@@ -45,7 +45,7 @@ public class PartitionOperation implements EventOperation {
      * Loop through each partition spec fetching the associated field from the event. Set to null if
      * field does not exist.
      */
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>(numPartSpecs);
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>(numPartSpecs);
     for (PartitionSpec spec : partitionSpecs) {
       String key = null;
       for (String source : spec.getSources()) {

@@ -30,7 +30,7 @@ import com.nextdoor.bender.operation.json.PayloadOperation;
 public class DropArraysOperation extends PayloadOperation {
   protected void perform(JsonObject obj) {
     Set<Entry<String, JsonElement>> entries = obj.entrySet();
-    Set<Entry<String, JsonElement>> orgEntries = new HashSet<Entry<String, JsonElement>>(entries);
+    Set<Entry<String, JsonElement>> orgEntries = new HashSet<>(entries);
 
     for (Entry<String, JsonElement> entry : orgEntries) {
       JsonElement val = entry.getValue();

@@ -235,7 +235,7 @@ public class Bender {
         s3SchemaVersion);
     S3EventNotificationRecord rec = new S3EventNotificationRecord(awsRegion, eventName, eventSource,
         eventTime.toString(), eventVersion, null, null, s3Entity, null);
-    List<S3EventNotificationRecord> notifications = new ArrayList<S3EventNotificationRecord>(2);
+    List<S3EventNotificationRecord> notifications = new ArrayList<>(2);
     notifications.add(rec);
     S3EventNotification s3event = new S3EventNotification(notifications);
 
@@ -278,7 +278,7 @@ public class Bender {
      */
     logger.info("Parsing " + source_file + "...");
 
-    List<KinesisEvent.KinesisEventRecord> events = new ArrayList<KinesisEvent.KinesisEventRecord>();
+    List<KinesisEvent.KinesisEventRecord> events = new ArrayList<>();
     int r = 0;
 
     /*

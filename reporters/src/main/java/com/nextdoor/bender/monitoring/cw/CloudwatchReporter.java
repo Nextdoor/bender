@@ -55,7 +55,7 @@ public class CloudwatchReporter implements Reporter {
     dt.setTime(invokeTimeMs);
 
     Collection<Dimension> parentDims = tagsToDimensions(tags);
-    List<MetricDatum> metrics = new ArrayList<MetricDatum>();
+    List<MetricDatum> metrics = new ArrayList<>();
 
     /*
      * Create CW metric objects from bender internal Stat objects

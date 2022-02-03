@@ -88,7 +88,7 @@ public class ElasticSearchTransport extends HttpTransport {
           "es call failed because " + resp.getStatusLine().getReasonPhrase());
     }
 
-    HashSet<String> errorTypes = new HashSet<String>();
+    HashSet<String> errorTypes = new HashSet<>();
     for (Item item : esResp.items) {
       Index index = item.index;
 

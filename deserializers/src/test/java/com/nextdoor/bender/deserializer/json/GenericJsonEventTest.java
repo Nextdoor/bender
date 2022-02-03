@@ -123,7 +123,7 @@ public class GenericJsonEventTest {
   @Test
   public void testNestedPath() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
-    event.setField("$.foo", new HashMap<String, Object>());
+    event.setField("$.foo", new HashMap<>());
     event.setField("$.foo.bar", "baz");
 
     JsonObject payload = (JsonObject) event.getPayload();
@@ -188,7 +188,7 @@ public class GenericJsonEventTest {
   public void testGetInvalidPath() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     String invalidPath = "[$.";
-    event.setField("$.foo", new HashMap<String, Object>());
+    event.setField("$.foo", new HashMap<>());
     event.setField("$.foo.bar", "baz");
     String expectedErrorMessage = "Field cannot be found because " + invalidPath
         + " is an invalid path";
@@ -205,7 +205,7 @@ public class GenericJsonEventTest {
   public void testGetMissingField() throws FieldNotFoundException {
     GenericJsonEvent event = getEmptyEvent();
     String missingField = "$.cookie";
-    event.setField("$.foo", new HashMap<String, Object>());
+    event.setField("$.foo", new HashMap<>());
     event.setField("$.foo.bar", "baz");
     String expectedErrorMessage = missingField + " is not in payload.";
 

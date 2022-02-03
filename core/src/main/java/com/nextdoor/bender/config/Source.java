@@ -33,9 +33,9 @@ public class Source {
   private final String sourceName;
   private final Pattern sourceRegex;
   private DeserializerProcessor deserProcessor;
-  private List<OperationProcessor> operationProcessors = new ArrayList<OperationProcessor>(0);
-  private List<Pattern> regexPatterns = new ArrayList<Pattern>(0);
-  private List<String> containsStrings = new ArrayList<String>(0);
+  private List<OperationProcessor> operationProcessors = new ArrayList<>(0);
+  private List<Pattern> regexPatterns = new ArrayList<>(0);
+  private List<String> containsStrings = new ArrayList<>(0);
 
   private final DeserializerFactoryFactory dff = new DeserializerFactoryFactory();
 

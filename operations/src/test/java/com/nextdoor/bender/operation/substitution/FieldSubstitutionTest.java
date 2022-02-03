@@ -29,7 +29,7 @@ public class FieldSubstitutionTest {
 
   @Test
   public void testKnownField() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FieldSubstitution("bar", Arrays.asList("foo"), false, true, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -48,7 +48,7 @@ public class FieldSubstitutionTest {
 
   @Test
   public void testRemoveField() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FieldSubstitution("bar", Arrays.asList("foo"), true, true, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -66,7 +66,7 @@ public class FieldSubstitutionTest {
 
   @Test
   public void testRemoveFieldReplace() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FieldSubstitution("foo", Arrays.asList("foo"), true, true, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -83,7 +83,7 @@ public class FieldSubstitutionTest {
   }
 
   public void testUnknownField() {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FieldSubstitution("bar", Arrays.asList("foo"), false, false, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -97,7 +97,7 @@ public class FieldSubstitutionTest {
 
   @Test(expected = OperationException.class)
   public void testUnknownFieldFail() {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FieldSubstitution("bar", Arrays.asList("foo"), false, true, true));
 
     DummpyMapEvent devent = new DummpyMapEvent();
@@ -111,7 +111,7 @@ public class FieldSubstitutionTest {
 
   @Test
   public void testFieldList() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(
         new FieldSubstitution("bar", Arrays.asList("foo0", "foo1", "foo2"), false, true, true));
 

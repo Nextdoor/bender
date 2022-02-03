@@ -66,7 +66,7 @@ public class GelfOperation implements EventOperation {
     JsonObject obj = (JsonObject) payload;
 
     Set<Entry<String, JsonElement>> entries = obj.entrySet();
-    Set<Entry<String, JsonElement>> orgEntries = new HashSet<Entry<String, JsonElement>>(entries);
+    Set<Entry<String, JsonElement>> orgEntries = new HashSet<>(entries);
 
     /*
      * Prefix additional fields with "_". Everything that is not a GELF field is additional.

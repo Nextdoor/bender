@@ -26,7 +26,7 @@ import com.nextdoor.bender.config.Source;
  * {@link Source} is not found then the sources are iterated and a regex match is performed.
  */
 public class SourceUtils {
-  public static Map<String, Source> sourceMap = new HashMap<String, Source>();
+  public static Map<String, Source> sourceMap = new HashMap<>();
 
   public static class SourceNotFoundException extends RuntimeException {
     /**

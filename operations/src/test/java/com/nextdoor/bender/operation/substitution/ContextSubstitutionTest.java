@@ -32,7 +32,7 @@ import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyMapEvent;
 public class ContextSubstitutionTest {
   @Test
   public void testExcludesContext() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new ContextSubstitution("foo", Collections.emptyList(),
         Arrays.asList("functionName"), true));
 
@@ -59,7 +59,7 @@ public class ContextSubstitutionTest {
 
   @Test
   public void testIncludesContext() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new ContextSubstitution("foo", Arrays.asList("functionName"),
         Collections.emptyList(), true));
 

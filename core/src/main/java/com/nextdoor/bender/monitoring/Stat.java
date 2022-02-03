@@ -25,8 +25,8 @@ public class Stat {
   private MetricType type;
   private long startTime;
 
-  private ArrayList<Stat> subStats = new ArrayList<Stat>();
-  private Set<Tag> tags = new HashSet<Tag>();
+  private ArrayList<Stat> subStats = new ArrayList<>();
+  private Set<Tag> tags = new HashSet<>();
 
   public enum MetricType {
     count, gauge

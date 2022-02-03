@@ -27,7 +27,7 @@ public class StaticSubstitutionTest {
 
   @Test
   public void testStaticField() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new StaticSubstitution("foo", "1234", true));
 
     DummpyMapEvent devent = new DummpyMapEvent();

@@ -30,7 +30,7 @@ import com.nextdoor.bender.testutils.DummyDeserializerHelper.DummpyMapEvent;
 public class MetadataSubstitutionTest {
   @Test
   public void testExcludeMetadata() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new MetadataSubstitution("foo", Collections.emptyList(),
         Arrays.asList("sourceLagMs"), true));
 
@@ -56,7 +56,7 @@ public class MetadataSubstitutionTest {
 
   @Test
   public void testIncludeMetadata() throws FieldNotFoundException {
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new MetadataSubstitution("foo", Arrays.asList("eventSha1Hash"),
         Collections.emptyList(), true));
 

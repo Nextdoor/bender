@@ -155,7 +155,7 @@ public class RegexSubstitution extends Substitution {
      * Go through each match group in the field config and attempt to add that match group from the
      * regex match. If field type coercion does not succeed then field is skipped.
      */
-    Map<String, Object> matchedGroups = new HashMap<String, Object>(matcher.groupCount());
+    Map<String, Object> matchedGroups = new HashMap<>(matcher.groupCount());
     try {
       for (RegexSubField field : this.fields) {
         String matchStrVal = matcher.group(field.getRegexGroupName());
@@ -183,6 +183,6 @@ public class RegexSubstitution extends Substitution {
       throw new FieldNotFoundException("matched field is not a number");
     }
 
-    return new ImmutablePair<String, Map<String, Object>>(foundSourceField, matchedGroups);
+    return new ImmutablePair<>(foundSourceField, matchedGroups);
   }
 }

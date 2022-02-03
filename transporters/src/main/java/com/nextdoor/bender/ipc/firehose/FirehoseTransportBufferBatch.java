@@ -37,7 +37,7 @@ public class FirehoseTransportBufferBatch extends FirehoseTransportBuffer {
   public static int MAX_RECORDS = 4;
   public static int MAX_RECORD_SIZE = 1000 * 1000; // 1000kb
 
-  private ArrayList<Record> dataRecords = new ArrayList<Record>(MAX_RECORDS);
+  private ArrayList<Record> dataRecords = new ArrayList<>(MAX_RECORDS);
 
   private ByteArrayOutputStream baos = new ByteArrayOutputStream();
   private CountingOutputStream cos = new CountingOutputStream(baos);

@@ -86,7 +86,7 @@ public class BaseHandlerS3Test {
     handler.CONFIG_FILE = null;
     handler.s3ClientFactory = this.clientFactory;
 
-    List<DummyEvent> events = new ArrayList<DummyEvent>(1);
+    List<DummyEvent> events = new ArrayList<>(1);
 
     TestContext context = new TestContext();
     context.setInvokedFunctionArn("arn:aws:lambda:us-east-1:123:function:test");

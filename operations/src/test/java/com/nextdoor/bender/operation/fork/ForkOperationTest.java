@@ -64,9 +64,9 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
     fork1.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork1);
 
@@ -75,7 +75,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*
@@ -96,13 +96,13 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
     fork1.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork1);
 
-    List<OperationProcessor> fork2 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork2 = new ArrayList<>();
     fork2.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork2);
 
@@ -111,7 +111,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*
@@ -132,13 +132,13 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
     fork1.add(new OperationProcessor(new DummyThrottleOperationFactory()));
     forks.add(fork1);
 
-    List<OperationProcessor> fork2 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork2 = new ArrayList<>();
     fork2.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork2);
 
@@ -147,7 +147,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(1000, inputQueue);
 
     /*
@@ -166,17 +166,17 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
     fork1.add(new OperationProcessor(new DummyThrottleOperationFactory()));
     forks.add(fork1);
 
-    List<OperationProcessor> fork2 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork2 = new ArrayList<>();
     fork2.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork2);
 
-    List<OperationProcessor> fork3 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork3 = new ArrayList<>();
     fork3.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork3);
 
@@ -185,7 +185,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(10, inputQueue);
 
     /*
@@ -204,13 +204,13 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
     fork1.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork1);
 
-    List<OperationProcessor> fork2 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork2 = new ArrayList<>();
     DummyNullOperation nullOp = new DummyNullOperation();
     fork2.add(new OperationProcessor(new DummyOperationFactory(nullOp)));
     forks.add(fork2);
@@ -220,7 +220,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(10, inputQueue);
 
     /*
@@ -239,9 +239,9 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
     DummyNullOperation nullOp = new DummyNullOperation();
     fork1.add(new OperationProcessor(new DummyOperationFactory(nullOp)));
     forks.add(fork1);
@@ -251,7 +251,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(10, inputQueue);
 
     /*
@@ -270,9 +270,9 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
     fork1.add(new OperationProcessor(new DummyThrottleOperationFactory()));
     fork1.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork1);
@@ -283,7 +283,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(10, inputQueue);
 
     /*
@@ -299,7 +299,7 @@ public class ForkOperationTest {
 
     List<Stat> stats = m.getStats();
 
-    Map<String, String> actual = new HashMap<String, String>();
+    Map<String, String> actual = new HashMap<>();
     for (Stat stat : stats) {
       String key =
           String.format("%s.%s", stat.getTags().iterator().next().getValue(), stat.getName());
@@ -321,13 +321,13 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
     fork1.add(new OperationProcessor(new DummyOperationFactory()));
     forks.add(fork1);
 
-    List<OperationProcessor> fork2 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork2 = new ArrayList<>();
     fork2.add(new OperationProcessor(new DummyThrottleOperationFactory()));
     forks.add(fork2);
 
@@ -336,7 +336,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(10, inputQueue);
 
     /*
@@ -352,7 +352,7 @@ public class ForkOperationTest {
 
     List<Stat> stats = m.getStats();
 
-    Map<String, String> actual = new HashMap<String, String>();
+    Map<String, String> actual = new HashMap<>();
     for (Stat stat : stats) {
       String key =
           String.format("%s.%s", stat.getTags().iterator().next().getValue(), stat.getName());
@@ -374,12 +374,12 @@ public class ForkOperationTest {
     /*
      * Setup the pipeline of operation processors
      */
-    List<List<OperationProcessor>> forks = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> forks = new ArrayList<>();
 
     /*
      * Fork 1 that adds a "+"
      */
-    List<OperationProcessor> fork1 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork1 = new ArrayList<>();
 
     DummyAppendOperationFactory pos = new DummyAppendOperationFactory();
     DummyAppendOperationConfig posConf = new DummyAppendOperationConfig();
@@ -391,7 +391,7 @@ public class ForkOperationTest {
     /*
      * Fork 2 that adds a "-"
      */
-    List<OperationProcessor> fork2 = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> fork2 = new ArrayList<>();
 
     DummyAppendOperationFactory neg = new DummyAppendOperationFactory();
     DummyAppendOperationConfig negConf = new DummyAppendOperationConfig();
@@ -405,7 +405,7 @@ public class ForkOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*

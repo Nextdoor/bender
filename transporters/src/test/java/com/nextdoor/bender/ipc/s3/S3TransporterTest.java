@@ -82,7 +82,7 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath", false, multiPartUploads);
 
@@ -90,7 +90,7 @@ public class S3TransporterTest {
      * Do actual test
      */
     buffer.add(mockIevent);
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
 
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
@@ -124,7 +124,7 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath", false, multiPartUploads);
 
@@ -132,7 +132,7 @@ public class S3TransporterTest {
      * Do actual test
      */
     buffer.add(mockIevent);
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
     partitions.put("day", "01");
     partitions.put("hour", "23");
@@ -169,7 +169,7 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath", true, multiPartUploads);
 
@@ -177,7 +177,7 @@ public class S3TransporterTest {
      * Do actual test
      */
     buffer.add(mockIevent);
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
     partitions.put("day", "01");
     partitions.put("hour", "23");
@@ -229,7 +229,7 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath", true, multiPartUploads);
 
@@ -237,7 +237,7 @@ public class S3TransporterTest {
      * Do actual test
      */
     buffer.add(mockIevent);
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
 
@@ -299,7 +299,7 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath", true, multiPartUploads);
 
@@ -307,7 +307,7 @@ public class S3TransporterTest {
      * Do actual test
      */
     buffer.add(mockIevent);
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
 
@@ -353,7 +353,7 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath/", true, multiPartUploads);
 
@@ -361,7 +361,7 @@ public class S3TransporterTest {
      * Do actual test
      */
     buffer.add(mockIevent);
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename.gz");
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
     transport.sendBatch(buffer, partitions, new TestContext());
@@ -391,7 +391,7 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath/", true, multiPartUploads);
 
@@ -399,7 +399,7 @@ public class S3TransporterTest {
      * Do actual test
      */
     buffer.add(mockIevent);
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
     TestContext context = new TestContext();
     context.setAwsRequestId("request_id");
@@ -432,14 +432,14 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath", false, multiPartUploads);
 
     /*
      * Do actual test
      */
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);
 
@@ -486,7 +486,7 @@ public class S3TransporterTest {
     /*
      * Create transport
      */
-    Map<String, MultiPartUpload> multiPartUploads = new HashMap<String, MultiPartUpload>(0);
+    Map<String, MultiPartUpload> multiPartUploads = new HashMap<>(0);
     S3Transport transport =
         new S3Transport(mockClient, "bucket", "basepath", false, multiPartUploads);
 
@@ -494,7 +494,7 @@ public class S3TransporterTest {
      * Do actual test
      */
     buffer.add(mockIevent);
-    LinkedHashMap<String, String> partitions = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> partitions = new LinkedHashMap<>();
     partitions.put(S3Transport.FILENAME_KEY, "a_filename");
 
     ArgumentCaptor<UploadPartRequest> argument = ArgumentCaptor.forClass(UploadPartRequest.class);

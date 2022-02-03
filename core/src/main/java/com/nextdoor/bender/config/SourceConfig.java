@@ -40,7 +40,7 @@ public class SourceConfig {
 
   @JsonSchemaDescription("Operation configuration")
   @JsonProperty(required = false)
-  private List<OperationConfig> operationConfigs = new ArrayList<OperationConfig>(0);
+  private List<OperationConfig> operationConfigs = new ArrayList<>(0);
 
   @JsonSchemaDescription("Regex patterns to filter events by prior to deserialization")
   @JsonProperty(required = false)

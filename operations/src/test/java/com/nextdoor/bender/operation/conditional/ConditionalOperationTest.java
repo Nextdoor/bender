@@ -66,8 +66,8 @@ public class ConditionalOperationTest {
      * Setup the pipeline of operation processors
      */
     List<Pair<FilterOperation, List<OperationProcessor>>> conditions =
-        new ArrayList<Pair<FilterOperation, List<OperationProcessor>>>();
-    List<OperationProcessor> case1Ops = new ArrayList<OperationProcessor>();
+        new ArrayList<>();
+    List<OperationProcessor> case1Ops = new ArrayList<>();
 
     DummyAppendOperationFactory pos = new DummyAppendOperationFactory();
     DummyAppendOperationConfig posConf = new DummyAppendOperationConfig();
@@ -75,14 +75,14 @@ public class ConditionalOperationTest {
     pos.setConf(posConf);
     case1Ops.add(new OperationProcessor(pos));
     FilterOperation filter = new BasicFilterOperation(true);
-    conditions.add(new ImmutablePair<FilterOperation, List<OperationProcessor>>(filter, case1Ops));
+    conditions.add(new ImmutablePair<>(filter, case1Ops));
 
     ConditionalOperation op = new ConditionalOperation(conditions, false);
 
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*
@@ -106,8 +106,8 @@ public class ConditionalOperationTest {
      * Setup the pipeline of operation processors
      */
     List<Pair<FilterOperation, List<OperationProcessor>>> conditions =
-        new ArrayList<Pair<FilterOperation, List<OperationProcessor>>>();
-    List<OperationProcessor> case1Ops = new ArrayList<OperationProcessor>();
+        new ArrayList<>();
+    List<OperationProcessor> case1Ops = new ArrayList<>();
 
     DummyAppendOperationFactory pos = new DummyAppendOperationFactory();
     DummyAppendOperationConfig posConf = new DummyAppendOperationConfig();
@@ -115,14 +115,14 @@ public class ConditionalOperationTest {
     pos.setConf(posConf);
     case1Ops.add(new OperationProcessor(pos));
     FilterOperation filter = new BasicFilterOperation(false);
-    conditions.add(new ImmutablePair<FilterOperation, List<OperationProcessor>>(filter, case1Ops));
+    conditions.add(new ImmutablePair<>(filter, case1Ops));
 
     ConditionalOperation op = new ConditionalOperation(conditions, false);
 
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*
@@ -143,11 +143,11 @@ public class ConditionalOperationTest {
   @Test
   public void testTwoConditions() {
     List<Pair<FilterOperation, List<OperationProcessor>>> conditions =
-        new ArrayList<Pair<FilterOperation, List<OperationProcessor>>>();
+        new ArrayList<>();
     /*
      * Case 1
      */
-    List<OperationProcessor> case1Ops = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> case1Ops = new ArrayList<>();
 
     DummyAppendOperationFactory pos = new DummyAppendOperationFactory();
     DummyAppendOperationConfig posConf = new DummyAppendOperationConfig();
@@ -156,12 +156,12 @@ public class ConditionalOperationTest {
     case1Ops.add(new OperationProcessor(pos));
     FilterOperation case1Filter = new BasicFilterOperation(false);
     conditions
-        .add(new ImmutablePair<FilterOperation, List<OperationProcessor>>(case1Filter, case1Ops));
+        .add(new ImmutablePair<>(case1Filter, case1Ops));
 
     /*
      * Case 2
      */
-    List<OperationProcessor> case2Ops = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> case2Ops = new ArrayList<>();
 
     DummyAppendOperationFactory neg = new DummyAppendOperationFactory();
     DummyAppendOperationConfig negConf = new DummyAppendOperationConfig();
@@ -170,14 +170,14 @@ public class ConditionalOperationTest {
     case2Ops.add(new OperationProcessor(neg));
     FilterOperation case2Filter = new BasicFilterOperation(true);
     conditions
-        .add(new ImmutablePair<FilterOperation, List<OperationProcessor>>(case2Filter, case2Ops));
+        .add(new ImmutablePair<>(case2Filter, case2Ops));
 
     ConditionalOperation op = new ConditionalOperation(conditions, false);
 
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*
@@ -198,11 +198,11 @@ public class ConditionalOperationTest {
   @Test
   public void testTwoConditionsNoMatch() {
     List<Pair<FilterOperation, List<OperationProcessor>>> conditions =
-        new ArrayList<Pair<FilterOperation, List<OperationProcessor>>>();
+        new ArrayList<>();
     /*
      * Case 1
      */
-    List<OperationProcessor> case1Ops = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> case1Ops = new ArrayList<>();
 
     DummyAppendOperationFactory pos = new DummyAppendOperationFactory();
     DummyAppendOperationConfig posConf = new DummyAppendOperationConfig();
@@ -211,12 +211,12 @@ public class ConditionalOperationTest {
     case1Ops.add(new OperationProcessor(pos));
     FilterOperation case1Filter = new BasicFilterOperation(false);
     conditions
-        .add(new ImmutablePair<FilterOperation, List<OperationProcessor>>(case1Filter, case1Ops));
+        .add(new ImmutablePair<>(case1Filter, case1Ops));
 
     /*
      * Case 2
      */
-    List<OperationProcessor> case2Ops = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> case2Ops = new ArrayList<>();
 
     DummyAppendOperationFactory neg = new DummyAppendOperationFactory();
     DummyAppendOperationConfig negConf = new DummyAppendOperationConfig();
@@ -225,14 +225,14 @@ public class ConditionalOperationTest {
     case2Ops.add(new OperationProcessor(neg));
     FilterOperation case2Filter = new BasicFilterOperation(false);
     conditions
-        .add(new ImmutablePair<FilterOperation, List<OperationProcessor>>(case2Filter, case2Ops));
+        .add(new ImmutablePair<>(case2Filter, case2Ops));
 
     ConditionalOperation op = new ConditionalOperation(conditions, false);
 
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*
@@ -253,11 +253,11 @@ public class ConditionalOperationTest {
   @Test
   public void testFilterCondition() {
     List<Pair<FilterOperation, List<OperationProcessor>>> conditions =
-        new ArrayList<Pair<FilterOperation, List<OperationProcessor>>>();
+        new ArrayList<>();
     /*
      * Case 1
      */
-    List<OperationProcessor> case1Ops = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> case1Ops = new ArrayList<>();
     BasicFilterOperationFactory fOp = new BasicFilterOperationFactory();
     BasicFilterOperationConfig fOpConf = new BasicFilterOperationConfig();
     fOpConf.setPass(false);
@@ -268,7 +268,7 @@ public class ConditionalOperationTest {
 
     FilterOperation case1Filter = new BasicFilterOperation(true);
     conditions
-        .add(new ImmutablePair<FilterOperation, List<OperationProcessor>>(case1Filter, case1Ops));
+        .add(new ImmutablePair<>(case1Filter, case1Ops));
 
 
     ConditionalOperation op = new ConditionalOperation(conditions, false);
@@ -276,7 +276,7 @@ public class ConditionalOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*
@@ -294,15 +294,15 @@ public class ConditionalOperationTest {
   
   public void testFilterNonMatch() {
     List<Pair<FilterOperation, List<OperationProcessor>>> conditions =
-        new ArrayList<Pair<FilterOperation, List<OperationProcessor>>>();
+        new ArrayList<>();
     /*
      * Case 1
      */
-    List<OperationProcessor> case1Ops = new ArrayList<OperationProcessor>();
+    List<OperationProcessor> case1Ops = new ArrayList<>();
 
     FilterOperation case1Filter = new BasicFilterOperation(false);
     conditions
-        .add(new ImmutablePair<FilterOperation, List<OperationProcessor>>(case1Filter, case1Ops));
+        .add(new ImmutablePair<>(case1Filter, case1Ops));
 
 
     ConditionalOperation op = new ConditionalOperation(conditions, true);
@@ -310,7 +310,7 @@ public class ConditionalOperationTest {
     /*
      * Create thread that supplies input events
      */
-    Queue<InternalEvent> inputQueue = new Queue<InternalEvent>();
+    Queue<InternalEvent> inputQueue = new Queue<>();
     supply(2, inputQueue);
 
     /*

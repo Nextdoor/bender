@@ -24,7 +24,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 
 public class LambdaContext {
   private final Context ctx;
-  private final Map<String, String> ctxMap = new HashMap<String, String>();
+  private final Map<String, String> ctxMap = new HashMap<>();
 
   public LambdaContext(Context ctx) {
     this.ctx = ctx;

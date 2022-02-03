@@ -54,7 +54,7 @@ public class IpcSenderService extends MonitoredProcess {
     super(factory.getChildClass());
     this.transportFactory = factory;
     this.pool = Executors.newFixedThreadPool(factory.getMaxThreads());
-    this.buffers = new HashMap<LinkedHashMap<String, String>, TransportBuffer>();
+    this.buffers = new HashMap<>();
   }
 
   /**
@@ -83,11 +83,11 @@ public class IpcSenderService extends MonitoredProcess {
     // TODO: not sure why I made buffers synchronized
     synchronized (buffers) {
       if (partitions == null) {
-        partitions = new LinkedHashMap<String, String>(0);
+        partitions = new LinkedHashMap<>(0);
       }
 
       if (!this.buffers.containsKey(partitions)) {
-        partitions = new LinkedHashMap<String, String>(partitions);
+        partitions = new LinkedHashMap<>(partitions);
         this.buffers.put(partitions, this.transportFactory.newTransportBuffer());
       }
 
@@ -111,7 +111,7 @@ public class IpcSenderService extends MonitoredProcess {
        */
       this.buffers.remove(partitions);
       buffer = this.transportFactory.newTransportBuffer();
-      partitions = new LinkedHashMap<String, String>(partitions);
+      partitions = new LinkedHashMap<>(partitions);
       this.buffers.put(partitions, buffer);
 
       /*

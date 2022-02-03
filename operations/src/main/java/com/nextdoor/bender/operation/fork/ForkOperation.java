@@ -127,18 +127,18 @@ public class ForkOperation implements StreamOperation {
      * forkOutputStreams keeps track of the output Stream of each fork.
      */
     List<Stream<InternalEvent>> forkOutputStreams =
-        new ArrayList<Stream<InternalEvent>>(opProcsInForks.size());
+        new ArrayList<>(opProcsInForks.size());
 
     /*
      * From a list of operation configurations in each fork construct queues and streams.
      */
-    this.queues = new ArrayList<Queue<InternalEvent>>(opProcsInForks.size());
+    this.queues = new ArrayList<>(opProcsInForks.size());
     for (List<OperationProcessor> opProcsInFork : opProcsInForks) {
       /*
        * Construct a Queue for each fork. This is the input to each Fork.
        */
       Queue<InternalEvent> queue =
-          new Queue<InternalEvent>(new LinkedBlockingQueue<InternalEvent>(opProcsInFork.size()));
+          new Queue<>(new LinkedBlockingQueue<>(opProcsInFork.size()));
       this.queues.add(queue);
 
       /*
@@ -163,7 +163,7 @@ public class ForkOperation implements StreamOperation {
      * the last fork closes the output Queue.
      */
     Queue<InternalEvent> outputQueue =
-        new Queue<InternalEvent>(new LinkedBlockingQueue<InternalEvent>(this.queues.size()));
+        new Queue<>(new LinkedBlockingQueue<>(this.queues.size()));
     AtomicInteger lock = new AtomicInteger(forkOutputStreams.size());
 
     forkOutputStreams.forEach(stream -> {

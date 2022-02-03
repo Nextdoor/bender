@@ -32,7 +32,7 @@ public class FormattedSubstitutionTest {
     Variable.FieldVariable v = new Variable.FieldVariable();
     v.setFailSrcNotFound(true);
     v.setSrcFields(Arrays.asList("foo"));
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FormattedSubstitution("bar", new ExtendedMessageFormat("foo = {0}"),
         Arrays.asList(v), true));
 
@@ -55,7 +55,7 @@ public class FormattedSubstitutionTest {
     Variable.FieldVariable v = new Variable.FieldVariable();
     v.setFailSrcNotFound(true);
     v.setSrcFields(Arrays.asList("foo"));
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FormattedSubstitution("foo", new ExtendedMessageFormat("foo = {0}"),
         Arrays.asList(v), true));
 
@@ -78,7 +78,7 @@ public class FormattedSubstitutionTest {
     v.setFailSrcNotFound(true);
     v.setSrcFields(Arrays.asList("foo"));
 
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FormattedSubstitution("bar", new ExtendedMessageFormat("number = {0}"),
         Arrays.asList(v), true));
 
@@ -101,7 +101,7 @@ public class FormattedSubstitutionTest {
     v.setFailSrcNotFound(false);
     v.setSrcFields(Arrays.asList("baz"));
 
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FormattedSubstitution("bar", new ExtendedMessageFormat("foo = {0}"),
         Arrays.asList(v), true));
 
@@ -125,7 +125,7 @@ public class FormattedSubstitutionTest {
     v.setFailSrcNotFound(true);
     v.setSrcFields(Arrays.asList("baz"));
 
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FormattedSubstitution("bar", new ExtendedMessageFormat("foo = {0}"),
         Arrays.asList(v), true));
 
@@ -146,7 +146,7 @@ public class FormattedSubstitutionTest {
     v.setRemoveSrcField(true);
     v.setSrcFields(Arrays.asList("foo"));
 
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FormattedSubstitution("bar", new ExtendedMessageFormat("foo = {0}"),
         Arrays.asList(v), true));
 
@@ -168,7 +168,7 @@ public class FormattedSubstitutionTest {
     Variable.StaticVariable v = new Variable.StaticVariable();
     v.setValue("1234");
 
-    ArrayList<Substitution> substitutions = new ArrayList<Substitution>();
+    ArrayList<Substitution> substitutions = new ArrayList<>();
     substitutions.add(new FormattedSubstitution("bar", new ExtendedMessageFormat("static = {0}"),
         Arrays.asList(v), true));
 

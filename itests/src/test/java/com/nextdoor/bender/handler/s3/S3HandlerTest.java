@@ -74,7 +74,7 @@ public class S3HandlerTest extends HandlerTest<S3EventNotification> {
     S3EventNotificationRecord rec = new S3EventNotificationRecord(null, null, null,
         "1970-01-01T00:00:00.000Z", null, null, null, entity, null);
 
-    List<S3EventNotificationRecord> notifications = new ArrayList<S3EventNotificationRecord>(2);
+    List<S3EventNotificationRecord> notifications = new ArrayList<>(2);
     notifications.add(rec);
 
     return new S3EventNotification(notifications);

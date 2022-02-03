@@ -34,11 +34,11 @@ public class ForkOperationFactory implements OperationFactory {
   public void setConf(AbstractConfig config) {
     this.config = (ForkOperationConfig) config;
 
-    List<List<OperationProcessor>> processors = new ArrayList<List<OperationProcessor>>();
+    List<List<OperationProcessor>> processors = new ArrayList<>();
     OperationFactoryFactory off = new OperationFactoryFactory();
 
     for (Fork fork : this.config.getForks()) {
-      List<OperationProcessor> processorsInFork = new ArrayList<OperationProcessor>();
+      List<OperationProcessor> processorsInFork = new ArrayList<>();
 
       for (OperationConfig opConfig : fork.getOperations()) {
         try {

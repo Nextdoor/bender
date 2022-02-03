@@ -33,7 +33,7 @@ import com.nextdoor.bender.monitoring.Tag;
 public class DummyReporterHelper {
   public static class DummyReporter implements Reporter {
     private List<StatFilter> statFilters;
-    public List<String> buffer = new ArrayList<String>();
+    public List<String> buffer = new ArrayList<>();
 
     public DummyReporter(List<StatFilter> statFilters) {
       this.statFilters = statFilters;
@@ -41,7 +41,7 @@ public class DummyReporterHelper {
 
     @Override
     public void write(ArrayList<Stat> stats, long invokeTimeMs, Set<Tag> tags) {
-      Set<Tag> allTags = new HashSet<Tag>();
+      Set<Tag> allTags = new HashSet<>();
 
       for (Stat stat : stats) {
         allTags.addAll(tags);

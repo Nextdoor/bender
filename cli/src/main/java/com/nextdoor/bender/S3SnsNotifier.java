@@ -47,7 +47,7 @@ import com.amazonaws.services.sns.AmazonSNSClient;
 public class S3SnsNotifier {
   private static final Logger logger = Logger.getLogger(S3SnsNotifier.class);
   private static DateTimeFormatter formatter;
-  private static HashSet<String> alreadyPublished = new HashSet<String>();
+  private static HashSet<String> alreadyPublished = new HashSet<>();
   private static boolean dryRun;
 
   public static void main(String[] args) throws ParseException, InterruptedException, IOException {
@@ -186,7 +186,7 @@ public class S3SnsNotifier {
     S3EventNotificationRecord rec =
         new S3EventNotificationRecord(null, null, null, timestamp, null, null, null, entity, null);
 
-    List<S3EventNotificationRecord> notifications = new ArrayList<S3EventNotificationRecord>(1);
+    List<S3EventNotificationRecord> notifications = new ArrayList<>(1);
     notifications.add(rec);
 
     return new S3EventNotification(notifications);

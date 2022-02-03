@@ -34,7 +34,7 @@ public class InternalEvent {
   private String serialized;
   private LinkedHashMap<String, String> partitions;
   private long eventTime;
-  private final Map<String, Object> metadata = new HashMap<String, Object>(6);
+  private final Map<String, Object> metadata = new HashMap<>(6);
 
   /**
    * @param eventString the raw string data of the event.
@@ -68,7 +68,7 @@ public class InternalEvent {
     if (other.getPartitions() == null) {
       this.partitions = null;
     } else {
-      this.partitions = new LinkedHashMap<String, String>(other.getPartitions());
+      this.partitions = new LinkedHashMap<>(other.getPartitions());
     }
 
     /*

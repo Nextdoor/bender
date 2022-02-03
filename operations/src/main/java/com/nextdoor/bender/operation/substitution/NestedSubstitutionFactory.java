@@ -29,7 +29,7 @@ public class NestedSubstitutionFactory implements SubstitutionFactory {
     this.config = (NestedSubstitutionConfig) config;
 
     List<Substitution> substitutions =
-        new ArrayList<Substitution>(this.config.getSubstitutions().size());
+        new ArrayList<>(this.config.getSubstitutions().size());
 
     for (SubstitutionConfig subConfig : this.config.getSubstitutions()) {
       try {

@@ -37,7 +37,7 @@ public class S3InternalEventTest {
 
     ievent.setEventObj(null);
 
-    Map<String, String> expected = new HashMap<String, String>(1);
+    Map<String, String> expected = new HashMap<>(1);
     expected.put(S3InternalEvent.FILENAME_PARTITION, DigestUtils.sha1Hex("file"));
 
     assertEquals(expected, ievent.getPartitions());

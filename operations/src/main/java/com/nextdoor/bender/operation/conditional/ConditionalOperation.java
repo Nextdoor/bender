@@ -111,13 +111,13 @@ public class ConditionalOperation implements StreamOperation {
      * outputStreams keeps track of the output Stream of each Condition.
      */
     List<Stream<InternalEvent>> outputStreams =
-        new ArrayList<Stream<InternalEvent>>(this.conditionsAndProcs.size());
+        new ArrayList<>(this.conditionsAndProcs.size());
 
     /*
      * From a list of operation configurations in each condition construct queues and streams.
      */
     this.filtersAndQueues =
-        new ArrayList<Pair<FilterOperation, Queue<InternalEvent>>>(this.conditionsAndProcs.size());
+        new ArrayList<>(this.conditionsAndProcs.size());
     for (Pair<FilterOperation, List<OperationProcessor>> filterAndProcs : this.conditionsAndProcs) {
 
       FilterOperation filter = filterAndProcs.getLeft();
@@ -127,10 +127,10 @@ public class ConditionalOperation implements StreamOperation {
        * Construct a Queue for each conditional. This is the input to each Condition.
        */
       Queue<InternalEvent> queue =
-          new Queue<InternalEvent>(new LinkedBlockingQueue<InternalEvent>(procs.size()));
+          new Queue<>(new LinkedBlockingQueue<>(procs.size()));
 
       this.filtersAndQueues
-          .add(new ImmutablePair<FilterOperation, Queue<InternalEvent>>(filter, queue));
+          .add(new ImmutablePair<>(filter, queue));
 
       /*
        * Connect the condition's input Queue with operations. Each operation returns a stream with its
@@ -153,8 +153,8 @@ public class ConditionalOperation implements StreamOperation {
      * Combine each condition's output stream and write to the output Queue. When all data is consumed
      * the last condition closes the output Queue.
      */
-    Queue<InternalEvent> outputQueue = new Queue<InternalEvent>(
-        new LinkedBlockingQueue<InternalEvent>(this.conditionsAndProcs.size()));
+    Queue<InternalEvent> outputQueue = new Queue<>(
+        new LinkedBlockingQueue<>(this.conditionsAndProcs.size()));
     AtomicInteger lock = new AtomicInteger(outputStreams.size());
 
     outputStreams.forEach(stream -> {
