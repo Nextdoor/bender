@@ -54,9 +54,9 @@ public class ElasticSearchTransport extends HttpTransport {
      * Check responses status code of the overall bulk call. The call can succeed but have
      * individual failures which are checked later.
      */
-    if (resp.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+    if (resp.getCode() != HttpStatus.SC_OK) {
       throw new TransportException(
-          "es call failed because " + resp.getStatusLine().getReasonPhrase());
+          "es call failed because " + resp.getReasonPhrase());
     }
 
     /*
@@ -75,7 +75,7 @@ public class ElasticSearchTransport extends HttpTransport {
       esResp = gson.fromJson(responseString, EsResponse.class);
     } catch (JsonSyntaxException e) {
       throw new TransportException(
-          "es call failed because " + resp.getStatusLine().getReasonPhrase(), e);
+          "es call failed because " + resp.getReasonPhrase(), e);
     }
 
     /*
@@ -85,7 +85,7 @@ public class ElasticSearchTransport extends HttpTransport {
 
     if (esResp.items == null) {
       throw new TransportException(
-          "es call failed because " + resp.getStatusLine().getReasonPhrase());
+          "es call failed because " + resp.getReasonPhrase());
     }
 
     HashSet<String> errorTypes = new HashSet<String>();

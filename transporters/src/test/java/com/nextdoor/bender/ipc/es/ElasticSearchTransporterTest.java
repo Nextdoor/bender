@@ -19,7 +19,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.doThrow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,11 +50,11 @@ public class ElasticSearchTransporterTest {
     StatusLine mockStatusLine = mock(StatusLine.class);
     doReturn("expected failure").when(mockStatusLine).getReasonPhrase();
     doReturn(status).when(mockStatusLine).getStatusCode();
-    doReturn(mockStatusLine).when(mockResponse).getStatusLine();
+    doReturn(mockStatusLine).when(mockResponse).getReasonPhrase();
 
     HttpEntity entity = new ByteArrayEntity(respPayload, contentType);
 
-    doReturn(entity).when(mockResponse).getEntity();
+    doReturn(entity).when(mockResponse).toString();
     doReturn(mockResponse).when(mockClient).execute(any(HttpPost.class));
 
     return mockClient;

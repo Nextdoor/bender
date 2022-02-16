@@ -22,6 +22,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -29,10 +30,13 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.config.SocketConfig;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
+import org.apache.hc.core5.http.message.BasicHeader;
+import org.apache.hc.core5.http.ssl.TLS;
+import org.apache.hc.core5.http.io.SocketConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
 
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.ipc.TransportBuffer;
@@ -42,6 +46,7 @@ import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
 import com.nextdoor.bender.ipc.generic.GenericTransportBuffer;
+import org.apache.hc.core5.util.Timeout;
 
 public abstract class AbstractHttpTransportFactory implements TransportFactory {
   protected AbstractHttpTransportConfig config;
@@ -119,17 +124,20 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
   protected HttpClientBuilder getClientBuilder(boolean useSSL, String url,
       Map<String, String> stringHeaders, int socketTimeout) {
 
-    HttpClientBuilder cb = HttpClientBuilder.create();
+    PoolingHttpClientConnectionManagerBuilder cm = PoolingHttpClientConnectionManagerBuilder.create();
 
     /*
      * Setup SSL
      */
     if (useSSL) {
+      SSLConnectionSocketFactoryBuilder ssl = SSLConnectionSocketFactoryBuilder.create();
+      ssl.setTlsVersions(TLS.V_1_3, TLS.V_1_2);
+
       /*
        * All trusting SSL context
        */
       try {
-        cb.setSSLContext(getSSLContext());
+        ssl.setSslContext(getSSLContext());
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
@@ -137,29 +145,33 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
       /*
        * All trusting hostname verifier
        */
-      cb.setSSLHostnameVerifier(new HostnameVerifier() {
+      ssl.setHostnameVerifier(new HostnameVerifier() {
         public boolean verify(String s, SSLSession sslSession) {
           return true;
         }
       });
-    }
 
-    /*
-     * Add default headers
-     */
-    ArrayList<BasicHeader> headers = new ArrayList<BasicHeader>(stringHeaders.size());
-    stringHeaders.forEach((k, v) -> headers.add(new BasicHeader(k, v)));
-    cb.setDefaultHeaders(headers);
+      cm = cm.setSSLSocketFactory(ssl.build());
+    }
 
     /*
      * Set socket timeout and transport threads
      */
-    SocketConfig sc = SocketConfig.custom().setSoTimeout(socketTimeout).build();
-    cb.setDefaultSocketConfig(sc);
-    cb.setMaxConnPerRoute(this.config.getThreads());
-    cb.setMaxConnTotal(this.config.getThreads());
+    SocketConfig sc = SocketConfig.custom().setSoTimeout(Timeout.of(socketTimeout, TimeUnit.MICROSECONDS)).build();
+    cm.setDefaultSocketConfig(sc);
+    cm.setMaxConnPerRoute(this.config.getThreads());
+    cm.setMaxConnTotal(this.config.getThreads());
 
-    return cb;
+
+    /*
+     * Add default headers
+     */
+    HttpClientBuilder cb = HttpClientBuilder.create();
+    ArrayList<BasicHeader> headers = new ArrayList<BasicHeader>(stringHeaders.size());
+    stringHeaders.forEach((k, v) -> headers.add(new BasicHeader(k, v)));
+    cb.setDefaultHeaders(headers);
+
+    return cb.setConnectionManager(cm.build());
   }
 
   protected CloseableHttpClient getClient(boolean useSSL, String url,

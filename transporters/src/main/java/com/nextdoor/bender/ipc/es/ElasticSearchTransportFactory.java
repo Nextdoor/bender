@@ -17,13 +17,14 @@ package com.nextdoor.bender.ipc.es;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.HttpHeaders;
-import org.apache.http.client.config.RequestConfig;
+import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
+import org.apache.hc.core5.http.message.BasicHeader;
 
 import com.nextdoor.bender.auth.BasicHttpAuthConfig;
 import com.nextdoor.bender.auth.aws.UrlSigningAuthConfig;
@@ -31,6 +32,7 @@ import com.nextdoor.bender.ipc.TransportFactoryInitException;
 import com.nextdoor.bender.ipc.TransportSerializer;
 import com.nextdoor.bender.ipc.UnpartitionedTransport;
 import com.nextdoor.bender.ipc.http.AbstractHttpTransportFactory;
+import org.apache.hc.core5.util.Timeout;
 
 public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory {
 
@@ -74,8 +76,8 @@ public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory 
       }
     }
 
-    RequestConfig rc = RequestConfig.custom().setConnectTimeout(5000)
-        .setSocketTimeout(config.getTimeout()).build();
+    RequestConfig rc = RequestConfig.custom().setConnectTimeout(5000, TimeUnit.MICROSECONDS)
+        .setResponseTimeout(config.getTimeout(), TimeUnit.MICROSECONDS).build();
     cb.setDefaultRequestConfig(rc);
 
     return cb.build();
@@ -96,6 +98,6 @@ public class ElasticSearchTransportFactory extends AbstractHttpTransportFactory 
   }
 
   private HttpClientBuilder addSigningAuth(HttpClientBuilder cb, UrlSigningAuthConfig auth) {
-    return cb.addInterceptorLast(auth.getHttpInterceptor());
+    return cb.addRequestInterceptorLast(auth.getHttpInterceptor());
   }
 }

@@ -26,6 +26,7 @@ import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPOutputStream;
 
@@ -41,7 +42,6 @@ import org.apache.hc.core5.http.ContentType;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.nextdoor.bender.config.BenderConfig;
 import com.nextdoor.bender.ipc.TransportException;
 
 public class HttpTransportTest {
@@ -54,7 +54,7 @@ public class HttpTransportTest {
     StatusLine mockStatusLine = mock(StatusLine.class);
     doReturn("expected failure").when(mockStatusLine).getReasonPhrase();
     doReturn(status).when(mockStatusLine).getStatusCode();
-    doReturn(mockStatusLine).when(mockResponse).getStatusLine();
+    doReturn(mockStatusLine).when(mockResponse).getReasonPhrase();
     EntityBuilder eb = EntityBuilder.create().setBinary(respPayload).setContentType(contentType);
 
     HttpEntity he;
@@ -65,7 +65,7 @@ public class HttpTransportTest {
       he = eb.build();
     }
 
-    doReturn(he).when(mockResponse).getEntity();
+    doReturn(he).when(mockResponse).toString();
 
     doReturn(mockResponse).when(mockClient).execute(any(HttpPost.class));
     return mockClient;
@@ -182,7 +182,7 @@ public class HttpTransportTest {
   }
 
   @Test
-  public void testHttpPostUrl() throws TransportException, IOException {
+  public void testHttpPostUrl() throws TransportException, IOException, URISyntaxException {
     byte[] respPayload = "{}".getBytes(StandardCharsets.UTF_8);
     byte[] payload = "foo".getBytes();
     String url = "https://localhost:443/foo";
@@ -195,7 +195,7 @@ public class HttpTransportTest {
     ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);
     verify(client, times(1)).execute(captor.capture());
 
-    assertEquals(url, captor.getValue().getURI().toString());
+    assertEquals(url, captor.getValue().getUri().toString());
   }
 
   @Test

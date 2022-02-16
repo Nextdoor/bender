@@ -28,7 +28,6 @@ import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.message.BasicHeader;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.evanlennick.retry4j.CallExecutor;
@@ -132,9 +131,8 @@ public class HttpTransport implements UnpartitionedTransport {
           resp = sendBatchUncompressed(httpPost, raw);
         }
 
-        try {
-          responseString = resp.toString();
-        } catch (ParseException | IOException e) {
+        responseString = resp.toString();
+        if (resp.getCode() > 400) {
           throw new TransportException(
               "http transport call failed because " + resp.getReasonPhrase());
         }
@@ -142,7 +140,7 @@ public class HttpTransport implements UnpartitionedTransport {
         /*
          * Always release connection otherwise it blocks future requests.
          */
-        httpPost.releaseConnection();
+        httpPost.reset();
       }
 
       checkResponse(resp, responseString);
@@ -176,12 +174,12 @@ public class HttpTransport implements UnpartitionedTransport {
     /*
      * Check responses status code of the overall bulk call.
      */
-    if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+    if (resp.getCode() == HttpStatus.SC_OK) {
       return;
     }
 
     throw new TransportException(
-        "http transport call failed because \"" + resp.getStatusLine().getReasonPhrase()
+        "http transport call failed because \"" + resp.getReasonPhrase()
             + "\" payload response \"" + responseString + "\"");
   }
 }

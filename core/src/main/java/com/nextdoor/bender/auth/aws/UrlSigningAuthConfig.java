@@ -15,8 +15,7 @@
 
 package com.nextdoor.bender.auth.aws;
 
-import org.apache.http.HttpRequestInterceptor;
-
+import org.apache.hc.core5.http.HttpRequestInterceptor;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.http.AWSRequestSigningApacheInterceptor;
 import com.amazonaws.auth.AWS4Signer;
