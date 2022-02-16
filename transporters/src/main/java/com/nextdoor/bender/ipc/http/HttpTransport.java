@@ -19,16 +19,16 @@ import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Callable;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.ParseException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.message.BasicHeader;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.evanlennick.retry4j.CallExecutor;
@@ -89,8 +89,7 @@ public class HttpTransport implements UnpartitionedTransport {
     /*
      * Write gzip data to Entity and set content encoding to gzip
      */
-    ByteArrayEntity entity = new ByteArrayEntity(raw, ContentType.DEFAULT_BINARY);
-    entity.setContentEncoding("gzip");
+    ByteArrayEntity entity = new ByteArrayEntity(raw, ContentType.DEFAULT_BINARY, "gzip");
 
     httpPost.addHeader(new BasicHeader("Accept-Encoding", "gzip"));
     httpPost.setEntity(entity);
@@ -134,10 +133,10 @@ public class HttpTransport implements UnpartitionedTransport {
         }
 
         try {
-          responseString = EntityUtils.toString(resp.getEntity());
+          responseString = resp.toString();
         } catch (ParseException | IOException e) {
           throw new TransportException(
-              "http transport call failed because " + resp.getStatusLine().getReasonPhrase());
+              "http transport call failed because " + resp.getReasonPhrase());
         }
       } finally {
         /*

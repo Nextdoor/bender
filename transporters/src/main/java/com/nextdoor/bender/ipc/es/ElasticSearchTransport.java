@@ -17,10 +17,10 @@ package com.nextdoor.bender.ipc.es;
 
 import java.util.HashSet;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
