@@ -30323,15 +30323,17 @@ function sourceButton(element) {
         <span class="type-keyword"></span>
                 <span boxid="7" class="box-7 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">HTTP</span>
         <span class="type-keyword"></span>
-                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">SumoLogic</span>
+                <span boxid="8" class="box-8 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">HTTP2</span>
         <span class="type-keyword"></span>
-                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Splunk</span>
+                <span boxid="9" class="box-9 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">SumoLogic</span>
         <span class="type-keyword"></span>
-                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
+                <span boxid="10" class="box-10 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Splunk</span>
         <span class="type-keyword"></span>
-                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Datadog</span>
+                <span boxid="11" class="box-11 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Firehose</span>
         <span class="type-keyword"></span>
-                <span boxid="12" class="box-12 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">DevNull</span>
+                <span boxid="12" class="box-12 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">Datadog</span>
+        <span class="type-keyword"></span>
+                <span boxid="13" class="box-13 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">DevNull</span>
 
                 </div>
                 <div class="signature-description desc"><p>Transport configuration</p>
@@ -33064,7 +33066,8 @@ function sourceButton(element) {
     <div class="box-header box-7">
         <div class="box-title" ref="">
             <div class="box-name ">HTTP</div>
-            <div class="box-description desc"></div>
+            <div class="box-description desc"><p>HTTP transport that only supports HTTP1/1</p>
+</div>
             <div class="end"></div>
         </div>
     </div>
@@ -33827,6 +33830,7 @@ function sourceButton(element) {
         <pre class="json-schema">{
   "type": "object",
   "additionalProperties": false,
+  "description": "HTTP transport that only supports HTTP1/1",
   "properties": {
     "type": {
       "type": "string",
@@ -33941,6 +33945,887 @@ function sourceButton(element) {
                 <div class="box-container" boxid="8">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
     <div class="box-header box-8">
+        <div class="box-title" ref="">
+            <div class="box-name ">HTTP2</div>
+            <div class="box-description desc"><p>HTTP transport that supports both HTTP/1.1 and HTTP/2. It will auto negotiate with the server.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">HTTP2</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">HTTP2</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">threads</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">5</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of concurrent transporters allowed</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">hostname</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint hostname.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">port</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;65535]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">443</span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint port.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_ssl</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use SSL connections (certificates are not validated).</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">use_gzip</div>
+                <div class="signature-type">
+                                   <span class="signature-type-boolean">
+               boolean
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">false</span>
+
+                </div>
+                <div class="signature-description desc"><p>Use GZIP compression on HTTP calls.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">batch_size</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;100000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">500</span>
+
+                </div>
+                <div class="signature-description desc"><p>Maximum number of documents in api call.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_count</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [0;10]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">0</span>
+
+                </div>
+                <div class="signature-description desc"><p>Number of retries to make when a put failure occurs.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">retry_delay</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1;60000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">1000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Initial delay between retries. If more than one retries specified exponential backoff is used.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">timeout</div>
+                <div class="signature-type">
+                                   <span class="signature-type-integer">
+               integer
+            </span>
+            <span class="type-keyword">
+               [1000;300000]
+            </span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">40000</span>
+
+                </div>
+                <div class="signature-description desc"><p>Request timeout in milliseconds</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-">
+                
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP headers to include.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"><p>HTTP headers to include.</p>
+</div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "oneOf": [
+      {
+        "$ref": "#/definitions/KmsValueConfig"
+      },
+      {
+        "$ref": "#/definitions/StringValueConfig"
+      }
+    ]
+  },
+  "description": "HTTP headers to include."
+}</pre>
+    </div>
+</div>
+<div class="end">
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">path</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>HTTP endpoint path and query string including leading slash '/'.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">separator</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>Separator used between serialized records.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">basic_http_auth</div>
+                <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">UserPassAuth</span>
+
+                </div>
+                <div class="signature-description desc"><p>Username and password used for use with http basic auth.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">UserPassAuth</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">UserPassAuth</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">UserPassAuth</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">username</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">password</div>
+                <div class="signature-type">
+                            <span class="type-keyword">one of</span>
+        <span class="type-keyword"></span>
+                <span boxid="1" class="box-1 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">KmsValue</span>
+        <span class="type-keyword"></span>
+                <span boxid="2" class="box-2 signature-type-ref signature-button signature-type-expandable button" onclick="expand(this);">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            <div class="box-name ">KmsValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">KmsValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">KmsValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"><p>KMS encrypted value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">region</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">enum</span>
+                <span class="type-enum">GovCloud</span>
+                <span class="type-enum">US_GOV_EAST_1</span>
+                <span class="type-enum">US_EAST_1</span>
+                <span class="type-enum">US_EAST_2</span>
+                <span class="type-enum">US_WEST_1</span>
+                <span class="type-enum">US_WEST_2</span>
+                <span class="type-enum">EU_WEST_1</span>
+                <span class="type-enum">EU_WEST_2</span>
+                <span class="type-enum">EU_WEST_3</span>
+                <span class="type-enum">EU_CENTRAL_1</span>
+                <span class="type-enum">EU_NORTH_1</span>
+                <span class="type-enum">AP_EAST_1</span>
+                <span class="type-enum">AP_SOUTH_1</span>
+                <span class="type-enum">AP_SOUTHEAST_1</span>
+                <span class="type-enum">AP_SOUTHEAST_2</span>
+                <span class="type-enum">AP_NORTHEAST_1</span>
+                <span class="type-enum">AP_NORTHEAST_2</span>
+                <span class="type-enum">SA_EAST_1</span>
+                <span class="type-enum">CN_NORTH_1</span>
+                <span class="type-enum">CN_NORTHWEST_1</span>
+                <span class="type-enum">CA_CENTRAL_1</span>
+                <span class="type-enum">ME_SOUTH_1</span>
+
+                </div>
+                <div class="signature-description desc"><p>AWS region associated with the KMS key used to encrypt the value.</p>
+</div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "KmsValue"
+      ],
+      "default": "KmsValue"
+    },
+    "value": {
+      "type": "string",
+      "description": "KMS encrypted value."
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "GovCloud",
+        "US_GOV_EAST_1",
+        "US_EAST_1",
+        "US_EAST_2",
+        "US_WEST_1",
+        "US_WEST_2",
+        "EU_WEST_1",
+        "EU_WEST_2",
+        "EU_WEST_3",
+        "EU_CENTRAL_1",
+        "EU_NORTH_1",
+        "AP_EAST_1",
+        "AP_SOUTH_1",
+        "AP_SOUTHEAST_1",
+        "AP_SOUTHEAST_2",
+        "AP_NORTHEAST_1",
+        "AP_NORTHEAST_2",
+        "SA_EAST_1",
+        "CN_NORTH_1",
+        "CN_NORTHWEST_1",
+        "CA_CENTRAL_1",
+        "ME_SOUTH_1"
+      ],
+      "description": "AWS region associated with the KMS key used to encrypt the value."
+    }
+  },
+  "title": "KmsValue",
+  "required": [
+    "type",
+    "value",
+    "region"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end">
+
+                </div>
+                <div class="box-container" boxid="2">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-2">
+        <div class="box-title" ref="">
+            <div class="box-name ">StringValue</div>
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">type</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+            <span class="type-keyword">constant</span>
+                <span class="type-enum">StringValue</span>
+            <span class="type-keyword">default</span>
+            <span class="type-default">StringValue</span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name required">value</div>
+                <div class="signature-type">
+                                   <span class="signature-type-string">
+               string
+            </span>
+            <span class="type-keyword">
+               
+            </span>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "StringValue"
+      ],
+      "default": "StringValue"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "title": "StringValue",
+  "required": [
+    "type",
+    "value"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end">
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "UserPassAuth"
+      ],
+      "default": "UserPassAuth"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/KmsValueConfig"
+        },
+        {
+          "$ref": "#/definitions/StringValueConfig"
+        }
+      ]
+    }
+  },
+  "title": "UserPassAuth",
+  "required": [
+    "type",
+    "username",
+    "password"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end">
+
+                </div>
+            </div>
+        </div>
+        <div class="signature">
+            <div class="signature-header">
+                <div class="property-name ">http_string_headers</div>
+                <div class="signature-type">
+                                        <span boxid="1" class="box-1 signature-type-object signature-button signature-type-expandable button" onclick="expand(this);">object</span>
+
+                            <span class="type-keyword">map</span>
+        <span class="type-keyword"></span>
+            <span class="signature-type-string">
+                string
+            </span>
+            <span class="type-keyword">
+                
+            </span>
+            <br>
+
+                </div>
+                <div class="signature-description desc"></div>
+            </div>
+            <div class="signature-box-container">
+                <div class="box-container" boxid="1">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-1">
+        <div class="box-title" ref="">
+            
+            <div class="box-description desc"></div>
+            <div class="end"></div>
+        </div>
+    </div>
+     <div class="source-button button" title="Source" onclick="sourceButton(this);">{}</div>
+    <div class="box-body">
+        <div class="expand-button button" title="Expand all" onclick="expandButton(this);">+</div>
+        <div>
+            
+        </div>
+        <div class="container ">
+
+
+    <div class="signature">
+        <div class="signature-header">
+            <div class="property-name type-pattern">additional</div>
+            <div class="signature-type">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  }
+}</pre>
+    </div>
+</div>
+<div class="end">
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+    </div>
+    <div class="source">
+        <pre class="json-schema">{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "HTTP transport that supports both HTTP/1.1 and HTTP/2. It will auto negotiate with the server.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "HTTP2"
+      ],
+      "default": "HTTP2"
+    },
+    "threads": {
+      "type": "integer",
+      "default": 5,
+      "description": "Number of concurrent transporters allowed"
+    },
+    "hostname": {
+      "type": "string",
+      "description": "HTTP endpoint hostname."
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535,
+      "default": 443,
+      "description": "HTTP endpoint port."
+    },
+    "use_ssl": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use SSL connections (certificates are not validated)."
+    },
+    "use_gzip": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use GZIP compression on HTTP calls."
+    },
+    "batch_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000,
+      "default": 500,
+      "description": "Maximum number of documents in api call."
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "default": 0,
+      "description": "Number of retries to make when a put failure occurs."
+    },
+    "retry_delay": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 60000,
+      "default": 1000,
+      "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+    },
+    "timeout": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 300000,
+      "default": 40000,
+      "description": "Request timeout in milliseconds"
+    },
+    "http_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "$ref": "#/definitions/KmsValueConfig"
+          },
+          {
+            "$ref": "#/definitions/StringValueConfig"
+          }
+        ]
+      },
+      "description": "HTTP headers to include."
+    },
+    "path": {
+      "type": "string",
+      "description": "HTTP endpoint path and query string including leading slash '/'."
+    },
+    "separator": {
+      "type": "string",
+      "description": "Separator used between serialized records."
+    },
+    "basic_http_auth": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/BasicHttpAuthConfig"
+        }
+      ],
+      "description": "Username and password used for use with http basic auth."
+    },
+    "http_string_headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "title": "HTTP2",
+  "required": [
+    "type",
+    "hostname",
+    "path"
+  ]
+}</pre>
+    </div>
+</div>
+<div class="end">
+
+                </div>
+                <div class="box-container" boxid="9">
+                     <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
+    <div class="box-header box-9">
         <div class="box-title" ref="">
             <div class="box-name ">SumoLogic</div>
             <div class="box-description desc"><p>Writes events to a SumoLogic endpoint.</p>
@@ -34667,9 +35552,9 @@ function sourceButton(element) {
 <div class="end">
 
                 </div>
-                <div class="box-container" boxid="9">
+                <div class="box-container" boxid="10">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-9">
+    <div class="box-header box-10">
         <div class="box-title" ref="">
             <div class="box-name ">Splunk</div>
             <div class="box-description desc"><p>Writes events to a Splunk HEC endpoint.</p>
@@ -35418,9 +36303,9 @@ function sourceButton(element) {
 <div class="end">
 
                 </div>
-                <div class="box-container" boxid="10">
+                <div class="box-container" boxid="11">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-10">
+    <div class="box-header box-11">
         <div class="box-title" ref="">
             <div class="box-name ">Firehose</div>
             <div class="box-description desc"><p>Transports events to AWS Kinesis Firehose. This transport is agnostic of the data being sent. However there are important limits to consider. The maximum size of a single Firehose record can not exceed 1000kb and the maximum for a batch is 4mb. Events larger than 1000kb will not be split across multiple Records. The transport contains two types of buffers. In BATCH mode it will attempt to write multiple events into a single Firehose Record in order to minimize number of Records sent. In SIMPLE mode each serialized event is putinto a its own Record. Firehose sinks like ElasticSearch require each event be its own Firehose Record.Required IAM permissions are: firehose:DescribeDeliveryStream, firehose:ListDeliveryStreams, firehose:PutRecord, firehose:PutRecordBatch</p>
@@ -35659,9 +36544,9 @@ function sourceButton(element) {
 <div class="end">
 
                 </div>
-                <div class="box-container" boxid="11">
+                <div class="box-container" boxid="12">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-11">
+    <div class="box-header box-12">
         <div class="box-title" ref="">
             <div class="box-name ">Datadog</div>
             <div class="box-description desc"><p>Writes events to a Datadog endpoint.</p>
@@ -36230,9 +37115,9 @@ function sourceButton(element) {
 <div class="end">
 
                 </div>
-                <div class="box-container" boxid="12">
+                <div class="box-container" boxid="13">
                      <div class="box" onmousedown="deSelect(); this.className += ' box-selected'; event.preventDefault(); return false;" onmouseenter="displayButtons(this, 'block');" onmouseleave="displayButtons(this, 'none');">
-    <div class="box-header box-12">
+    <div class="box-header box-13">
         <div class="box-title" ref="">
             <div class="box-name ">DevNull</div>
             <div class="box-description desc"><p>Transport for testing and development. Serialized events simply get cleared out of the transport buffer.</p>
@@ -37455,6 +38340,9 @@ function sourceButton(element) {
         },
         {
           "$ref": "#/definitions/HttpTransportConfig"
+        },
+        {
+          "$ref": "#/definitions/Http2TransportConfig"
         },
         {
           "$ref": "#/definitions/SumoLogicTransportConfig"
@@ -39785,6 +40673,7 @@ function sourceButton(element) {
     "HttpTransportConfig": {
       "type": "object",
       "additionalProperties": false,
+      "description": "HTTP transport that only supports HTTP1/1",
       "properties": {
         "type": {
           "type": "string",
@@ -39885,6 +40774,116 @@ function sourceButton(element) {
         }
       },
       "title": "HTTP",
+      "required": [
+        "type",
+        "hostname",
+        "path"
+      ]
+    },
+    "Http2TransportConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "HTTP transport that supports both HTTP/1.1 and HTTP/2. It will auto negotiate with the server.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "HTTP2"
+          ],
+          "default": "HTTP2"
+        },
+        "threads": {
+          "type": "integer",
+          "default": 5,
+          "description": "Number of concurrent transporters allowed"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "HTTP endpoint hostname."
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 443,
+          "description": "HTTP endpoint port."
+        },
+        "use_ssl": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use SSL connections (certificates are not validated)."
+        },
+        "use_gzip": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use GZIP compression on HTTP calls."
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 500,
+          "description": "Maximum number of documents in api call."
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 0,
+          "description": "Number of retries to make when a put failure occurs."
+        },
+        "retry_delay": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000,
+          "default": 1000,
+          "description": "Initial delay between retries. If more than one retries specified exponential backoff is used."
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 40000,
+          "description": "Request timeout in milliseconds"
+        },
+        "http_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/KmsValueConfig"
+              },
+              {
+                "$ref": "#/definitions/StringValueConfig"
+              }
+            ]
+          },
+          "description": "HTTP headers to include."
+        },
+        "path": {
+          "type": "string",
+          "description": "HTTP endpoint path and query string including leading slash '/'."
+        },
+        "separator": {
+          "type": "string",
+          "description": "Separator used between serialized records."
+        },
+        "basic_http_auth": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/BasicHttpAuthConfig"
+            }
+          ],
+          "description": "Username and password used for use with http basic auth."
+        },
+        "http_string_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "HTTP2",
       "required": [
         "type",
         "hostname",
@@ -40530,6 +41529,9 @@ function sourceButton(element) {
             "$ref": "#/definitions/HttpTransportConfig"
           },
           {
+            "$ref": "#/definitions/Http2TransportConfig"
+          },
+          {
             "$ref": "#/definitions/SumoLogicTransportConfig"
           },
           {
@@ -40640,6 +41642,9 @@ function sourceButton(element) {
             "$ref": "#/definitions/HttpTransportConfig"
           },
           {
+            "$ref": "#/definitions/Http2TransportConfig"
+          },
+          {
             "$ref": "#/definitions/SumoLogicTransportConfig"
           },
           {
@@ -40681,4 +41686,4 @@ function sourceButton(element) {
     </div>
 </div>
 <div class="end">
-</div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></body></html>
+</div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></body></html>
