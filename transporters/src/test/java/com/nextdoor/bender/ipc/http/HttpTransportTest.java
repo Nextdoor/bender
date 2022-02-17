@@ -26,18 +26,24 @@ import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPOutputStream;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.EntityBuilder;
-import org.apache.http.client.entity.GzipDecompressingEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.entity.EntityBuilder;
+import org.apache.hc.client5.http.entity.GzipDecompressingEntity;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
+import org.apache.hc.core5.http.message.BasicHeader;
+import org.apache.hc.core5.http.message.StatusLine;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -46,15 +52,14 @@ import com.nextdoor.bender.ipc.TransportException;
 
 public class HttpTransportTest {
 
-  private HttpClient getMockClientWithResponse(byte[] respPayload, ContentType contentType,
+  private CloseableHttpClient getMockClientWithResponse(byte[] respPayload, ContentType contentType,
       int status, boolean compressed) throws IOException {
-    HttpClient mockClient = mock(HttpClient.class);
-    HttpResponse mockResponse = mock(HttpResponse.class);
+    CloseableHttpClient mockClient = mock(CloseableHttpClient.class);
+    CloseableHttpResponse mockResponse = mock(CloseableHttpResponse.class);
 
     StatusLine mockStatusLine = mock(StatusLine.class);
     doReturn("expected failure").when(mockStatusLine).getReasonPhrase();
-    doReturn(status).when(mockStatusLine).getStatusCode();
-    doReturn(mockStatusLine).when(mockResponse).getStatusLine();
+    doReturn(status).when(mockResponse).getCode();
     EntityBuilder eb = EntityBuilder.create().setBinary(respPayload).setContentType(contentType);
 
     HttpEntity he;
@@ -76,7 +81,7 @@ public class HttpTransportTest {
     byte[] respPayload = "{}".getBytes(StandardCharsets.UTF_8);
     byte[] payload = "foo".getBytes();
 
-    HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
+    CloseableHttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_OK, false);
     HttpTransport transport = new HttpTransport(client, "", false, 1, 1);
     transport.sendBatch(payload);
@@ -86,7 +91,7 @@ public class HttpTransportTest {
   public void testNotOkResponse() throws TransportException, IOException {
     byte[] respPayload = "{\"foo\": \"bar\"}".getBytes(StandardCharsets.UTF_8);
 
-    HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
+    CloseableHttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR, false);
     HttpTransport transport = new HttpTransport(client, "", false, 1, 1);
 
@@ -97,7 +102,7 @@ public class HttpTransportTest {
   public void testNoErrorsResponse() throws TransportException, IOException {
     byte[] respPayload = "{}".getBytes(StandardCharsets.UTF_8);
 
-    HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
+    CloseableHttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_OK, false);
     HttpTransport transport = new HttpTransport(client, "", false, 1, 1);
 
@@ -108,7 +113,7 @@ public class HttpTransportTest {
   public void testErrorsResponse() throws TransportException, IOException {
     byte[] respPayload = "resp".getBytes(StandardCharsets.UTF_8);
 
-    HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
+    CloseableHttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR, false);
     HttpTransport transport = new HttpTransport(client, "", false, 1, 1);
 
@@ -132,7 +137,7 @@ public class HttpTransportTest {
     os.close();
     byte[] compressedResponse = baos.toByteArray();
 
-    HttpClient client = getMockClientWithResponse(compressedResponse, ContentType.DEFAULT_BINARY,
+    CloseableHttpClient client = getMockClientWithResponse(compressedResponse, ContentType.DEFAULT_BINARY,
         HttpStatus.SC_INTERNAL_SERVER_ERROR, true);
     HttpTransport transport = new HttpTransport(client, "", true, 1, 1);
 
@@ -150,7 +155,7 @@ public class HttpTransportTest {
   public void testRetries() throws Exception {
     byte[] respPayload = "resp".getBytes(StandardCharsets.UTF_8);
 
-    HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
+    CloseableHttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_INTERNAL_SERVER_ERROR, false);
     HttpTransport transport = new HttpTransport(client, "", false, 3, 10);
 
@@ -167,7 +172,7 @@ public class HttpTransportTest {
   @Test(expected = IOException.class)
   public void testIOException() throws Throwable {
     byte[] arr = "{".getBytes();
-    HttpClient client = getMockClientWithResponse(arr, ContentType.DEFAULT_BINARY,
+    CloseableHttpClient client = getMockClientWithResponse(arr, ContentType.DEFAULT_BINARY,
         HttpStatus.SC_INTERNAL_SERVER_ERROR, false);
 
     doThrow(new IOException()).when(client).execute(any(HttpPost.class));
@@ -182,12 +187,12 @@ public class HttpTransportTest {
   }
 
   @Test
-  public void testHttpPostUrl() throws TransportException, IOException {
+  public void testHttpPostUrl() throws TransportException, IOException, URISyntaxException {
     byte[] respPayload = "{}".getBytes(StandardCharsets.UTF_8);
     byte[] payload = "foo".getBytes();
     String url = "https://localhost:443/foo";
 
-    HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
+    CloseableHttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_OK, false);
     HttpTransport transport = spy(new HttpTransport(client, url, false, 1, 1));
     transport.sendBatch(payload);
@@ -195,7 +200,7 @@ public class HttpTransportTest {
     ArgumentCaptor<HttpPost> captor = ArgumentCaptor.forClass(HttpPost.class);
     verify(client, times(1)).execute(captor.capture());
 
-    assertEquals(url, captor.getValue().getURI().toString());
+    assertEquals(url, captor.getValue().getUri().toString());
   }
 
   @Test
@@ -204,7 +209,7 @@ public class HttpTransportTest {
     byte[] payload = "foo".getBytes();
     String url = "https://localhost:443/foo";
 
-    HttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
+    CloseableHttpClient client = getMockClientWithResponse(respPayload, ContentType.APPLICATION_JSON,
         HttpStatus.SC_OK, false);
     HttpTransport transport = spy(new HttpTransport(client, url, true, 1, 1));
     transport.sendBatch(payload);

@@ -29,10 +29,19 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.config.SocketConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.io.SocketConfig;
+import org.apache.hc.core5.http.ssl.TLS;
+import org.apache.hc.core5.pool.PoolConcurrencyPolicy;
+import org.apache.hc.core5.pool.PoolReusePolicy;
+import org.apache.hc.core5.util.TimeValue;
+import org.apache.hc.core5.util.Timeout;
+import org.apache.hc.core5.http.message.BasicHeader;
 
 import com.nextdoor.bender.config.AbstractConfig;
 import com.nextdoor.bender.ipc.TransportBuffer;
@@ -118,18 +127,23 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
 
   protected HttpClientBuilder getClientBuilder(boolean useSSL, String url,
       Map<String, String> stringHeaders, int socketTimeout) {
+    PoolingHttpClientConnectionManagerBuilder cm =
+        PoolingHttpClientConnectionManagerBuilder.create();
 
-    HttpClientBuilder cb = HttpClientBuilder.create();
+    HttpClientBuilder cb = HttpClients.custom();
 
     /*
      * Setup SSL
      */
     if (useSSL) {
+      SSLConnectionSocketFactoryBuilder ssl = SSLConnectionSocketFactoryBuilder.create();
+      ssl.setTlsVersions(TLS.V_1_3, TLS.V_1_2);
+
       /*
        * All trusting SSL context
        */
       try {
-        cb.setSSLContext(getSSLContext());
+        ssl.setSslContext(getSSLContext());
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
@@ -137,28 +151,33 @@ public abstract class AbstractHttpTransportFactory implements TransportFactory {
       /*
        * All trusting hostname verifier
        */
-      cb.setSSLHostnameVerifier(new HostnameVerifier() {
+      ssl.setHostnameVerifier(new HostnameVerifier() {
         public boolean verify(String s, SSLSession sslSession) {
           return true;
         }
       });
+
+      cm = cm.setSSLSocketFactory(ssl.build());
     }
 
     /*
      * Add default headers
      */
-    ArrayList<BasicHeader> headers = new ArrayList<BasicHeader>(stringHeaders.size());
+    ArrayList<Header> headers = new ArrayList<Header>(stringHeaders.size());
+
     stringHeaders.forEach((k, v) -> headers.add(new BasicHeader(k, v)));
     cb.setDefaultHeaders(headers);
 
     /*
      * Set socket timeout and transport threads
      */
-    SocketConfig sc = SocketConfig.custom().setSoTimeout(socketTimeout).build();
-    cb.setDefaultSocketConfig(sc);
-    cb.setMaxConnPerRoute(this.config.getThreads());
-    cb.setMaxConnTotal(this.config.getThreads());
+    SocketConfig sc = SocketConfig.custom().setSoTimeout(Timeout.ofSeconds(socketTimeout)).build();
+    cm = cm.setDefaultSocketConfig(sc);
+    cm = cm.setPoolConcurrencyPolicy(PoolConcurrencyPolicy.STRICT)
+        .setConnPoolPolicy(PoolReusePolicy.LIFO).setConnectionTimeToLive(TimeValue.ofMinutes(1L))
+        .setMaxConnPerRoute(this.config.getThreads()).setMaxConnTotal(this.config.getThreads());
 
+    cb.setConnectionManager(cm.build());
     return cb;
   }
 
