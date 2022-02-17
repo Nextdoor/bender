@@ -9,20 +9,21 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright 2017 Nextdoor.com, Inc
+ * Copyright 2022 Nextdoor.com, Inc
  *
  */
 
-package com.nextdoor.bender.ipc.http;
+package com.nextdoor.bender.ipc.http2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.nextdoor.bender.auth.HttpAuthConfig;
 
-@JsonTypeName("HTTP")
-@JsonSchemaDescription("HTTP transport that only supports HTTP1/1")
-public class HttpTransportConfig extends AbstractHttpTransportConfig {
+@JsonTypeName("HTTP2")
+@JsonSchemaDescription("HTTP transport that supports both HTTP/1.1 and HTTP/2. It will auto "
+    + "negotiate with the server.")
+public class Http2TransportConfig extends AbstractHttp2TransportConfig {
   @JsonSchemaDescription("HTTP endpoint path and query string including leading slash '/'.")
   @JsonProperty(required = true)
   private String path = null;
@@ -61,6 +62,6 @@ public class HttpTransportConfig extends AbstractHttpTransportConfig {
 
   @Override
   public Class<?> getFactoryClass() {
-    return HttpTransportFactory.class;
+    return Http2TransportFactory.class;
   }
 }
