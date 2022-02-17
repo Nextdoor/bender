@@ -127,7 +127,11 @@ public class Http2Transport implements UnpartitionedTransport {
         resp = execute(rb, raw, getUncompressedContentType());
       }
 
-      responseString = resp.getBody().getBodyText();
+      responseString = resp.getBodyText();
+      if (responseString == null || responseString == "") {
+        responseString = "Empty Reponse";
+      }
+
       checkResponse(resp, responseString);
       return resp;
     };
